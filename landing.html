@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tailor Studio — Russia for Bespoke Travel</title>
+  <title>Tailor Studio — Russia Designed for the Modern Arabic Traveller</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -16,6 +16,8 @@
       --text: #e8e4dc;
       --muted: #8a8490;
       --accent: #8b5cf6;
+      --wa: #25D366;
+      --wa-dark: #1da851;
     }
 
     html { scroll-behavior: smooth; }
@@ -33,17 +35,94 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139, 92, 246, 0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 90% 80%,  rgba(201, 168, 76, 0.12)  0%, transparent 50%),
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,92,246,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 80%, rgba(201,168,76,0.12) 0%, transparent 50%),
         linear-gradient(160deg, #0d0d0f 0%, #12111c 50%, #0f0e15 100%);
       z-index: 0;
       pointer-events: none;
     }
 
-    /* ─── LAYOUT ─── */
     main { position: relative; z-index: 1; }
-
     section { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ─── HEADER ─── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      background: rgba(13,13,15,0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #0d0d0f;
+      letter-spacing: -0.03em;
+      flex-shrink: 0;
+    }
+
+    .logo-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .logo-name span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-top: -1px;
+    }
+
+    .btn-wa-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--wa);
+      color: #fff;
+      font-size: 0.87rem;
+      font-weight: 700;
+      padding: 9px 18px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-wa-sm:hover { background: var(--wa-dark); transform: scale(1.03); }
+    .btn-wa-sm svg { width: 16px; height: 16px; }
+    .btn-wa-sm .label-hide { display: inline; }
 
     /* ─── HERO ─── */
     .hero {
@@ -53,15 +132,15 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 80px 24px 60px;
+      padding: 120px 24px 80px;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(201, 168, 76, 0.1);
-      border: 1px solid rgba(201, 168, 76, 0.3);
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.3);
       border-radius: 100px;
       padding: 6px 18px;
       font-size: 12px;
@@ -74,11 +153,11 @@
     .badge svg { width: 14px; height: 14px; }
 
     h1 {
-      font-size: clamp(2.2rem, 6vw, 4.2rem);
+      font-size: clamp(2.2rem, 6vw, 4.4rem);
       font-weight: 800;
       line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 14px;
+      letter-spacing: -0.025em;
+      margin-bottom: 20px;
     }
 
     .gradient-text {
@@ -89,16 +168,39 @@
     }
 
     .hero-sub {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
       color: var(--muted);
-      max-width: 560px;
-      line-height: 1.65;
-      margin-bottom: 52px;
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 44px;
     }
 
     .hero-sub strong { color: var(--text); font-weight: 600; }
 
-    /* ─── SCROLL INDICATOR ─── */
+    .hero-cta-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hero-phone-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .hero-phone-row a {
+      color: var(--text);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .hero-phone-row a:hover { color: var(--gold-light); }
+
     .scroll-hint {
       display: flex;
       flex-direction: column;
@@ -108,15 +210,15 @@
       font-size: 11px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-top: 48px;
+      margin-top: 52px;
       animation: bob 2.4s ease-in-out infinite;
     }
 
-    .scroll-hint svg { width: 20px; height: 20px; opacity: .5; }
+    .scroll-hint svg { width: 20px; height: 20px; opacity: .45; }
 
     @keyframes bob {
       0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(6px); }
+      50%       { transform: translateY(7px); }
     }
 
     /* ─── DIVIDER ─── */
@@ -125,17 +227,17 @@
       max-width: 1100px;
       margin: 0 auto;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(201,168,76,.25), transparent);
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,.22), transparent);
     }
 
-    /* ─── SECTION LABELS ─── */
+    /* ─── LABELS / TITLES ─── */
     .section-label {
       display: block;
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .section-title {
@@ -148,20 +250,192 @@
     .section-desc {
       color: var(--muted);
       font-size: 1.05rem;
-      line-height: 1.7;
+      line-height: 1.72;
       max-width: 560px;
     }
 
+    /* ─── TRUST / FOUNDER ─── */
+    .trust-wrap { padding: 100px 24px; }
+
+    .trust-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+
+    .trust-text .section-desc { margin-bottom: 20px; }
+
+    .trust-card {
+      background: var(--dark-card);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 24px;
+      padding: 36px 32px 32px;
+      position: relative;
+    }
+
+    .trust-card::before {
+      content: '\201C';
+      position: absolute;
+      top: -4px;
+      left: 26px;
+      font-size: 88px;
+      line-height: 1;
+      color: var(--gold);
+      opacity: 0.35;
+      font-family: Georgia, serif;
+    }
+
+    .trust-card p {
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.72;
+      font-style: italic;
+      margin-bottom: 24px;
+      margin-top: 12px;
+    }
+
+    .trust-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .trust-avatar {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--gold), var(--accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .trust-author strong { display: block; font-size: 0.9rem; color: var(--text); font-weight: 700; }
+    .trust-author span { font-size: 0.8rem; color: var(--muted); }
+
+    /* ─── PROGRAMS ─── */
+    .programs-wrap { padding: 0 24px 100px; }
+
+    .programs-header { text-align: center; margin-bottom: 52px; }
+    .programs-header .section-desc { margin: 0 auto; }
+
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .prog-card {
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: default;
+    }
+
+    .prog-card:hover { transform: translateY(-8px); box-shadow: 0 36px 80px rgba(0,0,0,0.55); }
+
+    .prog-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.5s ease;
+    }
+
+    .prog-card:hover .prog-bg { transform: scale(1.06); }
+
+    .prog-winter .prog-bg {
+      background: linear-gradient(160deg, #071525 0%, #0d2040 40%, #1a3060 80%, #0f2a55 100%);
+    }
+
+    .prog-summer .prog-bg {
+      background: linear-gradient(160deg, #1a1005 0%, #2e1c08 35%, #3d2510 65%, #4a2c14 100%);
+    }
+
+    .prog-moscow .prog-bg {
+      background: linear-gradient(160deg, #0c0820 0%, #180d35 40%, #230f45 75%, #1a0c38 100%);
+    }
+
+    .prog-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        rgba(5,5,12,0.95) 0%,
+        rgba(5,5,12,0.55) 50%,
+        rgba(5,5,12,0.1) 100%);
+    }
+
+    .prog-deco {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      font-size: 52px;
+      opacity: 0.14;
+      line-height: 1;
+      user-select: none;
+      z-index: 1;
+    }
+
+    .prog-content {
+      position: relative;
+      z-index: 2;
+      padding: 26px 26px 30px;
+    }
+
+    .prog-season {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 100px;
+      padding: 4px 12px;
+      margin-bottom: 11px;
+    }
+
+    .prog-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+
+    .prog-card p {
+      font-size: 0.87rem;
+      color: rgba(232,228,220,0.72);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .prog-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .prog-tag {
+      font-size: 0.74rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.07);
+      border-radius: 100px;
+      padding: 3px 10px;
+    }
+
     /* ─── ADVANTAGES ─── */
-    .advantages-wrap {
-      padding: 100px 24px;
-    }
-
-    .advantages-header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
+    .advantages-wrap { padding: 0 24px 100px; }
+    .advantages-header { text-align: center; margin-bottom: 60px; }
     .advantages-header .section-desc { margin: 0 auto; }
 
     .cards {
@@ -177,7 +451,7 @@
       padding: 36px 32px;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
     }
 
     .card::before {
@@ -207,23 +481,11 @@
 
     .card-icon svg { width: 28px; height: 28px; }
 
-    .card h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--text);
-    }
-
-    .card p {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
+    .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+    .card p { font-size: 0.95rem; color: var(--muted); line-height: 1.65; }
 
     /* ─── FOR WHOM ─── */
-    .forwhom-wrap {
-      padding: 0 24px 100px;
-    }
+    .forwhom-wrap { padding: 0 24px 100px; }
 
     .forwhom-grid {
       display: grid;
@@ -244,7 +506,7 @@
       border: 1px solid rgba(201,168,76,0.2);
       border-radius: 100px;
       padding: 8px 18px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: var(--gold-light);
     }
 
@@ -255,31 +517,65 @@
       gap: 18px;
     }
 
-    .benefit-list li {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
+    .benefit-list li { display: flex; gap: 14px; align-items: flex-start; }
 
-    .benefit-list li svg {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
+    .benefit-list li svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
 
-    .benefit-list li span {
-      font-size: 0.98rem;
-      color: var(--text);
-      line-height: 1.55;
-    }
-
+    .benefit-list li span { font-size: 0.98rem; color: var(--text); line-height: 1.55; }
     .benefit-list li span strong { color: var(--gold-light); }
 
-    /* ─── CTA ─── */
-    .cta-wrap {
-      padding: 0 24px 120px;
+    /* ─── HOW IT WORKS ─── */
+    .howworks-wrap { padding: 0 24px 100px; }
+    .howworks-header { text-align: center; margin-bottom: 64px; }
+    .howworks-header .section-desc { margin: 0 auto; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      position: relative;
     }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 35px;
+      left: calc(16.67% + 24px);
+      right: calc(16.67% + 24px);
+      height: 1px;
+      background: linear-gradient(90deg, rgba(201,168,76,0.4), rgba(201,168,76,0.15), rgba(201,168,76,0.4));
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 28px;
+    }
+
+    .step-num {
+      width: 70px;
+      height: 70px;
+      background: var(--dark-card);
+      border: 2px solid rgba(201,168,76,0.35);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step h4 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .step p { font-size: 0.9rem; color: var(--muted); line-height: 1.62; }
+
+    /* ─── CTA ─── */
+    .cta-wrap { padding: 0 24px 120px; }
 
     .cta-box {
       background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(139,92,246,0.08) 100%);
@@ -303,73 +599,71 @@
       pointer-events: none;
     }
 
-    .cta-box h2 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
+    .cta-box h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; margin-bottom: 16px; }
 
-    .cta-box p {
+    .cta-box > p {
       color: var(--muted);
       font-size: 1.05rem;
       max-width: 480px;
       margin: 0 auto 40px;
-      line-height: 1.6;
+      line-height: 1.65;
+      position: relative;
     }
 
-    /* ─── BUTTON ─── */
-    .btn-wrap {
-      display: inline-flex;
+    .cta-btn-group {
+      display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
+      position: relative;
     }
 
-    .btn-cta {
+    .cta-contact-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .cta-contact-row span { color: var(--muted); }
+
+    .cta-contact-row a {
+      color: var(--text);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .cta-contact-row a:hover { color: var(--gold-light); }
+
+    /* ─── BUTTONS ─── */
+    .btn-wa {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: linear-gradient(100deg, #c9a84c, #e8c96e, #c9a84c);
-      background-size: 200% auto;
-      color: #0d0d0f;
+      background: var(--wa);
+      color: #fff;
       font-size: 1rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
       padding: 18px 40px;
       border-radius: 100px;
-      border: none;
-      cursor: pointer;
       text-decoration: none;
-      animation: pulse-ring 2.4s ease-in-out infinite, shimmer 3s linear infinite;
-      position: relative;
-      transition: transform 0.2s;
+      box-shadow: 0 8px 32px rgba(37,211,102,0.2);
+      animation: wa-pulse 2.6s ease-in-out infinite;
+      transition: background 0.2s, transform 0.2s;
     }
 
-    .btn-cta:hover { transform: scale(1.04); }
+    .btn-wa:hover { background: var(--wa-dark); transform: scale(1.04); }
+    .btn-wa svg { width: 22px; height: 22px; }
 
-    .btn-cta svg { width: 20px; height: 20px; }
-
-    @keyframes shimmer {
-      0%   { background-position: 200% center; }
-      100% { background-position: 0%   center; }
+    @keyframes wa-pulse {
+      0%   { box-shadow: 0 0 0 0   rgba(37,211,102,0.45), 0 8px 32px rgba(37,211,102,0.2); }
+      50%  { box-shadow: 0 0 0 14px rgba(37,211,102,0),   0 8px 40px rgba(37,211,102,0.3); }
+      100% { box-shadow: 0 0 0 0   rgba(37,211,102,0),    0 8px 32px rgba(37,211,102,0.2); }
     }
-
-    @keyframes pulse-ring {
-      0%   { box-shadow: 0 0 0 0   rgba(201,168,76,0.55), 0 8px 32px rgba(201,168,76,0.25); }
-      50%  { box-shadow: 0 0 0 14px rgba(201,168,76,0),   0 8px 40px rgba(201,168,76,0.35); }
-      100% { box-shadow: 0 0 0 0   rgba(201,168,76,0),    0 8px 32px rgba(201,168,76,0.25); }
-    }
-
-    .mail-link {
-      font-size: 0.9rem;
-      color: var(--muted);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(138,132,144,0.3);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .mail-link:hover { color: var(--gold-light); border-color: var(--gold); }
 
     /* ─── FOOTER ─── */
     footer {
@@ -384,15 +678,25 @@
     footer span { color: rgba(138,132,144,0.5); }
 
     /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .programs-grid { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: 1fr; gap: 40px; }
+      .steps::before { display: none; }
+      .trust-inner { grid-template-columns: 1fr; gap: 40px; }
+    }
+
     @media (max-width: 720px) {
       .forwhom-grid { grid-template-columns: 1fr; gap: 40px; }
       .cta-box { padding: 48px 24px; }
       .cards { grid-template-columns: 1fr; }
+      .programs-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 480px) {
-      .hero { padding: 80px 20px 48px; }
-      .btn-cta { padding: 16px 28px; font-size: 0.95rem; }
+      .hero { padding: 100px 20px 56px; }
+      .btn-wa { padding: 16px 28px; font-size: 0.95rem; }
+      .btn-wa-sm .label-hide { display: none; }
+      .btn-wa-sm { padding: 9px 14px; }
     }
   </style>
 </head>
@@ -400,29 +704,53 @@
 
 <div class="bg-layer"></div>
 
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">TS</div>
+      <div class="logo-name">
+        Tailor Studio
+        <span>Russia · Bespoke Travel</span>
+      </div>
+    </a>
+    <a href="https://wa.me/79128888888" target="_blank" class="btn-wa-sm">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.113.549 4.098 1.51 5.828L0 24l6.335-1.662A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.013-1.377l-.36-.214-3.729.978.995-3.638-.234-.374A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      <span class="label-hide">WhatsApp Us</span>
+    </a>
+  </div>
+</header>
+
 <main>
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
   <div class="hero">
     <div class="badge">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
-      B2B · VIP Travel Operator · Russia
+      B2B · Boutique Ground Operator · Middle East
     </div>
 
     <h1>
-      <span class="gradient-text">Tailor Studio</span><br />
-      Russia designed for<br />your bespoke travel
+      <span class="gradient-text">Russia designed</span><br />
+      for those who expect<br />nothing but the best
     </h1>
 
     <p class="hero-sub">
-      A boutique operator built exclusively for the <strong>Arabic leisure market</strong> —
-      crafting unforgettable family journeys across Russia's most iconic destinations.
+      A boutique operator that <strong>speaks your language</strong> — culturally, literally, and professionally.
+      Modern, stylish journeys across Russia crafted exclusively for the
+      <strong>Middle East luxury travel market</strong>.
     </p>
 
-    <a href="#cta" class="btn-cta" aria-label="Partner with us">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      Partner With Us
-    </a>
+    <div class="hero-cta-stack">
+      <a href="https://wa.me/79128888888" target="_blank" class="btn-wa">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.113.549 4.098 1.51 5.828L0 24l6.335-1.662A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.013-1.377l-.36-.214-3.729.978.995-3.638-.234-.374A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+        Start on WhatsApp
+      </a>
+      <div class="hero-phone-row">
+        <span>or call</span>
+        <a href="tel:+79128888888">+7 912 888-88-88</a>
+      </div>
+    </div>
 
     <div class="scroll-hint">
       <span>Discover more</span>
@@ -432,69 +760,181 @@
 
   <div class="divider"></div>
 
+  <!-- ═══════════════════ TRUST / FOUNDER ═══════════════════ -->
+  <div class="trust-wrap">
+    <section>
+      <div class="trust-inner">
+
+        <div class="trust-text">
+          <span class="section-label">Our Story</span>
+          <h2 class="section-title">Built on a<br /><span class="gradient-text">decade of VIP trust</span></h2>
+          <p class="section-desc" style="margin-bottom:20px;">
+            Before Tailor Studio, our founder spent years personally managing
+            high-level corporate visits for CEOs of Japan's top companies —
+            coordinating every detail of their Moscow and St. Petersburg stays
+            to the highest possible standard.
+          </p>
+          <p class="section-desc">
+            Those guests left with exceptional reviews. That same obsessive
+            attention to detail, discretion, and taste is now dedicated to
+            crafting extraordinary journeys for families and executives from
+            across the Middle East.
+          </p>
+        </div>
+
+        <div class="trust-card">
+          <p>
+            Every itinerary we build carries the same principle we have always held:
+            if the client notices the logistics, something went wrong.
+            Our job is to make the whole experience feel effortless — and magical.
+          </p>
+          <div class="trust-author">
+            <div class="trust-avatar">O</div>
+            <div>
+              <strong>Olga, Founder</strong>
+              <span>Tailor Studio · Moscow</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ PROGRAMS ═══════════════════ -->
+  <div class="programs-wrap">
+    <section>
+
+      <div class="programs-header">
+        <span class="section-label">Our Programs</span>
+        <h2 class="section-title">Three destinations.<br /><span class="gradient-text">Mastered to perfection.</span></h2>
+        <p class="section-desc">
+          We don't spread ourselves thin across a hundred routes. Each program
+          is curated with insider knowledge, contemporary venues, and full
+          cultural sensitivity.
+        </p>
+      </div>
+
+      <div class="programs-grid">
+
+        <!-- Winter / Krasnaya Polyana -->
+        <div class="prog-card prog-winter">
+          <div class="prog-bg"></div>
+          <div class="prog-overlay"></div>
+          <div class="prog-deco">⛷</div>
+          <div class="prog-content">
+            <span class="prog-season">December – March</span>
+            <h3>Winter in Krasnaya Polyana</h3>
+            <p>Sochi's alpine resort — world-class ski slopes, luxury chalets, mountain spas. Russia's best-kept secret for a premium family winter escape.</p>
+            <div class="prog-tags">
+              <span class="prog-tag">Family-friendly</span>
+              <span class="prog-tag">Halal dining</span>
+              <span class="prog-tag">Ski-in / ski-out</span>
+              <span class="prog-tag">Private transfers</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summer / St. Petersburg -->
+        <div class="prog-card prog-summer">
+          <div class="prog-bg"></div>
+          <div class="prog-overlay"></div>
+          <div class="prog-deco">🏛</div>
+          <div class="prog-content">
+            <span class="prog-season">May – August</span>
+            <h3>Imperial Russia — St. Petersburg</h3>
+            <p>The White Nights, the Hermitage, candlelit rooftop dinners at midnight. A cultural journey unlike anything else in the world.</p>
+            <div class="prog-tags">
+              <span class="prog-tag">White Nights</span>
+              <span class="prog-tag">Private museum tours</span>
+              <span class="prog-tag">Arabic guide</span>
+              <span class="prog-tag">VIP boat rides</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Moscow Year-round -->
+        <div class="prog-card prog-moscow">
+          <div class="prog-bg"></div>
+          <div class="prog-overlay"></div>
+          <div class="prog-deco">🌆</div>
+          <div class="prog-content">
+            <span class="prog-season">Year-round</span>
+            <h3>Moscow — The Trendy Capital</h3>
+            <p>World-class gastronomy, design hotels, exclusive shopping, and a contemporary arts scene that rivals any European capital.</p>
+            <div class="prog-tags">
+              <span class="prog-tag">Top restaurants</span>
+              <span class="prog-tag">Shopping routes</span>
+              <span class="prog-tag">Art & culture</span>
+              <span class="prog-tag">Hidden gems</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
   <!-- ═══════════════════ ADVANTAGES ═══════════════════ -->
   <div class="advantages-wrap">
     <section>
       <div class="advantages-header">
         <span class="section-label">Why Tailor Studio</span>
-        <h2 class="section-title">Three reasons we are<br /><span class="gradient-text">your perfect partner</span></h2>
+        <h2 class="section-title">Not your typical<br /><span class="gradient-text">Russian operator</span></h2>
         <p class="section-desc">
-          We are not a general tour operator. Every decision we make
-          is shaped by the Arabic traveller in mind.
+          Most DMCs offer Russia the old way — heavy on Soviet history,
+          light on style. We do it differently.
         </p>
       </div>
 
       <div class="cards">
 
-        <!-- Card 1 -->
         <div class="card">
           <div class="card-icon">
-            <!-- Trophy / 20 years -->
             <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M8 21h8M12 17v4M7 4H4a1 1 0 0 0-1 1v2a4 4 0 0 0 4 4h1M17 4h3a1 1 0 0 1 1 1v2a4 4 0 0 1-4 4h-1"/>
-              <path d="M7 4h10v8a5 5 0 0 1-10 0V4Z"/>
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
             </svg>
           </div>
-          <h3>20 Years of VIP Expertise</h3>
+          <h3>Style &amp; Class, Not Clichés</h3>
           <p>
-            Our team has spent two decades operating in the luxury travel segment,
-            serving high-net-worth clients with white-glove standards. You gain that
-            depth of knowledge on day one.
+            Forget the group bus and generic monuments. We curate contemporary Russia —
+            design restaurants, boutique hotels, hidden cultural gems — alongside
+            the timeless classics, done properly.
           </p>
         </div>
 
-        <!-- Card 2 -->
         <div class="card">
           <div class="card-icon">
-            <!-- Arabic crescent / target audience -->
             <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <path d="M12 8a5 5 0 1 0 4 8"/>
               <circle cx="12" cy="12" r="1" fill="#c9a84c"/>
             </svg>
           </div>
-          <h3>Built for the Arabic Market</h3>
+          <h3>We Speak Your Language</h3>
           <p>
-            Arabic-speaking guides, halal dining, prayer-time scheduling, family-first
-            logistics — we understand the cultural nuances that make travel truly
-            comfortable for your clients.
+            Arabic-speaking guides, halal dining at every meal, prayer-time
+            awareness built into every schedule — we don't just accommodate
+            cultural needs, we anticipate them.
           </p>
         </div>
 
-        <!-- Card 3 -->
         <div class="card">
           <div class="card-icon">
-            <!-- Map pin / 3 cities -->
             <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0Z"/>
-              <circle cx="12" cy="10" r="3"/>
+              <path d="M8 21h8M12 17v4M7 4H4a1 1 0 0 0-1 1v2a4 4 0 0 0 4 4h1M17 4h3a1 1 0 0 1 1 1v2a4 4 0 0 1-4 4h-1"/>
+              <path d="M7 4h10v8a5 5 0 0 1-10 0V4Z"/>
             </svg>
           </div>
-          <h3>Focused Destinations, Perfect Execution</h3>
+          <h3>VIP Standard, Every Group</h3>
           <p>
-            Moscow, St. Petersburg &amp; Sochi. Three iconic cities, mastered deeply —
-            not spread thin across a hundred routes. Depth over breadth means
-            flawless experiences every time.
+            Proven on demanding Japanese corporate executives, our white-glove
+            standards apply to every booking — from airport arrival to the final
+            dinner reservation, nothing is left to chance.
           </p>
         </div>
 
@@ -511,16 +951,21 @@
 
         <div>
           <span class="section-label">Ideal Partner</span>
-          <h2 class="section-title">Made for UAE travel agencies</h2>
+          <h2 class="section-title">Built for <span class="gradient-text">Middle East</span><br />travel agencies</h2>
           <p class="section-desc">
-            If you work with Arabic-speaking families seeking premium leisure
-            experiences in Russia, Tailor Studio is your dedicated ground partner.
+            If you work with Arabic-speaking families and high-net-worth travellers
+            seeking premium leisure experiences in Russia — Tailor Studio is your
+            dedicated ground partner.
           </p>
           <div class="forwhom-pills">
-            <span class="pill">Tour Operators · UAE</span>
-            <span class="pill">Luxury Travel Agencies</span>
-            <span class="pill">Family Leisure Specialists</span>
+            <span class="pill">UAE</span>
+            <span class="pill">Saudi Arabia</span>
+            <span class="pill">Qatar</span>
+            <span class="pill">Kuwait</span>
+            <span class="pill">Bahrain &amp; Oman</span>
+            <span class="pill">Luxury Agencies</span>
             <span class="pill">VIP Concierge Desks</span>
+            <span class="pill">Family Leisure Specialists</span>
           </div>
         </div>
 
@@ -529,25 +974,60 @@
           <ul class="benefit-list">
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span><strong>Higher client satisfaction</strong> — culturally tailored itineraries your clients will rave about</span>
+              <span><strong>Higher client satisfaction</strong> — culturally tailored itineraries your clients will talk about for years</span>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span><strong>Competitive margins</strong> — direct partnership with the operator, no middlemen</span>
+              <span><strong>Competitive margins</strong> — direct partnership with the operator, no middlemen, no hidden costs</span>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span><strong>Reliable execution</strong> — 20 years of experience means zero last-minute surprises</span>
+              <span><strong>Quick quotes</strong> — pick a package, choose add-ons, get a full proposal within 24 hours</span>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span><strong>Dedicated support</strong> — a personal manager available throughout every trip</span>
+              <span><strong>Dedicated manager on WhatsApp</strong> — reachable throughout every trip, not just during office hours</span>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              <span><strong>Repeat bookings</strong> — clients who feel understood always come back</span>
+              <span><strong>Repeat bookings</strong> — clients who feel truly understood always come back</span>
             </li>
           </ul>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
+  <div class="howworks-wrap">
+    <section>
+      <div class="howworks-header">
+        <span class="section-label">Process</span>
+        <h2 class="section-title">From enquiry to<br /><span class="gradient-text">flawless journey</span></h2>
+        <p class="section-desc">Simple for you. Exceptional for your client.</p>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">01</div>
+          <h4>Share your client's needs</h4>
+          <p>Message us on WhatsApp or send a brief. Dates, group size, interests, budget — that is all we need to get started.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-num">02</div>
+          <h4>We prepare the package</h4>
+          <p>Within 24 hours you receive a tailored proposal — base programme plus optional add-ons so your client can choose their level.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-num">03</div>
+          <h4>We handle everything</h4>
+          <p>Transfers, hotels, guides, restaurants, tickets — all confirmed and coordinated by your personal manager on the ground.</p>
         </div>
 
       </div>
@@ -563,15 +1043,18 @@
         <span class="section-label" style="display:block;margin-bottom:16px;">Ready to start?</span>
         <h2>Let's build something<br /><span class="gradient-text">exceptional together</span></h2>
         <p>
-          Send us an enquiry and receive a tailored partnership proposal
+          Drop us a message on WhatsApp and receive a tailored partnership proposal
           within 24 hours. Your clients deserve Russia at its finest.
         </p>
-        <div class="btn-wrap">
-          <a href="mailto:olga@olga.ru?subject=Partnership%20Enquiry%20—%20Tailor%20Studio" class="btn-cta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.76a16 16 0 0 0 6.29 6.29l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
-            Request a Partnership
+        <div class="cta-btn-group">
+          <a href="https://wa.me/79128888888" target="_blank" class="btn-wa">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.113.549 4.098 1.51 5.828L0 24l6.335-1.662A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.013-1.377l-.36-.214-3.729.978.995-3.638-.234-.374A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+            Message us on WhatsApp
           </a>
-          <a class="mail-link" href="mailto:olga@olga.ru">olga@olga.ru</a>
+          <div class="cta-contact-row">
+            <span>or call directly —</span>
+            <a href="tel:+79128888888">+7 912 888-88-88</a>
+          </div>
         </div>
       </div>
     </section>
@@ -580,7 +1063,7 @@
 </main>
 
 <footer>
-  <span>&copy; 2026 Tailor Studio. All rights reserved. &nbsp;·&nbsp; Russia, crafted for Arabic travellers.</span>
+  <span>&copy; 2026 Tailor Studio. All rights reserved. &nbsp;·&nbsp; Russia, crafted for Middle East travellers.</span>
 </footer>
 
 </body>
