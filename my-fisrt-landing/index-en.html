@@ -1720,6 +1720,30 @@ footer {
 }
 
 /* ─────────────────────────────────────────
+   DIAGONAL SECTION CUTS
+───────────────────────────────────────── */
+.cut-to-dark,
+.cut-to-light,
+.cut-to-alt {
+  position: relative;
+  overflow: visible;
+}
+.cut-to-dark::after,
+.cut-to-light::after,
+.cut-to-alt::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  z-index: 2;
+  /* Triangle: right corner at top, full width at bottom */
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+.cut-to-dark::after  { background: var(--bg-dark); }
+.cut-to-light::after { background: var(--bg-light); }
+.cut-to-alt::after   { background: var(--bg-alt); }
+
+/* ─────────────────────────────────────────
    REDUCED MOTION
 ───────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
@@ -1951,7 +1975,7 @@ footer {
 <!-- ═══════════════════════════════════════
      04. HOW WE WORK
 ════════════════════════════════════════ -->
-<section class="section section-dark" id="process">
+<section class="section section-dark cut-to-light" id="process">
   <div class="container">
     <div style="text-align:center">
       <span class="label label-light">Partnership Process</span>
@@ -2078,7 +2102,7 @@ footer {
 <!-- ═══════════════════════════════════════
      06. SERVICES
 ════════════════════════════════════════ -->
-<section class="section section-alt" id="services">
+<section class="section section-alt cut-to-dark" id="services">
   <div class="container">
     <div style="text-align:center">
       <span class="label">Our Services</span>
@@ -2136,7 +2160,7 @@ footer {
 <!-- ═══════════════════════════════════════
      07. HALAL GUARANTEE
 ════════════════════════════════════════ -->
-<section class="section section-dark halal-section" id="halal">
+<section class="section section-dark halal-section cut-to-light" id="halal">
   <div class="container">
     <div class="halal-header">
       <span class="halal-moon">☪️</span>
@@ -2328,7 +2352,7 @@ footer {
 <!-- ═══════════════════════════════════════
      10. FAQ
 ════════════════════════════════════════ -->
-<section class="section" id="faq">
+<section class="section cut-to-dark" id="faq">
   <div class="container">
     <div class="faq-header">
       <span class="label">FAQ</span>
