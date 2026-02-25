@@ -355,23 +355,22 @@ h2.section-title {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 70% 60% at 60% 40%, rgba(201,168,76,0.07) 0%, transparent 70%),
-    linear-gradient(160deg, #0A1628 0%, #111d35 50%, #0d1a2e 100%);
+  background-image: url('https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center 40%;
+  /* fallback if image fails to load */
+  background-color: #0A1628;
 }
-/* Placeholder city silhouette */
 .hero-bg::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    /* Kremlin-like silhouette */
     linear-gradient(to top,
-      rgba(10,22,40,0.85) 0%,
-      rgba(10,22,40,0.4) 40%,
-      rgba(10,22,40,0.1) 70%,
-      transparent 100%),
-    radial-gradient(ellipse 80% 50% at 65% 55%, rgba(201,168,76,0.05) 0%, transparent 60%);
+      rgba(10,22,40,0.92) 0%,
+      rgba(10,22,40,0.55) 40%,
+      rgba(10,22,40,0.35) 70%,
+      rgba(10,22,40,0.45) 100%);
 }
 
 /* Animated stars/particles */
@@ -742,103 +741,28 @@ h2.section-title {
 .dest-card:hover .dest-photo { transform: scale(1.04); }
 
 .dest-card.moscow .dest-photo {
-  background:
-    /* Golden hour glow */
-    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(201,168,76,0.18) 0%, transparent 60%),
-    /* Sky */
-    linear-gradient(180deg,
-      #1a1a35 0%,
-      #2a1825 20%,
-      #3d2030 45%,
-      #251520 70%,
-      #0d0a18 100%
-    );
+  background-image: url('https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=900&q=80');
+  background-size: cover;
+  background-position: center;
+  background-color: #1a1a35;
 }
-/* St Basil silhouette */
-.dest-card.moscow .dest-photo::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 55%;
-  background:
-    /* Kremlin wall */
-    linear-gradient(to top, rgba(10,10,20,0.8) 0%, transparent 35%),
-    /* Central spire */
-    radial-gradient(ellipse 3% 55% at 50% 100%, rgba(15,10,22,0.95) 0%, transparent 100%),
-    /* Domes */
-    radial-gradient(ellipse 5% 22% at 38% 100%, rgba(20,12,28,0.9) 0%, transparent 100%),
-    radial-gradient(ellipse 4% 28% at 44% 100%, rgba(18,10,25,0.9) 0%, transparent 100%),
-    radial-gradient(ellipse 4% 28% at 56% 100%, rgba(18,10,25,0.9) 0%, transparent 100%),
-    radial-gradient(ellipse 5% 22% at 62% 100%, rgba(20,12,28,0.9) 0%, transparent 100%),
-    /* Gold glow on domes */
-    radial-gradient(ellipse 8% 15% at 44% 62%, rgba(201,168,76,0.12) 0%, transparent 100%),
-    radial-gradient(ellipse 8% 15% at 56% 62%, rgba(201,168,76,0.12) 0%, transparent 100%);
-}
+.dest-card.moscow .dest-photo::after { content: none; }
 
 .dest-card.spb .dest-photo {
-  background:
-    /* White nights blue-gold */
-    radial-gradient(ellipse 60% 40% at 50% 20%, rgba(100,160,220,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 80% 50% at 50% 85%, rgba(201,168,76,0.1) 0%, transparent 60%),
-    linear-gradient(180deg,
-      #0d1a35 0%,
-      #102040 25%,
-      #1a3050 50%,
-      #152535 75%,
-      #0a1525 100%
-    );
+  background-image: url('https://images.unsplash.com/photo-1556610961-2febed8ef77b?auto=format&fit=crop&w=900&q=80');
+  background-size: cover;
+  background-position: center;
+  background-color: #0d1a35;
 }
-/* Hermitage / palace silhouette */
-.dest-card.spb .dest-photo::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 50%;
-  background:
-    linear-gradient(to top, rgba(8,14,28,0.85) 0%, transparent 40%),
-    /* Palace roofline */
-    linear-gradient(180deg, transparent 30%, rgba(10,20,40,0.7) 60%, rgba(8,14,28,0.9) 100%),
-    /* Spire */
-    radial-gradient(ellipse 2% 60% at 50% 100%, rgba(10,18,35,0.95) 0%, transparent 100%),
-    /* Gold spire tip glow */
-    radial-gradient(circle 6% at 50% 42%, rgba(201,168,76,0.2) 0%, transparent 100%),
-    /* Colonnade hints */
-    radial-gradient(ellipse 50% 15% at 50% 95%, rgba(15,25,50,0.6) 0%, transparent 100%);
-}
+.dest-card.spb .dest-photo::after { content: none; }
 
 .dest-card.sochi .dest-photo {
-  background:
-    /* Sea teal shimmer */
-    radial-gradient(ellipse 80% 40% at 50% 60%, rgba(26,107,107,0.22) 0%, transparent 65%),
-    /* Sunset */
-    radial-gradient(ellipse 50% 30% at 70% 30%, rgba(201,120,50,0.12) 0%, transparent 60%),
-    linear-gradient(180deg,
-      #062030 0%,
-      #0a3040 20%,
-      #0f4045 45%,
-      #0a2030 70%,
-      #061520 100%
-    );
+  background-image: url('https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?auto=format&fit=crop&w=900&q=80');
+  background-size: cover;
+  background-position: center;
+  background-color: #062030;
 }
-/* Sea horizon silhouette */
-.dest-card.sochi .dest-photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    /* Sea shimmer line */
-    linear-gradient(180deg,
-      transparent 30%,
-      rgba(26,107,107,0.08) 50%,
-      rgba(26,107,107,0.05) 65%,
-      rgba(6,20,30,0.75) 85%,
-      rgba(4,14,22,0.9) 100%
-    ),
-    /* Mountains */
-    radial-gradient(ellipse 120% 20% at 50% 68%, rgba(8,30,40,0.5) 0%, transparent 100%),
-    /* Palm/wave shimmer */
-    radial-gradient(ellipse 60% 15% at 50% 55%, rgba(26,160,160,0.07) 0%, transparent 100%);
-}
+.dest-card.sochi .dest-photo::after { content: none; }
 
 .dest-overlay {
   position: absolute;
@@ -2305,7 +2229,7 @@ footer {
       </div>
 
       <div class="reveal-right">
-        <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
           <div class="team-card">
             <div class="team-avatar">👤</div>
             <div class="team-name">Olga</div>
