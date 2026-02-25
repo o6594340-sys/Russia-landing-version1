@@ -580,45 +580,52 @@ h2.section-title {
 /* ─────────────────────────────────────────
    03. PAIN / EMPATHY
 ───────────────────────────────────────── */
-.pain-grid {
+.pain-header {
+  max-width: 680px;
+  margin-bottom: 56px;
+}
+.pain-strips {
+  display: flex;
+  flex-direction: column;
+}
+.pain-strip {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  grid-template-columns: 88px 56px 1fr;
+  gap: 32px;
   align-items: center;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--border-light);
+  transition: padding-left var(--transition);
+  cursor: default;
 }
-.pain-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+.pain-strip:first-child { border-top: 1px solid var(--border-light); }
+.pain-strip:hover { padding-left: 10px; }
+.pain-num {
+  font-family: var(--font-serif);
+  font-size: 60px;
+  font-weight: 300;
+  color: rgba(201,168,76,0.18);
+  line-height: 1;
+  transition: color var(--transition);
+  user-select: none;
 }
-.pain-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
-  padding: 28px 24px;
-  box-shadow: var(--shadow);
-  transition: all var(--transition);
+.pain-strip:hover .pain-num { color: rgba(201,168,76,0.4); }
+.pain-strip-icon {
+  font-size: 32px;
+  text-align: center;
 }
-.pain-card:hover {
-  border-color: var(--gold);
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-.pain-icon {
-  font-size: 28px;
-  margin-bottom: 14px;
-  display: block;
-}
-.pain-card h4 {
-  font-size: 14px;
-  font-weight: 600;
+.pain-strip-text h4 {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 400;
   color: var(--text);
   margin-bottom: 6px;
 }
-.pain-card p {
-  font-size: 13px;
+.pain-strip-text p {
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.6;
+  margin: 0;
 }
 .pain-resolution {
   margin-top: 36px;
@@ -1682,8 +1689,8 @@ footer {
   .nav-links, .nav-right .lang-toggle, .nav-right .nav-wa { display: none; }
   .hamburger { display: flex; }
   .trust-bar-inner { grid-template-columns: repeat(2, 1fr); gap: 28px; }
-  .pain-grid { grid-template-columns: 1fr; gap: 36px; }
-  .pain-cards { grid-template-columns: 1fr 1fr; }
+  .pain-strip { grid-template-columns: 60px 44px 1fr; gap: 20px; }
+  .pain-num { font-size: 44px; }
   .steps-grid { grid-template-columns: 1fr; gap: 24px; }
   .dest-grid { grid-template-columns: 1fr; }
   .dest-card { height: 460px; }
@@ -1704,7 +1711,9 @@ footer {
   .halal-proof { gap: 20px; }
 }
 @media (max-width: 480px) {
-  .pain-cards { grid-template-columns: 1fr; }
+  .pain-strip { grid-template-columns: 48px 1fr; gap: 16px; }
+  .pain-strip-icon { display: none; }
+  .pain-num { font-size: 36px; }
   .halal-grid { grid-template-columns: 1fr; }
   .trust-bar-inner { grid-template-columns: repeat(2, 1fr); }
   .hero-trust { flex-direction: column; gap: 12px; }
@@ -1891,42 +1900,50 @@ footer {
 ════════════════════════════════════════ -->
 <section class="section section-alt" id="why">
   <div class="container">
-    <div class="pain-grid">
-      <div class="reveal-left">
-        <span class="label">We understand you</span>
-        <h2 class="section-title">Want to offer Russia to your clients, but something holds you back?</h2>
-        <div class="divider"></div>
-        <p class="section-sub">
-          We know the challenges Arab agencies face when working with Russia.
-          And we have an answer for every barrier.
-        </p>
-        <div class="pain-resolution">
-          <p>"We handle everything — so your clients come home and recommend you to their friends."</p>
-        </div>
-      </div>
+    <div class="pain-header reveal">
+      <span class="label">We understand you</span>
+      <h2 class="section-title">Want to offer Russia to your clients,<br>but something holds you back?</h2>
+      <div class="divider"></div>
+      <p class="section-sub">We know the challenges Arab agencies face. And we have an answer for every barrier.</p>
+    </div>
 
-      <div class="pain-cards">
-        <div class="pain-card reveal stagger-1">
-          <span class="pain-icon">🗣️</span>
+    <div class="pain-strips">
+      <div class="pain-strip reveal stagger-1">
+        <span class="pain-num">01</span>
+        <span class="pain-strip-icon">🗣️</span>
+        <div class="pain-strip-text">
           <h4>Language barrier</h4>
-          <p>Hard to find reliable Arabic-speaking guides and managers on the ground</p>
-        </div>
-        <div class="pain-card reveal stagger-2">
-          <span class="pain-icon">🍽️</span>
-          <h4>Halal concerns</h4>
-          <p>Clients worry about food and whether hotels meet their requirements</p>
-        </div>
-        <div class="pain-card reveal stagger-3">
-          <span class="pain-icon">📄</span>
-          <h4>Visa complexity</h4>
-          <p>An unclear visa process for clients from different countries</p>
-        </div>
-        <div class="pain-card reveal stagger-4">
-          <span class="pain-icon">⭐</span>
-          <h4>Reputation at risk</h4>
-          <p>One bad experience — and the client never comes back to you</p>
+          <p>You can't find reliable Arabic-speaking guides and ground managers who actually understand what Arab clients expect — not just linguistically, but culturally.</p>
         </div>
       </div>
+      <div class="pain-strip reveal stagger-2">
+        <span class="pain-num">02</span>
+        <span class="pain-strip-icon">🍽️</span>
+        <div class="pain-strip-text">
+          <h4>Halal is never guaranteed</h4>
+          <p>Other DMCs say halal is "available" — then your clients arrive and find out it means one dish on a menu. Your agency's reputation takes the hit, not theirs.</p>
+        </div>
+      </div>
+      <div class="pain-strip reveal stagger-3">
+        <span class="pain-num">03</span>
+        <span class="pain-strip-icon">📄</span>
+        <div class="pain-strip-text">
+          <h4>Visa complexity</h4>
+          <p>Russia's visa process differs significantly by nationality. Without a partner who knows UAE, Qatari, Jordanian and Saudi requirements precisely, things fall through.</p>
+        </div>
+      </div>
+      <div class="pain-strip reveal stagger-4">
+        <span class="pain-num">04</span>
+        <span class="pain-strip-icon">⭐</span>
+        <div class="pain-strip-text">
+          <h4>Your reputation travels with your clients</h4>
+          <p>One bad transfer, one wrong restaurant, one guide who doesn't understand the culture — and your client tells their family. Russia gets the blame. Your agency loses the booking.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pain-resolution reveal" style="margin-top:48px">
+      <p>"We handle everything on the ground — so your clients come home and recommend you to their friends."</p>
     </div>
   </div>
 </section>
