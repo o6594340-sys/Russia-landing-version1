@@ -885,7 +885,7 @@ h2.section-title {
 ───────────────────────────────────────── */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-top: 56px;
 }
@@ -932,6 +932,45 @@ h2.section-title {
   color: var(--text-muted);
   line-height: 1.65;
 }
+
+/* Featured signature cards — top row, span 2 columns each */
+.service-card--featured {
+  grid-column: span 2;
+  background: linear-gradient(135deg, #0f1f38 0%, #0a1628 100%);
+  border-color: rgba(201,168,76,0.22);
+  padding: 48px 40px;
+  min-height: 240px;
+}
+.service-card--featured::before {
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  height: 2px;
+}
+.service-card--featured:hover {
+  border-color: rgba(201,168,76,0.45);
+}
+.service-card--featured .service-label {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-family: var(--font-sans);
+  margin-bottom: 14px;
+}
+.service-card--featured .service-icon {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+.service-card--featured h4 {
+  font-size: 26px;
+  color: var(--text-light);
+}
+.service-card--featured p {
+  font-size: 15px;
+  color: rgba(250,247,240,0.7);
+  line-height: 1.7;
+}
+
 .services-cta {
   text-align: center;
   margin-top: 44px;
@@ -1650,6 +1689,7 @@ footer {
   .dest-card { height: 460px; }
   .dest-card:last-child { grid-column: auto; }
   .services-grid { grid-template-columns: 1fr; }
+  .service-card--featured { grid-column: span 1; min-height: auto; }
   .halal-grid { grid-template-columns: 1fr 1fr; }
   .testimonials-grid { grid-template-columns: 1fr; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -2030,36 +2070,43 @@ footer {
     </div>
 
     <div class="services-grid">
-      <div class="service-card reveal stagger-1">
-        <span class="service-icon">🗣️</span>
-        <h4>Arabic-speaking guides</h4>
-        <p>Certified guides with professional Arabic in Moscow, St. Petersburg and Sochi. Female guides available for families and women's groups.</p>
-      </div>
-      <div class="service-card reveal stagger-2">
-        <span class="service-icon">🍽️</span>
-        <h4>Real dining — not tourist restaurants</h4>
-        <p>We take your clients where Muscovites actually eat. Halal-certified, curated for Arab palates — not the standard borsch-and-blini conveyor.</p>
-      </div>
-      <div class="service-card reveal stagger-3">
+
+      <!-- Featured: signature services only Tailor Studio offers -->
+      <div class="service-card service-card--featured reveal stagger-1">
+        <span class="service-label">Signature</span>
         <span class="service-icon">💨</span>
         <h4>Authentic hookah culture</h4>
-        <p>We know the best shisha lounges in Moscow and Sochi that locals visit — not tourist traps. Something no standard DMC thinks to offer.</p>
+        <p>We know the best shisha lounges in Moscow and Sochi that locals actually visit — not tourist traps. Something no standard DMC thinks to offer, because no one else is thinking about your clients the way we are.</p>
       </div>
-      <div class="service-card reveal stagger-4">
+      <div class="service-card service-card--featured reveal stagger-2">
+        <span class="service-label">Signature</span>
         <span class="service-icon">🛍️</span>
         <h4>Russian designer boutiques</h4>
-        <p>Shopping routes through Moscow's independent design scene — clothes, jewellery, art. Unique pieces your clients won't find anywhere in Dubai.</p>
+        <p>Shopping routes through Moscow's independent design scene — clothes, jewellery, art objects. Unique pieces your clients won't find anywhere in Dubai, London or Paris. This is the Russia nobody shows them.</p>
+      </div>
+
+      <!-- Standard services -->
+      <div class="service-card reveal stagger-3">
+        <span class="service-icon">🗣️</span>
+        <h4>Arabic-speaking guides</h4>
+        <p>Certified guides in Moscow, St. Petersburg and Sochi. Female guides available for families and women's groups.</p>
+      </div>
+      <div class="service-card reveal stagger-4">
+        <span class="service-icon">🍽️</span>
+        <h4>Real dining</h4>
+        <p>Where Muscovites actually eat. Halal-certified, curated for Arab palates — not the borsch-and-blini conveyor.</p>
       </div>
       <div class="service-card reveal stagger-5">
         <span class="service-icon">🏨</span>
         <h4>Halal accommodation</h4>
-        <p>Hotels that understand halal requirements without being asked twice. Family rooms, prayer facilities, alcohol-free floors — all arranged in advance.</p>
+        <p>Hotels that understand halal requirements without being asked twice. Family rooms, prayer facilities, alcohol-free floors.</p>
       </div>
       <div class="service-card reveal stagger-6">
         <span class="service-icon">📄</span>
-        <h4>Visas & full logistics</h4>
-        <p>Complete documentation for Russian visas, airport transfers, inter-city travel. We handle every operational detail so nothing falls through.</p>
+        <h4>Visas & logistics</h4>
+        <p>Complete documentation, airport transfers, inter-city travel. Every operational detail handled end to end.</p>
       </div>
+
     </div>
 
     <div class="services-cta reveal">
