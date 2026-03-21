@@ -744,10 +744,30 @@ ul { list-style: none; }
 }
 
 .mice__card {
-  background: var(--clr-white);
-  border: 1px solid var(--clr-line);
+  position: relative;
   padding: clamp(32px, 4vw, 52px);
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
 }
+
+.mice__card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.87);
+  z-index: 0;
+}
+
+.mice__card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.mice__card--1 { background-image: url('conference.jpg'); }
+.mice__card--2 { background-image: url('sunset.jpg'); }
+.mice__card--3 { background-image: url('road.jpg'); }
+.mice__card--4 { background-image: url('yacht.jpg'); }
 
 .mice__card-num {
   font-family: var(--font-serif);
