@@ -396,6 +396,7 @@ ul { list-style: none; }
   padding: clamp(48px, 7vw, 80px) 0;
   background: var(--clr-white);
   border-bottom: 1px solid var(--clr-line);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .stats__grid {
@@ -419,6 +420,7 @@ ul { list-style: none; }
   color: var(--clr-accent);
   line-height: 1;
   margin-bottom: 10px;
+  transition: color 0.15s ease;
 }
 
 .stat__label {
@@ -427,6 +429,7 @@ ul { list-style: none; }
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--clr-text-muted);
+  transition: color 0.15s ease;
 }
 
 

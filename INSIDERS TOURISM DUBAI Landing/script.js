@@ -97,6 +97,47 @@ const counterObserver = new IntersectionObserver((entries) => {
 statNumbers.forEach(el => counterObserver.observe(el));
 
 
+/* ─── SCROLL PURPLE EFFECT (à la oplus) ─────── */
+(function () {
+  const statsEl  = document.getElementById('stats');
+  const gridEl   = statsEl.querySelector('.stats__grid');
+  const statEls  = statsEl.querySelectorAll('.stat');
+  const numEls   = statsEl.querySelectorAll('.stat__number');
+  const lblEls   = statsEl.querySelectorAll('.stat__label');
+
+  function lerp(a, b, t) { return Math.round(a + (b - a) * t); }
+  function rgb(from, to, t) {
+    return `rgb(${lerp(from[0],to[0],t)},${lerp(from[1],to[1],t)},${lerp(from[2],to[2],t)})`;
+  }
+
+  const BG_WHITE   = [255, 255, 255];
+  const BG_PURPLE  = [22,  8,  42 ];   // #16082A — very deep purple
+  const LINE_WHITE = [228, 214, 220];
+  const LINE_PUR   = [90,  40, 140];
+  const NUM_PINK   = [168, 64, 110];   // current accent
+  const NUM_LAV    = [196, 150, 230];  // light lavender
+  const LBL_MID    = [107, 90,  98];
+  const LBL_LIGHT  = [195, 175, 215];
+
+  window.addEventListener('scroll', () => {
+    const rect = statsEl.getBoundingClientRect();
+    const vh   = window.innerHeight;
+
+    // t: 0 when section just enters, 1 when fully in view, back to 0 when leaving
+    const entering = 1 - Math.max(0, Math.min(1, rect.top / vh));
+    const leaving  = Math.max(0, Math.min(1, (rect.bottom) / vh));
+    const t = Math.min(entering, leaving);
+
+    statsEl.style.backgroundColor  = rgb(BG_WHITE, BG_PURPLE, t);
+    statsEl.style.borderColor       = rgb(LINE_WHITE, LINE_PUR, t);
+    gridEl.style.backgroundColor    = rgb(LINE_WHITE, LINE_PUR, t);
+    statEls.forEach(el => { el.style.backgroundColor = 'transparent'; });
+    numEls.forEach(el  => { el.style.color = rgb(NUM_PINK, NUM_LAV, t); });
+    lblEls.forEach(el  => { el.style.color = rgb(LBL_MID, LBL_LIGHT, t); });
+  }, { passive: true });
+})();
+
+
 /* ─── SMOOTH SCROLL for anchor links ─────── */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', (e) => {
