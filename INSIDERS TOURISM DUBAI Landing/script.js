@@ -97,6 +97,7 @@ const counterObserver = new IntersectionObserver((entries) => {
 statNumbers.forEach(el => counterObserver.observe(el));
 
 
+
 /* ─── SCROLL PURPLE EFFECT (à la oplus) ─────── */
 (function () {
   const statsEl  = document.getElementById('stats');
