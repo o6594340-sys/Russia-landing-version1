@@ -116,10 +116,6 @@ new Swiper('.gallery-swiper', {
     delay: 3000,
     disableOnInteraction: false,
   },
-  navigation: {
-    prevEl: '.gallery-btn.swiper-button-prev',
-    nextEl: '.gallery-btn.swiper-button-next',
-  },
   pagination: {
     el: '.gallery-pagination',
     clickable: true,
