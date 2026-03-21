@@ -111,13 +111,13 @@ statNumbers.forEach(el => counterObserver.observe(el));
   }
 
   const BG_WHITE   = [255, 255, 255];
-  const BG_PURPLE  = [22,  8,  42 ];   // #16082A — very deep purple
+  const BG_DARK    = [30,  26,  28 ];   // #1E1A1C — brand near-black
   const LINE_WHITE = [228, 214, 220];
-  const LINE_PUR   = [90,  40, 140];
+  const LINE_DARK  = [60,  50,  55 ];
   const NUM_PINK   = [168, 64, 110];   // current accent
-  const NUM_LAV    = [196, 150, 230];  // light lavender
+  const NUM_LIGHT  = [242, 184, 207];  // light pink
   const LBL_MID    = [107, 90,  98];
-  const LBL_LIGHT  = [195, 175, 215];
+  const LBL_LIGHT  = [180, 160, 168];
 
   window.addEventListener('scroll', () => {
     const rect = statsEl.getBoundingClientRect();
@@ -128,9 +128,9 @@ statNumbers.forEach(el => counterObserver.observe(el));
     const leaving  = Math.max(0, Math.min(1, (rect.bottom) / vh));
     const t = Math.min(entering, leaving);
 
-    statsEl.style.backgroundColor  = rgb(BG_WHITE, BG_PURPLE, t);
-    statsEl.style.borderColor       = rgb(LINE_WHITE, LINE_PUR, t);
-    numEls.forEach(el  => { el.style.color = rgb(NUM_PINK, NUM_LAV, t); });
+    statsEl.style.backgroundColor  = rgb(BG_WHITE, BG_DARK, t);
+    statsEl.style.borderColor       = rgb(LINE_WHITE, LINE_DARK, t);
+    numEls.forEach(el  => { el.style.color = rgb(NUM_PINK, NUM_LIGHT, t); });
     lblEls.forEach(el  => { el.style.color = rgb(LBL_MID, LBL_LIGHT, t); });
   }, { passive: true });
 })();
