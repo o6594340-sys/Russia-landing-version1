@@ -895,6 +895,17 @@ ul { list-style: none; }
   color: #F2B8CF;
 }
 
+.case-study__cta {
+  display: inline-block;
+  margin-top: 32px;
+  border-color: rgba(255,255,255,0.4);
+  color: #fff;
+}
+.case-study__cta:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+
 
 /* ═══════════════════════════════════════════
    REVIEWS
