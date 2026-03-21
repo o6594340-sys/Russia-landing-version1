@@ -895,9 +895,24 @@ ul { list-style: none; }
 
 .review-card {
   min-width: calc((100% - var(--gap) * 2) / 3);
-  background: var(--clr-white);
-  border-left: 2px solid var(--clr-accent);
-  padding: clamp(24px, 3vw, 36px) clamp(24px, 4vw, 44px);
+  background: transparent;
+  border-left: none;
+  padding: 0 clamp(16px, 2.5vw, 32px);
+  border-right: 1px solid var(--clr-line);
+}
+
+.review-card:last-child {
+  border-right: none;
+}
+
+.review-card::before {
+  content: '\201C';
+  font-family: var(--font-serif);
+  font-size: 6rem;
+  line-height: 0.7;
+  color: #D4899E;
+  display: block;
+  margin-bottom: 8px;
 }
 
 .review-card__text {
