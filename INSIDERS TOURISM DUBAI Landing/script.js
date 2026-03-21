@@ -130,8 +130,6 @@ statNumbers.forEach(el => counterObserver.observe(el));
 
     statsEl.style.backgroundColor  = rgb(BG_WHITE, BG_PURPLE, t);
     statsEl.style.borderColor       = rgb(LINE_WHITE, LINE_PUR, t);
-    gridEl.style.backgroundColor    = rgb(LINE_WHITE, LINE_PUR, t);
-    statEls.forEach(el => { el.style.backgroundColor = 'transparent'; });
     numEls.forEach(el  => { el.style.color = rgb(NUM_PINK, NUM_LAV, t); });
     lblEls.forEach(el  => { el.style.color = rgb(LBL_MID, LBL_LIGHT, t); });
   }, { passive: true });

@@ -412,11 +412,6 @@ ul { list-style: none; }
   background: transparent;
   padding: clamp(32px, 5vw, 64px) clamp(16px, 3vw, 40px);
   text-align: left;
-  border-right: 1px solid var(--clr-line);
-}
-
-.stat:last-child {
-  border-right: none;
 }
 
 .stat__number {
