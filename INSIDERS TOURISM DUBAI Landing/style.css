@@ -1294,8 +1294,9 @@ ul { list-style: none; }
 }
 
 @media (max-width: 700px) {
-  .review-card        { min-width: 100%; border-right: none; padding: 0 4px; }
-  .reviews__carousel  { gap: 8px; }
+  .review-card        { border-right: none; padding: 0 4px; }
+  .reviews__carousel  { gap: 8px; overflow: hidden; }
+  .reviews__viewport  { overflow: visible; }
   .reviews__btn       { display: none; }
   .reviews__dots      { display: flex; }
 }

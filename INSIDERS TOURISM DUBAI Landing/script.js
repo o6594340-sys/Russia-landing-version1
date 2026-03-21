@@ -198,7 +198,8 @@ new Swiper('.gallery-swiper', {
     const v         = visible();
     const vpW       = track.parentElement.offsetWidth;
     const gap       = parseFloat(getComputedStyle(track).gap) || 0;
-    const cardWidth = (vpW - gap * (v - 1)) / v;
+    // On mobile show 82% card width so next card peeks in from the right
+    const cardWidth = v === 1 ? vpW * 0.82 : (vpW - gap * (v - 1)) / v;
     const step      = cardWidth + gap;
 
     cards.forEach(card => { card.style.minWidth = cardWidth + 'px'; });
