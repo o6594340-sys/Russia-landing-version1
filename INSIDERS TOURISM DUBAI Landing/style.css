@@ -1449,26 +1449,23 @@ ul { list-style: none; }
    MICE — horizontal scroll on mobile
 ═══════════════════════════════════════════ */
 @media (max-width: 700px) {
-  .mice .container { overflow: hidden; }
   .mice__grid {
-    display: flex;
+    display: flex !important;
+    grid-template-columns: unset !important;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     gap: 16px;
-    margin-left:  calc(-1 * clamp(20px, 5vw, 60px));
-    margin-right: calc(-1 * clamp(20px, 5vw, 60px));
-    padding-left:  clamp(20px, 5vw, 60px);
-    padding-right: clamp(20px, 5vw, 60px);
     padding-bottom: 20px;
     margin-bottom: 32px;
   }
   .mice__grid::-webkit-scrollbar { display: none; }
   .mice__card {
-    width: 76vw;
-    min-width: 0;
-    max-width: 76vw;
+    width: 76vw !important;
+    min-width: 0 !important;
+    max-width: 76vw !important;
+    box-sizing: border-box !important;
     scroll-snap-align: start;
     flex-shrink: 0;
   }
