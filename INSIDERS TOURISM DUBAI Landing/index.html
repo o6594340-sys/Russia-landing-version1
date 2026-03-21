@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
 
@@ -88,15 +89,14 @@
        EVENT GALLERY
   ═══════════════════════════════════════════ -->
   <section class="gallery">
-    <div class="gallery__strip">
-      <div class="gallery__item fade-in">
-        <img src="event1.jpg" alt="INSIDERS event" class="parallax-img" />
-      </div>
-      <div class="gallery__item fade-in delay-1">
-        <img src="event2.jpg" alt="INSIDERS event" class="parallax-img" />
-      </div>
-      <div class="gallery__item fade-in delay-2">
-        <img src="event3.jpg" alt="INSIDERS event" class="parallax-img" />
+    <div class="swiper gallery-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="event1.jpg" alt="INSIDERS event" /></div>
+        <div class="swiper-slide"><img src="event2.jpg" alt="INSIDERS event" /></div>
+        <div class="swiper-slide"><img src="event3.jpg" alt="INSIDERS event" /></div>
+        <div class="swiper-slide"><img src="event1.jpg" alt="INSIDERS event" /></div>
+        <div class="swiper-slide"><img src="event2.jpg" alt="INSIDERS event" /></div>
+        <div class="swiper-slide"><img src="event3.jpg" alt="INSIDERS event" /></div>
       </div>
     </div>
   </section>
@@ -422,6 +422,7 @@
     <span>WhatsApp</span>
   </a>
 
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

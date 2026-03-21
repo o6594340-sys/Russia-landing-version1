@@ -98,6 +98,27 @@ statNumbers.forEach(el => counterObserver.observe(el));
 
 
 
+/* ─── GALLERY SWIPER ─────────────────────── */
+new Swiper('.gallery-swiper', {
+  effect: 'coverflow',
+  grabCursor: true,
+  centeredSlides: true,
+  loop: true,
+  slidesPerView: 'auto',
+  coverflowEffect: {
+    rotate: 0,
+    stretch: 0,
+    depth: 120,
+    modifier: 2.5,
+    slideShadows: false,
+  },
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+  },
+});
+
+
 /* ─── SCROLL PURPLE EFFECT (à la oplus) ─────── */
 (function () {
   const statsEl  = document.getElementById('stats');
