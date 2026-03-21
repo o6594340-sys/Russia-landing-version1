@@ -138,6 +138,35 @@ statNumbers.forEach(el => counterObserver.observe(el));
 })();
 
 
+/* ─── REVIEWS CAROUSEL ───────────────────── */
+(function () {
+  const track   = document.getElementById('reviewsTrack');
+  const btnPrev = document.getElementById('reviewsPrev');
+  const btnNext = document.getElementById('reviewsNext');
+  if (!track) return;
+
+  const cards    = track.querySelectorAll('.review-card');
+  const total    = cards.length;
+  const visible  = () => window.innerWidth < 700 ? 1 : 3;
+  let current = 0;
+
+  function update() {
+    const v = visible();
+    const cardW = track.parentElement.offsetWidth;
+    const gap   = parseFloat(getComputedStyle(track).gap) || 0;
+    const step  = (cardW + gap) / v;
+    track.style.transform = `translateX(-${current * step}px)`;
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current >= total - v;
+  }
+
+  btnNext.addEventListener('click', () => { current++; update(); });
+  btnPrev.addEventListener('click', () => { current--; update(); });
+  window.addEventListener('resize', () => { current = 0; update(); });
+  update();
+})();
+
+
 /* ─── SMOOTH SCROLL for anchor links ─────── */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', (e) => {
