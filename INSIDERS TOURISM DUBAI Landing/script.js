@@ -222,6 +222,20 @@ new Swiper('.gallery-swiper', {
 })();
 
 
+/* ─── DONE REVEAL ────────────────────────── */
+const heroConvo = document.querySelector('.convo--hero');
+if (heroConvo) {
+  const doneEl = heroConvo.querySelector('.convo__hero-done');
+  const doneObs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      setTimeout(() => doneEl.classList.add('visible'), 650);
+      doneObs.disconnect();
+    }
+  }, { threshold: 0.45 });
+  doneObs.observe(heroConvo);
+}
+
+
 /* ─── SMOOTH SCROLL for anchor links ─────── */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', (e) => {

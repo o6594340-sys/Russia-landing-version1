@@ -590,6 +590,14 @@ ul { list-style: none; }
   line-height: 1;
   white-space: nowrap;
   flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.convo__hero-done.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 @media (max-width: 768px) {
@@ -601,7 +609,8 @@ ul { list-style: none; }
     padding: 52px 24px;
     border-radius: 0;
   }
-  .convo__hero-done { font-size: clamp(4rem, 22vw, 7rem); }
+  .convo__hero-done { font-size: clamp(4rem, 22vw, 7rem); transform: translateY(24px); }
+  .convo__hero-done.visible { transform: translateY(0); }
 }
 
 
