@@ -1450,7 +1450,9 @@ ul { list-style: none; }
   }
   .mice__grid::-webkit-scrollbar { display: none; }
   .mice__card {
-    min-width: 76vw;
+    width: 76vw;
+    min-width: 0;
+    max-width: 76vw;
     scroll-snap-align: start;
     flex-shrink: 0;
   }
