@@ -1354,7 +1354,9 @@ ul { list-style: none; }
   .reviews__viewport::-webkit-scrollbar { display: none; }
   .reviews__track     { gap: 16px; transform: none !important; }
   .review-card        {
-    min-width: 80vw;
+    width: 80vw;
+    min-width: 0;
+    max-width: 80vw;
     scroll-snap-align: start;
     border-right: none;
     padding: 0 8px;
