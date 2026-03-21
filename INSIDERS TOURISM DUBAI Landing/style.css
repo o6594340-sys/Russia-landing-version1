@@ -1261,6 +1261,12 @@ ul { list-style: none; }
   .footer__bottom { flex-direction: column; gap: 16px; text-align: center; }
 }
 
+@media (max-width: 700px) {
+  .review-card        { min-width: 100%; border-right: none; padding: 0 4px; }
+  .reviews__carousel  { gap: 8px; }
+  .reviews__btn       { display: none; }
+}
+
 @media (max-width: 480px) {
   .footer__nav    { grid-template-columns: 1fr; }
 
