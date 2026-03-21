@@ -170,17 +170,18 @@ new Swiper('.gallery-swiper', {
   const dotsEl  = document.getElementById('reviewsDots');
   if (!track) return;
 
-  const cards   = track.querySelectorAll('.review-card');
-  const total   = cards.length;
-  const visible = () => window.innerWidth < 700 ? 1 : 3;
-  let current   = 0;
+  const vp    = track.parentElement;
+  const cards = Array.from(track.querySelectorAll('.review-card'));
+  const total = cards.length;
+  const mob   = () => window.innerWidth < 700;
+  let current = 0;
 
   // Build dots
   cards.forEach((_, i) => {
     const d = document.createElement('button');
     d.className = 'reviews__dot' + (i === 0 ? ' active' : '');
     d.setAttribute('aria-label', `Review ${i + 1}`);
-    d.addEventListener('click', () => { current = i; update(); });
+    d.addEventListener('click', () => { current = i; go(); });
     dotsEl.appendChild(d);
   });
 
@@ -190,35 +191,42 @@ new Swiper('.gallery-swiper', {
     });
   }
 
-  function update() {
-    const v         = visible();
-    const vpW       = track.parentElement.offsetWidth;
+  function go() {
+    if (mob()) {
+      // Native scroll to the card's position
+      vp.scrollTo({ left: cards[current].offsetLeft, behavior: 'smooth' });
+      updateDots();
+      return;
+    }
+    // Desktop: transform-based
     const gap       = parseFloat(getComputedStyle(track).gap) || 0;
-    // On mobile show 82% card width so next card peeks in from the right
-    const cardWidth = v === 1 ? vpW * 0.82 : (vpW - gap * (v - 1)) / v;
+    const vpW       = vp.offsetWidth;
+    const cardWidth = (vpW - gap * 2) / 3;
     const step      = cardWidth + gap;
-
-    cards.forEach(card => { card.style.minWidth = cardWidth + 'px'; });
-    current = Math.max(0, Math.min(current, total - v));
+    cards.forEach(c => { c.style.minWidth = cardWidth + 'px'; });
+    current = Math.max(0, Math.min(current, total - 3));
     track.style.transform = `translateX(-${current * step}px)`;
     btnPrev.disabled = current === 0;
-    btnNext.disabled = current >= total - v;
+    btnNext.disabled = current >= total - 3;
     updateDots();
   }
 
-  btnNext.addEventListener('click', () => { current++; update(); });
-  btnPrev.addEventListener('click', () => { current--; update(); });
-  window.addEventListener('resize', () => { current = 0; update(); });
+  btnNext.addEventListener('click', () => { current = Math.min(current + 1, total - 1); go(); });
+  btnPrev.addEventListener('click', () => { current = Math.max(current - 1, 0); go(); });
+  window.addEventListener('resize', () => { current = 0; vp.scrollLeft = 0; track.style.transform = ''; go(); });
 
-  // Swipe on mobile
-  let startX = 0;
-  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend', e => {
-    const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) { current += diff > 0 ? 1 : -1; update(); }
+  // Update dots as user natively scrolls on mobile
+  vp.addEventListener('scroll', () => {
+    if (!mob()) return;
+    let minDist = Infinity;
+    cards.forEach((card, i) => {
+      const dist = Math.abs(card.offsetLeft - vp.scrollLeft);
+      if (dist < minDist) { minDist = dist; current = i; }
+    });
+    updateDots();
   }, { passive: true });
 
-  update();
+  go();
 })();
 
 

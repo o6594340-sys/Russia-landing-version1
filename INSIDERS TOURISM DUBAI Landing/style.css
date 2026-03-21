@@ -1295,11 +1295,24 @@ ul { list-style: none; }
 }
 
 @media (max-width: 700px) {
-  .review-card        { border-right: none; padding: 0 4px; }
-  .reviews__carousel  { gap: 8px; overflow: hidden; }
-  .reviews__viewport  { overflow: visible; }
-  .reviews__btn       { display: none; }
-  .reviews__dots      { display: flex; }
+  .reviews__carousel  { gap: 0; }
+  .reviews__viewport  {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .reviews__viewport::-webkit-scrollbar { display: none; }
+  .reviews__track     { gap: 16px; transform: none !important; }
+  .review-card        {
+    min-width: 80vw;
+    scroll-snap-align: start;
+    border-right: none;
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .reviews__btn   { display: none; }
+  .reviews__dots  { display: flex; }
 }
 
 @media (max-width: 480px) {
