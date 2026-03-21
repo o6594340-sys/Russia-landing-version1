@@ -470,6 +470,22 @@ ul { list-style: none; }
   display: block;
 }
 
+.gallery-btn {
+  color: var(--clr-accent) !important;
+}
+.gallery-btn::after {
+  font-size: 1.2rem !important;
+  font-weight: 700;
+}
+
+.gallery-pagination .swiper-pagination-bullet {
+  background: var(--clr-accent);
+  opacity: 0.4;
+}
+.gallery-pagination .swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
 
 /* ═══════════════════════════════════════════
    SERVICES
