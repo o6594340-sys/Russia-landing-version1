@@ -852,23 +852,39 @@ ul { list-style: none; }
   overflow: hidden;
 }
 
+/* Animated photo layer */
+.mice__card::before {
+  content: '';
+  position: absolute;
+  inset: -8%;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+/* White overlay */
 .mice__card::after {
   content: '';
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.87);
-  z-index: 0;
+  z-index: 1;
 }
 
 .mice__card > * {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-.mice__card--1 { background-image: url('conference.jpg'); }
-.mice__card--2 { background-image: url('sunset.jpg'); }
-.mice__card--3 { background-image: url('road.jpg'); }
-.mice__card--4 { background-image: url('yacht.jpg'); }
+.mice__card--1::before { background-image: url('conference.jpg'); animation: miceZoomIn   13s ease-in-out infinite alternate; }
+.mice__card--2::before { background-image: url('sunset.jpg');     animation: micePanLeft  16s ease-in-out infinite alternate; }
+.mice__card--3::before { background-image: url('road.jpg');       animation: miceZoomUp   14s ease-in-out infinite alternate; }
+.mice__card--4::before { background-image: url('yacht.jpg');      animation: micePanRight 15s ease-in-out infinite alternate; }
+
+@keyframes miceZoomIn   { from { transform: scale(1);              } to { transform: scale(1.08);             } }
+@keyframes micePanLeft  { from { transform: scale(1.06) translateX(0);   } to { transform: scale(1.06) translateX(-5%); } }
+@keyframes miceZoomUp   { from { transform: scale(1)    translateY(0);   } to { transform: scale(1.07) translateY(-4%); } }
+@keyframes micePanRight { from { transform: scale(1.05) translateX(0);   } to { transform: scale(1.05) translateX(4%);  } }
 
 .mice__card-num {
   font-family: var(--font-serif);
