@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Insiders Tourism — Website Redesign Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+
+/* ── RESET & BASE ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #FAF7F8;
+  color: #1E1A1C;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PRINT ───────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+  .page-break { page-break-before: always; }
+  .cover { page-break-after: always; }
+  section { page-break-inside: avoid; }
+}
+
+/* ── LAYOUT ──────────────────────────────── */
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ── PRINT BUTTON ────────────────────────── */
+.print-bar {
+  position: fixed;
+  top: 20px; right: 24px;
+  z-index: 99;
+}
+.print-btn {
+  background: #A8406E;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(168,64,110,0.3);
+}
+.print-btn:hover { background: #C4698E; }
+
+/* ── COVER ───────────────────────────────── */
+.cover {
+  background: #1E1A1C;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 64px 64px 48px;
+}
+
+.cover__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cover-logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.cover-logo__main {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.9);
+}
+.cover-logo__sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #F2B8CF;
+}
+
+.cover__label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  text-align: right;
+  line-height: 1.8;
+}
+
+.cover__mid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 0 60px;
+}
+
+.cover__eyebrow {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #A8406E;
+  margin-bottom: 24px;
+}
+
+.cover__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: #fff;
+}
+.cover__title em {
+  font-style: italic;
+  color: #F2B8CF;
+}
+
+.cover__subtitle {
+  margin-top: 28px;
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+  max-width: 480px;
+}
+
+.cover__divider {
+  width: 60px;
+  height: 1px;
+  background: #A8406E;
+  margin: 40px 0;
+}
+
+.cover__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 24px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ── CONTENT SECTIONS ────────────────────── */
+.doc-section {
+  padding: 80px 0;
+  border-bottom: 1px solid #E4D6DC;
+}
+.doc-section:last-child { border-bottom: none; }
+
+.section-num {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #A8406E;
+  margin-bottom: 8px;
+}
+
+.section-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: #1E1A1C;
+  margin-bottom: 40px;
+}
+.section-heading em {
+  font-style: italic;
+  color: #A8406E;
+}
+
+.lead {
+  font-size: 1.05rem;
+  color: #6B5A62;
+  line-height: 1.8;
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+
+/* ── STRATEGY BOX ────────────────────────── */
+.strategy-box {
+  background: #1E1A1C;
+  color: #fff;
+  border-radius: 4px;
+  padding: 40px 48px;
+  margin-bottom: 40px;
+}
+.strategy-box__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #F2B8CF;
+  margin-bottom: 16px;
+}
+.strategy-box__text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.4;
+  color: #fff;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+.compare-col {
+  padding: 28px 32px;
+  border-radius: 4px;
+}
+.compare-col--old {
+  background: #F0E8EE;
+  border: 1px solid #E4D6DC;
+}
+.compare-col--new {
+  background: #A8406E;
+  color: #fff;
+}
+.compare-col__title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+.compare-col--new .compare-col__title { opacity: 0.7; }
+.compare-col ul { list-style: none; }
+.compare-col li {
+  font-size: 0.9rem;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  color: #6B5A62;
+}
+.compare-col--new li {
+  color: rgba(255,255,255,0.85);
+  border-color: rgba(255,255,255,0.1);
+}
+.compare-col li:last-child { border-bottom: none; }
+
+/* ── COLOUR PALETTE ──────────────────────── */
+.palette {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.palette-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 100px;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 20px;
+  background: #fff;
+  border: 1px solid #E4D6DC;
+  border-radius: 4px;
+}
+.palette-swatch {
+  width: 64px;
+  height: 44px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.palette-info__name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #1E1A1C;
+  margin-bottom: 2px;
+}
+.palette-info__use {
+  font-size: 0.8rem;
+  color: #9E8A93;
+}
+.palette-hex {
+  font-family: 'DM Sans', monospace;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6B5A62;
+  text-align: right;
+}
+
+.palette-group-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #9E8A93;
+  margin: 20px 0 8px;
+}
+
+/* ── TYPOGRAPHY ──────────────────────────── */
+.type-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+.type-card {
+  background: #fff;
+  border: 1px solid #E4D6DC;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.type-card__demo {
+  padding: 32px;
+  background: #FAF7F8;
+  border-bottom: 1px solid #E4D6DC;
+}
+.type-card__demo--dark {
+  background: #1E1A1C;
+}
+.demo-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem;
+  font-weight: 300;
+  line-height: 1.2;
+  color: #1E1A1C;
+}
+.demo-serif em { font-style: italic; color: #A8406E; }
+.demo-serif--dark { color: #fff; }
+.demo-serif--dark em { color: #F2B8CF; }
+.demo-sans {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #6B5A62;
+  margin-top: 12px;
+}
+.type-card__info {
+  padding: 20px 32px;
+}
+.type-card__info table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+.type-card__info td {
+  padding: 5px 0;
+  color: #9E8A93;
+  border-bottom: 1px solid #F0E8EE;
+  vertical-align: top;
+}
+.type-card__info td:first-child {
+  font-weight: 500;
+  color: #6B5A62;
+  width: 40%;
+}
+
+/* ── STRUCTURE ───────────────────────────── */
+.structure-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.structure-item {
+  display: grid;
+  grid-template-columns: 32px 180px 1fr;
+  align-items: start;
+  gap: 20px;
+  padding: 20px 24px;
+  background: #fff;
+  border: 1px solid #E4D6DC;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.structure-item:hover { background: #FAF7F8; }
+.structure-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: #A8406E;
+  line-height: 1.3;
+}
+.structure-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #1E1A1C;
+  line-height: 1.5;
+}
+.structure-desc {
+  font-size: 0.85rem;
+  color: #9E8A93;
+  line-height: 1.6;
+}
+
+/* ── FEATURES ────────────────────────────── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.feature-card {
+  background: #fff;
+  border: 1px solid #E4D6DC;
+  border-radius: 4px;
+  padding: 28px 24px;
+}
+.feature-card__icon {
+  width: 36px; height: 36px;
+  background: #F2E0E9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: #A8406E;
+  font-size: 1rem;
+}
+.feature-card h4 {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #1E1A1C;
+  margin-bottom: 8px;
+}
+.feature-card p {
+  font-size: 0.82rem;
+  color: #9E8A93;
+  line-height: 1.6;
+}
+
+/* ── CHECKLIST ───────────────────────────── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.check-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid #E4D6DC;
+  border-radius: 4px;
+}
+.check-box {
+  width: 20px; height: 20px;
+  border: 1.5px solid #E4D6DC;
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.check-item__title {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #1E1A1C;
+  margin-bottom: 3px;
+}
+.check-item__desc {
+  font-size: 0.82rem;
+  color: #9E8A93;
+}
+
+/* ── NEXT STEPS ──────────────────────────── */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid #E4D6DC;
+  align-items: start;
+}
+.step:last-child { border-bottom: none; }
+.step__num {
+  width: 36px; height: 36px;
+  background: #A8406E;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.step h4 {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #1E1A1C;
+  margin-bottom: 4px;
+}
+.step p {
+  font-size: 0.85rem;
+  color: #9E8A93;
+  line-height: 1.6;
+}
+
+/* ── BACK COVER ──────────────────────────── */
+.back-cover {
+  background: #F0E8EE;
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 40vh;
+  border-top: 4px solid #A8406E;
+}
+.back-cover__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 300;
+  color: #1E1A1C;
+  margin-bottom: 16px;
+}
+.back-cover__title em { color: #A8406E; font-style: italic; }
+.back-cover__contacts {
+  display: flex;
+  gap: 48px;
+  margin-top: 40px;
+}
+.bc-contact__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #A8406E;
+  margin-bottom: 4px;
+}
+.bc-contact__val {
+  font-size: 0.95rem;
+  color: #6B5A62;
+}
+
+</style>
+</head>
+<body>
+
+<!-- PRINT BUTTON -->
+<div class="print-bar no-print">
+  <button class="print-btn" onclick="window.print()">⬇ Save as PDF</button>
+</div>
+
+<!-- ═══ COVER ═══════════════════════════════ -->
+<div class="cover">
+  <div class="cover__top">
+    <div class="cover-logo">
+      <span class="cover-logo__main">insiders</span>
+      <span class="cover-logo__sub">tourism</span>
+    </div>
+    <div class="cover__label">
+      Website Redesign Proposal<br />
+      February 2025<br />
+      Confidential
+    </div>
+  </div>
+
+  <div class="cover__mid">
+    <p class="cover__eyebrow">Design Proposal</p>
+    <h1 class="cover__title">
+      A new website<br />for Insiders Tourism.<br />
+      <em>Light. Refined. Distinct.</em>
+    </h1>
+    <div class="cover__divider"></div>
+    <p class="cover__subtitle">
+      Full redesign concept — colours, typography, structure and copy direction. Prepared for client review and approval.
+    </p>
+  </div>
+
+  <div class="cover__bottom">
+    <span>insiders-uae.com</span>
+    <span>Design & Development · 2025</span>
+  </div>
+</div>
+
+
+<!-- ═══ SECTION 1: STRATEGY ═════════════════ -->
+<div class="wrap">
+<section class="doc-section">
+  <p class="section-num">01 — Strategy</p>
+  <h2 class="section-heading">Why we design <em>against the norm</em></h2>
+  <p class="lead">
+    Every competitor in UAE tourism uses the same visual formula. The new Insiders Tourism website breaks that pattern deliberately — and turns it into a competitive advantage.
+  </p>
+
+  <div class="strategy-box">
+    <p class="strategy-box__label">The Core Idea</p>
+    <p class="strategy-box__text">"Every competitor says luxury with black and gold.<br />Insiders will say luxury with light and space."</p>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col compare-col--old">
+      <p class="compare-col__title">Every other UAE tourism site</p>
+      <ul>
+        <li>Black or dark navy background</li>
+        <li>Gold accents</li>
+        <li>Dense, busy layouts</li>
+        <li>Feature lists and bullet points</li>
+        <li>Generic stock photography</li>
+        <li>Looks like every other brand</li>
+      </ul>
+    </div>
+    <div class="compare-col compare-col--new">
+      <p class="compare-col__title">New Insiders Tourism</p>
+      <ul>
+        <li>Warm white & mallow backgrounds</li>
+        <li>Muted magenta — from the logo</li>
+        <li>Spacious, editorial layout</li>
+        <li>Short, confident statements</li>
+        <li>Authentic UAE imagery</li>
+        <li>Instantly recognisable</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══ SECTION 2: COLOURS ══════════════════ -->
+<div class="wrap">
+<section class="doc-section">
+  <p class="section-num">02 — Colour Palette</p>
+  <h2 class="section-heading">Built from <em>the logo itself</em></h2>
+  <p class="lead">
+    The magenta in the word <em>"tourism"</em> on the current Insiders logo is the starting point. We refine it into a full system — warm, airy and consistently premium.
+  </p>
+
+  <p class="palette-group-label">Primary Accent</p>
+  <div class="palette">
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#A8406E;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Muted Magenta</p>
+        <p class="palette-info__use">Buttons, active links, icons, key highlights</p>
+      </div>
+      <span class="palette-hex">#A8406E</span>
+    </div>
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#C4698E;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Rose</p>
+        <p class="palette-info__use">Hover states</p>
+      </div>
+      <span class="palette-hex">#C4698E</span>
+    </div>
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#F2B8CF;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Pale Pink</p>
+        <p class="palette-info__use">Italic accents on dark backgrounds (hero)</p>
+      </div>
+      <span class="palette-hex">#F2B8CF</span>
+    </div>
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#F2E0E9;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Blush</p>
+        <p class="palette-info__use">Tags, tints, icon backgrounds</p>
+      </div>
+      <span class="palette-hex">#F2E0E9</span>
+    </div>
+  </div>
+
+  <p class="palette-group-label">Backgrounds</p>
+  <div class="palette">
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#FAF7F8; border:1px solid #E4D6DC;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Warm White</p>
+        <p class="palette-info__use">Main page background</p>
+      </div>
+      <span class="palette-hex">#FAF7F8</span>
+    </div>
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#F0E8EE;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Soft Mallow</p>
+        <p class="palette-info__use">Alternating section backgrounds</p>
+      </div>
+      <span class="palette-hex">#F0E8EE</span>
+    </div>
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#fff; border:1px solid #E4D6DC;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">White</p>
+        <p class="palette-info__use">Cards, header, form fields</p>
+      </div>
+      <span class="palette-hex">#FFFFFF</span>
+    </div>
+  </div>
+
+  <p class="palette-group-label">Text & Lines</p>
+  <div class="palette">
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#1E1A1C;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Near Black</p>
+        <p class="palette-info__use">Main headings and body text</p>
+      </div>
+      <span class="palette-hex">#1E1A1C</span>
+    </div>
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#6B5A62;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Rose Grey</p>
+        <p class="palette-info__use">Paragraph text, descriptions</p>
+      </div>
+      <span class="palette-hex">#6B5A62</span>
+    </div>
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#9E8A93;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Dusty Rose</p>
+        <p class="palette-info__use">Labels, captions, placeholders</p>
+      </div>
+      <span class="palette-hex">#9E8A93</span>
+    </div>
+    <div class="palette-row">
+      <div class="palette-swatch" style="background:#E4D6DC;"></div>
+      <div class="palette-info">
+        <p class="palette-info__name">Pale Rose</p>
+        <p class="palette-info__use">Borders, dividers, card outlines</p>
+      </div>
+      <span class="palette-hex">#E4D6DC</span>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══ SECTION 3: TYPOGRAPHY ═══════════════ -->
+<div class="wrap">
+<section class="doc-section">
+  <p class="section-num">03 — Typography</p>
+  <h2 class="section-heading">Two typefaces.<br /><em>One purpose each.</em></h2>
+  <p class="lead">
+    Personality and emotion in headlines. Clarity and precision in body text. Both free via Google Fonts.
+  </p>
+
+  <div class="type-showcase">
+    <div class="type-card">
+      <div class="type-card__demo type-card__demo--dark">
+        <p class="demo-serif demo-serif--dark">See the UAE<br /><em>from the inside</em></p>
+      </div>
+      <div class="type-card__info">
+        <table>
+          <tr><td>Family</td><td>Cormorant Garamond</td></tr>
+          <tr><td>Weights</td><td>Light, Regular, SemiBold</td></tr>
+          <tr><td>Usage</td><td>All headlines, pull quotes, card titles</td></tr>
+          <tr><td>Character</td><td>Editorial, timeless, luxury fashion DNA</td></tr>
+          <tr><td>Source</td><td>Google Fonts — free</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="type-card">
+      <div class="type-card__demo">
+        <p style="font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:#A8406E; margin-bottom:12px;">Dubai · UAE · All Seven Emirates</p>
+        <p class="demo-sans">Private tours, transfers and experiences crafted for those who want more than a postcard.</p>
+      </div>
+      <div class="type-card__info">
+        <table>
+          <tr><td>Family</td><td>DM Sans</td></tr>
+          <tr><td>Weights</td><td>Light, Regular, Medium</td></tr>
+          <tr><td>Usage</td><td>Body text, navigation, buttons, labels</td></tr>
+          <tr><td>Character</td><td>Geometric, modern, highly legible</td></tr>
+          <tr><td>Source</td><td>Google Fonts — free</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══ SECTION 4: STRUCTURE ════════════════ -->
+<div class="wrap">
+<section class="doc-section">
+  <p class="section-num">04 — Page Structure</p>
+  <h2 class="section-heading">Nine sections.<br /><em>One clear journey.</em></h2>
+  <p class="lead">
+    The homepage guides the visitor from first impression to enquiry — each section has a single job.
+  </p>
+
+  <div class="structure-list">
+    <div class="structure-item">
+      <span class="structure-num">01</span>
+      <span class="structure-name">Header & Navigation</span>
+      <span class="structure-desc">Sticky. Transparent over hero, white on scroll. Logo left, menu right, "Book Now" always visible.</span>
+    </div>
+    <div class="structure-item">
+      <span class="structure-num">02</span>
+      <span class="structure-name">Hero</span>
+      <span class="structure-desc">Full-screen photo of Dubai at dusk. Large serif headline with italic accent. Two call-to-action buttons.</span>
+    </div>
+    <div class="structure-item">
+      <span class="structure-num">03</span>
+      <span class="structure-name">Stats</span>
+      <span class="structure-desc">4 animated counters: years in business · travellers served · emirates covered · experiences offered.</span>
+    </div>
+    <div class="structure-item">
+      <span class="structure-num">04</span>
+      <span class="structure-name">Services</span>
+      <span class="structure-desc">4 cards: City Tours · Desert Safaris · Transfers & Chauffeur · MICE & Groups. Each with icon, description and link.</span>
+    </div>
+    <div class="structure-item">
+      <span class="structure-num">05</span>
+      <span class="structure-name">Featured Tours</span>
+      <span class="structure-desc">3 top experiences with photo, description, duration tag and starting price. "View All" link below.</span>
+    </div>
+    <div class="structure-item">
+      <span class="structure-num">06</span>
+      <span class="structure-name">About</span>
+      <span class="structure-desc">Photo left, text right. Key message: "We live here. That's the difference." Company values and credentials.</span>
+    </div>
+    <div class="structure-item">
+      <span class="structure-num">07</span>
+      <span class="structure-name">Reviews</span>
+      <span class="structure-desc">3 real guest quotes with name and country. TripAdvisor "Excellent" rating badge.</span>
+    </div>
+    <div class="structure-item">
+      <span class="structure-num">08</span>
+      <span class="structure-name">Contact & Enquiry</span>
+      <span class="structure-desc">Contact info left, enquiry form right. Phone · Email · Office. Form: name, email, service, message.</span>
+    </div>
+    <div class="structure-item">
+      <span class="structure-num">09</span>
+      <span class="structure-name">Footer</span>
+      <span class="structure-desc">Logo, navigation links, social media icons, copyright. Dark background (#1E1A1C).</span>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══ SECTION 5: FEATURES ═════════════════ -->
+<div class="wrap">
+<section class="doc-section">
+  <p class="section-num">05 — Technical Features</p>
+  <h2 class="section-heading">Built to <em>perform</em></h2>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-card__icon">↑</div>
+      <h4>Sticky Header</h4>
+      <p>Transparent on hero, switches to white with blur effect as the user scrolls down.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card__icon">◎</div>
+      <h4>Scroll Animations</h4>
+      <p>Every section fades in smoothly as it enters the viewport. Staggered within grids.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card__icon">123</div>
+      <h4>Animated Counters</h4>
+      <p>Stats count up from zero when the section appears — drawing attention to key numbers.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card__icon">☰</div>
+      <h4>Mobile Menu</h4>
+      <p>Hamburger icon on mobile opens a full-screen navigation overlay. Touch-friendly.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card__icon">⊞</div>
+      <h4>Fully Responsive</h4>
+      <p>Desktop, tablet and mobile layouts. Tested at 480px, 768px, 1024px and 1440px.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card__icon">✉</div>
+      <h4>Enquiry Form</h4>
+      <p>Service selector, travel details, message field. Clean and fast to complete.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══ SECTION 6: WHAT WE NEED ═════════════ -->
+<div class="wrap">
+<section class="doc-section">
+  <p class="section-num">06 — Required from Insiders Tourism</p>
+  <h2 class="section-heading">To complete <em>the website</em></h2>
+  <p class="lead">The design and code are ready. The following content is needed from the client to finalise the site.</p>
+
+  <div class="checklist">
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div>
+        <p class="check-item__title">Hero photograph</p>
+        <p class="check-item__desc">High-quality UAE landscape — Dubai skyline at dusk, Burj Al Arab, or desert sunset. Minimum 2400 × 1600 px.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div>
+        <p class="check-item__title">3 tour photographs</p>
+        <p class="check-item__desc">One per featured tour: Dubai City Tour · Desert Safari · Abu Dhabi. Minimum 1200 × 900 px each.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div>
+        <p class="check-item__title">About / team photograph</p>
+        <p class="check-item__desc">Team portrait or atmospheric UAE scene. Minimum 1000 × 1250 px (portrait orientation).</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div>
+        <p class="check-item__title">Logo file</p>
+        <p class="check-item__desc">PNG or SVG with transparent background. Both colour and white versions if available.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div>
+        <p class="check-item__title">Confirmed statistics</p>
+        <p class="check-item__desc">Years in business · total clients or travellers served · number of tour experiences offered.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div>
+        <p class="check-item__title">Tour prices</p>
+        <p class="check-item__desc">Starting price in AED for the 3 featured tours. "From AED ___" format.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div>
+        <p class="check-item__title">3 guest reviews</p>
+        <p class="check-item__desc">Real quotes from satisfied travellers with first name and country. Or we pull directly from TripAdvisor.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"></div>
+      <div>
+        <p class="check-item__title">Copy review & approval</p>
+        <p class="check-item__desc">All text has been written — client to review section by section and confirm or request changes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══ SECTION 7: NEXT STEPS ═══════════════ -->
+<div class="wrap">
+<section class="doc-section">
+  <p class="section-num">07 — Next Steps</p>
+  <h2 class="section-heading">The road <em>to launch</em></h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step__num">1</div>
+      <div>
+        <h4>Client approves this proposal</h4>
+        <p>Colours, typography, structure and copy direction confirmed. Any adjustments noted.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__num">2</div>
+      <div>
+        <h4>Client provides content</h4>
+        <p>Photos, logo, stats, prices and reviews sent to the development team.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__num">3</div>
+      <div>
+        <h4>Content integrated</h4>
+        <p>All photos and confirmed copy placed into the coded website.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__num">4</div>
+      <div>
+        <h4>Copy review — section by section</h4>
+        <p>Client reads through all text and requests any changes. One round of revisions included.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__num">5</div>
+      <div>
+        <h4>Cross-device testing</h4>
+        <p>Website tested on desktop, tablet and mobile. Browser compatibility verified.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step__num">6</div>
+      <div>
+        <h4>Launch</h4>
+        <p>Site goes live at insiders-uae.com.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+<!-- ═══ BACK COVER ═══════════════════════════ -->
+<div class="back-cover">
+  <div>
+    <h2 class="back-cover__title">
+      Ready to build something<br /><em>worth remembering?</em>
+    </h2>
+    <div class="back-cover__contacts">
+      <div>
+        <p class="bc-contact__label">Website</p>
+        <p class="bc-contact__val">insiders-uae.com</p>
+      </div>
+      <div>
+        <p class="bc-contact__label">Phone</p>
+        <p class="bc-contact__val">+971 4 453 9822</p>
+      </div>
+      <div>
+        <p class="bc-contact__label">Email</p>
+        <p class="bc-contact__val">info@insiders-uae.com</p>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:48px; font-size:0.75rem; color:#9E8A93;">
+    © 2025 Insiders Tourism LLC · Website Redesign Proposal · Confidential
+  </div>
+</div>
+
+</body>
+</html>
