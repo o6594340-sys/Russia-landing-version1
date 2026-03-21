@@ -388,6 +388,16 @@ ul { list-style: none; }
   50%       { transform: translateX(-50%) translateY(6px); opacity: 1; }
 }
 
+@keyframes kenBurns {
+  from { transform: scale(1);    }
+  to   { transform: scale(1.08); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0);    }
+  to   { transform: translateX(-50%); }
+}
+
 
 /* ═══════════════════════════════════════════
    STATS
@@ -433,6 +443,45 @@ ul { list-style: none; }
   color: var(--clr-text-muted);
   transition: color 0.15s ease;
   line-height: 1.5;
+}
+
+
+/* ═══════════════════════════════════════════
+   MARQUEE
+═══════════════════════════════════════════ */
+.marquee {
+  overflow: hidden;
+  padding: 16px 0;
+  background: var(--clr-text);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+.marquee__track span {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0 24px;
+  white-space: nowrap;
+}
+
+.marquee__dot {
+  color: var(--clr-accent) !important;
+  padding: 0 !important;
+  letter-spacing: 0 !important;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
 }
 
 
@@ -1364,4 +1413,82 @@ ul { list-style: none; }
 @media (max-width: 768px) {
   .whatsapp-float span { display: none; }
   .whatsapp-float { padding: 14px; border-radius: 50%; }
+}
+
+
+/* ═══════════════════════════════════════════
+   KEN BURNS — mobile hero
+═══════════════════════════════════════════ */
+@media (max-width: 700px) {
+  .hero__video {
+    animation: kenBurns 14s ease-in-out infinite alternate;
+    transform-origin: center center;
+  }
+}
+
+
+/* ═══════════════════════════════════════════
+   MICE — horizontal scroll on mobile
+═══════════════════════════════════════════ */
+@media (max-width: 700px) {
+  .mice .container { overflow: hidden; }
+  .mice__grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 16px;
+    margin-left:  calc(-1 * clamp(20px, 5vw, 60px));
+    margin-right: calc(-1 * clamp(20px, 5vw, 60px));
+    padding-left:  clamp(20px, 5vw, 60px);
+    padding-right: clamp(20px, 5vw, 60px);
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  .mice__grid::-webkit-scrollbar { display: none; }
+  .mice__card {
+    min-width: 76vw;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+
+/* ═══════════════════════════════════════════
+   STICKY CTA — mobile only
+═══════════════════════════════════════════ */
+.sticky-cta {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .sticky-cta {
+    display: block;
+    position: fixed;
+    bottom: 88px; /* above whatsapp button */
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    z-index: 200;
+    background: var(--clr-accent);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border-radius: 2px;
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    box-shadow: 0 8px 28px rgba(168, 64, 110, 0.4);
+    white-space: nowrap;
+    pointer-events: none;
+    text-decoration: none;
+  }
+  .sticky-cta.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
 }

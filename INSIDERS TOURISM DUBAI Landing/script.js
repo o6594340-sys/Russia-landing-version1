@@ -244,6 +244,23 @@ if (heroConvo) {
 }
 
 
+/* ─── STICKY CTA (mobile) ────────────────── */
+const stickyCta  = document.getElementById('stickyCta');
+const heroEl     = document.querySelector('.hero');
+const contactEl  = document.getElementById('contact');
+
+if (stickyCta && heroEl) {
+  window.addEventListener('scroll', () => {
+    if (window.innerWidth >= 700) return;
+    const heroPassed    = heroEl.getBoundingClientRect().bottom < 0;
+    const nearContact   = contactEl
+      ? contactEl.getBoundingClientRect().top < window.innerHeight * 0.7
+      : false;
+    stickyCta.classList.toggle('visible', heroPassed && !nearContact);
+  }, { passive: true });
+}
+
+
 /* ─── SMOOTH SCROLL for anchor links ─────── */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', (e) => {
