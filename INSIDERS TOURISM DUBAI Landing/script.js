@@ -163,31 +163,56 @@ new Swiper('.gallery-swiper', {
   const track   = document.getElementById('reviewsTrack');
   const btnPrev = document.getElementById('reviewsPrev');
   const btnNext = document.getElementById('reviewsNext');
+  const dotsEl  = document.getElementById('reviewsDots');
   if (!track) return;
 
-  const cards    = track.querySelectorAll('.review-card');
-  const total    = cards.length;
-  const visible  = () => window.innerWidth < 700 ? 1 : 3;
-  let current = 0;
+  const cards   = track.querySelectorAll('.review-card');
+  const total   = cards.length;
+  const visible = () => window.innerWidth < 700 ? 1 : 3;
+  let current   = 0;
+
+  // Build dots
+  cards.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'reviews__dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', `Review ${i + 1}`);
+    d.addEventListener('click', () => { current = i; update(); });
+    dotsEl.appendChild(d);
+  });
+
+  function updateDots() {
+    dotsEl.querySelectorAll('.reviews__dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
 
   function update() {
-    const v        = visible();
-    const vpW      = track.parentElement.offsetWidth;
-    const gap      = parseFloat(getComputedStyle(track).gap) || 0;
+    const v         = visible();
+    const vpW       = track.parentElement.offsetWidth;
+    const gap       = parseFloat(getComputedStyle(track).gap) || 0;
     const cardWidth = (vpW - gap * (v - 1)) / v;
-    const step     = cardWidth + gap;
+    const step      = cardWidth + gap;
 
-    // Set each card width explicitly so CSS doesn't interfere
     cards.forEach(card => { card.style.minWidth = cardWidth + 'px'; });
-
+    current = Math.max(0, Math.min(current, total - v));
     track.style.transform = `translateX(-${current * step}px)`;
     btnPrev.disabled = current === 0;
     btnNext.disabled = current >= total - v;
+    updateDots();
   }
 
   btnNext.addEventListener('click', () => { current++; update(); });
   btnPrev.addEventListener('click', () => { current--; update(); });
   window.addEventListener('resize', () => { current = 0; update(); });
+
+  // Swipe on mobile
+  let startX = 0;
+  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) { current += diff > 0 ? 1 : -1; update(); }
+  }, { passive: true });
+
   update();
 })();
 
