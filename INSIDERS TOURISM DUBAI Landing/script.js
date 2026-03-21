@@ -150,10 +150,15 @@ statNumbers.forEach(el => counterObserver.observe(el));
   let current = 0;
 
   function update() {
-    const v = visible();
-    const cardW = track.parentElement.offsetWidth;
-    const gap   = parseFloat(getComputedStyle(track).gap) || 0;
-    const step  = (cardW + gap) / v;
+    const v        = visible();
+    const vpW      = track.parentElement.offsetWidth;
+    const gap      = parseFloat(getComputedStyle(track).gap) || 0;
+    const cardWidth = (vpW - gap * (v - 1)) / v;
+    const step     = cardWidth + gap;
+
+    // Set each card width explicitly so CSS doesn't interfere
+    cards.forEach(card => { card.style.minWidth = cardWidth + 'px'; });
+
     track.style.transform = `translateX(-${current * step}px)`;
     btnPrev.disabled = current === 0;
     btnNext.disabled = current >= total - v;
