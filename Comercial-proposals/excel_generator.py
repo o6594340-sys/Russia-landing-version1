@@ -75,11 +75,17 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
     row += 1
 
     # Детали запроса
+    twn = params.get('twn', 0)
+    sgl = params.get('sgl', 0)
+    room_str = []
+    if twn: room_str.append(f'{twn} Twin')
+    if sgl: room_str.append(f'{sgl} Single')
+    room_summary = ', '.join(room_str) if room_str else 'уточняется'
     row_data = [
         ('Количество человек', str(params['pax'])),
         ('Продолжительность', f"{params['days']} дней / {params['days'] - 1} ночей"),
         ('Даты', params.get('dates') or 'уточняются'),
-        ('Тип размещения', f"{params['room_type']} | {params['hotel_level']}"),
+        ('Тип размещения', f"{room_summary} | {params['hotel_level']}"),
         ('Тип мероприятия', params['event_type']),
     ]
     for label, val in row_data:
@@ -135,44 +141,94 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
 
     nights = params['days'] - 1
     pax = params['pax']
-    hotel_rate = float(params.get('hotel_rate', 350))
     hotel_level = params['hotel_level']
-    room_type = params['room_type']
-
-    if room_type == 'SGL':
-        rooms = pax
-        room_label = 'одноместных номеров'
-    else:
-        rooms = pax // 2 + pax % 2
-        room_label = 'двухместных номеров'
-
-    hotel_service = f'Отель {hotel_level}, Токио ({room_type}, {room_label})'
+    twn = params.get('twn', 0)
+    sgl = params.get('sgl', 0)
+    hotel_a_rate = float(params.get('hotel_a_rate') or 350)
+    hotel_b_rate = float(params.get('hotel_b_rate') or 0)
+    hotel_a_name = params.get('hotel_a_name') or 'Отель 1'
+    hotel_b_name = params.get('hotel_b_name') or 'Отель 2'
     hotel_comment = 'Ориентировочная цена, подтверждается при бронировании'
 
-    hotel_data_row = row
-    for col in range(1, 10):
-        c = ws.cell(row=row, column=col)
-        c.fill = _fill(C_LGRAY)
-        c.font = _font(size=9)
-        c.border = _border_thin()
+    hotel_data_rows = []  # collect all hotel rows for grand total
 
-    ws[f'C{row}'] = hotel_service
-    ws[f'C{row}'].font = _font(size=9)
-    ws[f'D{row}'] = rooms
-    ws[f'D{row}'].alignment = _align('center')
-    ws[f'E{row}'] = nights
-    ws[f'E{row}'].alignment = _align('center')
-    ws[f'G{row}'] = hotel_rate
-    ws[f'G{row}'].number_format = '#,##0.00'
-    ws[f'G{row}'].alignment = _align('right')
-    ws[f'H{row}'] = f'=D{row}*E{row}*G{row}'
-    ws[f'H{row}'].number_format = '#,##0.00'
-    ws[f'H{row}'].alignment = _align('right')
-    ws[f'H{row}'].font = _font(bold=True, size=9)
-    ws[f'I{row}'] = hotel_comment
-    ws[f'I{row}'].font = _font(italic=True, size=8, color='888888')
+    def _write_hotel_row(ws, row, service_label, qty, nts, rate, comment=''):
+        for col in range(1, 10):
+            c = ws.cell(row=row, column=col)
+            c.fill = _fill(C_LGRAY)
+            c.font = _font(size=9)
+            c.border = _border_thin()
+        ws[f'C{row}'] = service_label
+        ws[f'D{row}'] = qty
+        ws[f'D{row}'].alignment = _align('center')
+        ws[f'E{row}'] = nts
+        ws[f'E{row}'].alignment = _align('center')
+        ws[f'G{row}'] = rate
+        ws[f'G{row}'].number_format = '#,##0.00'
+        ws[f'G{row}'].alignment = _align('right')
+        ws[f'H{row}'] = f'=D{row}*E{row}*G{row}'
+        ws[f'H{row}'].number_format = '#,##0.00'
+        ws[f'H{row}'].alignment = _align('right')
+        ws[f'H{row}'].font = _font(bold=True, size=9)
+        if comment:
+            ws[f'I{row}'] = comment
+            ws[f'I{row}'].font = _font(italic=True, size=8, color='888888')
+        ws.row_dimensions[row].height = 16
+
+    # --- Вариант А ---
+    ws.merge_cells(f'A{row}:I{row}')
+    c = ws[f'A{row}']
+    c.value = f'  ВАРИАНТ А — {hotel_a_name}'
+    c.font = _font(bold=True, size=9, color=C_WHITE)
+    c.fill = _fill(C_RED)
+    c.alignment = _align()
     ws.row_dimensions[row].height = 16
+    hotel_a_header_row = row
     row += 1
+
+    if twn > 0:
+        _write_hotel_row(ws, row, f'Twin-номера ({hotel_level}, Токио)', twn, nights, hotel_a_rate,
+                         hotel_comment if not sgl else '')
+        hotel_data_rows.append(row)
+        row += 1
+    if sgl > 0:
+        _write_hotel_row(ws, row, f'Single-номера ({hotel_level}, Токио)', sgl, nights, hotel_a_rate,
+                         hotel_comment)
+        hotel_data_rows.append(row)
+        row += 1
+    if twn == 0 and sgl == 0:
+        # fallback: no room counts specified
+        _write_hotel_row(ws, row, f'Номера ({hotel_level}, Токио)', 1, nights, hotel_a_rate, hotel_comment)
+        hotel_data_rows.append(row)
+        row += 1
+
+    # --- Вариант Б (если задан) ---
+    hotel_b_rows = []
+    if hotel_b_rate > 0:
+        row += 1  # blank separator
+        ws.merge_cells(f'A{row}:I{row}')
+        c = ws[f'A{row}']
+        c.value = f'  ВАРИАНТ Б — {hotel_b_name}'
+        c.font = _font(bold=True, size=9, color=C_WHITE)
+        c.fill = _fill(C_RED)
+        c.alignment = _align()
+        ws.row_dimensions[row].height = 16
+        row += 1
+
+        if twn > 0:
+            _write_hotel_row(ws, row, f'Twin-номера ({hotel_level}, Токио)', twn, nights, hotel_b_rate,
+                             hotel_comment if not sgl else '')
+            hotel_b_rows.append(row)
+            row += 1
+        if sgl > 0:
+            _write_hotel_row(ws, row, f'Single-номера ({hotel_level}, Токио)', sgl, nights, hotel_b_rate,
+                             hotel_comment)
+            hotel_b_rows.append(row)
+            row += 1
+        if twn == 0 and sgl == 0:
+            _write_hotel_row(ws, row, f'Номера ({hotel_level}, Токио)', 1, nights, hotel_b_rate, hotel_comment)
+            hotel_b_rows.append(row)
+            row += 1
 
     row += 1  # пустая строка
 
@@ -232,8 +288,8 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
     c.alignment = _align('right', indent=1)
     ws.row_dimensions[row].height = 24
 
-    # Сумма: отель + все сервисы
-    all_h_rows = [hotel_data_row] + service_rows
+    # Сумма: отель А + все сервисы
+    all_h_rows = hotel_data_rows + service_rows
     sum_parts = '+'.join(f'H{r}' for r in all_h_rows)
     ws[f'H{row}'] = f'={sum_parts}'
     ws[f'H{row}'].number_format = '#,##0.00'
@@ -246,16 +302,33 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
 
     row += 1
 
-    # ── ЦЕНА НА ЧЕЛОВЕКА ──────────────────────────────────────────────────────
+    # ── ЦЕНА НА ЧЕЛОВЕКА — Вариант А ──────────────────────────────────────────
     ws.merge_cells(f'A{row}:G{row}')
-    ws[f'A{row}'] = f'Цена на человека (наземная часть + размещение, {pax} чел.)'
+    ws[f'A{row}'] = f'Цена на человека — Вариант А (наземная часть + размещение, {pax} чел.)'
     ws[f'A{row}'].font = _font(bold=True, size=9, color='444444')
     ws[f'H{row}'] = f'=H{total_row}/{pax}'
     ws[f'H{row}'].number_format = '#,##0.00'
     ws[f'H{row}'].font = _font(bold=True, size=11, color=C_RED)
     ws[f'H{row}'].alignment = _align('right')
     ws.row_dimensions[row].height = 18
-    row += 2
+    row += 1
+
+    # ── ЦЕНА НА ЧЕЛОВЕКА — Вариант Б (если задан) ──────────────────────────────
+    if hotel_b_rows:
+        all_b_rows = hotel_b_rows + service_rows
+        sum_b_parts = '+'.join(f'H{r}' for r in all_b_rows)
+
+        ws.merge_cells(f'A{row}:G{row}')
+        ws[f'A{row}'] = f'Цена на человека — Вариант Б (наземная часть + размещение, {pax} чел.)'
+        ws[f'A{row}'].font = _font(bold=True, size=9, color='444444')
+        ws[f'H{row}'] = f'=({sum_b_parts})/{pax}'
+        ws[f'H{row}'].number_format = '#,##0.00'
+        ws[f'H{row}'].font = _font(bold=True, size=11, color=C_RED)
+        ws[f'H{row}'].alignment = _align('right')
+        ws.row_dimensions[row].height = 18
+        row += 1
+
+    row += 1
 
     # ── ФУТЕР ─────────────────────────────────────────────────────────────────
     ws.merge_cells(f'A{row}:I{row}')

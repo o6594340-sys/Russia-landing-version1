@@ -287,6 +287,17 @@
     <div class="card">
       <form id="form1">
 
+        <div class="sec">Загрузить бриф (необязательно)</div>
+        <div style="display:flex; gap:10px; align-items:center">
+          <input type="file" id="brief_file" accept=".pdf,.docx,.txt"
+            style="display:none" onchange="uploadBrief(this)">
+          <button type="button" class="btn-back" onclick="document.getElementById('brief_file').click()">
+            📎 Загрузить бриф (PDF / Word)
+          </button>
+          <span id="brief-status" style="font-size:11px; color:#666"></span>
+        </div>
+        <div class="hint" style="margin-top:4px">Система прочитает бриф и заполнит форму автоматически. Вы сможете проверить и исправить.</div>
+
         <div class="sec">Клиент</div>
         <div class="field">
           <label>Название компании клиента <span class="req">*</span></label>
@@ -308,11 +319,7 @@
         </div>
 
         <div class="sec">Параметры программы</div>
-        <div class="g3">
-          <div class="field">
-            <label>Кол-во человек <span class="req">*</span></label>
-            <input type="number" name="pax" value="30" min="10" max="500" required>
-          </div>
+        <div class="g2">
           <div class="field">
             <label>Кол-во дней <span class="req">*</span></label>
             <input type="number" name="days" value="4" min="2" max="10" required>
@@ -324,16 +331,28 @@
         </div>
 
         <div class="sec">Размещение</div>
-        <div class="g3">
+
+        <!-- Room composition -->
+        <div class="g2">
           <div class="field">
-            <label>Тип номера <span class="req">*</span></label>
-            <select name="room_type">
-              <option value="DBL">DBL (двухместный)</option>
-              <option value="SGL">SGL (одноместный)</option>
-            </select>
+            <label>Twin-номеров (2-местных) <span class="req">*</span></label>
+            <input type="number" name="twn" id="twn" value="15" min="0" onchange="updatePax()">
           </div>
           <div class="field">
-            <label>Уровень отеля</label>
+            <label>Single-номеров (1-местных)</label>
+            <input type="number" name="sgl" id="sgl" value="0" min="0" onchange="updatePax()">
+          </div>
+        </div>
+        <div style="font-size:11px; color:#666; margin-top:6px" id="pax-calc">
+          Итого: 30 человек, 15 номеров
+        </div>
+        <input type="hidden" name="pax" id="pax-hidden" value="30">
+
+        <!-- Hotel A -->
+        <div class="sec">Размещение — Вариант А (основной)</div>
+        <div class="g3">
+          <div class="field" style="grid-column: span 1">
+            <label>Уровень / категория</label>
             <select name="hotel_level">
               <option value="5*">5 звёзд</option>
               <option value="4*" selected>4 звезды</option>
@@ -341,9 +360,40 @@
             </select>
           </div>
           <div class="field">
+            <label>Название отеля (опционально)</label>
+            <input type="text" name="hotel_a_name" placeholder="Prince Park Tower, Keio Plaza...">
+          </div>
+          <div class="field">
             <label>Цена номера/ночь (USD)</label>
-            <input type="number" name="hotel_rate" value="350" min="50">
+            <input type="number" name="hotel_a_rate" value="350" min="50">
             <div class="hint">4★ ~$250–350 · 4*+ ~$350–450 · 5★ ~$450–700</div>
+          </div>
+        </div>
+
+        <!-- Hotel B toggle -->
+        <div style="margin-top:12px">
+          <label class="check-row" for="hotel_b_chk">
+            <input type="checkbox" id="hotel_b_chk" onchange="toggleHotelB(this)">
+            <span>Добавить второй вариант отеля</span>
+          </label>
+        </div>
+        <div id="hotel_b_section" style="display:none; margin-top:12px">
+          <div class="g3">
+            <div class="field">
+              <label>Вариант Б — тип</label>
+              <select name="hotel_b_type">
+                <option value="upgrade">Апгрейд (лучше / дороже)</option>
+                <option value="optimize">Оптимизация (удобнее / дешевле)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Название отеля (опционально)</label>
+              <input type="text" name="hotel_b_name" placeholder="Mitsui Garden, Cerulean Tower...">
+            </div>
+            <div class="field">
+              <label>Цена номера/ночь (USD)</label>
+              <input type="number" name="hotel_b_rate" value="0" min="0">
+            </div>
           </div>
         </div>
 
@@ -583,11 +633,37 @@ function toggleConf(cb) {
   }
 }
 
+function updatePax() {
+  const twn = parseInt(document.getElementById('twn').value) || 0;
+  const sgl = parseInt(document.getElementById('sgl').value) || 0;
+  const pax = twn * 2 + sgl;
+  const rooms = twn + sgl;
+  document.getElementById('pax-calc').textContent = `Итого: ${pax} человек, ${rooms} номеров`;
+  const paxHidden = document.getElementById('pax-hidden');
+  if (paxHidden) paxHidden.value = pax;
+}
+
+function toggleHotelB(cb) {
+  document.getElementById('hotel_b_section').style.display = cb.checked ? 'block' : 'none';
+}
+
+async function uploadBrief(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('brief-status').textContent = '⏳ Читаю бриф...';
+  // TODO: implement /parse_brief endpoint
+  document.getElementById('brief-status').textContent = '⚠ Загрузка брифа в разработке';
+}
+
 function formToParams(form) {
   const fd = new FormData(form);
   const p = {};
   for (const [k, v] of fd.entries()) p[k] = v;
   p.include_conference = !!form.querySelector('#conf_chk')?.checked;
+  // compute pax from room counts (hidden field value, or derive)
+  const twn = parseInt(p.twn) || 0;
+  const sgl = parseInt(p.sgl) || 0;
+  p.pax = twn * 2 + sgl || parseInt(p.pax) || 30;
   return p;
 }
 

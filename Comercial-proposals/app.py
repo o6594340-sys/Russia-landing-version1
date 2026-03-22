@@ -22,16 +22,27 @@ app = Flask(__name__)
 
 
 def _parse_params(data: dict) -> dict:
+    twn = int(data.get('twn') or 0)
+    sgl = int(data.get('sgl') or 0)
+    # pax can be passed explicitly (e.g. from hidden field) or derived from rooms
+    pax_from_rooms = twn * 2 + sgl
+    pax = int(data.get('pax') or pax_from_rooms or 30)
     return {
         'company_name':       data.get('company_name', 'Компания').strip(),
-        'pax':                int(data.get('pax', 30)),
+        'pax':                pax,
         'days':               int(data.get('days', 4)),
         'dates':              data.get('dates', '').strip(),
-        'hotel_level':        data.get('hotel_level', '5*'),
-        'room_type':          data.get('room_type', 'DBL'),
+        'hotel_level':        data.get('hotel_level', '4*'),
+        'twn':                twn,
+        'sgl':                sgl,
+        'total_rooms':        twn + sgl,
+        'pax_from_rooms':     pax_from_rooms,
+        'hotel_a_name':       data.get('hotel_a_name', '').strip(),
+        'hotel_a_rate':       float(data.get('hotel_a_rate') or 350),
+        'hotel_b_name':       data.get('hotel_b_name', '').strip(),
+        'hotel_b_rate':       float(data.get('hotel_b_rate') or 0),
         'event_type':         data.get('event_type', 'Инсентив'),
         'industry':           data.get('industry', '').strip(),
-        'hotel_rate':         float(data.get('hotel_rate') or 350),
         'special_requests':   data.get('special_requests', '').strip(),
         'include_conference': data.get('include_conference') in (True, 'true', 'on', '1'),
         'conference_day':     int(data.get('conference_day') or 2),
@@ -43,19 +54,27 @@ def _calc_budget(params: dict, services: list) -> dict:
     services_total = sum(s['total'] for s in services if s['type'] == 'service')
 
     pax = params['pax']
+    twn = params['twn']
+    sgl = params['sgl']
     nights = params['days'] - 1
-    hotel_rate = params['hotel_rate']
-    rooms = pax if params['room_type'] == 'SGL' else (pax // 2 + pax % 2)
-    hotel_total = rooms * nights * hotel_rate
+    hotel_a_rate = float(params.get('hotel_a_rate') or 350)
+    hotel_b_rate = float(params.get('hotel_b_rate') or 0)
 
-    grand_total = services_total + hotel_total
+    hotel_a_total = (twn + sgl) * nights * hotel_a_rate
+    hotel_b_total = (twn + sgl) * nights * hotel_b_rate if hotel_b_rate else 0
+
+    grand_total = services_total + hotel_a_total
     per_person = grand_total / pax if pax else 0
 
     return {
-        'hotel':      round(hotel_total),
-        'services':   round(services_total),
-        'total':      round(grand_total),
-        'per_person': round(per_person),
+        'hotel':         round(hotel_a_total),   # backward compat — primary variant A
+        'hotel_a':       round(hotel_a_total),
+        'hotel_b':       round(hotel_b_total),
+        'hotel_a_total': round(hotel_a_total),
+        'hotel_b_total': round(hotel_b_total),
+        'services':      round(services_total),
+        'total':         round(grand_total),
+        'per_person':    round(per_person),
     }
 
 
