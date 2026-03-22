@@ -1,0 +1,23 @@
+# Секретные ключи и credentials
+.env
+*.env
+oauth_credentials.json
+token.pickle
+*credentials*.json
+
+# Большие файлы
+*.pptx
+*.pdf
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Output files
+output/
+
+# OS
+desktop.ini
+.DS_Store
+Thumbs.db
