@@ -1,0 +1,42 @@
+*** Update File: c:/Users/usrr/OneDrive/Документы/my-first-project/vizitka.html
+@@
+-      <div class="actions">
+-        <div class="socials" aria-label="Социальные сети">
+-          <a href="https://t.me/mice_japan" target="_blank" rel="noopener" title="Telegram — mice_japan">
+-            <!-- Telegram SVG -->
+-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+-              <path d="M22 2L2 11l5 2 2 6 3-3 6 4 4-18z" fill="currentColor"/>
+-            </svg>
+-          </a>
+-          <a href="#" title="Скопировать ссылку" id="copy-link">
+-            <!-- Link / copy icon -->
+-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+-              <path d="M3.9 12a4.2 4.2 0 0 1 0-5.94l2.12-2.12a4.2 4.2 0 0 1 5.94 0L12 4.88" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+-              <path d="M20.1 12a4.2 4.2 0 0 1 0 5.94l-2.12 2.12a4.2 4.2 0 0 1-5.94 0L12 19.12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+-            </svg>
+-          </a>
+-          <a href="#" title="Ещё" aria-hidden="true">
+-            <!-- Dots icon -->
+-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+-              <circle cx="5" cy="12" r="1.8" fill="currentColor"/>
+-              <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+-              <circle cx="19" cy="12" r="1.8" fill="currentColor"/>
+-            </svg>
+-          </a>
+-        </div>
+-
+-        <button class="write-btn" id="writeBtn" aria-label="Написать мне">
++      <div class="actions">
++        <div class="socials" aria-label="Социальная сеть">
++          <a href="https://t.me/mice_japan" target="_blank" rel="noopener" title="Telegram — mice_japan">
++            <!-- Telegram SVG -->
++            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
++              <path d="M22 2L2 11l5 2 2 6 3-3 6 4 4-18z" fill="currentColor"/>
++            </svg>
++          </a>
++        </div>
++
++        <button class="write-btn" id="writeBtn" aria-label="Написать мне">
+*** End Update
+
+Note: apply_patch failed; this diff is a manual fallback suggestion.

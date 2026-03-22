@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tozai Tours — Генератор КП</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #111114;
+      color: #e8e8e8;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #1c1c1e;
+      border-bottom: 3px solid #bc002d;
+      padding: 14px 36px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-flag { font-size: 26px; }
+    .header-title { font-size: 17px; font-weight: 700; }
+    .header-sub { font-size: 11px; color: #666; margin-top: 2px; }
+
+    /* ── Steps bar ── */
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 18px 36px;
+      background: #161618;
+      border-bottom: 1px solid #222;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #444;
+      cursor: default;
+    }
+    .step.active { color: #fff; }
+    .step.done { color: #6fbf6f; }
+    .step-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: #2a2a2e;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step.active .step-num { background: #bc002d; color: #fff; }
+    .step.done .step-num { background: #2a6e2a; color: #fff; }
+    .step-sep { flex: 1; height: 1px; background: #2a2a2e; margin: 0 10px; min-width: 30px; }
+
+    /* ── Container ── */
+    .container {
+      max-width: 900px;
+      margin: 28px auto;
+      padding: 0 20px 60px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #1c1c1e;
+      border-radius: 14px;
+      padding: 28px 32px;
+      border: 1px solid #2a2a2e;
+    }
+
+    /* ── Section label ── */
+    .sec {
+      font-size: 10px; font-weight: 700; color: #bc002d;
+      text-transform: uppercase; letter-spacing: 1.8px;
+      margin: 24px 0 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sec::after { content: ''; flex: 1; height: 1px; background: #2e2e32; }
+    .sec:first-child { margin-top: 0; }
+
+    /* ── Grid ── */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+    /* ── Field ── */
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field label { font-size: 11px; color: #888; font-weight: 500; }
+    .req { color: #bc002d; }
+    .hint { font-size: 10px; color: #555; margin-top: 2px; }
+
+    input[type=text], input[type=number], select, textarea {
+      background: #111; border: 1px solid #333; border-radius: 8px;
+      padding: 9px 12px; color: #f0f0f0; font-size: 13px;
+      font-family: inherit; width: 100%;
+      transition: border-color 0.15s;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #bc002d; }
+    select option { background: #1c1c1e; }
+    textarea { resize: vertical; min-height: 68px; }
+
+    .check-row {
+      display: flex; align-items: center; gap: 10px;
+      background: #111; border: 1px solid #333; border-radius: 8px;
+      padding: 10px 13px; cursor: pointer;
+    }
+    .check-row input { width: 16px; height: 16px; accent-color: #bc002d; cursor: pointer; }
+    .check-row span { font-size: 13px; color: #ddd; }
+    .conf-extra { display: none; margin-top: 10px; }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      width: 100%; padding: 14px; background: #bc002d; color: #fff;
+      border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
+      cursor: pointer; margin-top: 22px; transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #9c0025; }
+    .btn-primary:disabled { background: #3a3a3a; cursor: not-allowed; }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 18px; }
+    .btn-back {
+      padding: 11px 20px; background: transparent; color: #888;
+      border: 1px solid #333; border-radius: 8px; font-size: 13px;
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+    .btn-back:hover { border-color: #555; color: #ccc; }
+    .btn-next {
+      flex: 1; padding: 11px; background: #bc002d; color: #fff;
+      border: none; border-radius: 8px; font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-next:hover { background: #9c0025; }
+    .btn-next:disabled { background: #3a3a3a; cursor: not-allowed; }
+    .btn-dl {
+      flex: 1; padding: 11px; background: #1e3a1e; color: #6fbf6f;
+      border: 1px solid #2a6e2a; border-radius: 8px; font-size: 13px;
+      font-weight: 600; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-dl:hover { background: #274027; }
+
+    /* ── Loader ── */
+    .loader { display: none; text-align: center; padding: 44px 20px; }
+    .spinner {
+      width: 42px; height: 42px;
+      border: 3px solid #2a2a2e; border-top-color: #bc002d;
+      border-radius: 50%; animation: spin 0.85s linear infinite;
+      margin: 0 auto 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader p { font-size: 14px; color: #888; }
+    .loader small { font-size: 11px; color: #444; margin-top: 5px; display: block; }
+    .loader .step-label {
+      font-size: 11px; color: #555; margin-top: 10px;
+      min-height: 18px; transition: all 0.3s;
+    }
+
+    /* ── Error ── */
+    .err {
+      display: none; background: #1a0808; border: 1px solid #6e1a1a;
+      border-radius: 8px; padding: 12px; color: #ff8888; font-size: 12px;
+      margin-top: 12px;
+    }
+    .err summary { cursor: pointer; color: #ff5555; font-weight: 600; }
+    .err pre { margin-top: 8px; font-size: 10px; color: #884444; white-space: pre-wrap; overflow-x: auto; }
+
+    /* ── Budget cards ── */
+    .budget-cards {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+      margin-bottom: 18px;
+    }
+    .bcard {
+      background: #111; border: 1px solid #2a2a2e; border-radius: 10px;
+      padding: 14px; text-align: center;
+    }
+    .bcard .label { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .bcard .value { font-size: 20px; font-weight: 700; color: #fff; }
+    .bcard .value.highlight { color: #c5a028; }
+    .bcard .sub { font-size: 10px; color: #555; margin-top: 3px; }
+
+    /* ── Program display ── */
+    .program-concept {
+      background: #111; border: 1px solid #2a2a2e; border-radius: 10px;
+      padding: 16px; margin-bottom: 14px;
+    }
+    .concept-title { font-size: 15px; font-weight: 700; color: #c5a028; margin-bottom: 8px; }
+    .concept-text { font-size: 12px; color: #aaa; line-height: 1.65; white-space: pre-line; }
+
+    .day-card {
+      background: #111; border: 1px solid #2a2a2e; border-radius: 10px;
+      margin-bottom: 8px; overflow: hidden;
+    }
+    .day-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transition: background 0.15s;
+    }
+    .day-header:hover { background: #161618; }
+    .day-header.open { border-bottom-color: #2a2a2e; }
+    .day-num-badge {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: #bc002d; color: #fff; font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .day-title { font-size: 13px; font-weight: 600; flex: 1; }
+    .day-chevron { font-size: 10px; color: #555; transition: transform 0.2s; }
+    .day-header.open .day-chevron { transform: rotate(90deg); }
+
+    .day-body { display: none; padding: 12px 14px 14px; }
+    .day-body.open { display: block; }
+    .day-section { margin-bottom: 10px; }
+    .day-section:last-child { margin-bottom: 0; }
+    .day-section-label {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 9px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 5px;
+    }
+    .lbl-morning { background: #2a2a0a; color: #c5a028; }
+    .lbl-day     { background: #2a0a0a; color: #cc4444; }
+    .lbl-evening { background: #0a0a1e; color: #6688cc; }
+    .day-section-text { font-size: 12px; color: #ccc; line-height: 1.6; }
+
+    /* ── Corrections area ── */
+    .corrections-area { margin-top: 16px; }
+    .corrections-area label { font-size: 11px; color: #888; display: block; margin-bottom: 6px; }
+    .corrections-row { display: flex; gap: 8px; margin-top: 8px; }
+    .btn-refine {
+      padding: 10px 18px; background: #1a1a2e; color: #6688cc;
+      border: 1px solid #334466; border-radius: 8px; font-size: 12px;
+      font-weight: 600; cursor: pointer; white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .btn-refine:hover { background: #222244; }
+    .btn-refine:disabled { background: #1a1a1e; color: #334; cursor: not-allowed; }
+
+    /* ── Info banner ── */
+    .info-banner {
+      display: flex; gap: 10px;
+      background: #161618; border: 1px solid #2a2a2e;
+      border-left: 3px solid #c5a028; border-radius: 8px;
+      padding: 10px 13px; margin-top: 14px;
+    }
+    .info-banner p { font-size: 11px; color: #777; line-height: 1.55; }
+
+    /* ── Screens ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    @media (max-width: 600px) {
+      .g2, .g3 { grid-template-columns: 1fr; }
+      .budget-cards { grid-template-columns: 1fr 1fr; }
+      .card { padding: 18px; }
+      .steps { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-flag">🇯🇵</div>
+  <div>
+    <div class="header-title">TOZAI TOURS — Генератор КП</div>
+    <div class="header-sub">Коммерческие предложения · MICE · Япония</div>
+  </div>
+</div>
+
+<!-- Steps bar -->
+<div class="steps">
+  <div class="step active" id="s1"><div class="step-num">1</div><span>Параметры</span></div>
+  <div class="step-sep"></div>
+  <div class="step" id="s2"><div class="step-num">2</div><span>Программа</span></div>
+  <div class="step-sep"></div>
+  <div class="step" id="s3"><div class="step-num">3</div><span>Смета</span></div>
+  <div class="step-sep"></div>
+  <div class="step" id="s4"><div class="step-num">4</div><span>Презентация</span></div>
+</div>
+
+<div class="container">
+
+  <!-- ══ SCREEN 1: Форма ══ -->
+  <div class="screen active" id="screen1">
+    <div class="card">
+      <form id="form1">
+
+        <div class="sec">Клиент</div>
+        <div class="field">
+          <label>Название компании клиента <span class="req">*</span></label>
+          <input type="text" name="company_name" placeholder="АО «Газпромбанк»" required>
+        </div>
+        <div class="g2" style="margin-top:12px">
+          <div class="field">
+            <label>Отрасль / ЦА</label>
+            <input type="text" name="industry" placeholder="IT, банк, фармацевтика...">
+          </div>
+          <div class="field">
+            <label>Тип мероприятия <span class="req">*</span></label>
+            <select name="event_type">
+              <option value="Инсентив">Инсентив</option>
+              <option value="Конференция">Конференция</option>
+              <option value="Смешанный">Смешанный</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sec">Параметры программы</div>
+        <div class="g3">
+          <div class="field">
+            <label>Кол-во человек <span class="req">*</span></label>
+            <input type="number" name="pax" value="30" min="10" max="500" required>
+          </div>
+          <div class="field">
+            <label>Кол-во дней <span class="req">*</span></label>
+            <input type="number" name="days" value="4" min="2" max="10" required>
+          </div>
+          <div class="field">
+            <label>Примерные даты</label>
+            <input type="text" name="dates" placeholder="апрель 2026">
+          </div>
+        </div>
+
+        <div class="sec">Размещение</div>
+        <div class="g3">
+          <div class="field">
+            <label>Тип номера <span class="req">*</span></label>
+            <select name="room_type">
+              <option value="DBL">DBL (двухместный)</option>
+              <option value="SGL">SGL (одноместный)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Уровень отеля</label>
+            <select name="hotel_level">
+              <option value="5*">5 звёзд</option>
+              <option value="4*" selected>4 звезды</option>
+              <option value="4*+">4* Superior</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Цена номера/ночь (USD)</label>
+            <input type="number" name="hotel_rate" value="350" min="50">
+            <div class="hint">4★ ~$250–350 · 4*+ ~$350–450 · 5★ ~$450–700</div>
+          </div>
+        </div>
+
+        <div class="sec">Конференция</div>
+        <label class="check-row" for="conf_chk">
+          <input type="checkbox" id="conf_chk" name="include_conference" onchange="toggleConf(this)">
+          <span>Включить конференц-блок в программу и смету</span>
+        </label>
+        <div class="conf-extra" id="conf_extra">
+          <div class="g2" style="margin-top:10px">
+            <div class="field">
+              <label>Конференция — какой день?</label>
+              <input type="number" name="conference_day" value="2" min="1" max="10">
+            </div>
+          </div>
+        </div>
+
+        <div class="sec">Пожелания</div>
+        <div class="field">
+          <label>Особые пожелания / детали запроса</label>
+          <textarea name="special_requests"
+            placeholder="Предпочтения по активностям, VIP-сервис, ограничения по питанию, интересы группы..."></textarea>
+        </div>
+
+        <div class="info-banner">
+          <p>Шаг 1 из 3: сначала обсудим программу, затем рассчитаем смету, и только потом создадим презентацию.</p>
+        </div>
+
+        <button type="submit" class="btn-primary" id="btn1">
+          Предложить программу →
+        </button>
+      </form>
+
+      <div class="loader" id="loader1">
+        <div class="spinner"></div>
+        <p>Формирую программу...</p>
+        <small>Обычно ~30 секунд</small>
+      </div>
+      <div class="err" id="err1"></div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 2: Программа ══ -->
+  <div class="screen" id="screen2">
+    <div class="card">
+
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px">
+        <div>
+          <div style="font-size:11px; color:#666; text-transform:uppercase; letter-spacing:1px">Черновик программы</div>
+          <div style="font-size:16px; font-weight:700; margin-top:3px" id="prog-company"></div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px; color:#666">Ориентировочная стоимость</div>
+          <div style="font-size:18px; font-weight:700; color:#c5a028" id="prog-total"></div>
+          <div style="font-size:10px; color:#555" id="prog-per-person"></div>
+        </div>
+      </div>
+
+      <!-- Concept -->
+      <div class="program-concept">
+        <div class="concept-title" id="prog-concept-title"></div>
+        <div class="concept-text" id="prog-concept-text"></div>
+      </div>
+
+      <!-- Days -->
+      <div id="prog-days"></div>
+
+      <!-- Corrections -->
+      <div class="corrections-area">
+        <label>Что изменить в программе? (опишите — я скорректирую)</label>
+        <textarea id="corrections-input"
+          placeholder="Например: убери музей во 2 день, замени на тимбилдинг. Ужин 3-го дня — кайсэки, не якинику. Добавь посещение Никко на один из дней."></textarea>
+        <div class="corrections-row">
+          <button class="btn-refine" id="btn-refine" onclick="refineProgram()">
+            ✏ Скорректировать
+          </button>
+        </div>
+      </div>
+
+      <div class="loader" id="loader2" style="padding: 24px 0;">
+        <div class="spinner"></div>
+        <p>Обновляю программу...</p>
+      </div>
+      <div class="err" id="err2"></div>
+
+      <div class="btn-row" style="margin-top:20px">
+        <button class="btn-back" onclick="goBack(1)">← Изменить параметры</button>
+        <button class="btn-next" id="btn-to-budget" onclick="goToBudget()">
+          Программа утверждена → Рассчитать смету
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 3: Смета ══ -->
+  <div class="screen" id="screen3">
+    <div class="card">
+
+      <div style="margin-bottom:18px">
+        <div style="font-size:11px; color:#666; text-transform:uppercase; letter-spacing:1px">Ориентировочная смета</div>
+        <div style="font-size:16px; font-weight:700; margin-top:3px" id="budget-company"></div>
+      </div>
+
+      <!-- Budget cards -->
+      <div class="budget-cards">
+        <div class="bcard">
+          <div class="label">Размещение</div>
+          <div class="value" id="b-hotel"></div>
+          <div class="sub">отель + ночи</div>
+        </div>
+        <div class="bcard">
+          <div class="label">Программа</div>
+          <div class="value" id="b-services"></div>
+          <div class="sub">гиды, питание, билеты</div>
+        </div>
+        <div class="bcard">
+          <div class="label">Итого</div>
+          <div class="value highlight" id="b-total"></div>
+          <div class="sub">наземная часть</div>
+        </div>
+        <div class="bcard">
+          <div class="label">На человека</div>
+          <div class="value highlight" id="b-per-person"></div>
+          <div class="sub">без перелётов</div>
+        </div>
+      </div>
+
+      <p style="font-size:11px; color:#555; margin-bottom:16px; font-style:italic">
+        Все цены ориентировочные. Детальная смета — в Excel-файле.
+      </p>
+
+      <button class="btn-dl" onclick="downloadExcel()" id="btn-dl-excel">
+        ⬇ Скачать детальную смету (Excel)
+      </button>
+
+      <div class="corrections-area" style="margin-top:18px">
+        <label>Что-то изменить? Напишите — скорректируем программу и пересчитаем</label>
+        <textarea id="budget-corrections"
+          placeholder="Слишком дорого — убери переводчиков. Замени 5* на 4*+. Сократи программу на 1 день."></textarea>
+        <div class="corrections-row">
+          <button class="btn-refine" onclick="refineProgramFromBudget()">
+            ✏ Скорректировать и пересчитать
+          </button>
+        </div>
+      </div>
+
+      <div class="loader" id="loader3" style="padding:20px 0;">
+        <div class="spinner"></div>
+        <p>Пересчитываю...</p>
+      </div>
+      <div class="err" id="err3"></div>
+
+      <div class="btn-row" style="margin-top:20px">
+        <button class="btn-back" onclick="goBack(2)">← Вернуться к программе</button>
+        <button class="btn-next" id="btn-to-ppt" onclick="goToPpt()">
+          Смета утверждена → Создать презентацию
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 4: Презентация ══ -->
+  <div class="screen" id="screen4">
+    <div class="card" style="text-align:center; padding: 44px 32px;">
+
+      <div class="loader" id="loader4" style="display:block; padding:0;">
+        <div class="spinner"></div>
+        <p>Создаю презентацию...</p>
+        <small>~20 секунд</small>
+      </div>
+
+      <div id="ppt-done" style="display:none">
+        <div style="font-size:40px; margin-bottom:16px">✅</div>
+        <div style="font-size:18px; font-weight:700; margin-bottom:6px">Презентация готова!</div>
+        <div style="font-size:13px; color:#888; margin-bottom:24px">Скачивание началось автоматически</div>
+        <button class="btn-dl" onclick="downloadPpt()" style="max-width:320px; margin:0 auto; display:block;">
+          ⬇ Скачать снова
+        </button>
+        <div style="margin-top:16px;">
+          <button class="btn-back" onclick="newProposal()">+ Новое КП</button>
+        </div>
+      </div>
+
+      <div class="err" id="err4"></div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let STATE = {
+  params: null,
+  program: null,
+  budget: null,
+};
+
+// ── Utils ──────────────────────────────────────────────────────────────────
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('ru-RU');
+}
+
+function showErr(id, msg, detail) {
+  const el = document.getElementById(id);
+  el.style.display = 'block';
+  if (detail) {
+    el.innerHTML = `<details><summary>Ошибка: ${msg}</summary><pre>${detail}</pre></details>`;
+  } else {
+    el.textContent = 'Ошибка: ' + msg;
+  }
+}
+
+function clearErr(id) {
+  const el = document.getElementById(id);
+  if (el) { el.style.display = 'none'; el.innerHTML = ''; }
+}
+
+function setStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('s' + i);
+    el.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
+  }
+}
+
+function showScreen(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen' + n).classList.add('active');
+  setStep(n);
+  window.scrollTo(0, 0);
+}
+
+function toggleConf(cb) {
+  document.getElementById('conf_extra').style.display = cb.checked ? 'block' : 'none';
+  if (cb.checked) {
+    const et = document.querySelector('[name=event_type]');
+    if (et.value === 'Инсентив') et.value = 'Смешанный';
+  }
+}
+
+function formToParams(form) {
+  const fd = new FormData(form);
+  const p = {};
+  for (const [k, v] of fd.entries()) p[k] = v;
+  p.include_conference = !!form.querySelector('#conf_chk')?.checked;
+  return p;
+}
+
+// ── Render program ─────────────────────────────────────────────────────────
+function renderProgram(program, budget, params) {
+  STATE.program = program;
+  STATE.budget = budget;
+  STATE.params = params;
+
+  document.getElementById('prog-company').textContent = params.company_name;
+  document.getElementById('prog-total').textContent = fmt(budget.total);
+  document.getElementById('prog-per-person').textContent = fmt(budget.per_person) + ' / чел.';
+
+  document.getElementById('prog-concept-title').textContent = program.concept_title || '';
+  document.getElementById('prog-concept-text').textContent = program.concept_text || '';
+
+  const container = document.getElementById('prog-days');
+  container.innerHTML = '';
+  (program.days || []).forEach((day, i) => {
+    const card = document.createElement('div');
+    card.className = 'day-card';
+    card.innerHTML = `
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-num-badge">${day.day_num}</div>
+        <div class="day-title">${day.title || 'День ' + day.day_num}</div>
+        <div class="day-chevron">▶</div>
+      </div>
+      <div class="day-body">
+        ${daySection('УТРО', 'morning', day.morning)}
+        ${daySection('ДЕНЬ', 'day', day.afternoon)}
+        ${daySection('ВЕЧЕР', 'evening', day.evening)}
+      </div>`;
+    container.appendChild(card);
+    // Open first day by default
+    if (i === 0) {
+      card.querySelector('.day-header').classList.add('open');
+      card.querySelector('.day-body').classList.add('open');
+    }
+  });
+}
+
+function daySection(label, type, text) {
+  if (!text) return '';
+  return `<div class="day-section">
+    <div class="day-section-label lbl-${type}">${label}</div>
+    <div class="day-section-text">${text}</div>
+  </div>`;
+}
+
+function toggleDay(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+// ── Budget display ─────────────────────────────────────────────────────────
+function renderBudget(budget, params) {
+  STATE.budget = budget;
+  document.getElementById('budget-company').textContent = params.company_name;
+  document.getElementById('b-hotel').textContent = fmt(budget.hotel);
+  document.getElementById('b-services').textContent = fmt(budget.services);
+  document.getElementById('b-total').textContent = fmt(budget.total);
+  document.getElementById('b-per-person').textContent = fmt(budget.per_person);
+}
+
+// ── Step 1 → 2: Draft program ──────────────────────────────────────────────
+document.getElementById('form1').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearErr('err1');
+  const params = formToParams(e.target);
+  STATE.params = params;
+
+  document.getElementById('form1').style.display = 'none';
+  document.getElementById('loader1').style.display = 'block';
+
+  try {
+    const res = await fetch('/draft_program', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error, data.traceback);
+
+    renderProgram(data.program, data.budget, params);
+    showScreen(2);
+  } catch (ex) {
+    document.getElementById('loader1').style.display = 'none';
+    document.getElementById('form1').style.display = 'block';
+    showErr('err1', ex.message);
+  }
+});
+
+// ── Step 2: Refine program ─────────────────────────────────────────────────
+async function refineProgram() {
+  const corrections = document.getElementById('corrections-input').value.trim();
+  if (!corrections) return;
+
+  clearErr('err2');
+  document.getElementById('btn-refine').disabled = true;
+  document.getElementById('btn-to-budget').disabled = true;
+  document.getElementById('loader2').style.display = 'block';
+
+  try {
+    const res = await fetch('/refine_program', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ params: STATE.params, program: STATE.program, corrections }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+
+    document.getElementById('corrections-input').value = '';
+    renderProgram(data.program, data.budget, STATE.params);
+  } catch (ex) {
+    showErr('err2', ex.message);
+  } finally {
+    document.getElementById('loader2').style.display = 'none';
+    document.getElementById('btn-refine').disabled = false;
+    document.getElementById('btn-to-budget').disabled = false;
+  }
+}
+
+// ── Step 2 → 3: Budget ────────────────────────────────────────────────────
+function goToBudget() {
+  renderBudget(STATE.budget, STATE.params);
+  showScreen(3);
+}
+
+// ── Step 3: Download Excel ─────────────────────────────────────────────────
+async function downloadExcel() {
+  const btn = document.getElementById('btn-dl-excel');
+  btn.disabled = true;
+  btn.textContent = '⏳ Создаю файл...';
+  clearErr('err3');
+  try {
+    const res = await fetch('/download_excel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ params: STATE.params, program: STATE.program }),
+    });
+    if (!res.ok) { const j = await res.json(); throw new Error(j.error); }
+    const blob = await res.blob();
+    const cd = res.headers.get('Content-Disposition') || '';
+    const name = cd.includes('filename=') ? cd.split('filename=')[1].replace(/"/g,'').trim() : 'Smeta.xlsx';
+    triggerDownload(blob, name);
+  } catch (ex) {
+    showErr('err3', ex.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⬇ Скачать детальную смету (Excel)';
+  }
+}
+
+// ── Step 3: Refine from budget screen ─────────────────────────────────────
+async function refineProgramFromBudget() {
+  const corrections = document.getElementById('budget-corrections').value.trim();
+  if (!corrections) return;
+
+  clearErr('err3');
+  document.getElementById('loader3').style.display = 'block';
+  document.getElementById('btn-to-ppt').disabled = true;
+
+  try {
+    const res = await fetch('/refine_program', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ params: STATE.params, program: STATE.program, corrections }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+
+    document.getElementById('budget-corrections').value = '';
+    STATE.program = data.program;
+    renderBudget(data.budget, STATE.params);
+    STATE.budget = data.budget;
+  } catch (ex) {
+    showErr('err3', ex.message);
+  } finally {
+    document.getElementById('loader3').style.display = 'none';
+    document.getElementById('btn-to-ppt').disabled = false;
+  }
+}
+
+// ── Step 3 → 4: PPT ──────────────────────────────────────────────────────
+async function goToPpt() {
+  showScreen(4);
+  await downloadPpt(true);
+}
+
+async function downloadPpt(auto = false) {
+  clearErr('err4');
+  if (!auto) {
+    document.getElementById('loader4').style.display = 'block';
+    document.getElementById('ppt-done').style.display = 'none';
+  }
+
+  try {
+    const res = await fetch('/download_ppt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ params: STATE.params, program: STATE.program }),
+    });
+    if (!res.ok) { const j = await res.json(); throw new Error(j.error); }
+    const blob = await res.blob();
+    const cd = res.headers.get('Content-Disposition') || '';
+    const name = cd.includes('filename=') ? cd.split('filename=')[1].replace(/"/g,'').trim() : 'Program.pptx';
+    triggerDownload(blob, name);
+    document.getElementById('loader4').style.display = 'none';
+    document.getElementById('ppt-done').style.display = 'block';
+  } catch (ex) {
+    document.getElementById('loader4').style.display = 'none';
+    showErr('err4', ex.message);
+  }
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────
+function goBack(to) {
+  if (to === 1) {
+    document.getElementById('form1').style.display = 'block';
+    document.getElementById('loader1').style.display = 'none';
+    clearErr('err1');
+  }
+  showScreen(to);
+}
+
+function newProposal() {
+  STATE = { params: null, program: null, budget: null };
+  document.getElementById('form1').style.display = 'block';
+  document.getElementById('loader1').style.display = 'none';
+  document.getElementById('corrections-input').value = '';
+  document.getElementById('budget-corrections').value = '';
+  showScreen(1);
+}
+
+// ── File download helper ──────────────────────────────────────────────────
+function triggerDownload(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), { href: url, download: name });
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>

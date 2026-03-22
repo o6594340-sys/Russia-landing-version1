@@ -1,0 +1,30 @@
+name: MICE Daily Digest
+
+on:
+  schedule:
+    - cron: '0 21 * * *'  # 21:00 UTC = 06:00 Tokyo (UTC+9)
+  workflow_dispatch:        # ручной запуск для теста
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: mice-digest
+
+      - name: Run digest
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: python mice_digest.py
+        working-directory: mice-digest

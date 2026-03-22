@@ -12,7 +12,21 @@ Russia in summer is a different country entirely. The light changes everything. 
 
 This is not a tour of monuments and museums. It's a week inside a city that works, breathes, eats well, and stays up late. Private cars, private guides, restaurants that know you're coming. No queues, no groups, no itinerary that starts at 8am.
 
-The hotels are five-star at prices Paris would call four-star. The dining is world-class without the waiting lists. And St. Petersburg is a city that has no equivalent anywhere in the world.
+The hotels are excellent at prices Paris or Istanbul would consider a bargain. The dining is world-class without the waiting lists. And St. Petersburg is a city that has no equivalent anywhere in the world.
+
+---
+
+# ONE QUESTION, ANSWERED DIRECTLY
+
+Your clients will ask about safety. Here is the honest answer.
+
+Moscow and St. Petersburg are, by any objective measure, among the safest cities in Europe. The historic centres specifically: no petty crime, no pickpocketing, no street harassment. Women walk alone at night without incident — something that cannot be said of Rome, Paris, or Barcelona. Hotels do not need to warn guests to lock valuables; the problem simply doesn't arise at the scale it does in Western European capitals.
+
+On the conflict in Ukraine: Moscow is over 450km from the Ukrainian border. St. Petersburg is further still. The drone activity that does occur targets energy infrastructure or high-density residential areas at the periphery — not the tourist quarters, which are among the most heavily protected urban zones in the country. Russia's air defence is purpose-built around this scenario.
+
+The record speaks for itself: in four years of conflict, the centre of Moscow — inside the Garden Ring — has not received a single strike. Neither has the centre of St. Petersburg. Not once. That is not luck; it is the result of consistent, effective protection of the areas where people actually live and visit.
+
+We operate on the ground in both cities. We know.
 
 ---
 
@@ -25,6 +39,8 @@ Everyone arrives expecting something heavy. The architecture, the history, the g
 Moscow has 12 million people, a dining scene that outperforms most European capitals, and a nightlife that takes the concept of "late" more seriously than almost anywhere in the Arab world. The centre is dense, walkable, and full of people who are clearly not going home any time soon. The Kremlin is at one end of the picture; Moscow City — where a 19th century empire and a glass tower share the same skyline — is at the other. Both are real. Both are Moscow.
 
 For Arab visitors specifically: the city is, frankly, comfortable. It understands how evenings should work. It has excellent halal restaurants that aren't an afterthought. The hookah culture runs deep. Nobody is going to look at you strangely for ordering tea at midnight and staying another hour.
+
+In June: 20–24°C. The kind of temperature Amman sees in early spring.
 
 ---
 
@@ -74,7 +90,7 @@ For amber: Russian amber from Kaliningrad is the finest in the world. There is n
 
 St. Petersburg was built to impress, and three centuries later it still does. Peter the Great wanted Europe on Russian soil — so he drained a swamp, brought in architects from across the continent, and assembled a city from scratch in just over twenty years. The result is what a city looks like when someone planned the whole thing before a single stone was laid: canals, baroque palaces, granite embankments, the Neva river broad and unhurried at the centre of it all.
 
-In June, the city is operating at full drama — and it knows it.
+In June, the city is operating at full drama — and it knows it. Temperature: 17–22°C. While Amman is already at 35°C, St. Petersburg is in its most luminous, most comfortable season.
 
 The White Nights are the reason to come in summer specifically. The brightest window runs June 11 – July 2, with the solstice at the centre. From late June into July, darkness simply doesn't arrive. At midnight the sky is pale gold and rose, the canals reflecting it back, and the streets that would normally be quiet at this hour are full of people sitting on steps, moving slowly, not quite ready to be inside. The city has discarded the normal rules about when day is supposed to end, and the effect is genuinely disorienting — in a way that photographs don't capture and that visitors spend years trying to explain.
 
@@ -145,13 +161,16 @@ Day 4 — Late breakfast · Imperial Porcelain (optional) · Departure
 ## RUSSIA IN FOUR NIGHTS
 *Moscow + St. Petersburg · The full picture*
 
-**Moscow (2 nights) · Safmar Palace:** Kremlin · Sanduny · Designer shopping · Russki dinner
-**Sapsan first class** Moscow → St. Petersburg (3.5 hours)
-**St. Petersburg (2 nights) · Crowne Plaza Ligovsky:** Canal boat · Hermitage · Bridge at 1:20am · Gulf of Finland
+For a first visit to Russia, this is the right configuration. Two nights in Moscow to get the measure of the city: the Kremlin, the banya, the dinner that goes past midnight on the 85th floor with the city spread below you. Then the Sapsan — Russia's high-speed train, first class — carrying you from one capital to the other in four hours. Two nights in St. Petersburg to understand why people who visit once come back.
 
-*The Sapsan is not just transport. It's a proper train — wide seats, table service, the Russian countryside moving past the window at 250km/h. Arrive at St. Petersburg's Moskovsky Station and the hotel is four minutes on foot.*
+**Moscow (2 nights) · Safmar Palace (5-star):** Kremlin with private guide · Sanduny banya ritual · Designer shopping (jewellery, amber) · Russki dinner, 85th floor
 
-*Two dining tracks: halal and open · Arabic-speaking guide available · From $1,300 per person (2 adults, excl. flights and Sapsan)*
+**Sapsan first class** Moscow → St. Petersburg (4 hours, 250km/h)
+*Wide seats, table service, the Russian countryside moving past the window. Arrive at St. Petersburg's Moskovsky Station; the hotel is four minutes on foot. Not just transport — an experience in itself.*
+
+**St. Petersburg (2 nights) · Crowne Plaza Ligovsky (4-star):** Canal boat with photographer · Fabergé Museum · Hermitage at 5pm · Drawbridge at 1:20am from private boat
+
+*Two dining tracks: halal and open · Arabic-speaking guide · Net rates on last page · From $1,300 per person (2 adults, excl. flights and Sapsan)*
 
 ---
 
@@ -168,17 +187,61 @@ A private tasting of Russian black caviar — oscietra and sevruga — with prop
 
 ---
 
+### THE SOVIET LAYER
+
+Russia is also the other thing: the 20th century. The one that shaped half the world's imagination, was studied in every Arab school, and left behind a material culture unlike anything else on earth.
+
+**Museum of Soviet Arcade Machines — Moscow**
+A full floor of functioning arcade machines from the 1970s and 80s: submarine periscopes, air hockey, shooting galleries, every coin-operated game that Soviet engineers designed and built with the same precision that launched Sputnik. All still working. All available to play. Strange, funny, and somehow moving for guests who know what this era meant — and completely absorbing for those who don't. Good for all ages; excellent for children.
+
+**Retro car tour**
+Moscow's streets from the back seat of a Chaika or Volga — the state limousines that carried Party officials through these same streets for decades. Your guide narrates what the car meant, who sat in it, and what the city looked like from this window. A different kind of history lesson.
+
+**Soviet kitchen dinner**
+Both cities have restaurants that reconstructed the Soviet communal table: the dishes, the tablecloths, the portions, the feeling of being fed in someone's apartment in 1978. For guests who have read or heard about this period — this makes it real in the most direct way. Not expensive. Completely genuine.
+
+**Pyshechnaya — St. Petersburg, since 1957**
+One room. One counter. One product: pyshy — Russia's answer to a doughnut, fried light and dusted with sugar, served with coffee made with condensed milk, exactly as it was in 1957. No menu. No décor beyond what was there when Khrushchev was in office. A five-minute queue, a ten-minute stop, and something guests talk about for the rest of the trip. Particularly good with children, who will eat four and ask for more.
+
+---
+
+### FOR FAMILIES
+
+Russia works well for families with children — better, in many ways, than European capitals. The pace is manageable, the weather in June is genuinely pleasant, and the options for children are serious rather than token.
+
+**Moscow Zoo** — one of the largest and best-maintained in Europe. A full day, well spent.
+
+**The circus** — Moscow has two circus theatres, St. Petersburg has one. Russian circus is a tradition of genuine craft: acrobatics, animals, clowns, magic — performed at a level that bears no resemblance to the modest touring circuses that visit the Gulf. Programmes run year-round. An evening that children remember.
+
+**Imperial Porcelain Factory — St. Petersburg** — a craftsman paints a piece with your child's name or initials while you watch. The piece leaves with you. Simple, quiet, and something a child aged 8–14 will treat as a possession.
+
+**For younger children:** the pace of these programmes is fully adjustable. Morning start at 10am, afternoon rest built in, no requirement to be anywhere before dinner. The cities are manageable; the hotels are comfortable; nothing is rushed.
+
+---
+
 # HOW IT WORKS
 
 **Payment:** Full programme invoiced in USD. Wire transfer to our account. Guests arrive with nothing to arrange — all accommodation, transport, activities, and meals in the programme are pre-paid and confirmed before departure.
 
 **On the ground:** A dedicated coordinator available throughout the trip. All transfers in private vehicles. Guides are specialists, not generalists.
 
+**Mobile internet:** In the city centre, mobile data is occasionally restricted during daytime hours — a technical measure linked to air-defence operation. Wi-Fi in hotels, restaurants, and most venues works normally at all times. We brief guests on this in advance so there are no surprises.
+
 **Flexibility:** Programmes above are the framework. Every trip is adjusted for the specific guests — family with children, couple, group of friends. Pricing above is based on two adults sharing; family configurations on request. Nothing is fixed that doesn't need to be.
 
-**Language:** English-speaking guides throughout. Arabic-speaking accompaniment available on request.
+**Language:** English-speaking guides throughout. **Arabic-speaking guide: available and confirmed for all programmes.** If your clients require Arabic from first day to last, we guarantee it — this is not an afterthought.
 
 **Visa:** Jordanian passport holders enter on a standard tourist e-visa. We provide the invitation letter and step-by-step instructions — most guests receive their visa within 4 working days of applying online.
+
+---
+
+---
+
+## PRICING NOTE
+
+All prices stated in this document ("from $950", "from $1,300") are **NET rates to the agency partner** — what you pay Tailor Studio. You set your own retail price. Suggested markup: 25–30%.
+
+Full rate sheet with per-programme breakdown, date ranges, and upgrade pricing: available separately on request.
 
 ---
 
