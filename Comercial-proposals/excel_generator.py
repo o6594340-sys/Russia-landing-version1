@@ -234,9 +234,15 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
 
     # ── СЕРВИСЫ ПО ДНЯМ ───────────────────────────────────────────────────────
     service_rows = []
+    optional_items = []  # items from "Прочее" / Other — not counted in main total
     alt = False  # чередование строк
 
     for item in services:
+        if item.get('day') == 'Прочее' or (item['type'] == 'service' and item.get('day') == 'Прочее'):
+            optional_items.append(item)
+            continue
+        if item['type'] == 'day_header' and item.get('day') == 'Прочее':
+            continue  # skip the "Other" header from main section
         if item['type'] == 'day_header':
             ws.merge_cells(f'A{row}:I{row}')
             c = ws[f'A{row}']
@@ -329,6 +335,47 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
         row += 1
 
     row += 1
+
+    # ── ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ ──────────────────────────────────────────────────
+    if optional_items:
+        ws.merge_cells(f'A{row}:I{row}')
+        c = ws[f'A{row}']
+        c.value = '  ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ (не включены в бюджет)'
+        c.font = _font(bold=True, size=10, color=C_WHITE)
+        c.fill = _fill(C_GOLD)
+        c.alignment = _align()
+        ws.row_dimensions[row].height = 18
+        row += 1
+
+        alt2 = False
+        for item in optional_items:
+            if item['type'] == 'service':
+                fill_color = C_LGRAY if alt2 else C_WHITE
+                alt2 = not alt2
+                for col in range(1, 10):
+                    c = ws.cell(row=row, column=col)
+                    c.fill = _fill(fill_color)
+                    c.font = _font(size=9)
+                    c.border = _border_thin()
+                ws[f'C{row}'] = item['service']
+                ws[f'D{row}'] = item['q']
+                ws[f'D{row}'].alignment = _align('center')
+                ws[f'E{row}'] = item['days']
+                ws[f'E{row}'].alignment = _align('center')
+                ws[f'G{row}'] = item['price_per_unit']
+                ws[f'G{row}'].number_format = '#,##0.00'
+                ws[f'G{row}'].alignment = _align('right')
+                ws[f'H{row}'] = f'=D{row}*E{row}*G{row}'
+                ws[f'H{row}'].number_format = '#,##0.00'
+                ws[f'H{row}'].alignment = _align('right')
+                ws[f'H{row}'].font = _font(bold=True, size=9)
+                if item['comments']:
+                    ws[f'I{row}'] = item['comments']
+                    ws[f'I{row}'].font = _font(size=8, color='666666', italic=True)
+                ws.row_dimensions[row].height = 16
+                row += 1
+
+        row += 1
 
     # ── ФУТЕР ─────────────────────────────────────────────────────────────────
     ws.merge_cells(f'A{row}:I{row}')

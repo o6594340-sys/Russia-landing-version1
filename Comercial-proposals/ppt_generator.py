@@ -121,10 +121,15 @@ def _slide_title(prs, params):
          size=26, bold=False, color=C.GOLD)
 
     # Детали
-    room_ru = 'одноместное' if params['room_type'] == 'SGL' else 'двухместное'
+    twn = params.get('twn', 0)
+    sgl = params.get('sgl', 0)
+    room_parts = []
+    if twn: room_parts.append(f'{twn} Twin')
+    if sgl: room_parts.append(f'{sgl} Single')
+    room_str = ' + '.join(room_parts) if room_parts else 'номера уточняются'
     conf_str = '  ·  с конференцией' if params.get('include_conference') else ''
     details = (f"{params['event_type']}{conf_str}  ·  {params['pax']} чел.  ·  "
-               f"{params['days']} дней  ·  отель {params['hotel_level']}  ·  {room_ru}")
+               f"{params['days']} дней  ·  отель {params['hotel_level']}  ·  {room_str}")
     if params.get('dates'):
         details += f"  ·  {params['dates']}"
 
@@ -248,14 +253,23 @@ def _slide_hotels(prs, params, content):
                0.55, 1.35, 8.5, 2.5, size=12, color=C.DARK)
 
     # Параметры размещения
-    room_ru = 'одноместные' if params['room_type'] == 'SGL' else 'двухместные'
+    twn = params.get('twn', 0)
+    sgl = params.get('sgl', 0)
+    room_parts = []
+    if twn: room_parts.append(f'{twn} Twin-номеров')
+    if sgl: room_parts.append(f'{sgl} Single-номеров')
+    room_str = ' + '.join(room_parts) if room_parts else 'уточняется'
     nights = params['days'] - 1
     details = [
-        f"Тип номеров:  {params['room_type']} ({room_ru})",
+        f"Состав номеров:  {room_str}",
         f"Количество ночей:  {nights}",
         f"Уровень:  {params['hotel_level']}",
-        f"Количество номеров:  {'~' + str(params['pax']) if params['room_type'] == 'SGL' else '~' + str(params['pax'] // 2 + params['pax'] % 2)}",
+        f"Количество человек:  {params['pax']}",
     ]
+    if params.get('hotel_a_name'):
+        details.append(f"Вариант А:  {params['hotel_a_name']}")
+    if params.get('hotel_b_name'):
+        details.append(f"Вариант Б:  {params['hotel_b_name']}")
     _multiline(slide, details,
                0.55, 4.05, 8.0, 2.0, size=11, color=C.GRAY)
 
@@ -274,6 +288,49 @@ def _slide_hotels(prs, params, content):
          3.5, 7.21, 7.0, 0.28, size=7, color=C.GRAY, align=PP_ALIGN.CENTER)
 
 
+# ── Слайд: Финал ─────────────────────────────────────────────────────────────
+
+def _slide_closing(prs, params):
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    _bg(slide, C.DARK)
+
+    # Левая красная полоса
+    _rect(slide, 0, 0, 0.28, 7.5, C.RED)
+
+    # Золотые линии
+    _rect(slide, 0.28, 0.0, 13.05, 0.06, C.GOLD)
+    _rect(slide, 0.28, 7.14, 13.05, 0.06, C.GOLD)
+
+    # Главный заголовок
+    _txt(slide, 'Создадим это вместе?',
+         0.7, 1.5, 11.8, 1.4,
+         size=42, bold=True, color=C.WHITE)
+
+    # Подзаголовок
+    _txt(slide, f'Готовы разработать программу для {params["company_name"]}',
+         0.7, 3.0, 11.8, 0.7,
+         size=18, bold=False, color=C.GOLD)
+
+    # Контакты
+    contacts = [
+        'Tozai Tours — DMC Japan',
+        'info@tozai-tours.com',
+        'www.tozai-tours.com',
+    ]
+    _multiline(slide, contacts,
+               0.7, 3.9, 8.0, 1.8,
+               size=13, color=C.MGRAY)
+
+    # Пометка
+    _txt(slide, 'Международные перелёты не включены. Цены предварительные, подтверждаются при бронировании.',
+         0.7, 5.85, 11.8, 0.5,
+         size=8, italic=True, color=C.GRAY)
+
+    _logo(slide)
+    _txt(slide, 'Destination Management Company', 10.5, 6.9, 2.6, 0.35,
+         size=7, italic=True, color=C.GRAY, align=PP_ALIGN.RIGHT)
+
+
 # ── Главная функция ───────────────────────────────────────────────────────────
 
 def create_ppt(params: dict, content: dict, services: list) -> bytes:
@@ -288,6 +345,7 @@ def create_ppt(params: dict, content: dict, services: list) -> bytes:
         _slide_day(prs, day_data)
 
     _slide_hotels(prs, params, content)
+    _slide_closing(prs, params)
 
     buf = io.BytesIO()
     prs.save(buf)

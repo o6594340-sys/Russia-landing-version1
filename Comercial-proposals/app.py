@@ -17,6 +17,7 @@ from rates_loader import load_japan_rates
 from claude_generator import generate_program, refine_program
 from excel_generator import create_excel
 from ppt_generator import create_ppt
+from brief_parser import parse_brief
 
 app = Flask(__name__)
 
@@ -161,6 +162,28 @@ def download_ppt():
         )
     except Exception as e:
         return jsonify({'ok': False, 'error': str(e)}), 500
+
+
+# ── Загрузка и разбор брифа ───────────────────────────────────────────────────
+
+@app.route('/parse_brief', methods=['POST'])
+def parse_brief_route():
+    try:
+        if 'brief' not in request.files:
+            return jsonify({'ok': False, 'error': 'Файл не получен'}), 400
+        f = request.files['brief']
+        if not f.filename:
+            return jsonify({'ok': False, 'error': 'Файл пустой'}), 400
+
+        file_bytes = f.read()
+        result = parse_brief(file_bytes, f.filename)
+
+        if 'error' in result:
+            return jsonify({'ok': False, 'error': result['error']}), 500
+
+        return jsonify({'ok': True, 'fields': result})
+    except Exception as e:
+        return jsonify({'ok': False, 'error': str(e), 'traceback': traceback.format_exc()}), 500
 
 
 # ── Утилиты ───────────────────────────────────────────────────────────────────

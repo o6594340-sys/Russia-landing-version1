@@ -650,9 +650,94 @@ function toggleHotelB(cb) {
 async function uploadBrief(input) {
   const file = input.files[0];
   if (!file) return;
-  document.getElementById('brief-status').textContent = '⏳ Читаю бриф...';
-  // TODO: implement /parse_brief endpoint
-  document.getElementById('brief-status').textContent = '⚠ Загрузка брифа в разработке';
+
+  const status = document.getElementById('brief-status');
+  status.style.color = '#888';
+  status.textContent = '⏳ Читаю бриф (~20 сек)...';
+
+  const fd = new FormData();
+  fd.append('brief', file);
+
+  try {
+    const res = await fetch('/parse_brief', { method: 'POST', body: fd });
+    const data = await res.json();
+
+    if (!data.ok) {
+      status.style.color = '#ff8888';
+      status.textContent = '❌ ' + data.error;
+      return;
+    }
+
+    const f = data.fields;
+    let filled = [];
+
+    // Заполняем поля формы
+    if (f.company_name) { setField('company_name', f.company_name); filled.push('компания'); }
+    if (f.industry)     { setField('industry', f.industry); filled.push('отрасль'); }
+    if (f.event_type)   { setSelect('event_type', f.event_type); filled.push('тип'); }
+    if (f.days)         { setField('days', f.days); filled.push('дней'); }
+    if (f.dates)        { setField('dates', f.dates); filled.push('даты'); }
+    if (f.hotel_level)  { setSelect('hotel_level', f.hotel_level); }
+
+    // Номера: если есть twn/sgl — ставим их; если только pax — делим пополам
+    if (f.twn != null || f.sgl != null) {
+      if (f.twn != null) setField('twn', f.twn);
+      if (f.sgl != null) setField('sgl', f.sgl);
+      filled.push('номера');
+    } else if (f.pax) {
+      setField('twn', Math.floor(f.pax / 2));
+      setField('sgl', f.pax % 2);
+      filled.push('номера');
+    }
+    updatePax();
+
+    if (f.include_conference != null) {
+      const cb = document.getElementById('conf_chk');
+      cb.checked = !!f.include_conference;
+      toggleConf(cb);
+    }
+    if (f.conference_day) setField('conference_day', f.conference_day);
+    if (f.special_requests) { setField('special_requests', f.special_requests); filled.push('пожелания'); }
+
+    // Подсветить заполненные поля
+    highlightFilled();
+
+    status.style.color = '#6fbf6f';
+    status.textContent = '✅ Заполнено: ' + filled.join(', ') + '. Проверьте и дополните.';
+
+  } catch (ex) {
+    status.style.color = '#ff8888';
+    status.textContent = '❌ Ошибка: ' + ex.message;
+  }
+
+  // Сбросить input чтобы можно было загрузить снова
+  input.value = '';
+}
+
+function setField(name, value) {
+  const el = document.querySelector(`[name="${name}"]`);
+  if (el) el.value = value;
+}
+
+function setSelect(name, value) {
+  const el = document.querySelector(`[name="${name}"]`);
+  if (!el) return;
+  for (const opt of el.options) {
+    if (opt.value === value || opt.value.startsWith(value)) {
+      el.value = opt.value;
+      break;
+    }
+  }
+}
+
+function highlightFilled() {
+  // Кратковременно подсвечиваем заполненные поля
+  document.querySelectorAll('#form1 input, #form1 select, #form1 textarea').forEach(el => {
+    if (el.value && el.value !== '0' && el.type !== 'checkbox' && el.type !== 'hidden') {
+      el.style.borderColor = '#2a6e2a';
+      setTimeout(() => { el.style.borderColor = ''; }, 3000);
+    }
+  });
 }
 
 function formToParams(form) {
