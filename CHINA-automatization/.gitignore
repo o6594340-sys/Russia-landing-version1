@@ -1,0 +1,6 @@
+photos/
+photo_cache/
+sample_texts.json
+*.xlsx
+Brief_Japan*
+test_*.xlsx
