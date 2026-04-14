@@ -239,6 +239,102 @@ def slide_day_separator(prs, day_num, date_str, city):
     add_logo_placeholder(slide)
 
 
+def _build_schedule(day: dict) -> list:
+    """Сливает активности и рестораны дня в хронологический список."""
+    items = []
+    for a in day.get("activities", []):
+        display = a.get("name_ru") or a.get("name", "")
+        items.append({
+            "time": a.get("time", ""),
+            "name": display,
+            "is_restaurant": False,
+        })
+    for r in day.get("restaurants", []):
+        prefix = "Обед" if r.get("type") == "обед" else "Ужин"
+        default_time = "13:00" if r.get("type") == "обед" else "19:00"
+        items.append({
+            "time": r.get("time", default_time),
+            "name": f"{prefix} — {r.get('name', '')}",
+            "is_restaurant": True,
+        })
+    items.sort(key=lambda x: x["time"] or "99:99")
+    return items
+
+
+def slide_program_overview(prs, days_data: list, destination: str = "", duration: int = 0):
+    """Обзорный слайд программы: N колонок по дням с расписанием и таймингом."""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+
+    # фон
+    add_rect(slide, 0, 0, 25.4, 14.29, DARK)
+
+    # заголовочная полоса
+    add_rect(slide, 0, 0, 23.4, 1.3, DARK_GREEN)
+    add_rect(slide, 23.4, 0, 2.0, 1.3, RGBColor(0x3A, 0x6A, 0x20))
+    dur_str = f"{duration} дн." if duration else ""
+    add_textbox(slide, 0.5, 0.1, 15.0, 1.1,
+                f"ПРОГРАММА: {destination}  |  {dur_str}",
+                font_size=13, font_color=WHITE, bold=True)
+
+    n = len(days_data)
+    if n == 0:
+        return
+    col_w = 25.4 / n
+
+    DARK_COL   = RGBColor(0x1E, 0x1E, 0x19)   # фон ячеек
+    LINE_COLOR = RGBColor(0x5A, 0x8A, 0x3C)   # разделитель
+    GRAY_TIME  = RGBColor(0x99, 0x99, 0x88)   # цвет времени
+
+    for i, day in enumerate(days_data):
+        x = i * col_w
+
+        # вертикальный разделитель между колонками
+        if i > 0:
+            add_rect(slide, x, 1.3, 0.04, 13.0, LINE_COLOR)
+
+        # заголовок колонки (день + дата)
+        add_rect(slide, x + 0.04, 1.3, col_w - 0.04, 2.1, RGBColor(0x2E, 0x2E, 0x28))
+        add_textbox(slide, x + 0.2, 1.35, col_w - 0.3, 0.7,
+                    f"ДЕНЬ {day.get('day', i+1)}",
+                    font_size=11, font_color=GREEN, bold=True)
+        add_textbox(slide, x + 0.2, 2.0, col_w - 0.3, 0.55,
+                    day.get("date", ""),
+                    font_size=9, font_color=WHITE, bold=False)
+        add_textbox(slide, x + 0.2, 2.55, col_w - 0.3, 0.55,
+                    day.get("city", "").upper(),
+                    font_size=8, font_color=GRAY_TIME, bold=False)
+
+        # фон строк программы
+        add_rect(slide, x + 0.04, 3.4, col_w - 0.04, 10.89, DARK_COL)
+
+        y = 3.5
+        for item in _build_schedule(day):
+            if y > 13.8:
+                break
+            time_str = item["time"]
+            name     = item["name"]
+            is_rest  = item["is_restaurant"]
+
+            # маркер-полоска (зелёная для ресторанов, серая для активностей)
+            marker_color = DARK_GREEN if is_rest else RGBColor(0x55, 0x55, 0x50)
+            add_rect(slide, x + 0.12, y + 0.07, 0.06, 0.5, marker_color)
+
+            # время
+            if time_str:
+                add_textbox(slide, x + 0.25, y, 1.0, 0.55,
+                            time_str, font_size=8, font_color=GRAY_TIME, bold=False)
+
+            # название
+            name_color = GREEN if is_rest else WHITE
+            add_textbox(slide, x + 1.2, y, col_w - 1.35, 0.62,
+                        name, font_size=8, font_color=name_color,
+                        bold=is_rest, wrap=True)
+
+            y += 0.75
+
+    add_logo_placeholder(slide)
+
+
 def slide_activity_3photos(prs, title, description, short_desc=None,
                            city="Shanghai", photo_name=None):
     """Активность: заголовок + 3 фото в ряд + описание снизу."""
@@ -605,12 +701,11 @@ def generate(filename="Proposal_sample.pptx", proposal=None, use_ai_texts=True):
         city=city,
         description=why.get("description", ""))
 
-    # ── 3. МАРШРУТ ────────────────────────────────────────────────────────────
-    slide_activity_fullphoto(prs,
-        title=f"Маршрут: {proposal.get('destination', '')}",
-        city=city,
-        description=t("route_description", proposal.get("dates", "")),
-        route=f"{proposal.get('duration_days', 5)} дней / {proposal.get('duration_days', 5) - 1} ночи  |  {proposal.get('destination', '')}")
+    # ── 3. ПРОГРАММА (обзорный слайд) ────────────────────────────────────────
+    slide_program_overview(prs,
+        days_data=proposal.get("days", []),
+        destination=proposal.get("destination", ""),
+        duration=proposal.get("duration_days", len(proposal.get("days", []))))
 
     # ── 4. НАШ ПОДХОД (bridge) ────────────────────────────────────────────────
     slide_bridge(prs,
