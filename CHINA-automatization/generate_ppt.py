@@ -166,7 +166,7 @@ def add_header_bar(slide, title, subtitle=None):
 
 # ── Типы слайдов ──────────────────────────────────────────────────────────────
 
-def slide_cover(prs, title, pax_line, client_line, city="Shanghai"):
+def slide_cover(prs, title, pax_line, client_line, dates_line="", city="Shanghai"):
     """Обложка: тёмный фон, большой заголовок."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])  # blank
 
@@ -197,8 +197,13 @@ def slide_cover(prs, title, pax_line, client_line, city="Shanghai"):
     add_textbox(slide, 1.9, 3.5, 18.0, 3.5, title,
                 font_size=32, font_color=GREEN, bold=True, line_spacing=38)
 
+    # даты тура
+    if dates_line:
+        add_textbox(slide, 1.9, 7.0, 18.0, 1.0, dates_line,
+                    font_size=16, font_color=WHITE, bold=False)
+
     # количество и клиент
-    add_textbox(slide, 1.9, 7.5, 14.0, 1.2,
+    add_textbox(slide, 1.9, 8.1, 14.0, 1.2,
                 f"{pax_line}  |  {client_line}",
                 font_size=18, font_color=GREEN, bold=True)
 
@@ -629,6 +634,66 @@ def slide_contacts(prs, dmc_name, website, phone, email, manager, city="Shanghai
                 font_size=13, font_color=GREEN)
 
 
+# ── Fallback-тексты из данных proposal (без Claude API) ──────────────────────
+
+def _build_fallback_texts(proposal: dict) -> dict:
+    """Строит словарь текстов из note-полей proposal, когда AI выключен."""
+    client = proposal.get('client', '')
+    agency = proposal.get('agency', '')
+    destination = proposal.get('destination', 'Китай')
+    dates = proposal.get('dates', '')
+
+    texts = {
+        "cover_title":         f"Корпоративный тур\n{client}\n{destination}",
+        "why_china":           {"title": f"{destination} — лучшее время",
+                                "description": ""},
+        "route_description":   dates,
+        "bridge_bullets":      [],
+        "gastronomy_title":    "Гастрономическая программа",
+        "gastronomy_subtitle": "",
+        "days":                [],
+        "hotels":              [],
+    }
+
+    for day in proposal.get("days", []):
+        day_entry = {
+            "day_num":     day.get("day", 1),
+            "activities":  [],
+            "restaurants": [],
+        }
+        for a in day.get("activities", []):
+            name_en = a.get("name", "")
+            name_ru = a.get("name_ru") or name_en
+            day_entry["activities"].append({
+                "name":        name_en,    # поиск по английскому (activity_text ищет по фрагменту)
+                "slide_title": name_ru,    # на слайде — русское название
+                "description": a.get("note", ""),
+            })
+        for r in day.get("restaurants", []):
+            prefix = "Обед" if r.get("type") == "обед" else "Ужин"
+            day_entry["restaurants"].append({
+                "name":        r.get("name", ""),
+                "slide_title": f"{prefix} — {r.get('name', '')}",
+                "description": r.get("note", ""),
+                "cuisine":     "",
+                "format":      "",
+            })
+        texts["days"].append(day_entry)
+
+    for h in proposal.get("hotels", []):
+        loc = h.get("location", "")
+        rooms = h.get("rooms", "")
+        desc = loc
+        if rooms:
+            desc += f". {rooms} номеров."
+        texts["hotels"].append({
+            "name":        h.get("name", ""),
+            "description": desc,
+        })
+
+    return texts
+
+
 # ── Сборка полной презентации ─────────────────────────────────────────────────
 
 def generate(filename="Proposal_sample.pptx", proposal=None, use_ai_texts=True):
@@ -642,13 +707,13 @@ def generate(filename="Proposal_sample.pptx", proposal=None, use_ai_texts=True):
     if proposal is None:
         proposal = SAMPLE_PROPOSAL
 
-    # Генерируем тексты через Claude API
+    # Генерируем тексты через Claude API или берём из proposal
     if use_ai_texts:
         print("Генерирую тексты через Claude API...")
         texts = generate_texts(proposal)
         print("  Тексты готовы.")
     else:
-        texts = {}
+        texts = _build_fallback_texts(proposal)
 
     def t(key, default=""):
         """Достаёт текст из сгенерированных текстов или возвращает default."""
@@ -692,6 +757,7 @@ def generate(filename="Proposal_sample.pptx", proposal=None, use_ai_texts=True):
                 title=t("cover_title", f"Корпоративный тур\n{proposal.get('client','')}\nв Китай"),
                 pax_line=f"{proposal.get('pax_total', '')} человек",
                 client_line=f"Предложение для {proposal.get('agency', proposal.get('client',''))}",
+                dates_line=proposal.get('dates', ''),
                 city=city)
 
     # ── 2. ПОЧЕМУ КИТАЙ СЕЙЧАС ────────────────────────────────────────────────
@@ -836,27 +902,7 @@ def generate(filename="Proposal_sample.pptx", proposal=None, use_ai_texts=True):
         description=hotel_text("The Portman Ritz-Carlton Shanghai"))
     slide_room_type(prs, "The Portman Ritz-Carlton Shanghai", "Deluxe King Room", "38", 5)
 
-    # ── 14. СТОИМОСТЬ ─────────────────────────────────────────────────────────
-    slide_cost(prs,
-        price_per_person=1391,
-        pax_total=35,
-        included_items=[
-            "Отель 4 ночи, завтрак включён",
-            "Все трансферы по программе (автобус)",
-            "Русскоязычный гид на все дни",
-            "Все обеды (вода, чай/кофе)",
-            "Все ужины (2 бокала вина, чай/кофе)",
-            "Входные билеты по программе",
-            "Мастер-класс по гравировке печатей",
-        ],
-        excluded_items=[
-            "Авиабилеты",
-            "Страховка",
-            "Личные расходы",
-            "Дополнительный алкоголь",
-        ])
-
-    # ── 15. ПОЧЕМУ МЫ ─────────────────────────────────────────────────────────
+    # ── 14. ПОЧЕМУ МЫ ────────────────────────────────────────────────────────
     slide_social_proof(prs,
         city="Shanghai",
         cases=[

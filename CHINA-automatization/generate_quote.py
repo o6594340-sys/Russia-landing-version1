@@ -172,7 +172,17 @@ CONFERENCE = {
 
 # ── Генератор ─────────────────────────────────────────────────────────────────
 
-def generate(filename="Quote_sample.xlsx"):
+def generate(filename="Quote_sample.xlsx", params: dict = None):
+    """
+    params (необязательно) — dict для переопределения значений P:
+        code, client, agency, pax_sgl, pax_dbl, pax_total,
+        conference, issued, valid
+    """
+    if params:
+        P.update({k: v for k, v in params.items() if k in P or k in
+                  ('code','client','agency','pax_sgl','pax_dbl','pax_total',
+                   'conference','issued','valid')})
+
     wb = Workbook()
     ws = wb.active
     ws.title = "Quotation"
@@ -336,12 +346,30 @@ def generate(filename="Quote_sample.xlsx"):
     ws.freeze_panes = "B12"
 
     wb.save(filename)
-    print(f"Готово: {filename}")
-    print(f"  Размещение:        ${accom_total:,.2f}")
-    print(f"  Трансферы/гиды/FB: ${events_total:,.2f}")
-    print(f"  Конференция:       ${conf_total:,.2f}")
-    print(f"  ИТОГО:             ${grand:,.2f}")
-    print(f"  На человека:       ${grand/P['pax_total']:,.2f}")
+
+    result = {
+        "filename":   filename,
+        "accom":      round(accom_total, 2),
+        "events":     round(events_total, 2),
+        "conference": round(conf_total, 2),
+        "grand":      round(grand, 2),
+        "per_person": round(grand / P["pax_total"], 2),
+    }
+
+    def _print(msg):
+        try:
+            print(msg)
+        except (UnicodeEncodeError, AttributeError):
+            pass
+
+    _print(f"Done: {filename}")
+    _print(f"  Accommodation: ${accom_total:,.2f}")
+    _print(f"  Transfers/guides/FB: ${events_total:,.2f}")
+    _print(f"  Conference: ${conf_total:,.2f}")
+    _print(f"  TOTAL: ${grand:,.2f}")
+    _print(f"  Per person: ${grand/P['pax_total']:,.2f}")
+
+    return result
 
 
 if __name__ == "__main__":

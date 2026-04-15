@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cathay DMC — Генератор Proposal</title>
+<style>
+  :root {
+    --green:      #B9DC9F;
+    --dark-green: #5A8A3C;
+    --dark:       #272721;
+    --bg:         #F6F8F3;
+    --white:      #FFFFFF;
+    --border:     #C8E0B0;
+    --text:       #2E2E28;
+    --muted:      #888880;
+    --danger:     #C0392B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Шапка ────────────────────────────────────────────── */
+  header {
+    background: var(--dark);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 64px;
+    border-bottom: 3px solid var(--dark-green);
+  }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: var(--dark-green);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--white); letter-spacing: 0.5px;
+  }
+  header h1 {
+    font-size: 18px; font-weight: 600;
+    color: var(--green); letter-spacing: 0.5px;
+  }
+  header span {
+    font-size: 13px; color: #7A9A68; margin-left: 4px;
+  }
+
+  /* ── Контейнер ───────────────────────────────────────── */
+  main {
+    max-width: 860px;
+    margin: 40px auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── Секция ──────────────────────────────────────────── */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .section-header {
+    background: var(--dark);
+    padding: 12px 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-header h2 {
+    font-size: 13px; font-weight: 600;
+    color: var(--green); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .section-num {
+    width: 22px; height: 22px;
+    background: var(--dark-green);
+    border-radius: 50%;
+    font-size: 11px; font-weight: 700; color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-body {
+    padding: 20px;
+  }
+
+  /* ── Сетка полей ─────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .span-2 { grid-column: 1 / -1; }
+
+  /* ── Поле ────────────────────────────────────────────── */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  label {
+    font-size: 12px; font-weight: 600;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  input[type=text],
+  input[type=number],
+  select,
+  textarea {
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 9px 12px;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--dark-green);
+    box-shadow: 0 0 0 3px rgba(90,138,60,0.12);
+  }
+  textarea { resize: vertical; min-height: 76px; line-height: 1.5; }
+
+  /* ── Чекбоксы ─────────────────────────────────────────── */
+  .check-group { display: flex; flex-direction: column; gap: 10px; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+  }
+  .check-item input[type=checkbox] {
+    width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0;
+    accent-color: var(--dark-green); cursor: pointer;
+  }
+  .check-item .check-label { font-size: 14px; line-height: 1.4; }
+  .check-item .check-hint { font-size: 12px; color: var(--muted); }
+
+  /* ── Блок вывода ─────────────────────────────────────── */
+  .output-row {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .output-option {
+    flex: 1; min-width: 140px;
+  }
+  .output-option input[type=radio] { display: none; }
+  .output-option label {
+    display: block;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+    background: var(--bg);
+  }
+  .output-option input[type=radio]:checked + label {
+    border-color: var(--dark-green);
+    background: #EAF4DF;
+    color: var(--dark-green);
+  }
+  .output-option label:hover { border-color: var(--dark-green); }
+
+  /* ── Кнопка ──────────────────────────────────────────── */
+  .btn-generate {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%;
+    background: var(--dark-green);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 16px 24px;
+    font-size: 16px; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+  }
+  .btn-generate:hover { background: #4A7A2E; }
+  .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-generate svg { flex-shrink: 0; }
+
+  /* ── Spinner / статус ────────────────────────────────── */
+  #status {
+    display: none;
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  #status.loading {
+    display: flex; align-items: center; gap: 12px;
+    background: #EAF4DF; border: 1px solid var(--border);
+    color: var(--dark-green);
+  }
+  #status.error {
+    display: block;
+    background: #FDECEA; border: 1px solid #E8B4B0;
+    color: var(--danger);
+  }
+  #status.success {
+    display: flex; align-items: center; gap: 10px;
+    background: #EAF4DF; border: 1px solid var(--border);
+    color: var(--dark-green); font-weight: 600;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--dark-green);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: spin 0.7s linear infinite;
+  }
+
+  /* ── Разделитель ─────────────────────────────────────── */
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* ── Загрузка брифа ──────────────────────────────────── */
+  .brief-zone {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 24px 20px;
+    text-align: center;
+    background: var(--white);
+    margin-bottom: 20px;
+    transition: border-color 0.15s, background 0.15s;
+    cursor: pointer;
+    position: relative;
+  }
+  .brief-zone:hover, .brief-zone.dragover {
+    border-color: var(--dark-green);
+    background: #F0F8EA;
+  }
+  .brief-zone input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .brief-zone-icon { font-size: 28px; margin-bottom: 8px; }
+  .brief-zone-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .brief-zone-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .brief-status {
+    margin-top: 10px; font-size: 13px; display: none;
+    align-items: center; justify-content: center; gap: 8px;
+  }
+  .brief-status.loading { display: flex; color: var(--dark-green); }
+  .brief-status.done    { display: flex; color: var(--dark-green); font-weight: 600; }
+  .brief-status.error   { display: flex; color: var(--danger); }
+  .brief-filled-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #EAF4DF; border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 8px;
+    font-size: 11px; font-weight: 600; color: var(--dark-green);
+    margin-left: 8px; vertical-align: middle;
+  }
+
+  /* ── Подсказка ───────────────────────────────────────── */
+  .hint { font-size: 12px; color: var(--muted); }
+
+  @media (max-width: 600px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    header { padding: 0 16px; }
+    main { margin: 20px auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">C</div>
+  <h1>CATHAY DMC <span>/ Генератор Proposal</span></h1>
+</header>
+
+<main>
+  <form id="form" action="/generate" method="post">
+
+    <!-- ── Загрузка брифа ────────────────────────────────── -->
+    <div class="brief-zone" id="briefZone">
+      <input type="file" id="briefFile" accept=".docx,.pdf">
+      <div class="brief-zone-icon">📎</div>
+      <div class="brief-zone-title">Загрузить бриф</div>
+      <div class="brief-zone-sub">Перетащите файл или нажмите — .docx или .pdf<br>Claude прочитает бриф и заполнит поля автоматически</div>
+    </div>
+    <div class="brief-status" id="briefStatus"></div>
+
+    <!-- ── 1. Клиент и тур ─────────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <h2>Клиент и тур</h2>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="field">
+            <label>Компания-клиент *</label>
+            <input type="text" name="client" placeholder="Название компании" required>
+          </div>
+          <div class="field">
+            <label>Агентство</label>
+            <input type="text" name="agency" placeholder="Название агентства">
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Направление</label>
+            <select name="destination">
+              <option value="Шанхай + Сучжоу" selected>Шанхай + Сучжоу</option>
+              <option value="Шанхай">Шанхай</option>
+              <option value="Пекин">Пекин</option>
+              <option value="Пекин + Шанхай">Пекин + Шанхай</option>
+              <option value="Сиань + Пекин">Сиань + Пекин</option>
+              <option value="Шанхай + Пекин + Сиань">Шанхай + Пекин + Сиань</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Дата начала</label>
+            <input type="date" name="start_date">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Продолжительность, дней</label>
+            <input type="number" name="duration_days" placeholder="5" min="1" max="30">
+          </div>
+          <div class="field" style="display:flex; align-items:flex-end;">
+            <div id="datesPreview" style="font-size:13px; color:var(--dark-green); padding-bottom:10px; font-weight:500;"></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid-3">
+          <div class="field">
+            <label>SGL (одноместных)</label>
+            <input type="number" name="pax_sgl" placeholder="0" min="0" max="999">
+          </div>
+          <div class="field">
+            <label>TWN/DBL (двухместных)</label>
+            <input type="number" name="pax_dbl" placeholder="0" min="0" max="999">
+          </div>
+          <div class="field">
+            <label>Сезон / повод <span class="hint">(необязательно)</span></label>
+            <input type="text" name="season" placeholder="апрель, цветение садов">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 2. Профиль группы ───────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <h2>Профиль группы</h2>
+      </div>
+      <div class="section-body">
+        <div class="field">
+          <label>Кто едет, интересы, особые пожелания</label>
+          <textarea name="group_profile" rows="3"
+            placeholder="Дилеры + сотрудники компании, инженеры 40–45 лет, первая поездка в Китай. Интерес к современным технологиям и урбанизму. Важен комфортный темп."
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 3. Опции ────────────────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <h2>Опции программы</h2>
+      </div>
+      <div class="section-body">
+        <div class="check-group">
+          <label class="check-item">
+            <input type="checkbox" name="conference" value="on">
+            <div>
+              <div class="check-label">Конференц-зал</div>
+              <div class="check-hint">Аренда зала + AV + обед — отдельный раздел в Excel</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="use_ai_texts" value="on" checked>
+            <div>
+              <div class="check-label">Генерировать тексты через Claude AI</div>
+              <div class="check-hint">Уникальные описания активностей и отелей под этого клиента (~30 сек)</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 4. Вывод ────────────────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <h2>Формат вывода</h2>
+      </div>
+      <div class="section-body">
+        <div class="output-row">
+          <div class="output-option">
+            <input type="radio" name="output" id="out-both" value="both" checked>
+            <label for="out-both">PPT + Excel (ZIP)</label>
+          </div>
+          <div class="output-option">
+            <input type="radio" name="output" id="out-ppt" value="ppt">
+            <label for="out-ppt">Только PPT</label>
+          </div>
+          <div class="output-option">
+            <input type="radio" name="output" id="out-excel" value="excel">
+            <label for="out-excel">Только Excel</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Кнопка ──────────────────────────────────────── -->
+    <button type="submit" class="btn-generate" id="btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="12" y1="11" x2="12" y2="17"/>
+        <line x1="9" y1="14" x2="15" y2="14"/>
+      </svg>
+      Сгенерировать proposal
+    </button>
+
+    <div id="status"></div>
+
+  </form>
+</main>
+
+<script>
+// ── Загрузка брифа ────────────────────────────────────────────────────────
+const briefZone   = document.getElementById('briefZone');
+const briefFile   = document.getElementById('briefFile');
+const briefStatus = document.getElementById('briefStatus');
+
+const MONTHS_RU = ['января','февраля','марта','апреля','мая','июня',
+                   'июля','августа','сентября','октября','ноября','декабря'];
+
+function formatDateRu(isoStr) {
+  if (!isoStr) return '';
+  const [y, m, d] = isoStr.split('-').map(Number);
+  return `${d} ${MONTHS_RU[m - 1]} ${y}`;
+}
+
+function matchDestination(raw) {
+  if (!raw) return null;
+  const r = raw.toLowerCase();
+  const opts = [
+    { val: 'Шанхай + Сучжоу',       keys: ['сучжоу','suzhou'] },
+    { val: 'Пекин + Шанхай',         keys: ['пекин','beijing','peking','шанхай','shanghai'] },
+    { val: 'Сиань + Пекин',          keys: ['сиань','xian'] },
+    { val: 'Шанхай + Пекин + Сиань', keys: [] },
+    { val: 'Шанхай',                 keys: ['шанхай','shanghai'] },
+    { val: 'Пекин',                  keys: ['пекин','beijing','peking'] },
+  ];
+  for (const o of opts) {
+    if (o.keys.some(k => r.includes(k))) return o.val;
+  }
+  return null;
+}
+
+function setField(name, value) {
+  if (value === null || value === undefined || value === '') return;
+  const el = document.querySelector(`[name="${name}"]`);
+  if (!el) return;
+  if (el.tagName === 'SELECT') {
+    for (const opt of el.options) {
+      if (opt.value === value) { el.value = value; break; }
+    }
+  } else if (el.type === 'checkbox') {
+    el.checked = Boolean(value);
+  } else {
+    el.value = value;
+  }
+  // подсвечиваем заполненное поле
+  el.style.borderColor = 'var(--dark-green)';
+  el.style.background  = '#F0F8EA';
+  setTimeout(() => { el.style.borderColor = ''; el.style.background = ''; }, 2000);
+}
+
+function fillFormFromBrief(data) {
+  setField('client',        data.client_name);
+  setField('agency',        data.agency_name);
+  setField('pax_sgl',       data.pax_sgl);
+  setField('pax_dbl',       data.pax_dbl);
+  setField('start_date',    data.date_start);
+  setField('conference',    data.has_conference);
+  setField('group_profile', data.special_notes);
+
+  // продолжительность из duration_days или по датам
+  if (data.duration_days) {
+    setField('duration_days', data.duration_days);
+  } else if (data.date_start && data.date_end) {
+    const d1 = new Date(data.date_start + 'T00:00:00');
+    const d2 = new Date(data.date_end   + 'T00:00:00');
+    const days = Math.round((d2 - d1) / 86400000) + 1;
+    setField('duration_days', days);
+  }
+
+  const dest = matchDestination(data.destination);
+  if (dest) setField('destination', dest);
+
+  // обновляем предпросмотр дат
+  updateDatesPreview();
+
+  // подсчёт заполненных полей
+  const filled = ['client_name','agency_name','pax_sgl','pax_dbl',
+                  'date_start','destination'].filter(k => data[k]).length;
+  return filled;
+}
+
+async function uploadBrief(file) {
+  briefStatus.className = 'brief-status loading';
+  briefStatus.innerHTML = '<div class="spinner"></div> Читаю бриф через Claude AI…';
+
+  const fd = new FormData();
+  fd.append('file', file);
+
+  try {
+    const res  = await fetch('/parse-brief', { method: 'POST', body: fd });
+    const data = await res.json();
+
+    if (!res.ok || data.error) throw new Error(data.error || res.statusText);
+
+    const filled = fillFormFromBrief(data);
+    briefStatus.className = 'brief-status done';
+    briefStatus.innerHTML =
+      `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+       Заполнено ${filled} полей из брифа: <strong>${file.name}</strong>`;
+
+    // обновляем заголовок зоны
+    briefZone.querySelector('.brief-zone-title').innerHTML =
+      `${file.name} <span class="brief-filled-badge">✓ ${filled} полей</span>`;
+    briefZone.querySelector('.brief-zone-sub').textContent = 'Нажмите чтобы загрузить другой файл';
+
+  } catch (err) {
+    briefStatus.className = 'brief-status error';
+    briefStatus.innerHTML = `<strong>Ошибка:</strong> ${err.message}`;
+  }
+}
+
+briefFile.addEventListener('change', () => {
+  if (briefFile.files[0]) uploadBrief(briefFile.files[0]);
+});
+
+briefZone.addEventListener('dragover', e => {
+  e.preventDefault(); briefZone.classList.add('dragover');
+});
+briefZone.addEventListener('dragleave', () => briefZone.classList.remove('dragover'));
+briefZone.addEventListener('drop', e => {
+  e.preventDefault(); briefZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) { briefFile.files = e.dataTransfer.files; uploadBrief(file); }
+});
+
+// ── Предпросмотр строки дат ───────────────────────────────────────────────
+const startDateInput  = document.querySelector('[name=start_date]');
+const durationInput   = document.querySelector('[name=duration_days]');
+const datesPreview    = document.getElementById('datesPreview');
+
+function buildDatesString(startIso, duration) {
+  if (!startIso || !duration) return '';
+  const start = new Date(startIso + 'T00:00:00');
+  const end   = new Date(startIso + 'T00:00:00');
+  end.setDate(end.getDate() + parseInt(duration) - 1);
+  const fmt = (d) => `${d.getDate()} ${MONTHS_RU[d.getMonth()]} ${d.getFullYear()}`;
+  if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
+    return `${start.getDate()}–${end.getDate()} ${MONTHS_RU[start.getMonth()]} ${start.getFullYear()}`;
+  }
+  return `${fmt(start)} – ${fmt(end)}`;
+}
+
+function updateDatesPreview() {
+  const s = startDateInput.value;
+  const d = durationInput.value;
+  datesPreview.textContent = buildDatesString(s, d);
+}
+
+startDateInput.addEventListener('input', updateDatesPreview);
+durationInput.addEventListener('input',  updateDatesPreview);
+
+// ── Генерация ─────────────────────────────────────────────────────────────
+const form   = document.getElementById('form');
+const btn    = document.getElementById('btn');
+const status = document.getElementById('status');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  btn.disabled = true;
+  const useAI = form.querySelector('[name=use_ai_texts]').checked;
+  status.className = 'loading';
+  status.innerHTML = `<div class="spinner"></div> ${useAI ? 'Генерирую тексты через Claude AI и собираю презентацию…' : 'Генерирую файлы…'} &nbsp;<span style="color:#7A9A68;font-size:12px">${useAI ? '(обычно 30–60 сек)' : ''}</span>`;
+
+  try {
+    const fd  = new FormData(form);
+    const res = await fetch('/generate', { method: 'POST', body: fd });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: res.statusText }));
+      throw new Error(err.error || res.statusText);
+    }
+
+    // Скачать файл
+    const blob     = await res.blob();
+    const cd       = res.headers.get('content-disposition') || '';
+    const match    = cd.match(/filename="?([^"]+)"?/);
+    const filename = match ? match[1] : 'proposal.zip';
+
+    const url = URL.createObjectURL(blob);
+    const a   = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+
+    status.className = 'success';
+    status.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Готово — файл скачивается: <strong>${filename}</strong>`;
+
+  } catch (err) {
+    status.className = 'error';
+    status.innerHTML = `<strong>Ошибка:</strong> ${err.message}`;
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>
