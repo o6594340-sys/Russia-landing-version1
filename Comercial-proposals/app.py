@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent / '.env')
 
 from rates_loader import load_japan_rates
-from claude_generator import generate_program, refine_program
+from claude_generator import generate_program, refine_program, enrich_texts
 from excel_generator import create_excel
 from ppt_generator import create_ppt
 from brief_parser import parse_brief
@@ -153,6 +153,8 @@ def download_ppt():
         params = _parse_params(body['params'])
         content = body['program']
         services = load_japan_rates(params['pax'], params['days'], params['include_conference'])
+        # Второй вызов Claude — обогащаем утверждённую программу живыми текстами
+        content = enrich_texts(params, content)
         pptx = create_ppt(params, content, services)
 
         slug = _slug(params['company_name'])

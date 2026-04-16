@@ -449,59 +449,135 @@ def _slide_day(prs, day_data: dict, credits: list):
     _logo(slide, right_align=True)
 
 
-# ── Слайд: Хайлайт (витрина активности) ──────────────────────────────────────
+# ── Слайд: Хайлайт — три варианта вёрстки ────────────────────────────────────
 
-def _slide_highlight(prs, hl: dict, credits: list):
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-
-    # 1. Полноэкранное фото
-    query = hl.get('photo_query', hl.get('title', 'Japan'))
-    img, attr = fetch_photo(query, query)
-    if img:
-        _photo(slide, img, 0, 0, W, H)
-        if attr:
-            credits.append(attr)
-    else:
-        _bg(slide, C.DARK)
-
-    # 2. Градиентный оверлей: левая тёмная полоса для текста
-    panel_w = W * 0.54
-    panel = _rect(slide, 0, 0, panel_w, H, C.DARK)
-    _set_alpha(panel, 0.82)
-
-    # 3. Правая сторона — лёгкое затемнение чтобы фото не резало
-    right_vignette = _rect(slide, panel_w, 0, W - panel_w, H, C.DARK)
-    _set_alpha(right_vignette, 0.18)
-
-    # 4. Красная вертикальная полоска-акцент
-    _rect(slide, panel_w - 0.04, 0, 0.04, H, C.INDIGO)
-
-    # 5. Категория + отсылка к дню
-    category = hl.get('category', '')
-    day_ref  = hl.get('day_ref', '')
+def _hl_label_and_text(slide, hl: dict, text_x: float, panel_w: float, logo_right: bool):
+    """Общий блок: категория + заголовок + линия + описание."""
+    category   = hl.get('category', '')
+    day_ref    = hl.get('day_ref', '')
     label_text = f'{category}  ·  {day_ref}' if category and day_ref else category or day_ref
     if label_text:
-        _label(slide, label_text, M, 1.0, panel_w - M * 2, C.GOLD)
+        _label(slide, label_text, text_x, 1.0, panel_w - M, C.GOLD)
 
-    # 6. Заголовок — крупно
     title = hl.get('title', '')
-    _txt(slide, title,
-         M, 1.35, panel_w - M * 1.5, 1.6,
+    _txt(slide, title, text_x, 1.35, panel_w - M * 1.2, 1.6,
          size=30, bold=True, color=C.WHITE, font='Georgia')
 
-    # 7. Тонкая линия под заголовком
-    _line(slide, M, 3.1, panel_w - M * 2, C.INDIGO, 1.5)
+    _line(slide, text_x, 3.1, panel_w - M, C.INDIGO, 1.5)
 
-    # 8. Описание
     description = hl.get('description', '')
     if description:
         paras = [p.strip() for p in description.split('\n') if p.strip()]
-        _multiline(slide, paras,
-                   M, 3.25, panel_w - M * 1.5, 3.6,
+        _multiline(slide, paras, text_x, 3.25, panel_w - M * 1.2, 3.6,
                    size=11.5, color=RGBColor(0xE0, 0xDD, 0xD8),
                    font='Arial', line_spacing=1.65)
 
-    _logo(slide, right_align=False)
+    _logo(slide, right_align=logo_right)
+
+
+def _hl_layout_a(prs, hl: dict, img: bytes, credits: list):
+    """Вариант А: фото справа, текст слева."""
+    slide   = prs.slides.add_slide(prs.slide_layouts[6])
+    panel_w = W * 0.52
+
+    if img:
+        _photo(slide, img, panel_w, 0, W - panel_w, H)
+    else:
+        _rect(slide, panel_w, 0, W - panel_w, H, C.DARK)
+
+    _bg(slide, C.DARK)
+    _rect(slide, 0, 0, panel_w, H, C.DARK)
+    panel = _rect(slide, 0, 0, panel_w, H, RGBColor(0x12, 0x08, 0x09))
+    _set_alpha(panel, 0.92)
+
+    right_vignette = _rect(slide, panel_w, 0, W - panel_w, H, C.DARK)
+    _set_alpha(right_vignette, 0.15)
+
+    _rect(slide, panel_w - 0.04, 0, 0.04, H, C.INDIGO)
+    _hl_label_and_text(slide, hl, M, panel_w, logo_right=False)
+
+
+def _hl_layout_b(prs, hl: dict, img: bytes, credits: list):
+    """Вариант Б: фото слева, текст справа."""
+    slide   = prs.slides.add_slide(prs.slide_layouts[6])
+    photo_w = W * 0.48
+    text_x  = photo_w + 0.14
+    panel_w = W - text_x - 0.1
+
+    if img:
+        _photo(slide, img, 0, 0, photo_w, H)
+    else:
+        _rect(slide, 0, 0, photo_w, H, C.DARK)
+
+    _bg(slide, RGBColor(0x12, 0x08, 0x09))
+    _rect(slide, photo_w, 0, W - photo_w, H, RGBColor(0x12, 0x08, 0x09))
+
+    left_vignette = _rect(slide, 0, 0, photo_w, H, C.DARK)
+    _set_alpha(left_vignette, 0.15)
+
+    _rect(slide, photo_w, 0, 0.04, H, C.INDIGO)
+    _hl_label_and_text(slide, hl, text_x, panel_w, logo_right=True)
+
+
+def _hl_layout_c(prs, hl: dict, img: bytes, credits: list):
+    """Вариант В: фото на весь слайд, тёмная плашка снизу с текстом."""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+
+    if img:
+        _photo(slide, img, 0, 0, W, H)
+    else:
+        _bg(slide, C.DARK)
+
+    # Тёмная плашка снизу
+    plashka_h = 3.0
+    plashka_y = H - plashka_h
+    plashka = _rect(slide, 0, plashka_y, W, plashka_h, C.DARK)
+    _set_alpha(plashka, 0.88)
+
+    # Красная линия сверху плашки
+    _rect(slide, M, plashka_y + 0.01, W - M * 2, 0.03, C.INDIGO)
+
+    # Категория + день
+    category   = hl.get('category', '')
+    day_ref    = hl.get('day_ref', '')
+    label_text = f'{category}  ·  {day_ref}' if category and day_ref else category or day_ref
+    if label_text:
+        _label(slide, label_text, M, plashka_y + 0.18, W - M * 2, C.GOLD)
+
+    # Заголовок крупно
+    title = hl.get('title', '')
+    _txt(slide, title, M, plashka_y + 0.45, W * 0.55, 1.0,
+         size=28, bold=True, color=C.WHITE, font='Georgia')
+
+    # Описание — две колонки на широкой плашке
+    description = hl.get('description', '')
+    if description:
+        paras = [p.strip() for p in description.split('\n') if p.strip()]
+        mid = len(paras) // 2 + len(paras) % 2
+        col_w = W / 2 - M - 0.1
+        _multiline(slide, paras[:mid], M, plashka_y + 1.55, col_w, 1.3,
+                   size=10.5, color=RGBColor(0xE0, 0xDD, 0xD8),
+                   font='Arial', line_spacing=1.5)
+        if paras[mid:]:
+            _multiline(slide, paras[mid:], W / 2 + 0.1, plashka_y + 1.55, col_w, 1.3,
+                       size=10.5, color=RGBColor(0xE0, 0xDD, 0xD8),
+                       font='Arial', line_spacing=1.5)
+
+    _logo(slide, right_align=True)
+
+
+_HL_LAYOUTS = [_hl_layout_a, _hl_layout_b, _hl_layout_c]
+
+
+def _slide_highlight(prs, hl: dict, credits: list, index: int = 0):
+    """Выбирает вариант вёрстки по индексу (A → Б → В → A...)."""
+    query = hl.get('photo_query', hl.get('title', 'Japan'))
+    img, attr = fetch_photo(query, query)
+    if attr:
+        credits.append(attr)
+
+    layout_fn = _HL_LAYOUTS[index % len(_HL_LAYOUTS)]
+    layout_fn(prs, hl, img, credits)
 
 
 # ── Слайд: Размещение ─────────────────────────────────────────────────────────
@@ -689,8 +765,8 @@ def create_ppt(params: dict, content: dict, services: list) -> bytes:
     for day_data in content.get('days', []):
         _slide_day(prs, day_data, credits)
 
-    for hl in content.get('highlights', []):
-        _slide_highlight(prs, hl, credits)
+    for i, hl in enumerate(content.get('highlights', [])):
+        _slide_highlight(prs, hl, credits, index=i)
 
     _slide_hotels(prs, params, content, credits)
     _slide_closing(prs, params, credits)
