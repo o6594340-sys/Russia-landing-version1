@@ -47,6 +47,8 @@ def _parse_params(data: dict) -> dict:
         'special_requests':   data.get('special_requests', '').strip(),
         'include_conference': data.get('include_conference') in (True, 'true', 'on', '1'),
         'conference_day':     int(data.get('conference_day') or 2),
+        'activity_focus':     data.get('activity_focus') or [],   # list of strings
+        'pace':               data.get('pace', 'Умеренный').strip(),
     }
 
 
