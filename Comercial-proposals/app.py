@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent / '.env')
 
 from rates_loader import load_japan_rates
+from service_extractor import extract_services
 from claude_generator import generate_program, refine_program, enrich_texts
 from excel_generator import create_excel
 from ppt_generator import create_ppt
@@ -133,7 +134,8 @@ def download_excel():
         body = request.json
         params = _parse_params(body['params'])
         content = body['program']
-        services = load_japan_rates(params['pax'], params['days'], params['include_conference'])
+        # Сервисы извлекаем из утверждённой программы, а не из шаблона
+        services = extract_services(content, params)
         xlsx = create_excel(params, services, content)
 
         slug = _slug(params['company_name'])

@@ -193,3 +193,29 @@ def load_japan_rates(pax: int, days_count: int, include_conference: bool = True)
         })
 
     return result
+
+
+def load_price_dict() -> dict:
+    """
+    Читает Japan-rates-sample.xlsx как прайс-лист.
+    Возвращает {название_сервиса_ru: цена_за_единицу}.
+    Используется service_extractor для подстановки цен.
+    """
+    wb = openpyxl.load_workbook(BASE_DIR / 'Japan-rates-sample.xlsx', data_only=True)
+    ws = wb.active
+
+    prices = {}
+    for row in ws.iter_rows(min_row=9, values_only=True):
+        service_raw = row[2]
+        price = row[5]
+        if not service_raw:
+            continue
+        service_raw = str(service_raw).strip()
+        # Пропускаем заголовки дней
+        if service_raw.startswith('Day') or service_raw == 'Other':
+            continue
+        if price and float(price) > 0:
+            service_ru = _translate_service(service_raw)
+            prices[service_ru] = float(price)
+
+    return prices
