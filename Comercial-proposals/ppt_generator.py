@@ -367,121 +367,184 @@ def _parse_city(text: str) -> str:
     return m.group(1) if m else ''
 
 
+def _parse_time_entry(line: str):
+    """Разбирает строку '10:00 — Активность' → (time_str, activity_str)."""
+    line = re.sub(r'\s*\([^)]{2,20}\)', '', line).strip()
+    m = re.match(r'^(\d{1,2}:\d{2}(?:[–—\-]\d{1,2}:\d{2})?)(.*)', line)
+    if m:
+        time_str = m.group(1).strip()
+        act_str  = re.sub(r'^[\s—–\-]+', '', m.group(2)).strip()
+        return time_str, act_str
+    return '', line
+
+
+def _overview_collect_entries(day_data: dict) -> list:
+    """Собирает все тайминг-строки из morning + afternoon + evening."""
+    entries = []
+    for key in ('morning', 'afternoon', 'evening'):
+        raw = day_data.get(key, '').strip()
+        if not raw:
+            continue
+        for line in raw.split('\n'):
+            line = line.strip()
+            if line:
+                t, a = _parse_time_entry(line)
+                entries.append((t, a))
+    return entries
+
+
+def _overview_entry_box(slide, time_str: str, activity: str,
+                        left, top, width, height, font_size=9.0):
+    """Одна строка тайминга: ВРЕМЯ (красный) + текст (тёмный)."""
+    from pptx.oxml.ns import qn as _qn
+    from lxml import etree as _etree
+
+    box = slide.shapes.add_textbox(
+        Inches(left), Inches(top), Inches(width), Inches(height)
+    )
+    tf = box.text_frame
+    tf.word_wrap = False
+
+    p = tf.paragraphs[0]
+    pPr = p._p.get_or_add_pPr()
+    lnSpc = _etree.SubElement(pPr, _qn('a:lnSpc'))
+    spcPct = _etree.SubElement(lnSpc, _qn('a:spcPct'))
+    spcPct.set('val', '100000')
+
+    if time_str:
+        r_t = p.add_run()
+        r_t.text = time_str
+        r_t.font.name = 'Arial'
+        r_t.font.size = Pt(font_size)
+        r_t.font.bold = True
+        r_t.font.color.rgb = C.INDIGO
+
+        r_sp = p.add_run()
+        r_sp.text = '  '
+        r_sp.font.name = 'Arial'
+        r_sp.font.size = Pt(font_size)
+
+    r_a = p.add_run()
+    r_a.text = activity
+    r_a.font.name = 'Arial'
+    r_a.font.size = Pt(font_size)
+    r_a.font.color.rgb = C.INK
+
+
 def _slide_overview(prs, params: dict, content: dict):
-    """Схематичный обзорный слайд: тайминг по дням, без описаний."""
+    """Обзорный слайд: сплошной тайминг по дням (время + активность)."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     _bg(slide, C.BEIGE)
 
     days = content.get('days', [])
-    n = max(len(days), 1)
+    n    = max(len(days), 1)
 
-    # ── Шапка ────────────────────────────────────────────────────────────────
+    # ── Шапка ─────────────────────────────────────────────────────────────────
     HDR_H = 0.82
     _rect(slide, 0, 0, W, HDR_H, C.DARK)
     _rect(slide, M, HDR_H - 0.03, W - M * 2, 0.03, C.INDIGO)
-
     _label(slide, 'Обзор программы', M, 0.10, 6.0, C.GOLD)
-    dates_str = params.get('dates', '')
-    route_label = f'Япония  ·  {n} {"день" if n == 1 else "дня" if n in (2, 3, 4) else "дней"}'
-    if dates_str:
-        route_label += f'  ·  {dates_str}'
-    _txt(slide, route_label,
-         M, 0.32, W - M * 2 - 0.3, 0.46,
+
+    n_word = 'день' if n == 1 else ('дня' if n in (2, 3, 4) else 'дней')
+    route_label = f'Япония  ·  {n} {n_word}'
+    if params.get('dates'):
+        route_label += f'  ·  {params["dates"]}'
+    _txt(slide, route_label, M, 0.32, W - M * 2 - 0.3, 0.46,
          size=16, bold=True, color=C.WHITE, font='Georgia')
 
-    # ── Сетка ────────────────────────────────────────────────────────────────
-    GRID_TOP = HDR_H + 0.06
-    GRID_BOT = H - 0.30
-    GRID_H   = GRID_BOT - GRID_TOP
+    # ── Параметры сетки ────────────────────────────────────────────────────────
+    GRID_TOP  = HDR_H + 0.06
+    GRID_BOT  = H - 0.30
+    GRID_H    = GRID_BOT - GRID_TOP
+    DAY_HDR_H = 0.46
+    COL_GAP   = 0.07
+    avail_w   = W - M * 2
+    col_w     = avail_w / n
 
-    DAY_HDR_H  = 0.44          # заголовок колонки
-    SECTION_H  = (GRID_H - DAY_HDR_H) / 3   # высота одной секции (утро/день/вечер)
-    BADGE_H    = 0.19          # полоска с названием секции
-    COL_GAP    = 0.06          # зазор между колонками
-    avail_w    = W - M * 2
-    col_w      = avail_w / n
-
-    SECTIONS = [
-        ('УТРО',  'morning',   C.INDIGO,                        C.WHITE),
-        ('ДЕНЬ',  'afternoon', C.GOLD,                          C.INK),
-        ('ВЕЧЕР', 'evening',   RGBColor(0x2E, 0x2E, 0x2E),    C.WHITE),
-    ]
-    # Чередующийся лёгкий фон строк
-    ROW_FILLS = [C.BEIGE, C.MIST, C.BEIGE]
+    # Сначала собираем все строки чтобы знать максимум
+    all_entries = [_overview_collect_entries(d) for d in days]
+    max_e  = max((len(e) for e in all_entries), default=7)
+    max_e  = max(max_e, 5)   # не меньше 5 строк, чтобы не было огромных ячеек
+    avail_h = GRID_H - DAY_HDR_H - 0.20
+    entry_h = min(avail_h / max_e, 0.62)   # не выше 0.62" на строку
+    font_sz = 9.0  # минимум 9pt везде
 
     for di, day_data in enumerate(days):
-        x   = M + di * col_w
-        cx  = x + COL_GAP / 2
-        cw  = col_w - COL_GAP   # эффективная ширина колонки
+        x  = M + di * col_w
+        cx = x + COL_GAP / 2
+        cw = col_w - COL_GAP
 
-        # ── Заголовок дня ─────────────────────────────────────────────────
-        day_num = day_data.get('day_num', di + 1)
+        # ── Заголовок колонки ─────────────────────────────────────────────
+        day_num   = day_data.get('day_num', di + 1)
         raw_title = day_data.get('title', f'День {day_num}')
-        # Убираем "День N — " из начала
-        short_title = re.sub(r'^День\s*\d+\s*[—–-]\s*', '', raw_title).strip()
-        # Ищем город в morning/afternoon
-        city = (_parse_city(day_data.get('morning', ''))
-                or _parse_city(day_data.get('afternoon', ''))
-                or '')
+        short_t   = re.sub(r'^День\s*\d+\s*[—–-]\s*', '', raw_title).strip()
+        city      = (_parse_city(day_data.get('morning', ''))
+                     or _parse_city(day_data.get('afternoon', ''))
+                     or '')
 
-        # Фон заголовка — чередуем красный и тёмный
-        hdr_fill = C.INDIGO if di % 2 == 0 else C.DARK
+        hdr_fill  = C.INDIGO if di % 2 == 0 else C.DARK
         _rect(slide, cx, GRID_TOP, cw, DAY_HDR_H, hdr_fill)
 
         _txt(slide, f'ДЕНЬ {day_num}',
              cx + 0.10, GRID_TOP + 0.04, cw - 0.18, 0.18,
              size=7, bold=True, color=C.GOLD, font='Arial')
 
-        # Название дня (обрезаем если не помещается)
-        max_ch = max(10, int(cw * 11.5))
-        display_title = (short_title[:max_ch - 1] + '…') if len(short_title) > max_ch else short_title
-        _txt(slide, display_title,
-             cx + 0.10, GRID_TOP + 0.20, cw - 0.18, 0.24,
-             size=8, bold=False, color=C.WHITE, font='Arial')
+        max_ch      = max(12, int(cw * 11))
+        disp_title  = (short_t[:max_ch - 1] + '…') if len(short_t) > max_ch else short_t
+        title_y     = GRID_TOP + 0.22
+        _txt(slide, disp_title, cx + 0.10, title_y, cw - 0.18, 0.22,
+             size=8.5, bold=True, color=C.WHITE, font='Arial')
 
-        # Бейдж города
         if city:
             _txt(slide, city.upper(),
-                 cx + 0.10, GRID_TOP + 0.26, cw - 0.18, 0.18,
-                 size=6, bold=True, color=RGBColor(0xCC, 0xC9, 0xC2), font='Arial')
+                 cx + 0.10, GRID_TOP + 0.30, cw - 0.18, 0.16,
+                 size=6.5, bold=True,
+                 color=RGBColor(0xCC, 0xC9, 0xC2), font='Arial')
 
-        # Тонкий разделитель между колонками
+        # Разделитель между колонками
         if di > 0:
-            _rect(slide, x, GRID_TOP, 0.015, GRID_H, C.STONE)
+            _rect(slide, x, GRID_TOP, 0.014, GRID_H, C.STONE)
 
-        # ── Секции утро / день / вечер ────────────────────────────────────
-        for si, (label, key, badge_fill, badge_text_col) in enumerate(SECTIONS):
-            sy = GRID_TOP + DAY_HDR_H + si * SECTION_H
+        # Фон контентной области
+        _rect(slide, cx, GRID_TOP + DAY_HDR_H, cw,
+              GRID_H - DAY_HDR_H, C.BEIGE)
 
-            # Фон строки
-            _rect(slide, cx, sy, cw, SECTION_H - 0.02, ROW_FILLS[si])
+        # ── Тайминг-строки ────────────────────────────────────────────────
+        entries   = all_entries[di]
+        content_y = GRID_TOP + DAY_HDR_H + 0.10
 
-            # Бейдж секции
-            _rect(slide, cx, sy, cw, BADGE_H, badge_fill)
-            _txt(slide, label,
-                 cx, sy, cw, BADGE_H,
-                 size=6.5, bold=True, color=badge_text_col,
-                 align=PP_ALIGN.CENTER, font='Arial')
-
-            # Текст тайминга
+        # Определяем где кончается morning и afternoon для разделителей
+        def _section_len(key):
             raw = day_data.get(key, '').strip()
-            if raw:
-                lines = [l.strip() for l in raw.split('\n') if l.strip()]
-                # Убираем город из скобок для компактности
-                cleaned = [re.sub(r'\s*\([^)]{2,20}\)', '', l).strip() for l in lines]
-                # Обрезаем слишком длинные строки
-                max_line = max(8, int(cw * 12.5))
-                trimmed = [(l[:max_line - 1] + '…') if len(l) > max_line else l
-                           for l in cleaned[:5]]   # max 5 строк на секцию
+            return len([l for l in raw.split('\n') if l.strip()]) if raw else 0
 
-                if trimmed:
-                    _multiline(slide, trimmed,
-                               cx + 0.08, sy + BADGE_H + 0.05,
-                               cw - 0.14, SECTION_H - BADGE_H - 0.08,
-                               size=7.5, color=C.INK, font='Arial',
-                               line_spacing=1.40)
+        morning_len   = _section_len('morning')
+        afternoon_len = _section_len('afternoon')
 
-    # ── Нижняя золотая линия + футер ─────────────────────────────────────────
+        for ei, (time_str, activity) in enumerate(entries):
+            # Тонкий разделитель перед началом午后/вечера
+            if ei == morning_len and morning_len > 0 and ei > 0:
+                sep_y = content_y + ei * entry_h - 0.04
+                _rect(slide, cx + 0.08, sep_y, cw - 0.16, 0.012, C.GOLD)
+            elif ei == morning_len + afternoon_len and afternoon_len > 0 and ei > 0:
+                sep_y = content_y + ei * entry_h - 0.04
+                _rect(slide, cx + 0.08, sep_y, cw - 0.16, 0.012, C.STONE)
+
+            ey = content_y + ei * entry_h
+
+            # Чередующийся фон строки
+            row_fill = C.BEIGE if ei % 2 == 0 else C.MIST
+            _rect(slide, cx, ey, cw, entry_h - 0.02, row_fill)
+
+            # Контент строки
+            max_a = max(10, int(cw * 12))
+            act   = (activity[:max_a - 1] + '…') if len(activity) > max_a else activity
+            _overview_entry_box(slide, time_str, act,
+                                cx + 0.10, ey + 0.03,
+                                cw - 0.18, entry_h - 0.06,
+                                font_size=font_sz)
+
+    # ── Нижняя линия + футер ──────────────────────────────────────────────────
     _line(slide, M, GRID_BOT - 0.01, W - M * 2, C.GOLD, 1.0)
     _footer_bar(slide)
     _logo(slide, right_align=True)
@@ -577,79 +640,108 @@ def _slide_day_a(prs, day_data: dict, credits: list):
     _logo(slide, right_align=True)
 
 
-# ── Layout B: тёмная панель слева, фото справа ───────────────────────────────
+# ── Layout B: без фото — чистая инфографика, три колонки на светлом фоне ──────
 
 def _slide_day_b(prs, day_data: dict, credits: list):
-    """Вертикальный сплит: расписание в тёмной панели слева, фото справа."""
+    """Текстовый слайд без фото: три колонки тайминга на бежевом фоне."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     day_num = day_data.get('day_num', 1)
 
-    PANEL_W = W * 0.42      # ~5.6"
-    PHOTO_X = PANEL_W + 0.04
+    _bg(slide, C.BEIGE)
 
-    img = _day_fetch_photo(day_num, credits)
-    if img:
-        _photo(slide, img, PHOTO_X, 0, W - PHOTO_X, H)
-    else:
-        _rect(slide, PHOTO_X, 0, W - PHOTO_X, H, C.DARK)
+    # ── Шапка ────────────────────────────────────────────────────────────────
+    HDR_H = 1.30
+    _rect(slide, 0, 0, W, HDR_H, C.DARK)
+    _rect(slide, M, HDR_H, W - M * 2, 0.03, C.INDIGO)
 
-    # Тёмная панель и фон
-    _bg(slide, C.DARK)
-    _rect(slide, 0, 0, PANEL_W, H, RGBColor(0x12, 0x08, 0x09))
-    vignette = _rect(slide, PHOTO_X, 0, W - PHOTO_X, H, C.DARK)
-    _set_alpha(vignette, 0.12)
-
-    # Красная вертикальная линия
-    _rect(slide, PANEL_W, 0, 0.04, H, C.INDIGO)
-
-    # Метка + заголовок
-    _label(slide, 'Программа', M, 0.22, PANEL_W - M, C.GOLD)
+    _label(slide, 'Программа', M, 0.14, 4.0, C.GOLD)
     title = day_data.get('title', f'День {day_num}')
-    _txt(slide, title, M, 0.52, PANEL_W - M * 1.5, 1.35,
-         size=20, bold=True, color=C.WHITE, font='Georgia')
+    _txt(slide, title, M, 0.40, W - M * 2 - 2.8, 0.80,
+         size=24, bold=True, color=C.WHITE, font='Georgia')
 
-    # Ghost номер — светлый, низ правого края панели
-    _txt(slide, str(day_num).zfill(2),
-         PANEL_W - 2.55, H - 3.2, 2.5, 2.8,
-         size=120, bold=True, color=C.GHOST, font='Georgia')
-
-    _rect(slide, M, 2.05, PANEL_W - M * 1.5, 0.03, C.INDIGO)
-
-    # Описание
     description = day_data.get('description', '')
     if description:
         _txt(slide, description,
-             M, 2.12, PANEL_W - M * 1.5, 0.95,
-             size=11, italic=True, color=RGBColor(0xCC, 0xC9, 0xC2), font='Georgia')
+             M, 0.95, W - M * 2 - 2.8, 0.42,
+             size=11, italic=True,
+             color=RGBColor(0xCC, 0xC9, 0xC2), font='Georgia')
 
-    # Расписание вертикально — три секции под описанием
-    sections = [
-        ('Утро',  'morning',   C.INDIGO,                    C.WHITE),
-        ('День',  'afternoon', C.GOLD,                      C.INK),
-        ('Вечер', 'evening',   RGBColor(0x3A, 0x3A, 0x3A), C.WHITE),
+    # Ghost номер справа в шапке
+    _txt(slide, str(day_num).zfill(2),
+         W - 2.65, -0.15, 2.5, 1.55,
+         size=120, bold=True, color=RGBColor(0x30, 0x22, 0x24), font='Georgia')
+
+    # ── Три колонки тайминга ─────────────────────────────────────────────────
+    SCHED_TOP  = HDR_H + 0.20
+    SCHED_BOT  = H - 0.35
+    SCHED_H    = SCHED_BOT - SCHED_TOP
+    COL_GAP    = 0.28
+    col_w      = (W - M * 2 - COL_GAP * 2) / 3
+
+    SECTIONS = [
+        ('Утро',   'morning',   C.INDIGO, C.WHITE,                        C.INDIGO),
+        ('День',   'afternoon', C.GOLD,   C.INK,                          C.GOLD),
+        ('Вечер',  'evening',   C.INK,    RGBColor(0xF0, 0xED, 0xE8),    C.STONE),
     ]
-    sched_top = 3.20
-    sec_h = (H - sched_top - 0.35) / 3
 
-    for i, (label_text, key, badge_fill, badge_text_color) in enumerate(sections):
-        y = sched_top + i * sec_h
-        if i > 0:
-            _rect(slide, M, y, PANEL_W - M * 1.5, 0.015,
-                  RGBColor(0x35, 0x30, 0x30))
-        _rect(slide, M, y + 0.05, 1.1, 0.26, badge_fill)
+    for i, (label_text, key, hdr_fill, hdr_text, time_color) in enumerate(SECTIONS):
+        cx = M + i * (col_w + COL_GAP)
+
+        # Цветная шапка колонки
+        _rect(slide, cx, SCHED_TOP, col_w, 0.34, hdr_fill)
         _txt(slide, label_text.upper(),
-             M, y + 0.05, 1.1, 0.26,
-             size=7.5, bold=True, color=badge_text_color,
-             align=PP_ALIGN.CENTER, font='Arial')
-        text = day_data.get(key, '')
-        if text:
-            paras = [p.strip() for p in text.split('\n') if p.strip()]
-            _multiline(slide, paras if paras else [text],
-                       M, y + 0.36, PANEL_W - M * 1.5, sec_h - 0.42,
-                       size=9.5, color=RGBColor(0xE0, 0xDD, 0xD8),
-                       font='Arial', line_spacing=1.5)
+             cx + 0.12, SCHED_TOP, col_w - 0.18, 0.34,
+             size=9, bold=True, color=hdr_text, font='Arial')
 
-    _logo(slide, right_align=False)
+        # Левая цветная полоска-акцент
+        _rect(slide, cx, SCHED_TOP + 0.34, 0.04, SCHED_H - 0.34, hdr_fill)
+
+        # Фон колонки
+        _rect(slide, cx + 0.04, SCHED_TOP + 0.34, col_w - 0.04,
+              SCHED_H - 0.34, C.BEIGE)
+
+        # Строки тайминга
+        raw = day_data.get(key, '').strip()
+        if not raw:
+            continue
+        lines = [l.strip() for l in raw.split('\n') if l.strip()]
+        lines = [re.sub(r'\s*\([^)]{2,20}\)', '', l).strip() for l in lines]
+
+        # Динамическая высота строки
+        entry_h = min((SCHED_H - 0.44) / max(len(lines), 1), 0.68)
+        font_sz = 9.5 if entry_h >= 0.44 else 9.0  # минимум 9pt
+
+        TIME_W = 1.0  # фиксированная ширина поля времени (дюймы)
+
+        for ei, line in enumerate(lines):
+            t, act = _parse_time_entry(line)
+            ey = SCHED_TOP + 0.44 + ei * entry_h
+
+            # Чередующийся фон
+            if ei % 2 == 1:
+                _rect(slide, cx + 0.04, ey - 0.03, col_w - 0.04,
+                      entry_h, C.MIST)
+
+            # Время — цветной акцент, фиксированная ширина
+            if t:
+                _txt(slide, t,
+                     cx + 0.14, ey, TIME_W, entry_h,
+                     size=font_sz, bold=True, color=time_color, font='Arial')
+                act_x = cx + 0.14 + TIME_W + 0.05
+                act_w = col_w - 0.14 - TIME_W - 0.14
+            else:
+                act_x = cx + 0.14
+                act_w = col_w - 0.22
+
+            max_ch = max(12, int(act_w * 12))
+            act_disp = (act[:max_ch - 1] + '…') if len(act) > max_ch else act
+            _txt(slide, act_disp,
+                 act_x, ey, act_w, entry_h,
+                 size=font_sz, color=C.INK, font='Arial')
+
+    _line(slide, M, SCHED_BOT + 0.01, W - M * 2, C.GOLD, 1.0)
+    _footer_bar(slide)
+    _logo(slide, right_align=True)
 
 
 # ── Layout C: фото сверху, чистая тёмная панель снизу ────────────────────────
@@ -690,18 +782,20 @@ def _slide_day_c(prs, day_data: dict, credits: list):
          W - 3.0, 0.15, 2.8, 2.6,
          size=120, bold=True, color=C.GHOST, font='Georgia')
 
-    # Описание — в тёмной панели
+    # Описание — в тёмной панели, только первое предложение (места мало)
     description = day_data.get('description', '')
     if description:
-        _txt(slide, description,
-             M, PANEL_Y + 0.15, W - M * 2, 0.70,
-             size=11.5, italic=True, color=RGBColor(0xCC, 0xC9, 0xC2), font='Georgia')
+        first_sent = re.split(r'(?<=[.!?])\s', description)[0].strip()
+        _txt(slide, first_sent,
+             M, PANEL_Y + 0.14, W - M * 2 - 0.5, 0.55,
+             size=11, italic=True, color=RGBColor(0xCC, 0xC9, 0xC2), font='Georgia')
 
     # Три колонки расписания в нижней панели
-    col_w = (W - M * 2 - 0.2) / 3
-    sched_y = PANEL_Y + (1.0 if description else 0.28)
+    col_w  = (W - M * 2 - 0.2) / 3
+    sched_y = PANEL_Y + (0.80 if description else 0.22)
+    text_h  = H - sched_y - 0.55
     _day_schedule_cols(slide, day_data, y_badge=sched_y,
-                       col_w=col_w, text_h=H - sched_y - 0.65)
+                       col_w=col_w, text_h=text_h)
 
     _logo(slide, right_align=True)
 
