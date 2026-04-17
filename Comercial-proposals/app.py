@@ -49,6 +49,9 @@ def _parse_params(data: dict) -> dict:
         'conference_day':     int(data.get('conference_day') or 2),
         'activity_focus':     data.get('activity_focus') or [],   # list of strings
         'pace':               data.get('pace', 'Умеренный').strip(),
+        'route':              data.get('route', 'tokyo').strip(),
+        'arrival_city':       data.get('arrival_city', 'Токио (Нарита / Ханэда)').strip(),
+        'departure_city':     data.get('departure_city', 'Токио (Нарита / Ханэда)').strip(),
     }
 
 

@@ -348,11 +348,42 @@
         <div class="g2">
           <div class="field">
             <label>Кол-во дней <span class="req">*</span></label>
-            <input type="number" name="days" value="4" min="2" max="10" required>
+            <input type="number" name="days" value="4" min="2" max="14" required>
           </div>
           <div class="field">
             <label>Примерные даты</label>
             <input type="text" name="dates" placeholder="апрель 2026">
+          </div>
+        </div>
+        <div class="field">
+          <label>Маршрут (города)</label>
+          <select name="route" id="route-select" onchange="updateMinDays()">
+            <option value="tokyo">Только Токио</option>
+            <option value="tokyo_hakone">Токио + Хаконэ (от 4 дней)</option>
+            <option value="tokyo_kyoto">Токио + Киото (от 5 дней)</option>
+            <option value="tokyo_kyoto_nara">Токио + Киото + Нара (от 6 дней)</option>
+            <option value="tokyo_hakone_kyoto">Токио + Хаконэ + Киото (от 6 дней)</option>
+            <option value="tokyo_hakone_kyoto_nara">Токио + Хаконэ + Киото + Нара (от 7 дней)</option>
+          </select>
+        </div>
+        <div class="g2">
+          <div class="field">
+            <label>Аэропорт / город прилёта</label>
+            <select name="arrival_city">
+              <option value="Токио (Нарита / Ханэда)">Токио (Нарита / Ханэда)</option>
+              <option value="Осака (Кансай)">Осака (Кансай)</option>
+              <option value="Нагоя">Нагоя</option>
+              <option value="">Уточняется</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Аэропорт / город вылета</label>
+            <select name="departure_city">
+              <option value="Токио (Нарита / Ханэда)">Токио (Нарита / Ханэда)</option>
+              <option value="Осака (Кансай / Итами)">Осака (Кансай / Итами)</option>
+              <option value="Нагоя">Нагоя</option>
+              <option value="">Уточняется</option>
+            </select>
           </div>
         </div>
 
@@ -677,6 +708,25 @@ function toggleConf(cb) {
   if (cb.checked) {
     const et = document.querySelector('[name=event_type]');
     if (et.value === 'Инсентив') et.value = 'Смешанный';
+  }
+}
+
+const ROUTE_MIN_DAYS = {
+  'tokyo': 2,
+  'tokyo_hakone': 4,
+  'tokyo_kyoto': 5,
+  'tokyo_kyoto_nara': 6,
+  'tokyo_hakone_kyoto': 6,
+  'tokyo_hakone_kyoto_nara': 7,
+};
+
+function updateMinDays() {
+  const route = document.getElementById('route-select').value;
+  const daysInput = document.querySelector('[name=days]');
+  const minDays = ROUTE_MIN_DAYS[route] || 2;
+  daysInput.min = minDays;
+  if (parseInt(daysInput.value) < minDays) {
+    daysInput.value = minDays;
   }
 }
 
