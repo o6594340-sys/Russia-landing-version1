@@ -849,14 +849,23 @@ def _slide_highlight(prs, hl: dict, credits: list, index: int = 0):
 
 # ── Слайд: Размещение ─────────────────────────────────────────────────────────
 
-def _slide_hotels(prs, params: dict, content: dict, credits: list):
+_HOTEL_PHOTO_QUERIES = [
+    ('Japanese luxury hotel lobby interior', 'Tokyo hotel room modern'),
+    ('Tokyo hotel garden view room', 'Japan hotel panoramic window'),
+]
+
+
+def _slide_hotel_card(prs, params: dict, content: dict, credits: list,
+                      variant_label: str, hotel_name: str,
+                      show_closing: bool = False, photo_index: int = 0):
+    """Один слайд отеля. variant_label = 'ОПЦИЯ А — Prince Park Tower' и т.п."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
 
     photo_w = W * 0.48
-    text_x = photo_w + 0.12
+    text_x  = photo_w + 0.12
 
-    # Фото слева
-    img, attr = fetch_photo('Japanese hotel luxury interior', 'Tokyo luxury hotel lobby')
+    q1, q2 = _HOTEL_PHOTO_QUERIES[photo_index % len(_HOTEL_PHOTO_QUERIES)]
+    img, attr = fetch_photo(q1, q2)
     if img:
         _photo(slide, img, 0, 0, photo_w, H)
         if attr:
@@ -868,55 +877,73 @@ def _slide_hotels(prs, params: dict, content: dict, credits: list):
     _rect(slide, photo_w, 0, W - photo_w, H, C.BEIGE)
     _rect(slide, photo_w, 0, 0.04, H, C.INDIGO)
 
-    # Метка и заголовок
-    _label(slide, 'Размещение', text_x, 1.0, 5.0, C.INDIGO)
-    _line(slide, text_x, 1.4, W - text_x - M * 0.5, C.GOLD, 1.5)
-    _txt(slide, f'Отели {params["hotel_level"]} — Токио',
-         text_x, 1.5, W - text_x - 0.5, 0.9,
-         size=20, bold=True, color=C.INK, font='Georgia')
+    # Метка «ОПЦИЯ А / Б» + название отеля
+    _label(slide, variant_label, text_x, 0.72, W - text_x - 0.5, C.INDIGO)
+    _line(slide, text_x, 1.10, W - text_x - M * 0.5, C.GOLD, 1.5)
+    _txt(slide, hotel_name,
+         text_x, 1.18, W - text_x - 0.5, 1.0,
+         size=22, bold=True, color=C.INK, font='Georgia')
 
-    # Описание
-    hotel_desc = content.get('hotel_description', '')
-    paras = [p.strip() for p in hotel_desc.split('\n') if p.strip()]
-    _multiline(slide, paras if paras else [hotel_desc],
-               text_x, 2.55, W - text_x - 0.5, 2.0,
-               size=11.5, color=C.INK, font='Arial', line_spacing=1.55)
+    # Описание отеля (из enrich_texts; только на первом слайде)
+    hotel_desc = content.get('hotel_description', '') if photo_index == 0 else ''
+    paras = [p.strip() for p in hotel_desc.split('\n') if p.strip()] if hotel_desc else []
+    if paras:
+        _multiline(slide, paras,
+                   text_x, 2.35, W - text_x - 0.5, 2.0,
+                   size=11.5, color=C.INK, font='Arial', line_spacing=1.55)
 
     # Параметры
-    twn = params.get('twn', 0)
-    sgl = params.get('sgl', 0)
-    room_parts = []
-    if twn:
-        room_parts.append(f'{twn} Twin-номеров')
-    if sgl:
-        room_parts.append(f'{sgl} Single-номеров')
-    room_str = ' + '.join(room_parts) if room_parts else 'уточняется'
+    twn    = params.get('twn', 0)
+    sgl    = params.get('sgl', 0)
     nights = params['days'] - 1
+    room_parts = []
+    if twn: room_parts.append(f'{twn} Twin-номеров')
+    if sgl: room_parts.append(f'{sgl} Single-номеров')
+    room_str = ' + '.join(room_parts) if room_parts else 'уточняется'
 
     params_lines = [
         f'Состав номеров  —  {room_str}',
         f'Количество ночей  —  {nights}',
         f'Гостей  —  {params["pax"]} человек',
+        f'Уровень  —  {params["hotel_level"]}',
     ]
-    if params.get('hotel_a_name'):
-        params_lines.append(f'Вариант А  —  {params["hotel_a_name"]}')
-    if params.get('hotel_b_name'):
-        params_lines.append(f'Вариант Б  —  {params["hotel_b_name"]}')
-
+    params_top = 4.5 if paras else 2.35
     _multiline(slide, params_lines,
-               text_x, 4.7, W - text_x - 0.5, 1.8,
+               text_x, params_top, W - text_x - 0.5, 1.8,
                size=10, color=C.STONE, font='Arial',
                line_spacing=1.6, space_before=4)
 
-    # Финальный аккорд
-    closing = content.get('closing_note', '')
-    if closing:
-        _rect(slide, text_x - 0.15, 6.3, W - text_x, 0.85, C.MIST)
-        _txt(slide, closing, text_x, 6.35, W - text_x - 0.3, 0.75,
-             size=10, italic=True, color=C.INK, font='Georgia')
+    # Closing note — только на последнем слайде размещения
+    if show_closing:
+        closing = content.get('closing_note', '')
+        if closing:
+            _rect(slide, text_x - 0.15, 6.3, W - text_x, 0.85, C.MIST)
+            _txt(slide, closing, text_x, 6.35, W - text_x - 0.3, 0.75,
+                 size=10, italic=True, color=C.INK, font='Georgia')
 
     _footer_bar(slide)
     _logo(slide, right_align=True)
+
+
+def _slide_hotels(prs, params: dict, content: dict, credits: list):
+    """Один или два слайда размещения в зависимости от наличия второго отеля."""
+    hotel_a = (params.get('hotel_a_name') or 'Отель').strip()
+    hotel_b = (params.get('hotel_b_name') or '').strip()
+
+    has_b = bool(hotel_b and params.get('hotel_b_rate', 0))
+
+    _slide_hotel_card(prs, params, content, credits,
+                      variant_label=f'Опция А  —  Размещение',
+                      hotel_name=hotel_a,
+                      show_closing=not has_b,
+                      photo_index=0)
+
+    if has_b:
+        _slide_hotel_card(prs, params, content, credits,
+                          variant_label=f'Опция Б  —  Альтернативное размещение',
+                          hotel_name=hotel_b,
+                          show_closing=True,
+                          photo_index=1)
 
 
 # ── Слайд: Финал / Контакты ───────────────────────────────────────────────────

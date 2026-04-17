@@ -202,31 +202,32 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
         hotel_data_rows.append(row)
         row += 1
 
-    # --- Вариант Б (если задан) ---
+    # --- Вариант Б (опция — 0 ночей, в итог не идёт) ---
     hotel_b_rows = []
     if hotel_b_rate > 0:
         row += 1  # blank separator
         ws.merge_cells(f'A{row}:I{row}')
         c = ws[f'A{row}']
-        c.value = f'  ВАРИАНТ Б — {hotel_b_name}'
+        c.value = f'  ОПЦИЯ Б — {hotel_b_name}'
         c.font = _font(bold=True, size=9, color=C_WHITE)
-        c.fill = _fill(C_RED)
+        c.fill = _fill(C_GOLD)
         c.alignment = _align()
         ws.row_dimensions[row].height = 16
         row += 1
 
+        option_comment = 'ОПЦИЯ — поставьте количество ночей вручную чтобы активировать'
         if twn > 0:
-            _write_hotel_row(ws, row, f'Twin-номера ({hotel_level}, Токио)', twn, nights, hotel_b_rate,
-                             hotel_comment if not sgl else '')
+            _write_hotel_row(ws, row, f'Twin-номера ({hotel_level}, Токио)', twn, 0, hotel_b_rate,
+                             option_comment if not sgl else '')
             hotel_b_rows.append(row)
             row += 1
         if sgl > 0:
-            _write_hotel_row(ws, row, f'Single-номера ({hotel_level}, Токио)', sgl, nights, hotel_b_rate,
-                             hotel_comment)
+            _write_hotel_row(ws, row, f'Single-номера ({hotel_level}, Токио)', sgl, 0, hotel_b_rate,
+                             option_comment)
             hotel_b_rows.append(row)
             row += 1
         if twn == 0 and sgl == 0:
-            _write_hotel_row(ws, row, f'Номера ({hotel_level}, Токио)', 1, nights, hotel_b_rate, hotel_comment)
+            _write_hotel_row(ws, row, f'Номера ({hotel_level}, Токио)', 1, 0, hotel_b_rate, option_comment)
             hotel_b_rows.append(row)
             row += 1
 
@@ -318,21 +319,6 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
     ws[f'H{row}'].alignment = _align('right')
     ws.row_dimensions[row].height = 18
     row += 1
-
-    # ── ЦЕНА НА ЧЕЛОВЕКА — Вариант Б (если задан) ──────────────────────────────
-    if hotel_b_rows:
-        all_b_rows = hotel_b_rows + service_rows
-        sum_b_parts = '+'.join(f'H{r}' for r in all_b_rows)
-
-        ws.merge_cells(f'A{row}:G{row}')
-        ws[f'A{row}'] = f'Цена на человека — Вариант Б (наземная часть + размещение, {pax} чел.)'
-        ws[f'A{row}'].font = _font(bold=True, size=9, color='444444')
-        ws[f'H{row}'] = f'=({sum_b_parts})/{pax}'
-        ws[f'H{row}'].number_format = '#,##0.00'
-        ws[f'H{row}'].font = _font(bold=True, size=11, color=C_RED)
-        ws[f'H{row}'].alignment = _align('right')
-        ws.row_dimensions[row].height = 18
-        row += 1
 
     row += 1
 
