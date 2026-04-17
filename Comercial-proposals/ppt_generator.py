@@ -574,13 +574,18 @@ def _day_fetch_photo(day_num: int, credits: list):
 
 def _day_schedule_cols(slide, day_data: dict,
                        y_badge: float, col_w: float, text_h: float):
-    """Три колонки расписания (утро / день / вечер) — общий блок."""
+    """Три колонки расписания (утро / день / вечер) — общий блок.
+    Время выделяется цветом секции, активность — светлым."""
     sections = [
-        ('Утро',  day_data.get('morning', ''),   C.INDIGO,                    C.WHITE),
-        ('День',  day_data.get('afternoon', ''), C.GOLD,                      C.INK),
-        ('Вечер', day_data.get('evening', ''),   RGBColor(0x3A, 0x3A, 0x3A), C.WHITE),
+        ('Утро',  day_data.get('morning', ''),   C.INDIGO,                    C.WHITE,  C.INDIGO),
+        ('День',  day_data.get('afternoon', ''), C.GOLD,                      C.INK,   C.GOLD),
+        ('Вечер', day_data.get('evening', ''),   RGBColor(0x3A, 0x3A, 0x3A), C.WHITE, RGBColor(0xB0, 0x9A, 0x6A)),
     ]
-    for i, (label_text, text, badge_fill, badge_text_color) in enumerate(sections):
+    ACT_COLOR = RGBColor(0xE0, 0xDD, 0xD8)
+    FONT_SZ   = 9.5
+    TIME_W    = 1.0   # фиксированная ширина поля времени
+
+    for i, (label_text, text, badge_fill, badge_text_color, time_color) in enumerate(sections):
         x = M + i * (col_w + 0.1)
         if i > 0:
             _rect(slide, x - 0.06, y_badge, 0.02, text_h + 0.34,
@@ -590,12 +595,32 @@ def _day_schedule_cols(slide, day_data: dict,
              x, y_badge, 1.05, 0.27,
              size=7.5, bold=True, color=badge_text_color,
              align=PP_ALIGN.CENTER, font='Arial')
-        if text:
-            paras = [p.strip() for p in text.split('\n') if p.strip()]
-            _multiline(slide, paras if paras else [text],
-                       x, y_badge + 0.34, col_w - 0.05, text_h,
-                       size=9.5, color=RGBColor(0xE0, 0xDD, 0xD8),
-                       font='Arial', line_spacing=1.5)
+        if not text:
+            continue
+
+        lines = [l.strip() for l in text.split('\n') if l.strip()]
+        lines = [re.sub(r'\s*\([^)]{2,20}\)', '', l).strip() for l in lines]
+        n = max(len(lines), 1)
+        entry_h = min(text_h / n, 0.62)
+
+        for ei, line in enumerate(lines):
+            t, act = _parse_time_entry(line)
+            ey = y_badge + 0.34 + ei * entry_h
+
+            if t:
+                # Время — цвет секции, жирный
+                _txt(slide, t,
+                     x, ey, TIME_W, entry_h,
+                     size=FONT_SZ, bold=True, color=time_color, font='Arial')
+                act_x = x + TIME_W + 0.04
+                act_w = col_w - TIME_W - 0.08
+            else:
+                act_x = x
+                act_w = col_w - 0.05
+
+            _txt(slide, act,
+                 act_x, ey, act_w, entry_h,
+                 size=FONT_SZ, color=ACT_COLOR, font='Arial')
 
 
 # ── Layout A: полный экран — шапка сверху, расписание снизу ──────────────────
@@ -628,11 +653,12 @@ def _slide_day_a(prs, day_data: dict, credits: list):
 
     description = day_data.get('description', '')
     if description:
-        desc_bg = _rect(slide, M - 0.1, 1.72, W - M * 2 + 0.2, 1.05, C.DARK)
+        first_sent = re.split(r'(?<=[.!?])\s', description)[0].strip()
+        desc_bg = _rect(slide, M - 0.1, 1.72, W - M * 2 + 0.2, 0.75, C.DARK)
         _set_alpha(desc_bg, 0.40)
-        _txt(slide, description,
-             M, 1.80, W - M * 2 - 0.3, 0.95,
-             size=13.5, italic=True, color=C.WHITE, font='Georgia')
+        _txt(slide, first_sent,
+             M, 1.80, W - M * 2 - 0.3, 0.65,
+             size=12, italic=True, color=C.WHITE, font='Georgia')
 
     col_w = (W - M * 2 - 0.2) / 3
     _day_schedule_cols(slide, day_data, y_badge=H - 2.95,
@@ -661,7 +687,8 @@ def _slide_day_b(prs, day_data: dict, credits: list):
 
     description = day_data.get('description', '')
     if description:
-        _txt(slide, description,
+        first_sent = re.split(r'(?<=[.!?])\s', description)[0].strip()
+        _txt(slide, first_sent,
              M, 0.95, W - M * 2 - 2.8, 0.42,
              size=11, italic=True,
              color=RGBColor(0xCC, 0xC9, 0xC2), font='Georgia')
