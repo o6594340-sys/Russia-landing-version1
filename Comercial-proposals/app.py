@@ -202,8 +202,9 @@ def _slug(name: str) -> str:
 
 
 if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
     print('=' * 52)
     print('  TOZAI TOURS - Generator KP')
-    print('  http://localhost:5000')
+    print(f'  http://localhost:{port}')
     print('=' * 52)
-    app.run(debug=False, port=5000, host='0.0.0.0')
+    app.run(debug=False, port=port, host='0.0.0.0')
