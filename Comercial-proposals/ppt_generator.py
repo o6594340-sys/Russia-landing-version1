@@ -741,6 +741,18 @@ def _day_schedule_cols(slide, day_data: dict,
                  size=FONT_SZ, color=ACT_COLOR, font='Arial')
 
 
+def _trim_day_title(title: str, max_body: int = 44) -> str:
+    """Обрезает тело заголовка дня чтобы оно помещалось в одну строку."""
+    m = re.match(r'^(День\s*\d+\s*[—–-]\s*)', title)
+    if m:
+        prefix = m.group(1)
+        body   = title[len(prefix):]
+        if len(body) > max_body:
+            body = body[:max_body].rsplit(' ', 1)[0].rstrip(',') + '…'
+        return prefix + body
+    return title[:max_body + 10] + ('…' if len(title) > max_body + 10 else '')
+
+
 # ── Layout A: полный экран — шапка сверху, расписание снизу ──────────────────
 
 def _slide_day_a(prs, day_data: dict, credits: list, season: str = 'unknown'):
@@ -761,7 +773,7 @@ def _slide_day_a(prs, day_data: dict, credits: list, season: str = 'unknown'):
     _rect(slide, M, 1.55, W - M * 2, 0.03, C.INDIGO)
 
     _label(slide, 'Программа', M, 0.14, 4.0, C.GOLD)
-    title = day_data.get('title', f'День {day_num}')
+    title = _trim_day_title(day_data.get('title', f'День {day_num}'), max_body=50)
     _txt(slide, title, M, 0.42, W - M * 2 - 1.5, 0.95,
          size=22, bold=True, color=C.WHITE, font='Georgia')
 
@@ -799,7 +811,7 @@ def _slide_day_b(prs, day_data: dict, credits: list, season: str = 'unknown'):
     _rect(slide, M, HDR_H, W - M * 2, 0.03, C.INDIGO)
 
     _label(slide, 'Программа', M, 0.14, 4.0, C.GOLD)
-    title = day_data.get('title', f'День {day_num}')
+    title = _trim_day_title(day_data.get('title', f'День {day_num}'), max_body=42)
     _txt(slide, title, M, 0.40, W - M * 2 - 2.8, 0.80,
          size=24, bold=True, color=C.WHITE, font='Georgia')
 
@@ -878,11 +890,13 @@ def _slide_day_b(prs, day_data: dict, credits: list, season: str = 'unknown'):
                 act_x = cx + 0.14
                 act_w = col_w - 0.22
 
-            max_ch = max(12, int(act_w * 12))
-            act_disp = (act[:max_ch - 1] + '…') if len(act) > max_ch else act
-            _txt(slide, act_disp,
-                 act_x, ey, act_w, entry_h,
-                 size=font_sz, color=C.INK, font='Arial')
+            # Обрезаем по ширине колонки; word_wrap=False чтобы не переносило
+            max_ch = max(10, int(act_w * 8))
+            act_disp = (act[:max_ch].rsplit(' ', 1)[0] + '…') if len(act) > max_ch else act
+            box = _txt(slide, act_disp,
+                       act_x, ey, act_w, entry_h,
+                       size=font_sz, color=C.INK, font='Arial')
+            box.text_frame.word_wrap = False
 
     _line(slide, M, SCHED_BOT + 0.01, W - M * 2, C.GOLD, 1.0)
     _footer_bar(slide)
@@ -918,7 +932,7 @@ def _slide_day_c(prs, day_data: dict, credits: list, season: str = 'unknown'):
     _set_alpha(title_bg, 0.72)
 
     _label(slide, 'Программа', M, title_y + 0.10, 4.0, C.GOLD)
-    title = day_data.get('title', f'День {day_num}')
+    title = _trim_day_title(day_data.get('title', f'День {day_num}'), max_body=50)
     _txt(slide, title, M, title_y + 0.34, W - M * 2 - 1.5, 0.85,
          size=22, bold=True, color=C.WHITE, font='Georgia')
 
