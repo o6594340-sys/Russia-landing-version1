@@ -618,7 +618,11 @@ def _day_schedule_cols(slide, day_data: dict,
                 act_x = x
                 act_w = col_w - 0.05
 
-            _txt(slide, act,
+            # Обрезаем длинный текст чтобы не вылезал за границу колонки
+            max_ch = max(10, int(act_w * 11))
+            act_disp = (act[:max_ch - 1] + '…') if len(act) > max_ch else act
+
+            _txt(slide, act_disp,
                  act_x, ey, act_w, entry_h,
                  size=FONT_SZ, color=ACT_COLOR, font='Arial')
 
