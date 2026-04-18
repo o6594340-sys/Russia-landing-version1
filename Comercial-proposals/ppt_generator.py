@@ -621,8 +621,158 @@ def _slide_overview(prs, params: dict, content: dict):
 
 # ── Слайд: День программы ─────────────────────────────────────────────────────
 
+# Словарь активностей: (паттерны_для_поиска, base_query, add_city, add_season)
+# Порядок важен: сначала составные паттерны (длиннее = конкретнее)
+_ACTIVITY_QUERIES = [
+    # ── Кулинарные мастер-классы ──────────────────────────────────────────────
+    (('мастер-класс суши', 'мастер класс суши', 'sushi making', 'sushi class', 'урок суши'),
+     'sushi making class japan', True, False),
+    (('мастер-класс рамен', 'ramen workshop', 'урок рамен'),
+     'ramen workshop japan', True, False),
+    (('вагаси', 'wagashi', 'японские сладости'),
+     'wagashi japanese sweets making', True, False),
+    (('сакэ', 'sake tasting', 'дегустация сакэ'),
+     'sake tasting japan brewery', True, False),
+
+    # ── Гастрономия (конкретные форматы) ─────────────────────────────────────
+    (('омакасе', 'omakase'),
+     'omakase sushi counter japan', True, False),
+    (('кайсэки', 'kaiseki'),
+     'kaiseki dinner japan', True, False),
+    (('тэппаньяки', 'теппаньяки', 'teppanyaki'),
+     'teppanyaki dinner japan', True, False),
+    (('якинику', 'yakiniku'),
+     'yakiniku dinner japan', True, False),
+    (('вагю', 'wagyu'),
+     'wagyu beef dinner japan', True, False),
+    (('гала-ужин', 'гала ужин', 'gala dinner'),
+     'gala dinner japan luxury', True, False),
+    (('рыбный рынок', 'тойосу', 'toyosu', 'цукидзи', 'tsukiji'),
+     'fish market tokyo morning', False, False),
+    (('экибэн', 'бэнто', 'ekiben', 'bento'),
+     'station bento japan train', False, False),
+    (('суши',),
+     'sushi restaurant japan', True, False),
+    (('якитори', 'yakitori'),
+     'yakitori restaurant japan', True, False),
+    (('рамен', 'ramen'),
+     'ramen restaurant japan', True, False),
+
+    # ── Культурные мастер-классы / опыт ──────────────────────────────────────
+    (('каллиграф', 'сёдо', 'shodo', 'calligraphy'),
+     'japanese calligraphy workshop', True, False),
+    (('икэбана', 'ikebana'),
+     'ikebana flower arrangement japan', True, False),
+    (('тайко', 'taiko'),
+     'taiko drumming workshop japan', True, False),
+    (('чайная церемония', 'tea ceremony'),
+     'japanese tea ceremony', True, False),
+    (('кодо', 'благовони', 'incense ceremony'),
+     'japanese incense ceremony', True, False),
+    (('кимоно', 'kimono'),
+     'kimono experience japan', True, False),
+    (('гончарн', 'pottery'),
+     'japanese pottery workshop', True, False),
+    (('васи', 'washi paper'),
+     'washi paper making japan', True, False),
+    (('дзэн', 'zen meditation', 'медитация'),
+     'zen meditation japan garden', True, False),
+
+    # ── Шоу / перформанс ─────────────────────────────────────────────────────
+    (('майко', 'maiko'),
+     'maiko dinner performance kyoto', False, False),
+    (('гейша', 'geisha'),
+     'geisha performance kyoto', False, False),
+    (('кабуки', 'kabuki'),
+     'kabuki theatre japan', True, False),
+
+    # ── Технологии / современная Япония ──────────────────────────────────────
+    (('teamlab',),
+     'teamlab digital art installation', True, False),
+    (('акихабара', 'akihabara'),
+     'akihabara electronics street tokyo', False, False),
+
+    # ── Шопинг / кварталы ────────────────────────────────────────────────────
+    (('гиндза', 'ginza'),
+     'ginza luxury shopping tokyo', False, False),
+    (('омотэсандо', 'omotesando'),
+     'omotesando shopping avenue tokyo', False, False),
+    (('шопинг', 'шоппинг', 'shopping'),
+     'luxury shopping japan', True, False),
+
+    # ── Транспорт ─────────────────────────────────────────────────────────────
+    (('синкансэн', 'shinkansen', 'bullet train'),
+     'shinkansen interior japan', False, False),
+    (('романсукар', 'romancecar'),
+     'romancecar odakyu train hakone', False, False),
+
+    # ── Природа / пейзаж ─────────────────────────────────────────────────────
+    (('бамбуковая роща', 'арасияма', 'arashiyama'),
+     'arashiyama bamboo grove kyoto', False, True),
+    (('японский сад', 'сад камней', 'japanese garden'),
+     'japanese garden', True, True),
+    (('фудзи', 'fuji'),
+     'mount fuji view japan', False, True),
+
+    # ── Wellness / рёкан ─────────────────────────────────────────────────────
+    (('рёкан', 'ryokan'),
+     'luxury ryokan japan', False, True),
+    (('онсэн', 'onsen'),
+     'onsen ryokan japan', False, True),
+
+    # ── Конкретные достопримечательности ─────────────────────────────────────
+    (('тодайдзи', 'todaiji'),
+     'todaiji great buddha nara', False, False),
+    (('кинкакудзи', 'kinkakuji', 'золотой павильон'),
+     'kinkakuji golden pavilion kyoto', False, True),
+    (('рёандзи', 'ryoanji'),
+     'ryoanji zen garden kyoto', False, False),
+    (('фусими инари', 'fushimi inari'),
+     'fushimi inari torii gates kyoto', False, False),
+    (('асакуса', 'сэнсодзи', 'asakusa', 'sensoji'),
+     'asakusa sensoji temple tokyo', False, False),
+    (('хаконэ', 'hakone'),
+     'hakone lake japan', False, True),
+    (('сибуя', 'shibuya'),
+     'shibuya crossing tokyo', False, False),
+    (('синдзюку', 'shinjuku'),
+     'shinjuku tokyo night', False, False),
+]
+
+# Сортируем один раз: длинные паттерны (конкретнее) — первыми
+_ACTIVITY_QUERIES.sort(key=lambda x: max(len(kw) for kw in x[0]), reverse=True)
+
+# Города → английское название для добавления к query
+_CITY_EN = {
+    'токио': 'tokyo', 'tokyo': 'tokyo',
+    'киото': 'kyoto', 'kyoto': 'kyoto',
+    'нара':  'nara',  'nara':  'nara',
+    'осака': 'osaka', 'osaka': 'osaka',
+    'хаконэ': 'hakone', 'hakone': 'hakone',
+    'гиндза': 'ginza', 'омотэсандо': 'omotesando',
+}
+
+# Сезонные суффиксы — только для природных сцен
+_SEASON_SFX = {
+    'spring': 'cherry blossom',
+    'autumn': 'autumn leaves',
+    'winter': 'snow',
+    'summer': '',
+}
+
+
+def _detect_city(text: str) -> str:
+    for kw, city in _CITY_EN.items():
+        if kw in text:
+            return city
+    return ''
+
+
 def _build_day_photo_query(day_data: dict, season: str) -> tuple:
-    """Строит поисковый запрос фото по содержимому дня, а не по номеру."""
+    """
+    Приоритет: конкретная активность → конкретная локация → город → fallback.
+    Город и сезон добавляются только как уточнение к уже найденной активности.
+    """
     full_text = ' '.join([
         day_data.get('title', ''),
         day_data.get('morning', ''),
@@ -630,51 +780,32 @@ def _build_day_photo_query(day_data: dict, season: str) -> tuple:
         day_data.get('evening', ''),
     ]).lower()
 
-    season_sfx = {
-        'spring': 'spring sakura',
-        'summer': 'summer green',
-        'autumn': 'autumn momiji',
-        'winter': 'winter snow',
-    }.get(season, '')
+    city    = _detect_city(full_text)
+    sea_sfx = _SEASON_SFX.get(season, '')
 
-    # Конкретные места — наивысший приоритет
-    if 'teamlab' in full_text:
-        return 'TeamLab digital art installation Tokyo', 'TeamLab Planets light art'
-    if 'синкансэн' in full_text or 'shinkansen' in full_text:
-        return 'Shinkansen bullet train Japan speed', 'Japan bullet train railway'
-    if 'тодайдзи' in full_text or 'todaiji' in full_text:
-        return 'Todaiji Great Buddha Nara', 'Nara deer park temple'
-    if 'кинкакудзи' in full_text or 'kinkakuji' in full_text or 'золотой павильон' in full_text:
-        return 'Kinkakuji golden pavilion Kyoto', 'Kinkakuji reflection pond'
-    if 'рёандзи' in full_text or 'ryoanji' in full_text:
-        return 'Ryoanji zen garden Kyoto', 'Japanese rock garden'
-    if 'фусими инари' in full_text or 'fushimi inari' in full_text:
-        return 'Fushimi Inari torii gates Kyoto', 'Fushimi Inari red gates path'
-    if 'рёкан' in full_text or 'онсэн' in full_text or 'onsen' in full_text:
-        return f'Japanese ryokan onsen {season_sfx}'.strip(), 'ryokan tatami room Mount Fuji'
-    if 'цукидзи' in full_text or 'tsukiji' in full_text or 'рыбный рынок' in full_text:
-        return 'Tsukiji fish market Tokyo morning', 'Japanese fish market seafood'
-    if 'асакуса' in full_text or 'сэнсодзи' in full_text or 'asakusa' in full_text:
-        return 'Asakusa Sensoji temple Tokyo', 'Nakamise shopping street Asakusa'
-    if 'хаконэ' in full_text or 'романсукар' in full_text or 'romancecar' in full_text:
-        return 'Hakone Mount Fuji reflection lake', 'Hakone open air museum'
-    if 'сибуя' in full_text or 'shibuya' in full_text:
-        return 'Shibuya crossing aerial Tokyo', 'Shibuya night Tokyo street'
-    if 'синдзюку' in full_text or 'shinjuku' in full_text:
-        return 'Shinjuku Tokyo night neon', 'Shinjuku Gyoen garden Tokyo'
+    for keywords, base_query, city_relevant, season_relevant in _ACTIVITY_QUERIES:
+        if any(kw in full_text for kw in keywords):
+            q = base_query
+            if city_relevant and city and city not in q:
+                q = f'{q} {city}'
+            if season_relevant and sea_sfx and sea_sfx not in q:
+                q = f'{q} {sea_sfx}'
+            return q.strip(), base_query
 
-    # Определяем город — сначала по тегам (Киото), потом по любому упоминанию
-    if 'киото' in full_text:
-        return f'Kyoto temple {season_sfx}'.strip(), 'Kyoto traditional street Japan'
-    if 'нара' in full_text:
-        return 'Nara deer park Japan', 'Nara Todaiji ancient temple'
-    if 'осака' in full_text:
-        return 'Osaka castle Japan', 'Dotonbori Osaka night canal'
-    if 'хаконэ' in full_text:
-        return 'Hakone Mount Fuji Japan', 'Hakone lake reflection'
+    # Fallback по городу (без храмов по умолчанию)
+    if city == 'kyoto':
+        return f'kyoto traditional street{" " + sea_sfx if sea_sfx else ""}'.strip(), \
+               'kyoto japan travel'
+    if city == 'nara':
+        return 'nara deer park japan', 'nara japan'
+    if city == 'osaka':
+        return 'osaka dotonbori japan night', 'osaka japan travel'
+    if city == 'hakone':
+        return f'hakone lake japan{" " + sea_sfx if sea_sfx else ""}'.strip(), \
+               'hakone japan'
 
-    # Fallback — Токио с учётом сезона
-    return f'Tokyo {season_sfx}'.strip() or 'Tokyo cityscape Japan', 'Tokyo street Japan'
+    # Default
+    return f'tokyo japan{" " + sea_sfx if sea_sfx else ""}'.strip(), 'tokyo japan travel'
 
 
 def _day_fetch_photo(day_data: dict, season: str, credits: list):
