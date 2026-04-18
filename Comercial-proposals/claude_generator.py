@@ -621,7 +621,7 @@ def enrich_texts(params: dict, program: dict) -> dict:
 
     response = client.messages.create(
         model='claude-opus-4-6',
-        max_tokens=4000,
+        max_tokens=6000,
         messages=[{'role': 'user', 'content': prompt}]
     )
 

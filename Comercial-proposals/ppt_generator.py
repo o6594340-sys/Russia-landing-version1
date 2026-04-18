@@ -235,10 +235,15 @@ def _slide_title(prs, params: dict, credits: list, season_photo: str = ''):
     # Метка сверху
     _label(slide, 'Коммерческое предложение', M, 0.22, 5.0, C.GOLD)
 
-    # Главный заголовок
-    _txt(slide, 'ЯПОНИЯ  ·  ТОКИО',
+    # Главный заголовок — маршрут из параметров
+    route_key    = params.get('route', DEFAULT_ROUTE)
+    route_cities = ROUTES.get(route_key, ROUTES[DEFAULT_ROUTE])['cities']
+    cities_upper = '  ·  '.join(c.upper() for c in route_cities)
+    title_text   = f'ЯПОНИЯ  ·  {cities_upper}'
+    title_size   = 54 if len(route_cities) <= 2 else (44 if len(route_cities) == 3 else 36)
+    _txt(slide, title_text,
          M, 1.3, 10.5, 1.6,
-         size=54, bold=True, color=C.WHITE, font='Georgia')
+         size=title_size, bold=True, color=C.WHITE, font='Georgia')
 
     # Имя компании
     _txt(slide, params['company_name'],
@@ -274,7 +279,7 @@ def _slide_title(prs, params: dict, credits: list, season_photo: str = ''):
 
 # Базовые точки — всегда актуальны
 _WHY_JAPAN_BASE = [
-    'Omotenashi: японский сервис не знает аналогов в мире. Группа чувствует себя гостями, а не туристами.',
+    'Omotenashi: японский сервис не знает аналогов в мире. Ваша группа почувствует себя гостями, а не туристами.',
     'Страна без случайностей: пунктуальность, безопасность, чистота. Программа работает как часы.',
     'Гастрономия без компромиссов: 230 мишленовских ресторанов в Токио — больше, чем в Париже.',
     'Контраст, который не стирается: 1300 лет истории и передовые технологии в одном городе.',
@@ -353,8 +358,23 @@ def _slide_why_japan(prs, params: dict, season: str, credits: list):
     _label(slide, 'Почему Япония', text_x, 1.2, 5.0, C.INDIGO)
     _line(slide, text_x, 1.6, W - text_x - M * 0.5, C.GOLD, 1.5)
 
-    # Заголовок
-    _txt(slide, 'Страна, которая\nменяет команды',
+    # Заголовок — под отрасль
+    _WHY_TITLES = {
+        'it':      'Страна, которая\nпридумала точность',
+        'tech':    'Страна, которая\nпридумала точность',
+        'фарма':   'Страна, где здоровье —\nне лечение, а образ жизни',
+        'медиц':   'Страна, где здоровье —\nне лечение, а образ жизни',
+        'банк':    'Страна, где протокол —\nэто уважение',
+        'финанс':  'Страна, где протокол —\nэто уважение',
+        'ритейл':  'Страна, которая\nпереосмыслила сервис',
+        'торговл': 'Страна, которая\nпереосмыслила сервис',
+    }
+    industry_key = (params.get('industry') or '').lower()
+    why_title = next(
+        (title for key, title in _WHY_TITLES.items() if key in industry_key),
+        'Страна, которая\nменяет команды'
+    )
+    _txt(slide, why_title,
          text_x, 1.7, W - text_x - M * 0.5, 1.4,
          size=22, bold=True, color=C.INK, font='Georgia')
 
@@ -621,7 +641,7 @@ def _build_day_photo_query(day_data: dict, season: str) -> tuple:
     if 'teamlab' in full_text:
         return 'TeamLab digital art installation Tokyo', 'TeamLab Planets light art'
     if 'синкансэн' in full_text or 'shinkansen' in full_text:
-        return 'Shinkansen bullet train Mount Fuji', 'bullet train Japan landscape'
+        return 'Shinkansen bullet train Japan speed', 'Japan bullet train railway'
     if 'тодайдзи' in full_text or 'todaiji' in full_text:
         return 'Todaiji Great Buddha Nara', 'Nara deer park temple'
     if 'кинкакудзи' in full_text or 'kinkakuji' in full_text or 'золотой павильон' in full_text:
@@ -643,17 +663,14 @@ def _build_day_photo_query(day_data: dict, season: str) -> tuple:
     if 'синдзюку' in full_text or 'shinjuku' in full_text:
         return 'Shinjuku Tokyo night neon', 'Shinjuku Gyoen garden Tokyo'
 
-    # Определяем город из тегов вида (Киото), (Токио) ...
-    city_m = re.search(r'\(([^)]{2,15})\)', full_text)
-    city = city_m.group(1) if city_m else ''
-
-    if 'киото' in city or 'нара' in city:
+    # Определяем город — сначала по тегам (Киото), потом по любому упоминанию
+    if 'киото' in full_text:
         return f'Kyoto temple {season_sfx}'.strip(), 'Kyoto traditional street Japan'
     if 'нара' in full_text:
         return 'Nara deer park Japan', 'Nara Todaiji ancient temple'
-    if 'осака' in city or 'осака' in full_text:
+    if 'осака' in full_text:
         return 'Osaka castle Japan', 'Dotonbori Osaka night canal'
-    if 'хаконэ' in city:
+    if 'хаконэ' in full_text:
         return 'Hakone Mount Fuji Japan', 'Hakone lake reflection'
 
     # Fallback — Токио с учётом сезона
