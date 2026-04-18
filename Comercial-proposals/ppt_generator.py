@@ -536,8 +536,8 @@ def _slide_overview(prs, params: dict, content: dict):
             row_fill = C.BEIGE if ei % 2 == 0 else C.MIST
             _rect(slide, cx, ey, cw, entry_h - 0.02, row_fill)
 
-            # Контент строки
-            max_a = max(10, int(cw * 12))
+            # Контент строки — обрезка по реальной ширине колонки
+            max_a = max(8, int(cw * 9))
             act   = (activity[:max_a - 1] + '…') if len(activity) > max_a else activity
             _overview_entry_box(slide, time_str, act,
                                 cx + 0.10, ey + 0.03,
