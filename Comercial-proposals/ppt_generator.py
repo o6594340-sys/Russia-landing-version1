@@ -14,7 +14,7 @@ import re
 
 from photo_fetcher import fetch_photo, reset_session
 from PIL import Image as _PILImage
-from claude_generator import detect_season
+from claude_generator import detect_season, ROUTES, DEFAULT_ROUTE
 
 BASE_DIR = Path(__file__).parent
 
@@ -272,16 +272,61 @@ def _slide_title(prs, params: dict, credits: list, season_photo: str = ''):
 
 # ── Слайд 2: Почему Япония ────────────────────────────────────────────────────
 
-_WHY_JAPAN = [
-    'Omotenashi: японский сервис не знает аналогов в мире. Ваша группа почувствует себя гостями, а не туристами.',
-    'Контраст, который не стирается: 1300 лет истории и передовые технологии в одном городе.',
+# Базовые точки — всегда актуальны
+_WHY_JAPAN_BASE = [
+    'Omotenashi: японский сервис не знает аналогов в мире. Группа чувствует себя гостями, а не туристами.',
     'Страна без случайностей: пунктуальность, безопасность, чистота. Программа работает как часы.',
-    'Гастрономия без компромиссов: 230 мишленовских ресторанов в Токио. Больше, чем в Париже.',
+    'Гастрономия без компромиссов: 230 мишленовских ресторанов в Токио — больше, чем в Париже.',
+    'Контраст, который не стирается: 1300 лет истории и передовые технологии в одном городе.',
     'Самый высокий NPS среди инсентив-направлений: участники после Японии становятся её послами.',
 ]
 
+# Отраслевые точки — заменяют одну базовую при совпадении
+_WHY_JAPAN_INDUSTRY = {
+    'it':      'Страна, где инженерная культура стала национальной идеей: от Синкансэна до TeamLab — каждый механизм точен до миллиметра.',
+    'tech':    'Страна, где инженерная культура стала национальной идеей: от Синкансэна до TeamLab — каждый механизм точен до миллиметра.',
+    'фарма':   'Японская концепция здоровья — не отсутствие болезни, а качество жизни. Онсэн, кухня долголетия, ритм, который восстанавливает.',
+    'медиц':   'Японская концепция здоровья — не отсутствие болезни, а качество жизни. Онсэн, кухня долголетия, ритм, который восстанавливает.',
+    'банк':    'Церемониальность японского делового этикета: каждый жест — знак уважения. Группа вернётся с другим ощущением протокола.',
+    'финанс':  'Церемониальность японского делового этикета: каждый жест — знак уважения. Группа вернётся с другим ощущением протокола.',
+    'ритейл':  'Японский ритейл — мировой стандарт: Исэтан, Гиндза Сикс, концепция «сотрудник — лицо бренда» берёт начало здесь.',
+    'торговл': 'Японский ритейл — мировой стандарт: Исэтан, Гиндза Сикс, концепция «сотрудник — лицо бренда» берёт начало здесь.',
+}
 
-def _slide_why_japan(prs, credits: list):
+# Сезонные точки — добавляются при известном сезоне
+_WHY_JAPAN_SEASON = {
+    'spring': 'Весна в Японии — событие, которое планируют за год: цветение сакуры длится 10 дней и меняет облик каждого города.',
+    'autumn': 'Осень — лучший сезон для групп: момидзи окрашивает парки в алый, температура комфортная, туристов меньше чем весной.',
+    'winter': 'Зима открывает другую Японию: идеальный вид на Фудзи, онсэны в снегу, новогодние святилища — тишина после пика сезона.',
+    'summer': 'Лето — сезон фестивалей: Бон Одори, фейерверки над реками, зелень буйная. Программа строится вокруг вечерних мероприятий.',
+}
+
+
+def _build_why_japan_points(params: dict, season: str) -> list:
+    """Собирает 5 точек под конкретную группу."""
+    points = list(_WHY_JAPAN_BASE)  # копия базового списка
+
+    industry = (params.get('industry') or '').lower()
+
+    # Ищем отраслевую точку — если нашли, заменяем 4-ю базовую (контраст истории/техно)
+    industry_point = None
+    for key, text in _WHY_JAPAN_INDUSTRY.items():
+        if key in industry:
+            industry_point = text
+            break
+
+    if industry_point:
+        points[3] = industry_point  # заменяем "контраст истории/техно"
+
+    # Сезонная точка — заменяет последнюю базовую (NPS)
+    season_point = _WHY_JAPAN_SEASON.get(season)
+    if season_point:
+        points[4] = season_point
+
+    return points
+
+
+def _slide_why_japan(prs, params: dict, season: str, credits: list):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
 
     photo_w = W * 0.52
@@ -314,7 +359,8 @@ def _slide_why_japan(prs, credits: list):
          size=22, bold=True, color=C.INK, font='Georgia')
 
     # Пункты
-    _multiline(slide, _WHY_JAPAN,
+    points = _build_why_japan_points(params, season)
+    _multiline(slide, points,
                text_x, 3.25, W - text_x - M * 0.5, 3.5,
                size=10.5, color=C.INK, font='Arial',
                line_spacing=1.55, space_before=5)
@@ -446,7 +492,10 @@ def _slide_overview(prs, params: dict, content: dict):
     _label(slide, 'Обзор программы', M, 0.10, 6.0, C.GOLD)
 
     n_word = 'день' if n == 1 else ('дня' if n in (2, 3, 4) else 'дней')
-    route_label = f'Япония  ·  {n} {n_word}'
+    route_key = params.get('route', DEFAULT_ROUTE)
+    route_cities = ROUTES.get(route_key, ROUTES[DEFAULT_ROUTE])['cities']
+    cities_str = ' → '.join(route_cities)
+    route_label = f'{cities_str}  ·  {n} {n_word}'
     if params.get('dates'):
         route_label += f'  ·  {params["dates"]}'
     _txt(slide, route_label, M, 0.32, W - M * 2 - 0.3, 0.46,
@@ -552,20 +601,68 @@ def _slide_overview(prs, params: dict, content: dict):
 
 # ── Слайд: День программы ─────────────────────────────────────────────────────
 
-_DAY_PHOTOS = {
-    1: ('Tokyo street night neon', 'Tokyo alley lantern'),
-    2: ('Shibuya crossing aerial Tokyo', 'Tokyo modern street'),
-    3: ('Kyoto temple autumn', 'Japanese temple morning light'),
-    4: ('Japanese ryokan interior tatami', 'tatami room traditional Japan'),
-    5: ('Japan zen garden', 'Kyoto bamboo forest morning'),
-    6: ('Mount Fuji reflection lake', 'Japan nature landscape'),
-    7: ('Japan sunset golden hour', 'Tokyo panorama night'),
-}
+def _build_day_photo_query(day_data: dict, season: str) -> tuple:
+    """Строит поисковый запрос фото по содержимому дня, а не по номеру."""
+    full_text = ' '.join([
+        day_data.get('title', ''),
+        day_data.get('morning', ''),
+        day_data.get('afternoon', ''),
+        day_data.get('evening', ''),
+    ]).lower()
+
+    season_sfx = {
+        'spring': 'spring sakura',
+        'summer': 'summer green',
+        'autumn': 'autumn momiji',
+        'winter': 'winter snow',
+    }.get(season, '')
+
+    # Конкретные места — наивысший приоритет
+    if 'teamlab' in full_text:
+        return 'TeamLab digital art installation Tokyo', 'TeamLab Planets light art'
+    if 'синкансэн' in full_text or 'shinkansen' in full_text:
+        return 'Shinkansen bullet train Mount Fuji', 'bullet train Japan landscape'
+    if 'тодайдзи' in full_text or 'todaiji' in full_text:
+        return 'Todaiji Great Buddha Nara', 'Nara deer park temple'
+    if 'кинкакудзи' in full_text or 'kinkakuji' in full_text or 'золотой павильон' in full_text:
+        return 'Kinkakuji golden pavilion Kyoto', 'Kinkakuji reflection pond'
+    if 'рёандзи' in full_text or 'ryoanji' in full_text:
+        return 'Ryoanji zen garden Kyoto', 'Japanese rock garden'
+    if 'фусими инари' in full_text or 'fushimi inari' in full_text:
+        return 'Fushimi Inari torii gates Kyoto', 'Fushimi Inari red gates path'
+    if 'рёкан' in full_text or 'онсэн' in full_text or 'onsen' in full_text:
+        return f'Japanese ryokan onsen {season_sfx}'.strip(), 'ryokan tatami room Mount Fuji'
+    if 'цукидзи' in full_text or 'tsukiji' in full_text or 'рыбный рынок' in full_text:
+        return 'Tsukiji fish market Tokyo morning', 'Japanese fish market seafood'
+    if 'асакуса' in full_text or 'сэнсодзи' in full_text or 'asakusa' in full_text:
+        return 'Asakusa Sensoji temple Tokyo', 'Nakamise shopping street Asakusa'
+    if 'хаконэ' in full_text or 'романсукар' in full_text or 'romancecar' in full_text:
+        return 'Hakone Mount Fuji reflection lake', 'Hakone open air museum'
+    if 'сибуя' in full_text or 'shibuya' in full_text:
+        return 'Shibuya crossing aerial Tokyo', 'Shibuya night Tokyo street'
+    if 'синдзюку' in full_text or 'shinjuku' in full_text:
+        return 'Shinjuku Tokyo night neon', 'Shinjuku Gyoen garden Tokyo'
+
+    # Определяем город из тегов вида (Киото), (Токио) ...
+    city_m = re.search(r'\(([^)]{2,15})\)', full_text)
+    city = city_m.group(1) if city_m else ''
+
+    if 'киото' in city or 'нара' in city:
+        return f'Kyoto temple {season_sfx}'.strip(), 'Kyoto traditional street Japan'
+    if 'нара' in full_text:
+        return 'Nara deer park Japan', 'Nara Todaiji ancient temple'
+    if 'осака' in city or 'осака' in full_text:
+        return 'Osaka castle Japan', 'Dotonbori Osaka night canal'
+    if 'хаконэ' in city:
+        return 'Hakone Mount Fuji Japan', 'Hakone lake reflection'
+
+    # Fallback — Токио с учётом сезона
+    return f'Tokyo {season_sfx}'.strip() or 'Tokyo cityscape Japan', 'Tokyo street Japan'
 
 
-def _day_fetch_photo(day_num: int, credits: list):
-    """Загружает фото для слайда дня, возвращает (img, attr)."""
-    q1, q2 = _DAY_PHOTOS.get(day_num, ('Japan landscape', 'Tokyo street'))
+def _day_fetch_photo(day_data: dict, season: str, credits: list):
+    """Загружает фото для слайда дня по содержимому дня."""
+    q1, q2 = _build_day_photo_query(day_data, season)
     img, attr = fetch_photo(q1, q2)
     if attr:
         credits.append(attr)
@@ -629,11 +726,11 @@ def _day_schedule_cols(slide, day_data: dict,
 
 # ── Layout A: полный экран — шапка сверху, расписание снизу ──────────────────
 
-def _slide_day_a(prs, day_data: dict, credits: list):
+def _slide_day_a(prs, day_data: dict, credits: list, season: str = 'unknown'):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     day_num = day_data.get('day_num', 1)
 
-    img = _day_fetch_photo(day_num, credits)
+    img = _day_fetch_photo(day_data, season, credits)
     if img:
         _photo(slide, img, 0, 0, W, H)
     else:
@@ -672,7 +769,7 @@ def _slide_day_a(prs, day_data: dict, credits: list):
 
 # ── Layout B: без фото — чистая инфографика, три колонки на светлом фоне ──────
 
-def _slide_day_b(prs, day_data: dict, credits: list):
+def _slide_day_b(prs, day_data: dict, credits: list, season: str = 'unknown'):
     """Текстовый слайд без фото: три колонки тайминга на бежевом фоне."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     day_num = day_data.get('day_num', 1)
@@ -712,7 +809,7 @@ def _slide_day_b(prs, day_data: dict, credits: list):
     SECTIONS = [
         ('Утро',   'morning',   C.INDIGO, C.WHITE,                        C.INDIGO),
         ('День',   'afternoon', C.GOLD,   C.INK,                          C.GOLD),
-        ('Вечер',  'evening',   C.INK,    RGBColor(0xF0, 0xED, 0xE8),    C.STONE),
+        ('Вечер',  'evening',   C.INK,    RGBColor(0xF0, 0xED, 0xE8),    RGBColor(0xB0, 0x9A, 0x6A)),
     ]
 
     for i, (label_text, key, hdr_fill, hdr_text, time_color) in enumerate(SECTIONS):
@@ -777,7 +874,7 @@ def _slide_day_b(prs, day_data: dict, credits: list):
 
 # ── Layout C: фото сверху, чистая тёмная панель снизу ────────────────────────
 
-def _slide_day_c(prs, day_data: dict, credits: list):
+def _slide_day_c(prs, day_data: dict, credits: list, season: str = 'unknown'):
     """Горизонтальный сплит: фото верхние 55%, тёмная панель с расписанием снизу."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     day_num = day_data.get('day_num', 1)
@@ -785,7 +882,7 @@ def _slide_day_c(prs, day_data: dict, credits: list):
     PHOTO_H = H * 0.54     # ~4.05"
     PANEL_Y = PHOTO_H
 
-    img = _day_fetch_photo(day_num, credits)
+    img = _day_fetch_photo(day_data, season, credits)
     if img:
         _photo(slide, img, 0, 0, W, PHOTO_H)
     else:
@@ -836,9 +933,9 @@ def _slide_day_c(prs, day_data: dict, credits: list):
 _DAY_LAYOUTS = [_slide_day_a, _slide_day_b, _slide_day_c]
 
 
-def _slide_day(prs, day_data: dict, credits: list):
+def _slide_day(prs, day_data: dict, credits: list, season: str = 'unknown'):
     day_num = day_data.get('day_num', 1)
-    _DAY_LAYOUTS[(day_num - 1) % len(_DAY_LAYOUTS)](prs, day_data, credits)
+    _DAY_LAYOUTS[(day_num - 1) % len(_DAY_LAYOUTS)](prs, day_data, credits, season)
 
 
 # ── Слайд: Хайлайт — три варианта вёрстки ────────────────────────────────────
@@ -1180,12 +1277,12 @@ def create_ppt(params: dict, content: dict, services: list) -> bytes:
     credits: list = []
 
     _slide_title(prs, params, credits, season_photo=season_photo)
-    _slide_why_japan(prs, credits)
+    _slide_why_japan(prs, params, season, credits)
     _slide_concept(prs, content, credits)
     _slide_overview(prs, params, content)
 
     for day_data in content.get('days', []):
-        _slide_day(prs, day_data, credits)
+        _slide_day(prs, day_data, credits, season)
 
     for i, hl in enumerate(content.get('highlights', [])):
         _slide_highlight(prs, hl, credits, index=i)
