@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Календарь{% endblock %}
+{% block content %}
+
+<div class="page">
+
+  <!-- Month navigation -->
+  <div class="month-nav">
+    <a href="/calendar?year={{ prev_year }}&month={{ prev_month }}" class="month-arrow">‹</a>
+    <h1 class="month-title">{{ month_name }} {{ year }}</h1>
+    <a href="/calendar?year={{ next_year }}&month={{ next_month }}" class="month-arrow">›</a>
+  </div>
+
+  <!-- Summary -->
+  <div class="month-summary">
+    <div class="summary-item">
+      <p class="summary-label">Всего платежей</p>
+      <p class="summary-value">{{ total_month | money }}</p>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <p class="summary-label">Оплачено</p>
+      <p class="summary-value paid-color">{{ total_paid | money }}</p>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <p class="summary-label">Осталось</p>
+      <p class="summary-value {% if total_left > 0 %}neutral-color{% endif %}">{{ total_left | money }}</p>
+    </div>
+  </div>
+
+  <!-- Payment list -->
+  <div class="obligation-list">
+    {% for item in items %}
+    <div class="obligation-row {% if item.is_paid %}paid{% elif item.overdue %}overdue{% elif (item.date - today).days <= 3 and (item.date - today).days >= 0 %}soon{% endif %}">
+      <div class="ob-left">
+        <form action="/toggle-paid/{{ item.id }}" method="post" style="display:inline">
+          <input type="hidden" name="year" value="{{ year }}">
+          <input type="hidden" name="month" value="{{ month }}">
+          <button type="submit" class="check-btn {% if item.is_paid %}checked{% endif %}">
+            {% if item.is_paid %}✓{% else %}&nbsp;{% endif %}
+          </button>
+        </form>
+        <div>
+          <p class="ob-name">{{ item.name }}</p>
+          <p class="ob-day">{{ item.day }} {{ month_name | lower }}</p>
+        </div>
+      </div>
+      <p class="ob-amount">{{ item.amount | money }}</p>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>Нет регулярных платежей.</p>
+      <a href="/settings">Добавить в настройках →</a>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

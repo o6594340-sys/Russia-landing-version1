@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#F8F5EF">
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="stylesheet" href="/static/style.css">
+  <title>{% block title %}Мажордом{% endblock %}</title>
+</head>
+<body>
+  <div class="app">
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <nav class="bottom-nav">
+      <a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Главная</span>
+      </a>
+      <a href="/income" class="nav-item {% if request.path == '/income' %}active{% endif %}">
+        <span class="nav-icon">＋</span>
+        <span class="nav-label">Доход</span>
+      </a>
+      <a href="/expense" class="nav-item {% if request.path == '/expense' %}active{% endif %}">
+        <span class="nav-icon">－</span>
+        <span class="nav-label">Расход</span>
+      </a>
+      <a href="/calendar" class="nav-item {% if request.path == '/calendar' %}active{% endif %}">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Календарь</span>
+      </a>
+      <a href="/settings" class="nav-item {% if request.path == '/settings' %}active{% endif %}">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Настройки</span>
+      </a>
+    </nav>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/sw.js');
+    }
+  </script>
+</body>
+</html>

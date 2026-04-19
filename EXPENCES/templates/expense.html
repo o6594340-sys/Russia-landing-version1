@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Расходы{% endblock %}
+{% block content %}
+
+<div class="page">
+  <h1 class="page-title">Расход</h1>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabs">
+    <button class="tab active" onclick="showTab('one-time')">Разовый</button>
+    <button class="tab" onclick="showTab('obligation')">Регулярный платёж</button>
+  </div>
+
+  <!-- One-time expense -->
+  <form method="post" class="form-card" id="tab-one-time">
+    <input type="hidden" name="type" value="one_time">
+
+    <div class="form-group">
+      <label class="form-label">Сумма</label>
+      <input type="number" name="amount" class="form-input big-input"
+             placeholder="0" step="0.01" min="0" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Описание</label>
+      <input type="text" name="description" class="form-input" placeholder="ламинат, продукты...">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">С какого счёта</label>
+      <select name="account_id" class="form-input">
+        <option value="">— не указывать —</option>
+        {% for a in accounts %}
+        <option value="{{ a.id }}">{{ a.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Дата</label>
+      <input type="date" name="date" class="form-input" value="{{ today }}">
+    </div>
+
+    <button type="submit" class="btn-submit expense-submit">Записать расход</button>
+  </form>
+
+  <!-- Obligation payment -->
+  <form method="post" class="form-card hidden" id="tab-obligation">
+    <input type="hidden" name="type" value="obligation">
+
+    <div class="form-group">
+      <label class="form-label">Какой платёж</label>
+      <select name="obligation_id" class="form-input" onchange="fillAmount(this)" required>
+        <option value="">— выбрать —</option>
+        {% for ob in obligations %}
+        <option value="{{ ob.id }}" data-amount="{{ ob.amount }}">
+          {{ ob.name }} ({{ ob.amount | money }})
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Сумма</label>
+      <input type="number" name="amount" id="ob-amount" class="form-input big-input"
+             placeholder="0" step="0.01" min="0" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">С какого счёта</label>
+      <select name="account_id" class="form-input">
+        <option value="">— не указывать —</option>
+        {% for a in accounts %}
+        <option value="{{ a.id }}">{{ a.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Дата</label>
+      <input type="date" name="date" class="form-input" value="{{ today }}">
+    </div>
+
+    <button type="submit" class="btn-submit expense-submit">Оплатить и отметить</button>
+  </form>
+
+  {% if recent %}
+  <div class="section">
+    <h2 class="section-title">Последние расходы</h2>
+    <div class="transaction-list">
+      {% for t in recent %}
+      <div class="transaction-row">
+        <div>
+          <p class="tr-desc">{{ t.description or 'Расход' }}</p>
+          <p class="tr-meta">{{ t.date }}{% if t.account_name %} · {{ t.account_name }}{% endif %}</p>
+        </div>
+        <p class="tr-amount expense-color">−{{ t.amount | money }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+function showTab(tab) {
+  document.getElementById('tab-one-time').classList.toggle('hidden', tab !== 'one-time');
+  document.getElementById('tab-obligation').classList.toggle('hidden', tab !== 'obligation');
+  document.querySelectorAll('.tab').forEach((el, i) => {
+    el.classList.toggle('active', (i === 0 && tab === 'one-time') || (i === 1 && tab === 'obligation'));
+  });
+}
+function fillAmount(select) {
+  const amount = select.options[select.selectedIndex].dataset.amount;
+  if (amount) document.getElementById('ob-amount').value = amount;
+}
+</script>
+{% endblock %}

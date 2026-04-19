@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Счета{% endblock %}
+{% block content %}
+
+<div class="page">
+  <h1 class="page-title">Счета и карты</h1>
+
+  <!-- Total -->
+  <div class="total-card">
+    <p class="total-label">Итого на всех счетах</p>
+    <p class="total-amount">{{ total | money }}</p>
+  </div>
+
+  <!-- Accounts list -->
+  {% for a in accounts %}
+  <div class="account-card">
+    <div class="account-header">
+      <div>
+        <p class="account-name">{{ a.name }}</p>
+        <p class="account-type">{{ 'Кредитная' if a.type == 'credit' else 'Дебетовая' }}</p>
+      </div>
+      <p class="account-balance {% if a.balance < 0 %}negative{% endif %}">{{ a.balance | money }}</p>
+    </div>
+    {% if a.type == 'credit' and a.credit_limit > 0 %}
+    {% set used_pct = [((a.credit_limit - a.balance) / a.credit_limit * 100) | int, 100] | min %}
+    <div class="credit-info">
+      <p class="credit-label">Лимит: {{ a.credit_limit | money }}</p>
+      <div class="progress-bar">
+        <div class="progress-fill credit-fill" style="width: {{ used_pct }}%"></div>
+      </div>
+    </div>
+    {% endif %}
+    <!-- Update balance form -->
+    <form method="post" class="inline-form">
+      <input type="hidden" name="action" value="update_balance">
+      <input type="hidden" name="account_id" value="{{ a.id }}">
+      <input type="number" name="balance" class="inline-input" placeholder="Новый баланс" step="0.01">
+      <button type="submit" class="inline-btn">Обновить</button>
+    </form>
+    <!-- Delete -->
+    <form method="post" onsubmit="return confirm('Удалить счёт?')">
+      <input type="hidden" name="action" value="delete">
+      <input type="hidden" name="account_id" value="{{ a.id }}">
+      <button type="submit" class="delete-btn">Удалить</button>
+    </form>
+  </div>
+  {% endfor %}
+
+  <!-- Add account -->
+  <div class="add-section">
+    <h2 class="section-title">Добавить счёт</h2>
+    <form method="post" class="form-card">
+      <input type="hidden" name="action" value="add">
+      <div class="form-group">
+        <label class="form-label">Название</label>
+        <input type="text" name="name" class="form-input" placeholder="Сбербанк, Тинькофф..." required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Текущий баланс</label>
+        <input type="number" name="balance" class="form-input" placeholder="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Тип</label>
+        <select name="type" class="form-input" id="acc-type-sel" onchange="toggleCreditLimit()">
+          <option value="debit">Дебетовая</option>
+          <option value="credit">Кредитная</option>
+        </select>
+      </div>
+      <div class="form-group hidden" id="credit-limit-group">
+        <label class="form-label">Кредитный лимит</label>
+        <input type="number" name="credit_limit" class="form-input" placeholder="0" step="0.01">
+      </div>
+      <button type="submit" class="btn-submit">Добавить</button>
+    </form>
+  </div>
+</div>
+
+<script>
+function toggleCreditLimit() {
+  const sel = document.getElementById('acc-type-sel');
+  document.getElementById('credit-limit-group').classList.toggle('hidden', sel.value !== 'credit');
+}
+</script>
+{% endblock %}

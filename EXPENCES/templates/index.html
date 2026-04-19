@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Мажордом{% endblock %}
+{% block content %}
+
+<div class="home-screen">
+
+  <!-- Quote -->
+  <div class="quote-card">
+    <p class="quote-text">{{ quote[0] }}</p>
+    {% if quote[1] %}<p class="quote-author">— {{ quote[1] }}</p>{% endif %}
+  </div>
+
+  <!-- Free money -->
+  <div class="free-money-card">
+    <p class="free-label">Свободно сейчас</p>
+    <p class="free-amount {% if free < 0 %}negative{% endif %}">{{ free | money }}</p>
+    <p class="free-sub">баланс {{ total | money }} · зарезервировано {{ reserved | money }}</p>
+  </div>
+
+  <!-- Main buttons -->
+  <div class="main-buttons">
+    <a href="/income" class="btn-income">
+      <span class="btn-icon">↑</span>
+      <span>Доходы</span>
+    </a>
+    <a href="/expense" class="btn-expense">
+      <span class="btn-icon">↓</span>
+      <span>Расходы</span>
+    </a>
+  </div>
+
+  <!-- Upcoming payments -->
+  {% if upcoming %}
+  <div class="section">
+    <h2 class="section-title">Ближайшие платежи</h2>
+    <div class="obligation-list">
+      {% for item in upcoming %}
+      <div class="obligation-row {% if item.is_paid %}paid{% elif item.delta < 0 %}overdue{% elif item.delta <= 3 %}soon{% endif %}">
+        <div class="ob-left">
+          <form action="/toggle-paid/{{ item.id }}" method="post" style="display:inline">
+            <input type="hidden" name="year" value="{{ today.year }}">
+            <input type="hidden" name="month" value="{{ today.month }}">
+            <button type="submit" class="check-btn {% if item.is_paid %}checked{% endif %}">
+              {% if item.is_paid %}✓{% else %}&nbsp;{% endif %}
+            </button>
+          </form>
+          <div>
+            <p class="ob-name">{{ item.name }}</p>
+            <p class="ob-day">
+              {% if item.delta == 0 %}сегодня
+              {% elif item.delta == 1 %}завтра
+              {% elif item.delta < 0 %}{{ item.delta | abs }} дн. назад
+              {% else %}через {{ item.delta }} дн.{% endif %}
+            </p>
+          </div>
+        </div>
+        <p class="ob-amount">{{ item.amount | money }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Goals -->
+  {% if goals %}
+  <div class="section">
+    <h2 class="section-title">Цели</h2>
+    {% for goal in goals %}
+    {% set pct = [((goal.current_amount / goal.target_amount) * 100) | int, 100] | min %}
+    <div class="goal-card">
+      <div class="goal-header">
+        <p class="goal-name">{{ goal.name }}</p>
+        <p class="goal-amounts">{{ goal.current_amount | money }} / {{ goal.target_amount | money }}</p>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: {{ pct }}%"></div>
+      </div>
+      {% if goal.deadline %}
+      <p class="goal-deadline">до {{ goal.deadline }}</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Accounts shortcut -->
+  <div class="section">
+    <a href="/accounts" class="accounts-link">Счета и карты →</a>
+  </div>
+
+</div>
+{% endblock %}

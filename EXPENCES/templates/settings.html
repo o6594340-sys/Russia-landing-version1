@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Настройки{% endblock %}
+{% block content %}
+
+<div class="page">
+  <h1 class="page-title">Настройки</h1>
+
+  <!-- ===== Obligations ===== -->
+  <div class="section">
+    <h2 class="section-title">Регулярные платежи</h2>
+
+    {% for ob in obligations %}
+    <div class="setting-row">
+      <div>
+        <p class="setting-name">{{ ob.name }}</p>
+        <p class="setting-meta">{{ ob.day_of_month }}-го числа · {{ ob.amount | money }}</p>
+      </div>
+      <form method="post" onsubmit="return confirm('Удалить?')">
+        <input type="hidden" name="action" value="delete_obligation">
+        <input type="hidden" name="obligation_id" value="{{ ob.id }}">
+        <button type="submit" class="delete-btn">✕</button>
+      </form>
+    </div>
+    {% else %}
+    <p class="empty-hint">Нет регулярных платежей. Добавьте ниже.</p>
+    {% endfor %}
+
+    <form method="post" class="form-card mt-16">
+      <input type="hidden" name="action" value="add_obligation">
+      <div class="form-group">
+        <label class="form-label">Название</label>
+        <input type="text" name="name" class="form-input" placeholder="Аренда, детский сад..." required>
+      </div>
+      <div class="form-row">
+        <div class="form-group flex-1">
+          <label class="form-label">Сумма</label>
+          <input type="number" name="amount" class="form-input" placeholder="0" step="0.01" required>
+        </div>
+        <div class="form-group flex-1">
+          <label class="form-label">День месяца</label>
+          <input type="number" name="day_of_month" class="form-input" placeholder="1–28" min="1" max="28" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Категория</label>
+        <select name="category" class="form-input">
+          <option value="housing">Жильё</option>
+          <option value="kids">Дети</option>
+          <option value="credit">Кредит / кредитка</option>
+          <option value="utilities">Коммуналка</option>
+          <option value="other">Другое</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-submit">Добавить платёж</button>
+    </form>
+  </div>
+
+  <!-- ===== Goals ===== -->
+  <div class="section">
+    <h2 class="section-title">Цели</h2>
+
+    {% for goal in goals %}
+    {% set pct = [((goal.current_amount / goal.target_amount) * 100) | int, 100] | min %}
+    <div class="goal-card">
+      <div class="goal-header">
+        <p class="goal-name">{{ goal.name }}</p>
+        <form method="post" onsubmit="return confirm('Удалить цель?')">
+          <input type="hidden" name="action" value="delete_goal">
+          <input type="hidden" name="goal_id" value="{{ goal.id }}">
+          <button type="submit" class="delete-btn">✕</button>
+        </form>
+      </div>
+      <p class="goal-amounts">{{ goal.current_amount | money }} из {{ goal.target_amount | money }}</p>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: {{ pct }}%"></div>
+      </div>
+      {% if goal.deadline %}<p class="goal-deadline">до {{ goal.deadline }}</p>{% endif %}
+      {% if goal.description %}<p class="goal-desc">{{ goal.description }}</p>{% endif %}
+
+      <!-- Contribute -->
+      <form method="post" class="inline-form mt-8">
+        <input type="hidden" name="action" value="goal_contribute">
+        <input type="hidden" name="goal_id" value="{{ goal.id }}">
+        <input type="number" name="amount" class="inline-input" placeholder="Внести сумму" step="0.01">
+        <button type="submit" class="inline-btn">Внести</button>
+      </form>
+    </div>
+    {% else %}
+    <p class="empty-hint">Нет целей.</p>
+    {% endfor %}
+
+    <form method="post" class="form-card mt-16">
+      <input type="hidden" name="action" value="add_goal">
+      <div class="form-group">
+        <label class="form-label">Название</label>
+        <input type="text" name="name" class="form-input" placeholder="Ремонт, кредитка..." required>
+      </div>
+      <div class="form-row">
+        <div class="form-group flex-1">
+          <label class="form-label">Сумма цели</label>
+          <input type="number" name="target_amount" class="form-input" placeholder="0" step="0.01" required>
+        </div>
+        <div class="form-group flex-1">
+          <label class="form-label">Дедлайн</label>
+          <input type="date" name="deadline" class="form-input">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Описание (необязательно)</label>
+        <input type="text" name="description" class="form-input" placeholder="Работа по ремонту">
+      </div>
+      <button type="submit" class="btn-submit">Добавить цель</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}
