@@ -295,10 +295,16 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
     c.alignment = _align('right', indent=1)
     ws.row_dimensions[row].height = 24
 
-    # Сумма: отель А + все сервисы
+    # Сумма: отель А + все сервисы — вычисляем в Python (не формулой)
+    # чтобы значение отображалось в любой программе без пересчёта
     all_h_rows = hotel_data_rows + service_rows
-    sum_parts = '+'.join(f'H{r}' for r in all_h_rows)
-    ws[f'H{row}'] = f'={sum_parts}'
+    grand_total = round(sum(
+        (ws.cell(row=r, column=4).value or 0) *
+        (ws.cell(row=r, column=5).value or 0) *
+        (ws.cell(row=r, column=7).value or 0)
+        for r in all_h_rows
+    ), 2)
+    ws[f'H{row}'] = grand_total
     ws[f'H{row}'].number_format = '#,##0.00'
     ws[f'H{row}'].font = _font(bold=True, size=13, color=C_WHITE)
     ws[f'H{row}'].fill = _fill(C_DARK)
@@ -313,7 +319,7 @@ def create_excel(params: dict, services: list, content: dict) -> bytes:
     ws.merge_cells(f'A{row}:G{row}')
     ws[f'A{row}'] = f'Цена на человека — Вариант А (наземная часть + размещение, {pax} чел.)'
     ws[f'A{row}'].font = _font(bold=True, size=9, color='444444')
-    ws[f'H{row}'] = f'=H{total_row}/{pax}'
+    ws[f'H{row}'] = round(grand_total / pax, 2) if pax else 0
     ws[f'H{row}'].number_format = '#,##0.00'
     ws[f'H{row}'].font = _font(bold=True, size=11, color=C_RED)
     ws[f'H{row}'].alignment = _align('right')
