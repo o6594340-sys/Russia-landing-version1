@@ -2191,6 +2191,25 @@ footer {
 ════════════════════════════════════════ -->
 <section class="trust-bar">
   <div class="container">
+    <div class="trust-bar-inner">
+      <div class="reveal stagger-1">
+        <span class="trust-stat-num" data-counter="20" data-suffix="M+">0</span>
+        <span class="trust-stat-label">Muslims in Russia</span>
+      </div>
+      <div class="reveal stagger-2">
+        <span class="trust-stat-num" data-counter="300">0</span>
+        <span class="trust-stat-label">Years of imperial history</span>
+      </div>
+      <div class="reveal stagger-3">
+        <span class="trust-stat-num" data-counter="6">0</span>
+        <span class="trust-stat-label">UNESCO World Heritage Sites</span>
+      </div>
+      <div class="reveal stagger-4">
+        <span class="trust-stat-num" data-counter="50" data-suffix="+">0</span>
+        <span class="trust-stat-label">Halal restaurants in Moscow</span>
+      </div>
+    </div>
+
     <div class="trust-logos reveal">
       <span class="trust-logos-label">Trusted by agencies from:</span>
       <span class="logo-pill">🇦🇪 UAE</span>
@@ -3331,8 +3350,7 @@ function animateCounter(el, target, duration = 1800) {
     const elapsed = now - start;
     const progress = Math.min(elapsed / duration, 1);
     const ease = 1 - Math.pow(1 - progress, 3);
-    const suffix = el.parentElement?.querySelector('.halal-proof-text') ? '+' :
-                   el.closest('.trust-bar-inner') && el.dataset.counter == 98 ? '%' : '+';
+    const suffix = el.dataset.suffix || '';
     el.textContent = Math.round(ease * target) + (progress < 1 ? '' : suffix);
     if (progress < 1) requestAnimationFrame(update);
   };
