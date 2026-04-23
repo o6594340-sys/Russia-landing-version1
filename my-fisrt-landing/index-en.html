@@ -373,28 +373,12 @@ h2.section-title {
       rgba(10,22,40,0.45) 100%);
 }
 
-/* Falling snow */
+/* Particles */
 .hero-particles {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-}
-.snowflake {
-  position: absolute;
-  top: -10px;
-  border-radius: 50%;
-  background: rgba(255,255,255, var(--op, 0.75));
-  width: var(--size, 3px);
-  height: var(--size, 3px);
-  pointer-events: none;
-  animation: snowfall var(--dur, 10s) var(--delay, 0s) linear infinite;
-}
-@keyframes snowfall {
-  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-  5%   { opacity: var(--op, 0.75); }
-  95%  { opacity: var(--op, 0.75); }
-  100% { transform: translateY(105vh) translateX(var(--sway, 30px)) rotate(360deg); opacity: 0; }
 }
 
 .hero-content {
@@ -1793,7 +1777,6 @@ footer {
     animation: none !important;
   }
   .wa-float { animation: none !important; }
-  .snowflake { display: none; }
 }
 
 /* ─────────────────────────────────────────
@@ -3303,26 +3286,6 @@ footer {
      JAVASCRIPT
 ════════════════════════════════════════ -->
 <script>
-// ─── Snow ────────────────────────────────
-(function() {
-  const container = document.getElementById('particles');
-  const count = window.innerWidth < 600 ? 50 : 80;
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement('div');
-    el.className = 'snowflake';
-    const size = 1.5 + Math.random() * 3.5;
-    const sway = (Math.random() - 0.5) * 80;
-    el.style.cssText = `
-      left:${Math.random()*100}%;
-      --size:${size}px;
-      --op:${0.3 + Math.random()*0.55};
-      --dur:${7 + Math.random()*10}s;
-      --delay:${-Math.random()*15}s;
-      --sway:${sway}px;
-    `;
-    container.appendChild(el);
-  }
-})();
 
 // ─── Scroll Progress Bar ─────────────────
 const scrollBar = document.getElementById('scrollBar');
