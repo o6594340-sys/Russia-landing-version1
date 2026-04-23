@@ -3206,7 +3206,7 @@ footer {
   <div class="container">
     <div class="footer-top">
       <div>
-        <div class="footer-brand">Russia<span>Welcome</span></div>
+        <div class="footer-brand">Tailor<span>Studio</span></div>
         <p class="footer-desc">DMC company for Arab tourists in Russia. Moscow · St. Petersburg · Sochi · Kazan</p>
         <div class="footer-socials">
           <a href="#" class="social-btn" aria-label="Instagram">📸</a>
@@ -3385,66 +3385,206 @@ document.getElementById('partnerForm').addEventListener('submit', function(e) {
 // ─── Language Toggle ─────────────────────
 const translations = {
   en: {
-    'nav.dest': 'Destinations',
-    'nav.services': 'Services',
-    'nav.halal': 'Halal',
-    'nav.about': 'About',
+    'nav.dest': 'Destinations', 'nav.packages': 'Programmes', 'nav.services': 'Services',
+    'nav.halal': 'Halal', 'nav.about': 'About',
     'hero.label': 'Your DMC Partner for Arab Travelers in Russia',
-    'hero.title': 'Your clients deserve the best of Russia',
-    'hero.sub': 'We welcome tourists from UAE, Qatar, Jordan and other Arab countries in Moscow, St. Petersburg and Sochi. Halal. Arabic-speaking guides. Full support.',
-    'hero.cta.wa': '💬 Write on WhatsApp',
-    'hero.cta.micro': 'We reply within 2 hours · in Arabic and English',
+    'hero.title': 'Russia designed for you',
+    'hero.sub': 'Ahmed traveled to Russia many times — and Moscow surprised him every time. So he and Olga, his Russian co-founder with 20 years in Moscow and roots in St. Petersburg, built Tailor Studio. For couples, families and individual travelers who want Russia to feel personal — not packaged. Halal-certified. Arabic-speaking. Handled end to end.',
+    'hero.cta.wa': '💬 Write on WhatsApp', 'hero.cta.micro': 'We reply within 2 hours · in Arabic and English',
     'hero.cta.catalog': 'Download Catalogue',
-    'trust.halal': 'Halal-certified',
-    'trust.guides': 'Arabic-speaking guides',
-    'trust.countries': 'Guests from 12+ countries',
-    'trust.reply': 'Reply in 2 hours',
-    'wa.label': 'WhatsApp',
-    'wa.micro': 'Reply in 2 hours'
+    'trust.partner': 'Arab co-founder, UAE-based', 'trust.halal': 'Halal-certified',
+    'trust.audience': 'Families · Couples · Individuals', 'trust.reply': 'Reply in 2 hours',
+    'wa.label': 'WhatsApp', 'wa.micro': 'Reply in 2 hours'
   },
   ar: {
-    'nav.dest': 'الوجهات',
-    'nav.services': 'الخدمات',
-    'nav.halal': 'حلال',
-    'nav.about': 'عنا',
-    'hero.label': 'شريكك لاستقبال السياح العرب في روسيا',
-    'hero.title': 'عملاؤك يستحقون أفضل ما تقدمه روسيا',
-    'hero.sub': 'نستقبل السياح من الإمارات وقطر والأردن وسائر الدول العربية في موسكو وسانت بطرسبرغ وسوتشي. حلال. مرشدون ناطقون بالعربية. رعاية متكاملة.',
-    'hero.cta.wa': '💬 تواصل عبر واتساب',
-    'hero.cta.micro': 'نرد خلال ساعتين · بالعربية والإنجليزية',
+    'nav.dest': 'الوجهات', 'nav.packages': 'البرامج', 'nav.services': 'الخدمات',
+    'nav.halal': 'حلال', 'nav.about': 'عنّا',
+    'hero.label': 'شريكك المثالي لاستقبال السياح العرب في روسيا',
+    'hero.title': 'روسيا مُصمَّمة لك',
+    'hero.sub': 'زار أحمد روسيا مرات عديدة — وموسكو تُفاجئه في كل مرة. فقرر هو وأولغا، شريكته الروسية ذات الخبرة العشرينية في موسكو، أن يبنيا Tailor Studio. للأزواج والعائلات والمسافرين الأفراد الذين يريدون أن تكون روسيا تجربة شخصية — لا رحلة مُعلَّبة. حلال معتمد. ناطقون بالعربية. إدارة متكاملة من الألف إلى الياء.',
+    'hero.cta.wa': '💬 تواصل عبر واتساب', 'hero.cta.micro': 'نرد خلال ساعتين · بالعربية والإنجليزية',
     'hero.cta.catalog': 'تحميل الكتالوج',
-    'trust.halal': 'معتمد حلال',
-    'trust.guides': 'مرشدون ناطقون بالعربية',
-    'trust.countries': 'ضيوف من أكثر من 12 دولة',
-    'trust.reply': 'رد خلال ساعتين',
-    'wa.label': 'واتساب',
-    'wa.micro': 'نرد خلال ساعتين'
+    'trust.partner': 'شريك عربي مقيم في الإمارات', 'trust.halal': 'معتمد حلال',
+    'trust.audience': 'عائلات · أزواج · أفراد', 'trust.reply': 'رد خلال ساعتين',
+    'wa.label': 'واتساب', 'wa.micro': 'نرد خلال ساعتين'
   }
 };
+
+// Full Arabic section HTML — swapped on language change
+const arSections = {
+  '.trust-bar .trust-bar-inner': `
+    <div class="reveal stagger-1"><span class="trust-stat-num" data-counter="20" data-suffix="M+">0</span><span class="trust-stat-label">مسلم في روسيا</span></div>
+    <div class="reveal stagger-2"><span class="trust-stat-num" data-counter="300">0</span><span class="trust-stat-label">عاماً من التاريخ الإمبراطوري</span></div>
+    <div class="reveal stagger-3"><span class="trust-stat-num" data-counter="6">0</span><span class="trust-stat-label">مواقع التراث العالمي لليونسكو</span></div>
+    <div class="reveal stagger-4"><span class="trust-stat-num" data-counter="50" data-suffix="+">0</span><span class="trust-stat-label">مطعم حلال في موسكو</span></div>`,
+  '.trust-bar .trust-logos-label': 'وكالات من:',
+  '#why .pain-header': `
+    <span class="label">نفهمكم تماماً</span>
+    <h2 class="section-title">تريد تقديم روسيا لعملائك،<br>لكن شيئاً ما يُعيقك؟</h2>
+    <div class="divider"></div>
+    <p class="section-sub">نعرف جيداً التحديات التي تواجهها الوكالات العربية. ولدينا إجابة واضحة لكل عائق.</p>`,
+  '#why .pain-strips': `
+    <div class="pain-strip reveal stagger-1"><span class="pain-num">01</span><span class="pain-strip-icon">🗣️</span><div class="pain-strip-text"><h4>حاجز اللغة</h4><p>لا تجد مرشدين سياحيين وموظفين ناطقين بالعربية يفهمون فعلاً ما يتوقعه العميل العربي — ليس لغوياً فحسب، بل ثقافياً أيضاً.</p></div></div>
+    <div class="pain-strip reveal stagger-2"><span class="pain-num">02</span><span class="pain-strip-icon">🍽️</span><div class="pain-strip-text"><h4>الحلال غير مضمون أبداً</h4><p>شركات أخرى تقول "حلال متوفر" — ثم يصل عملاؤك ليجدوا طبقاً واحداً في قائمة الطعام. سمعة وكالتك هي من تدفع الثمن، لا هم.</p></div></div>
+    <div class="pain-strip reveal stagger-3"><span class="pain-num">03</span><span class="pain-strip-icon">📄</span><div class="pain-strip-text"><h4>تعقيدات التأشيرة</h4><p>إجراءات التأشيرة الروسية تختلف اختلافاً كبيراً من جنسية لأخرى. بدون شريك يعرف متطلبات الإمارات وقطر والأردن والسعودية بدقة، الأمور تتعثر.</p></div></div>
+    <div class="pain-strip reveal stagger-4"><span class="pain-num">04</span><span class="pain-strip-icon">⭐</span><div class="pain-strip-text"><h4>سمعتك ترافق عملاءك</h4><p>توصيلة واحدة سيئة، مطعم واحد خاطئ، مرشد لا يفهم الثقافة — وعميلك يحكي لعائلته. روسيا تتحمل اللوم، ووكالتك تخسر الحجز.</p></div></div>`,
+  '#why .pain-resolution p': '"نتولى كل شيء على أرض الواقع — لكي يعود عملاؤك ويوصون بك لأصدقائهم."',
+  '#process .container > div:first-child': `
+    <span class="label label-light">آلية الشراكة</span>
+    <h2 class="section-title reveal">أربع خطوات — من الاستفسار<br>إلى عملاء سعداء</h2>`,
+  '#process .steps-grid': `
+    <div class="step reveal stagger-1"><div class="step-num">01</div><span class="step-icon">💬</span><h4>ترسل استفساراً</h4><p>حجم المجموعة، التواريخ، الرغبات، المتطلبات الخاصة — عبر واتساب أو النموذج</p><span class="step-micro">"بدون أي التزام"</span></div>
+    <div class="step reveal stagger-2"><div class="step-num">02</div><span class="step-icon">📋</span><h4>نُعدّ العرض</h4><p>برنامج B2B مفصّل خلال 4 ساعات عمل. عقد باللغتين. أسعار شفافة.</p><span class="step-micro">"البرنامج بالعربية"</span></div>
+    <div class="step reveal stagger-3"><div class="step-num">03</div><span class="step-icon">🤝</span><h4>التأكيد والحجز</h4><p>دفع مرن بالدولار أو الدرهم. شروط مريحة لوكالتك.</p><span class="step-micro">"دفع سهل"</span></div>
+    <div class="step reveal stagger-4"><div class="step-num">04</div><span class="step-icon">🌟</span><h4>نُنفّذ — وأنت تربح</h4><p>مرشد ناطق بالعربية، طعام حلال، دعم على مدار الساعة — عملاؤك في أيدٍ أمينة.</p><span class="step-micro">"معك على مدار الساعة"</span></div>`,
+  '#destinations .destinations-header': `
+    <div><span class="label">الوجهات</span><h2 class="section-title">ثلاث مدن — ثلاث تجارب لا تُنسى</h2></div>
+    <p style="font-size:15px;color:var(--text-muted);max-width:320px;text-align:right">كل وجهة منتج جاهز للبيع لعملائك</p>`,
+  '#destinations .dest-card.moscow .dest-content': `
+    <div class="dest-tag">متاح على مدار العام</div><h3>موسكو</h3>
+    <p class="dest-subtitle">التاريخ والفخامة والثقافة</p>
+    <div class="dest-halal">✓ أكثر من 50 مطعماً حلالاً</div>
+    <ul class="dest-highlights"><li><span class="hi">🕌</span> المسجد الجامع — الأكبر في أوروبا</li><li><span class="hi">🛍️</span> GUM وTSUM وكروكوس سيتي مول</li><li><span class="hi">🏨</span> فور سيزونز وريتز كارلتون بخدمات حلال</li></ul>
+    <a href="#contact" class="dest-link">برامج موسكو ←</a>`,
+  '#destinations .dest-card.spb .dest-content': `
+    <div class="dest-tag">الأفضل صيفاً (الليالي البيضاء)</div><h3>سانت بطرسبرغ</h3>
+    <p class="dest-subtitle">العاصمة الثقافية لروسيا</p>
+    <div class="dest-halal">✓ خيارات حلال في الفنادق الشريكة</div>
+    <ul class="dest-highlights"><li><span class="hi">🌙</span> الليالي البيضاء — ظاهرة طبيعية فريدة من نوعها</li><li><span class="hi">🎨</span> الإرميتاج — من أعظم متاحف العالم</li><li><span class="hi">🏰</span> بيتيرهوف والقصور الإمبراطورية</li></ul>
+    <a href="#contact" class="dest-link">برامج سانت بطرسبرغ ←</a>`,
+  '#destinations .dest-card.sochi .dest-content': `
+    <div class="dest-tag">الشاطئ صيفاً · التزلج شتاءً</div><h3>سوتشي</h3>
+    <p class="dest-subtitle">الريفيرا الروسية</p>
+    <div class="dest-halal">✓ المطبخ القوقازي حلال بطبيعته</div>
+    <ul class="dest-highlights"><li><span class="hi">🏖️</span> ساحل البحر الأسود للعائلة بأكملها</li><li><span class="hi">⛷️</span> منتجع روزا خوتور للتزلج</li><li><span class="hi">🌿</span> مناخ شبه استوائي — فريد في روسيا</li></ul>
+    <a href="#contact" class="dest-link">برامج سوتشي ←</a>`,
+  '#destinations .kazan-strip': `
+    <div><span class="label" style="margin-bottom:4px">+ وجهة إضافية</span><p><strong>قازان — "عاصمة روسيا الحلال"</strong> · مسجد قول شريف · تتارستان · بنية تحتية حلال متكاملة · جسر ثقافي بين أوروبا والإسلام</p></div>
+    <a href="#contact" class="btn btn-outline" style="flex-shrink:0">اكتشف قازان ←</a>`,
+  '#services .container > div:first-child': `
+    <span class="label">خدماتنا</span>
+    <h2 class="section-title reveal">ليس الطريق السياحي المعتاد.<br>الطريق الحقيقي.</h2>
+    <div class="divider divider-center reveal"></div>`,
+  '#services .services-grid': `
+    <div class="service-card service-card--featured reveal stagger-1"><span class="service-label">مميز</span><span class="service-icon">💨</span><h4>ثقافة الشيشة الأصيلة</h4><p>نعرف أفضل صالات الشيشة في موسكو وسوتشي التي يرتادها السكان المحليون — بعيداً عن الأماكن السياحية المزيفة. تجربة لا تقدمها أي شركة DMC أخرى، لأن أحداً غيرنا لا يفكر في عملائك بهذه العمق.</p></div>
+    <div class="service-card service-card--featured reveal stagger-2"><span class="service-label">مميز</span><span class="service-icon">🛍️</span><h4>بوتيكات المصممين الروس</h4><p>جولات تسوق حصرية في عالم المصممين المستقلين بموسكو — ملابس ومجوهرات وتحف فنية. قطع فريدة لن يجدها عملاؤك في دبي ولا لندن ولا باريس. هذه هي روسيا التي لا يراها أحد.</p></div>
+    <div class="service-card reveal stagger-3"><span class="service-icon">🗣️</span><h4>مرشدون ناطقون بالعربية</h4><p>مرشدون معتمدون في موسكو وسانت بطرسبرغ وسوتشي. مرشدات متاحات للعائلات والمجموعات النسائية.</p></div>
+    <div class="service-card reveal stagger-4"><span class="service-icon">🍽️</span><h4>مطاعم حقيقية</h4><p>حيث يأكل أهل موسكو فعلاً. حلال معتمد، منتقى بعناية للذوق العربي — بعيداً عن مطاعم السياحة الجاهزة.</p></div>
+    <div class="service-card reveal stagger-5"><span class="service-icon">🏨</span><h4>إقامة حلال</h4><p>فنادق تفهم متطلبات الحلال دون الحاجة للسؤال مرتين. غرف عائلية، مصليات، طوابق خالية من الكحول.</p></div>
+    <div class="service-card reveal stagger-6"><span class="service-icon">📄</span><h4>التأشيرة والخدمات اللوجستية</h4><p>توثيق متكامل، نقليات من وإلى المطار، تنقل بين المدن. كل تفصيلة تشغيلية في أيدٍ أمينة.</p></div>`,
+  '#services .services-cta p': 'لديك طلب محدد أو تريد مناقشة برنامج لعملائك؟',
+  '#halal .halal-header': `
+    <span class="halal-moon">☪️</span>
+    <span class="label label-light">ضمان الحلال</span>
+    <h2 class="section-title reveal">الحلال ليس وعداً.<br>إنه معيارنا.</h2>
+    <div class="divider divider-center"></div>
+    <p class="section-sub reveal" style="margin:0 auto">نتعامل حصراً مع شركاء يستوفون متطلبات السياحة الإسلامية. لا تنازلات ولا استثناءات.</p>`,
+  '#halal .halal-grid': `
+    <div class="halal-item reveal stagger-1"><span class="halal-item-icon">🍽️</span><h4>مطاعم حلال</h4><p>مطاعم معتمدة حصراً في شبكة شركائنا المختارين</p></div>
+    <div class="halal-item reveal stagger-2"><span class="halal-item-icon">🕌</span><h4>أماكن الصلاة</h4><p>نعرف مواقع المساجد وأماكن الصلاة على جميع المسارات</p></div>
+    <div class="halal-item reveal stagger-3"><span class="halal-item-icon">🌙</span><h4>برامج رمضان</h4><p>سحور وإفطار وجداول جولات متكيفة مع الشهر الكريم</p></div>
+    <div class="halal-item reveal stagger-4"><span class="halal-item-icon">👩</span><h4>مرشدات نساء</h4><p>متاحات للمجموعات النسائية والعائلات الملتزمة بالتقاليد</p></div>`,
+  '#reviews .testimonials-header': `
+    <span class="label">المسافرون العرب عن روسيا</span>
+    <h2 class="section-title reveal">ما يقوله المسافرون العرب عن روسيا</h2>
+    <p class="section-sub reveal">انطباعات حقيقية من ضيوف جاؤوا ولم يتوقفوا عن الحديث عنها</p>`,
+  '#reviews .testimonials-grid': `
+    <div class="testimonial-card reveal stagger-1"><div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><blockquote>"جئت وأنا أتوقع البرد والرمادية. فوجدت أضواءً ذهبية وثلجاً لم أرَ مثله في حياتي، ومدينة لا تعرف النوم. موسكو فاجأتني أكثر من أي وجهة رأيتها في أوروبا."</blockquote><div class="testimonial-author"><div class="author-avatar">👤</div><div><div class="author-name">خالد المنصوري</div><div class="author-info">مسافر · <span class="author-country">🇦🇪</span> دبي، الإمارات</div></div></div></div>
+    <div class="testimonial-card reveal stagger-2"><div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><blockquote>"سانت بطرسبرغ في الليالي البيضاء — السماء لا تُعتم، القصور مفتوحة، وتمشي على ضفاف القنوات منتصف الليل وكأنه الظهيرة. قالت زوجتي إنها أجمل رحلة في حياتنا."</blockquote><div class="testimonial-author"><div class="author-avatar">👤</div><div><div class="author-name">طارق السويدي</div><div class="author-info">مسافر · <span class="author-country">🇶🇦</span> الدوحة، قطر</div></div></div></div>
+    <div class="testimonial-card reveal stagger-3"><div class="testimonial-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><blockquote>"أخذنا العائلة كلها إلى سوتشي. رأى الأطفال الثلج لأول مرة في حياتهم. الطعام حلال، الفندق مريح، والجبال لا تصفها الكلمات. سنعود بالتأكيد الشتاء القادم."</blockquote><div class="testimonial-author"><div class="author-avatar">👤</div><div><div class="author-name">نورة الراشدي</div><div class="author-info">مسافرة · <span class="author-country">🇸🇦</span> الرياض، المملكة العربية السعودية</div></div></div></div>`,
+  '#about .about-text': `
+    <span class="label">قصتنا</span>
+    <h2 class="section-title">بُنيت من شخص وقع في غرام موسكو.</h2>
+    <div class="divider"></div>
+    <p>كان نوفمبر. كان أحمد في موسكو مجدداً — واحدة من رحلاته العديدة على مدار السنين. كانا يتعشيان، ذلك النوع من العشاء الذي يمتد طويلاً لأن الحديث لا يريد أن ينتهي. وراء الزجاج، كان ثلج خفيف يتساقط. والشوارع تتوهج — موسكو تُزيّن نفسها بثقة تُفاجئ الناس في كل مرة.</p>
+    <p>نظر أحمد من النافذة وقال: <em>"أولغا. العرب يجب أن يروا هذا. أظن أن روسيا وجهة لا تُصدَّق."</em></p>
+    <p>لم تحتج أولغا إلى إقناع.</p>
+    <p>كانت قد استقبلت ضيوفاً يابانيين على أرفع مستوى في موسكو وسانت بطرسبرغ — ذلك النوع من الزيارات التي لا يُترك فيها شيء للصدفة. ونظّمت برنامجاً خاصاً لمجموعة من السيدات السوريات الميسورات، وفهمت التفاصيل التي تصنع الفارق — تلك الأشياء التي لا تعرفها إلا بالتجربة.</p>
+    <p>فبنيا Tailor Studio. ليست شركة سياحة تخدم العرب بالصدفة — بل شركة وُلدت من عشاء نوفمبري، لأن من يعرف العالمَين نظر إلى شارع موسكو المثلوج وقال في نفسه: هذا يجب أن يُشارَك.</p>
+    <p>Tailor Studio شركة جديدة. لكن مؤسسيها ليسوا جدداً في عالم السياحة. بين أولغا وأحمد، عشرون عاماً من الخبرة في MICE والسياحة الترفيهية والسياحة الواردة والصادرة — في روسيا وفي الخليج وعلى امتداد كليهما. الشركة جديدة. والخبرة راسخة.</p>
+    <div class="credentials">
+      <div class="cred-badge"><span>✓</span> شريك عربي مقيم في الإمارات</div>
+      <div class="cred-badge"><span>✓</span> موسكو · سانت بطرسبرغ · سوتشي</div>
+      <div class="cred-badge"><span>✓</span> عمليات معتمدة حلال</div>
+      <div class="cred-badge"><span>✓</span> فريق ناطق بالعربية</div>
+    </div>`,
+  '#faq .faq-header': `
+    <span class="label">الأسئلة الشائعة</span>
+    <h2 class="section-title reveal">إجابات على أسئلة<br>الوكالات العربية</h2>`,
+  '#faq .faq-list': `
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">هل لديكم مرشدون ناطقون بالعربية في المدن الثلاث؟<span class="faq-icon">+</span></div><div class="faq-a"><p>نعم. مرشدونا المعتمدون يتحدثون العربية في موسكو وسانت بطرسبرغ وسوتشي. مرشدات متاحات للمجموعات النسائية والعائلات. جميع المرشدين حاصلون على اعتماد حكومي ولديهم خبرة مع السياح العرب.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">كيف تضمنون الطعام الحلال؟<span class="faq-icon">+</span></div><div class="faq-a"><p>نتعامل حصراً مع المطاعم الحاصلة على شهادة حلال أو التي تستوفي المعايير بصورة موثوقة. جميع الوجبات في برامجنا مُرتَّبة في أماكن مدروسة. نوفر قائمة بالمطاعم الشريكة عند الطلب. وفي رمضان نُنظّم السحور والإفطار.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">كيف تسير عملية دعم التأشيرة؟<span class="faq-icon">+</span></div><div class="faq-a"><p>نُعدّ ملف الوثائق الكاملة للتأشيرة الروسية لكل مسافر في المجموعة. نعرف المتطلبات الخاصة بمواطني الإمارات وقطر والأردن والسعودية والكويت. تستغرق العملية عادةً 5 إلى 10 أيام عمل.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">ما هي شروط الدفع للوكالات؟<span class="faq-icon">+</span></div><div class="faq-a"><p>شروط B2B مرنة: 30% دفعة أولى عند التأكيد، والرصيد قبل 14 يوماً من وصول المجموعة. نقبل الدفع بالدولار الأمريكي والدرهم الإماراتي. للشركاء الدائمين — شروط خاصة وأسعار صافية بعمولة تتراوح بين 15 و20%.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">ما الحد الأدنى لحجم المجموعة؟<span class="faq-icon">+</span></div><div class="faq-a"><p>نعمل مع المسافرين الأفراد (FIT) والمجموعات من شخصين فأكثر. للمجموعات الكبيرة (30 شخصاً فأكثر) — شروط خاصة ومدير مرافق مخصص.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">ماذا لو واجه العميل مشكلة خلال الرحلة؟<span class="faq-icon">+</span></div><div class="faq-a"><p>مديرنا متاح على واتساب على مدار الساعة طوال الرحلة. نرد خلال 15 دقيقة. لدينا جهات اتصال موثوقة مع الخدمات الطبية وجهات الطوارئ في المدن الثلاث. وبخبرة عشرين عاماً في السياحة — بين MICE والترفيه والسياحة الواردة والصادرة — نعرف كيف نتعامل مع المواقف غير المتوقعة.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">هل يمكن تقديم البرنامج تحت اسم وكالتنا؟<span class="faq-icon">+</span></div><div class="faq-a"><p>نعم، نقدم شراكات العلامة البيضاء (White Label). عملاؤك لا يرون إلا اسم وكالتك — ونحن نعمل خلف الكواليس. نوفر لك جميع المواد التسويقية: برامج وصور وأوصاف باللغتين العربية والإنجليزية.</p></div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">هل تُعدّون برامج خاصة برمضان؟<span class="faq-icon">+</span></div><div class="faq-a"><p>نعم. نُعدّ برامج رمضانية خاصة: سحور وإفطار في مطاعم تطل على أبرز المعالم، وجداول جولات متكيفة مع أوقات الصلاة، وجولات ليلية في شوارع موسكو وسانت بطرسبرغ.</p></div></div>`,
+  '#faq .faq-wa-cta p:first-child': 'هل لديك أسئلة إضافية؟ سنجيبك بالعربية والإنجليزية.',
+  '#faq .faq-wa-cta p:last-child': 'نرد خلال ساعتين · الأحد–الخميس 09:00–21:00 بتوقيت موسكو',
+  '#contact .cta-left': `
+    <span class="label label-light">كن شريكنا</span>
+    <h2>ابدأ بتقديم روسيا لعملائك اليوم</h2>
+    <p class="cta-sub">انضم إلى الوكالات من الإمارات وقطر والأردن التي تبني بالفعل أعمالاً مربحة على الوجهة الروسية.</p>
+    <div class="cta-benefits">
+      <div class="cta-benefit">عرض جاهز خلال 4 ساعات عمل</div>
+      <div class="cta-benefit">مدير ناطق بالعربية — نقطة تواصل واحدة</div>
+      <div class="cta-benefit">عمولة وكالة مرنة (15–20%)</div>
+      <div class="cta-benefit">برامج بعلامتك التجارية (White Label)</div>
+      <div class="cta-benefit">كتالوج جاهز للبيع باللغة العربية</div>
+    </div>
+    <div class="cta-contacts">
+      <div class="cta-contact-item"><span>💬</span><span>واتساب: +971 50 343 4428</span></div>
+      <div class="cta-contact-item"><span>✉️</span><span>info@russiawelcome.ru</span></div>
+      <div class="cta-contact-item"><span>📍</span><span>موسكو، شارع تفيرسكايا 1، مكتب 302</span></div>
+      <div class="cta-contact-item"><span>🕐</span><span>الأحد–الخميس، 09:00–21:00 بتوقيت موسكو</span></div>
+    </div>`
+};
+
+const enBackup = {};
 
 function setLang(lang) {
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
+  // data-i18n elements
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
-    if (!translations[lang] || !translations[lang][key]) return;
+    if (!translations[lang]?.[key]) return;
     const val = translations[lang][key];
-    // Hero title has <em> child — rebuild it
     if (key === 'hero.title') {
-      const words = val.split(' ');
-      const half = Math.ceil(words.length / 2);
-      el.innerHTML = words.slice(0, half).join(' ') +
-        ' <em>' + words.slice(half).join(' ') + '</em>';
+      el.innerHTML = lang === 'ar'
+        ? 'روسيا <em>مُصمَّمة لك</em>'
+        : 'Russia <em>designed for you</em>';
+    } else if (key === 'hero.sub') {
+      el.textContent = val;
     } else {
       el.textContent = val;
     }
   });
 
+  // Section-level swaps
+  if (lang === 'ar') {
+    Object.entries(arSections).forEach(([sel, html]) => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      if (!enBackup[sel]) enBackup[sel] = el.innerHTML;
+      el.innerHTML = html;
+    });
+    // Re-run counters on swapped content
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      if (!el._counted) counterObserver.observe(el);
+    });
+  } else {
+    Object.entries(enBackup).forEach(([sel, html]) => {
+      const el = document.querySelector(sel);
+      if (el) el.innerHTML = html;
+    });
+  }
+
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('btn-' + lang)?.classList.add('active');
 
-  // RTL: move WhatsApp float button
   const waFloat = document.getElementById('waFloat');
   if (waFloat) {
     waFloat.style.right = lang === 'ar' ? 'auto' : '28px';
