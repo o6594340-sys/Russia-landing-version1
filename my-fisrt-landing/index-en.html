@@ -889,7 +889,7 @@ h2.section-title {
 ───────────────────────────────────────── */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-top: 56px;
 }
@@ -937,9 +937,9 @@ h2.section-title {
   line-height: 1.65;
 }
 
-/* Featured signature cards — top row, span 2 columns each */
+/* Featured signature cards */
 .service-card--featured {
-  grid-column: span 2;
+  grid-column: span 1;
   background: linear-gradient(135deg, #0f1f38 0%, #0a1628 100%);
   border-color: rgba(201,168,76,0.22);
   padding: 48px 40px;
@@ -2660,27 +2660,6 @@ footer {
         <p>Shopping routes through Moscow's independent design scene — clothes, jewellery, art objects. Unique pieces your clients won't find anywhere in Dubai, London or Paris. This is the Russia nobody shows them.</p>
       </div>
 
-      <!-- Standard services -->
-      <div class="service-card reveal stagger-3">
-        <span class="service-icon">🗣️</span>
-        <h4>Arabic-speaking guides</h4>
-        <p>Arabic-speaking guides in Moscow and St. Petersburg. English-speaking guides in Sochi. Female guides available for families and women's groups.</p>
-      </div>
-      <div class="service-card reveal stagger-4">
-        <span class="service-icon">🍽️</span>
-        <h4>Real dining</h4>
-        <p>Where Muscovites actually eat. Halal-certified, curated for Arab palates — not the borsch-and-blini conveyor.</p>
-      </div>
-      <div class="service-card reveal stagger-5">
-        <span class="service-icon">🏨</span>
-        <h4>Halal accommodation</h4>
-        <p>Hotels that understand halal requirements without being asked twice. Family rooms, prayer facilities, alcohol-free floors.</p>
-      </div>
-      <div class="service-card reveal stagger-6">
-        <span class="service-icon">📄</span>
-        <h4>Visas & logistics</h4>
-        <p>Complete documentation, airport transfers, inter-city travel. Every operational detail handled end to end.</p>
-      </div>
 
     </div>
 
@@ -3469,10 +3448,7 @@ const arSections = {
   '#services .services-grid': `
     <div class="service-card service-card--featured reveal stagger-1"><span class="service-label">مميز</span><span class="service-icon">💨</span><h4>ثقافة الشيشة الأصيلة</h4><p>نعرف أفضل صالات الشيشة في موسكو وسوتشي التي يرتادها السكان المحليون — بعيداً عن الأماكن السياحية المزيفة. تجربة لا تقدمها أي شركة DMC أخرى، لأن أحداً غيرنا لا يفكر في عملائك بهذه العمق.</p></div>
     <div class="service-card service-card--featured reveal stagger-2"><span class="service-label">مميز</span><span class="service-icon">🛍️</span><h4>بوتيكات المصممين الروس</h4><p>جولات تسوق حصرية في عالم المصممين المستقلين بموسكو — ملابس ومجوهرات وتحف فنية. قطع فريدة لن يجدها عملاؤك في دبي ولا لندن ولا باريس. هذه هي روسيا التي لا يراها أحد.</p></div>
-    <div class="service-card reveal stagger-3"><span class="service-icon">🗣️</span><h4>مرشدون ناطقون بالعربية</h4><p>مرشدون ناطقون بالعربية في موسكو وسانت بطرسبرغ. في سوتشي، مرشدون بالإنجليزية — وهو ما يناسب غالبية ضيوف دول الخليج. مرشدات متاحات في موسكو وسانت بطرسبرغ.</p></div>
-    <div class="service-card reveal stagger-4"><span class="service-icon">🍽️</span><h4>مطاعم حقيقية</h4><p>حيث يأكل أهل موسكو فعلاً. حلال معتمد، منتقى بعناية للذوق العربي — بعيداً عن مطاعم السياحة الجاهزة.</p></div>
-    <div class="service-card reveal stagger-5"><span class="service-icon">🏨</span><h4>إقامة حلال</h4><p>فنادق تفهم متطلبات الحلال دون الحاجة للسؤال مرتين. غرف عائلية، مصليات، طوابق خالية من الكحول.</p></div>
-    <div class="service-card reveal stagger-6"><span class="service-icon">📄</span><h4>التأشيرة والخدمات اللوجستية</h4><p>توثيق متكامل، نقليات من وإلى المطار، تنقل بين المدن. كل تفصيلة تشغيلية في أيدٍ أمينة.</p></div>`,
+`,
   '#services .services-cta p': 'لديك طلب محدد أو تريد مناقشة برنامج لعملائك؟',
   '#halal .halal-header': `
     <span class="halal-moon">☪️</span>
