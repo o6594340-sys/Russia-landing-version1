@@ -616,6 +616,11 @@ h2.section-title {
   line-height: 1.6;
   margin: 0;
 }
+.pain-solution {
+  color: var(--teal) !important;
+  margin-top: 10px !important;
+  font-style: italic;
+}
 .pain-resolution {
   margin-top: 36px;
   display: flex;
@@ -2223,7 +2228,8 @@ footer {
         <span class="pain-strip-icon">🗣️</span>
         <div class="pain-strip-text">
           <h4>Language barrier</h4>
-          <p>You can't find reliable Arabic-speaking guides and ground managers who actually understand what Arab clients expect — not just linguistically, but culturally.</p>
+          <p>You can't find guides who understand Arab clients — not just linguistically, but culturally.</p>
+          <p class="pain-solution">→ Arabic-speaking guides in Moscow and St. Petersburg. English-speaking in Sochi. Female guides available.</p>
         </div>
       </div>
       <div class="pain-strip reveal stagger-2">
@@ -2231,23 +2237,17 @@ footer {
         <span class="pain-strip-icon">🍽️</span>
         <div class="pain-strip-text">
           <h4>Halal is never guaranteed</h4>
-          <p>Other DMCs say halal is "available" — then your clients arrive and find out it means one dish on a menu. Your agency's reputation takes the hit, not theirs.</p>
+          <p>Other DMCs say halal is "available" — your clients arrive and find one dish on the menu. Your agency's reputation takes the hit, not theirs.</p>
+          <p class="pain-solution">→ We work exclusively with halal-certified venues in Moscow, St. Petersburg and Kazan. In Sochi, we select Caucasian restaurants where halal is the natural default — no compromises on quality.</p>
         </div>
       </div>
       <div class="pain-strip reveal stagger-3">
         <span class="pain-num">03</span>
-        <span class="pain-strip-icon">📄</span>
-        <div class="pain-strip-text">
-          <h4>Visa complexity</h4>
-          <p>Russia's visa process differs significantly by nationality. Without a partner who knows UAE, Qatari, Jordanian and Saudi requirements precisely, things fall through.</p>
-        </div>
-      </div>
-      <div class="pain-strip reveal stagger-4">
-        <span class="pain-num">04</span>
         <span class="pain-strip-icon">⭐</span>
         <div class="pain-strip-text">
           <h4>Your reputation travels with your clients</h4>
           <p>One bad transfer, one wrong restaurant, one guide who doesn't understand the culture — and your client tells their family. Russia gets the blame. Your agency loses the booking.</p>
+          <p class="pain-solution">→ One manager on WhatsApp, 24/7, response within 15 minutes. We are your safety net on the ground.</p>
         </div>
       </div>
     </div>
@@ -2363,7 +2363,7 @@ footer {
           <div class="dest-tag">Beach in summer · Skiing in winter</div>
           <h3>Sochi</h3>
           <p class="dest-subtitle">The Russian Riviera</p>
-          <div class="dest-halal">✓ Caucasian cuisine is halal-compatible</div>
+          <div class="dest-halal">✓ Caucasian cuisine is naturally halal-compatible — fresh grilled meats, herbs, local produce</div>
           <ul class="dest-highlights">
             <li><span class="hi">🏖️</span> Black Sea coast for the whole family</li>
             <li><span class="hi">⛷️</span> Rosa Khutor ski resort</li>
@@ -3414,10 +3414,9 @@ const arSections = {
     <div class="divider"></div>
     <p class="section-sub">نعرف جيداً التحديات التي تواجهها الوكالات العربية. ولدينا إجابة واضحة لكل عائق.</p>`,
   '#why .pain-strips': `
-    <div class="pain-strip reveal stagger-1"><span class="pain-num">01</span><span class="pain-strip-icon">🗣️</span><div class="pain-strip-text"><h4>حاجز اللغة</h4><p>لا تجد مرشدين سياحيين وموظفين ناطقين بالعربية يفهمون فعلاً ما يتوقعه العميل العربي — ليس لغوياً فحسب، بل ثقافياً أيضاً.</p></div></div>
-    <div class="pain-strip reveal stagger-2"><span class="pain-num">02</span><span class="pain-strip-icon">🍽️</span><div class="pain-strip-text"><h4>الحلال غير مضمون أبداً</h4><p>شركات أخرى تقول "حلال متوفر" — ثم يصل عملاؤك ليجدوا طبقاً واحداً في قائمة الطعام. سمعة وكالتك هي من تدفع الثمن، لا هم.</p></div></div>
-    <div class="pain-strip reveal stagger-3"><span class="pain-num">03</span><span class="pain-strip-icon">📄</span><div class="pain-strip-text"><h4>تعقيدات التأشيرة</h4><p>إجراءات التأشيرة الروسية تختلف اختلافاً كبيراً من جنسية لأخرى. بدون شريك يعرف متطلبات الإمارات وقطر والأردن والسعودية بدقة، الأمور تتعثر.</p></div></div>
-    <div class="pain-strip reveal stagger-4"><span class="pain-num">04</span><span class="pain-strip-icon">⭐</span><div class="pain-strip-text"><h4>سمعتك ترافق عملاءك</h4><p>توصيلة واحدة سيئة، مطعم واحد خاطئ، مرشد لا يفهم الثقافة — وعميلك يحكي لعائلته. روسيا تتحمل اللوم، ووكالتك تخسر الحجز.</p></div></div>`,
+    <div class="pain-strip reveal stagger-1"><span class="pain-num">01</span><span class="pain-strip-icon">🗣️</span><div class="pain-strip-text"><h4>حاجز اللغة</h4><p>لا تجد مرشدين يفهمون العميل العربي — ليس لغوياً فحسب، بل ثقافياً أيضاً.</p><p class="pain-solution">→ مرشدون ناطقون بالعربية في موسكو وسانت بطرسبرغ. بالإنجليزية في سوتشي. مرشدات متاحات.</p></div></div>
+    <div class="pain-strip reveal stagger-2"><span class="pain-num">02</span><span class="pain-strip-icon">🍽️</span><div class="pain-strip-text"><h4>الحلال غير مضمون أبداً</h4><p>شركات أخرى تقول "حلال متوفر" — ثم يصل عملاؤك ليجدوا طبقاً واحداً في القائمة. سمعة وكالتك هي من تدفع الثمن.</p><p class="pain-solution">→ مطاعم حلال معتمدة في موسكو وسانت بطرسبرغ وقازان. في سوتشي، مطاعم قوقازية حيث الحلال هو الأصل — بلا تنازلات.</p></div></div>
+    <div class="pain-strip reveal stagger-3"><span class="pain-num">03</span><span class="pain-strip-icon">⭐</span><div class="pain-strip-text"><h4>سمعتك ترافق عملاءك</h4><p>توصيلة واحدة سيئة، مطعم واحد خاطئ، مرشد لا يفهم الثقافة — وعميلك يحكي لعائلته. ووكالتك تخسر الحجز.</p><p class="pain-solution">→ مدير واحد على واتساب، على مدار الساعة، يرد خلال 15 دقيقة. نحن شبكة الأمان على أرض الواقع.</p></div></div>`,
   '#why .pain-resolution p': '"نتولى كل شيء على أرض الواقع — لكي يعود عملاؤك ويوصون بك لأصدقائهم."',
   '#process .container > div:first-child': `
     <span class="label label-light">آلية الشراكة</span>
