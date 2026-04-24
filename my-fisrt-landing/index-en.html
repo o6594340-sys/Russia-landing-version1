@@ -621,6 +621,11 @@ h2.section-title {
   margin-top: 10px !important;
   font-style: italic;
 }
+.team-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
 .pain-resolution {
   margin-top: 36px;
   display: flex;
@@ -1718,15 +1723,22 @@ footer {
   .halal-grid { grid-template-columns: 1fr 1fr; }
   .testimonials-grid { grid-template-columns: 1fr; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .team-grid { grid-template-columns: 1fr; }
   .cta-grid { grid-template-columns: 1fr; gap: 40px; }
   .footer-top { grid-template-columns: 1fr; gap: 36px; }
   .wa-float .wa-text { display: none; }
   .wa-float { padding: 16px; border-radius: 50%; width: 58px; height: 58px; justify-content: center; }
   .wa-icon { font-size: 26px; }
   .hero-title { font-size: clamp(36px, 9vw, 56px); }
+  .hero-cta { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .hero-cta .btn { width: 100%; text-align: center; }
   .destinations-header { flex-direction: column; align-items: flex-start; }
+  .kazan-strip { flex-direction: column; gap: 16px; }
+  .kazan-strip .btn { width: 100%; text-align: center; }
+  .pkg-tab { padding: 12px 14px; font-size: 13px; }
   .form-card { padding: 32px 24px; }
   .halal-proof { gap: 20px; }
+  .pain-solution { margin-bottom: 8px !important; }
 }
 @media (max-width: 480px) {
   .pain-strip { grid-template-columns: 48px 1fr; gap: 16px; }
@@ -2940,7 +2952,7 @@ footer {
       </div>
 
       <div class="reveal-right">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="team-grid">
           <div class="team-card">
             <div class="team-avatar">👤</div>
             <div class="team-name">Olga</div>
