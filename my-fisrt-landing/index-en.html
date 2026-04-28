@@ -332,12 +332,12 @@ h2.section-title {
 }
 .hero-bg {
   position: absolute;
-  inset: 0;
+  top: -20%; left: 0; right: 0; bottom: 0;
   background-image: url('mowwinter.jpg');
   background-size: cover;
   background-position: center 30%;
-  /* fallback if image fails to load */
   background-color: #1C3D5C;
+  will-change: transform;
 }
 .hero-bg::after {
   content: '';
@@ -1693,8 +1693,19 @@ footer {
   .pain-strip { grid-template-columns: 60px 44px 1fr; gap: 20px; }
   .pain-num { font-size: 44px; }
   .steps-grid { grid-template-columns: 1fr; gap: 24px; }
-  .dest-grid { grid-template-columns: 1fr; }
-  .dest-card { height: 460px; }
+  .dest-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 14px;
+    margin: 0 -20px;
+    padding: 0 20px 16px;
+  }
+  .dest-grid::-webkit-scrollbar { display: none; }
+  .dest-card { flex: 0 0 78vw; height: 460px; scroll-snap-align: start; }
   .dest-card:last-child { grid-column: auto; }
   .services-grid { grid-template-columns: 1fr; }
   .service-card--featured { grid-column: span 1; min-height: auto; }
@@ -3209,6 +3220,15 @@ const scrollBar = document.getElementById('scrollBar');
 window.addEventListener('scroll', () => {
   const p = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
   scrollBar.style.width = p + '%';
+}, { passive: true });
+
+// ─── Hero Parallax ───────────────────────
+const heroBg = document.querySelector('.hero-bg');
+const heroHeight = window.innerHeight * 1.5;
+window.addEventListener('scroll', () => {
+  if (heroBg && window.scrollY < heroHeight) {
+    heroBg.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+  }
 }, { passive: true });
 
 // ─── Sticky Nav ──────────────────────────
