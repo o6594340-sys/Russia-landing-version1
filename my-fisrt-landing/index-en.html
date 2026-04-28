@@ -2024,6 +2024,118 @@ footer {
   color: var(--text-muted);
   line-height: 1.7;
 }
+
+/* ─────────────────────────────────────────
+   EXPERIENCE CAROUSEL
+───────────────────────────────────────── */
+.exp-carousel-wrapper {
+  position: relative;
+  margin: 56px -40px 0;
+}
+.exp-carousel {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0 40px 32px;
+}
+.exp-carousel::-webkit-scrollbar { display: none; }
+.exp-slide {
+  flex: 0 0 300px;
+  height: 400px;
+  scroll-snap-align: start;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+.exp-slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(28,61,92,0.88) 0%,
+    rgba(28,61,92,0.40) 55%,
+    transparent 100%
+  );
+  z-index: 1;
+  transition: opacity var(--transition);
+}
+.exp-slide-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 28px 22px;
+  z-index: 2;
+  color: var(--text-light);
+}
+.exp-slide-icon {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 8px;
+}
+.exp-slide-content h4 {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.exp-slide-content p {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: rgba(250,247,240,0.82);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.35s ease;
+}
+.exp-slide:hover .exp-slide-content p {
+  max-height: 120px;
+  opacity: 1;
+}
+.exp-arrow {
+  position: absolute;
+  top: calc(50% - 16px);
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  color: var(--bg-dark);
+  font-size: 22px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: var(--shadow);
+  transition: all var(--transition);
+  cursor: pointer;
+  border: none;
+}
+.exp-arrow:hover {
+  background: var(--gold);
+  transform: translateY(-50%) scale(1.06);
+}
+.exp-arrow-prev { left: 8px; }
+.exp-arrow-next { right: 8px; }
+@media (max-width: 768px) {
+  .exp-carousel-wrapper { margin: 40px -20px 0; }
+  .exp-carousel { padding: 0 20px 20px; gap: 12px; }
+  .exp-slide { flex: 0 0 78vw; height: 360px; }
+  .exp-arrow { display: none; }
+  .exp-slide-content p { max-height: 120px; opacity: 1; }
+}
+@media (max-width: 480px) {
+  .exp-slide { flex: 0 0 86vw; height: 320px; }
+}
+
 .exp-cta-block {
   text-align: center;
   padding: 48px 32px;
@@ -2634,62 +2746,87 @@ footer {
       <p class="section-sub reveal" style="margin:0 auto">Every programme is assembled from our curated menu of experiences. Mix and match across cities, nights, and interests — we handle the rest.</p>
     </div>
 
-    <div class="exp-grid">
+    <div class="exp-carousel-wrapper">
+      <button class="exp-arrow exp-arrow-prev" onclick="scrollExp(-1)" aria-label="Previous">&#8249;</button>
 
-      <div class="exp-card reveal stagger-1">
-        <span class="exp-icon">🥃</span>
-        <h4>Vodka Heritage & Tasting</h4>
-        <p>Discover the true origin of vodka — far beyond the stereotypes. Visit historic venues, learn about its cultural significance, and enjoy a curated tasting with premium selections, paired with traditional bites.</p>
+      <div class="exp-carousel" id="expCarousel">
+
+        <div class="exp-slide" style="background-image:url('vodka museum.jpg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">🥃</span>
+            <h4>Vodka Heritage &amp; Tasting</h4>
+            <p>Discover the true origin of vodka — far beyond the stereotypes. A curated tasting with premium selections, paired with traditional bites.</p>
+          </div>
+        </div>
+
+        <div class="exp-slide" style="background-image:url('snow riding.jpeg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">🏎️</span>
+            <h4>Snow Driving Experience</h4>
+            <p>Experience winter the way you've seen it on Instagram — but for real. Learn to drive and drift on snow with a professional instructor.</p>
+          </div>
+        </div>
+
+        <div class="exp-slide" style="background-image:url('art.jpg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">🏛️</span>
+            <h4>Art, Culture &amp; Imperial Heritage</h4>
+            <p>Private Hermitage before opening hours, Fabergé with a dedicated curator, grand palaces with no crowds. History told by those who love it.</p>
+          </div>
+        </div>
+
+        <div class="exp-slide" style="background-image:url('икра.jpg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">⚫</span>
+            <h4>Caviar Experience</h4>
+            <p>A true symbol of Russian luxury. Discover the history of black caviar and enjoy a refined tasting with carefully selected varieties.</p>
+          </div>
+        </div>
+
+        <div class="exp-slide" style="background-image:url('metro.jpg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">🚇</span>
+            <h4>Chauffeur &amp; Smart City Navigation</h4>
+            <p>Your personal coordinator joins your clients on the ground, navigating one of the world's most stunning metro systems together. Stress-free, every time.</p>
+          </div>
+        </div>
+
+        <div class="exp-slide" style="background-image:url('night life.jpg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">🌙</span>
+            <h4>Nightlife &amp; White Nights</h4>
+            <p>Moscow never sleeps — rooftop bars, jazz clubs, late-night restaurants. St. Petersburg's White Nights: bar hopping till dawn under a sky that never goes dark.</p>
+          </div>
+        </div>
+
+        <div class="exp-slide" style="background-image:url('shisha.jpg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">💨</span>
+            <h4>Premium Shisha &amp; Lounge Culture</h4>
+            <p>Moscow's shisha scene is among the most advanced in the world — homegrown tobacco, heat-management systems, clouds that fill the room.</p>
+          </div>
+        </div>
+
+        <div class="exp-slide" style="background-image:url('dining.jpg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">🍽️</span>
+            <h4>Signature Dining</h4>
+            <p>Every restaurant in our selection is halal — no exceptions, no compromises. From neighbourhood favourites to fine dining across Moscow, St. Petersburg and Sochi.</p>
+          </div>
+        </div>
+
+        <div class="exp-slide" style="background-image:url('ski riding.jpg')">
+          <div class="exp-slide-content">
+            <span class="exp-slide-icon">⛷️</span>
+            <h4>Ski &amp; Winter Lifestyle</h4>
+            <p>World-class ski resorts accessible from the city. Full equipment and ski wear provided — including the outfit for that perfect slope photo.</p>
+          </div>
+        </div>
+
       </div>
 
-      <div class="exp-card reveal stagger-2">
-        <span class="exp-icon">🏎️</span>
-        <h4>Snow Driving Experience</h4>
-        <p>Experience winter the way you've seen it on Instagram — but for real. Private sessions with professional instructors where your clients learn to drive and drift on snow in a safe, controlled environment.</p>
-      </div>
-
-      <div class="exp-card reveal stagger-3">
-        <span class="exp-icon">🏛️</span>
-        <h4>Art, Culture & Imperial Heritage</h4>
-        <p>Russia's artistic and architectural legacy, explored with expert storytellers. Think private Hermitage before opening hours, Fabergé with a dedicated curator, or grand palaces with no crowds.</p>
-      </div>
-
-      <div class="exp-card reveal stagger-4">
-        <span class="exp-icon">⚫</span>
-        <h4>Caviar Experience</h4>
-        <p>A true symbol of Russian luxury. Discover the history of black caviar and enjoy a refined tasting with carefully selected varieties, paired with traditional accompaniments.</p>
-      </div>
-
-      <div class="exp-card reveal stagger-1">
-        <span class="exp-icon">🚇</span>
-        <h4>Chauffeur & Smart City Navigation</h4>
-        <p>A private chauffeur is always available. In Moscow — where traffic is legendary — your personal coordinator joins your clients on the ground, navigating one of the world's most stunning metro systems together. Stress-free, every time.</p>
-      </div>
-
-      <div class="exp-card reveal stagger-2">
-        <span class="exp-icon">🌙</span>
-        <h4>Nightlife & White Nights</h4>
-        <p>Moscow never sleeps — from rooftop bars to intimate jazz clubs. St. Petersburg transforms in summer with its legendary White Nights: bar hopping till dawn under a sky that never goes dark.</p>
-      </div>
-
-      <div class="exp-card reveal stagger-3">
-        <span class="exp-icon">💨</span>
-        <h4>Premium Shisha & Lounge Culture</h4>
-        <p>Moscow's shisha scene is among the most advanced in the world — homegrown tobacco, heat-management systems, clouds that fill the room. We know the venues locals actually go to, not the tourist stops.</p>
-      </div>
-
-      <div class="exp-card reveal stagger-4">
-        <span class="exp-icon">🍽️</span>
-        <h4>Signature Dining</h4>
-        <p>Every restaurant in our selection is halal — no exceptions, no compromises. From neighbourhood favourites to fine dining, our curated routes cover Moscow, St. Petersburg and Sochi.</p>
-      </div>
-
-      <div class="exp-card reveal stagger-1">
-        <span class="exp-icon">⛷️</span>
-        <h4>Ski & Winter Lifestyle</h4>
-        <p>World-class ski resorts, accessible from the city. Full equipment and ski wear are provided — including the outfit for that perfect slope photo. Private instructor available, beginner to advanced.</p>
-      </div>
-
+      <button class="exp-arrow exp-arrow-next" onclick="scrollExp(1)" aria-label="Next">&#8250;</button>
+    </div>
     </div>
 
     <div class="exp-cta-block reveal">
@@ -3162,7 +3299,12 @@ document.getElementById('partnerForm').addEventListener('submit', function(e) {
   }, 1200);
 });
 
-// ─── Smooth anchor scroll ─────────────────
+// ─── Experience Carousel ─────────────────
+function scrollExp(dir) {
+  const c = document.getElementById('expCarousel');
+  c.scrollBy({ left: dir * 320, behavior: 'smooth' });
+}
+
 // ── Package tabs ──────────────────────────────────
 document.querySelectorAll('.pkg-tab').forEach(tab => {
   tab.addEventListener('click', () => {
