@@ -63,9 +63,9 @@
    DESIGN TOKENS
 ───────────────────────────────────────── */
 :root {
-  --bg-light:     #F4F2EF;
+  --bg-light:     #FAFAFA;
   --bg-dark:      #1C3D5C;
-  --bg-alt:       #EDE9E3;
+  --bg-alt:       #F2F2F7;
   --bg-card:      #FFFFFF;
   --brand:        #C0392B;
   --gold:         #D4A843;
@@ -83,8 +83,8 @@
   --radius-sm:    2px;
   --radius:       4px;
   --radius-lg:    8px;
-  --shadow:       0 2px 12px rgba(28,61,92,0.07);
-  --shadow-lg:    0 8px 32px rgba(28,61,92,0.13);
+  --shadow:       0 2px 8px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.06);
+  --shadow-lg:    0 4px 16px rgba(0,0,0,0.06), 0 20px 48px rgba(0,0,0,0.10);
   --transition:   0.3s ease;
   --section-pad:  96px;
 }
@@ -106,19 +106,6 @@ a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 button { cursor: pointer; border: none; background: none; font-family: inherit; }
 
-/* ─────────────────────────────────────────
-   NOISE GRAIN OVERLAY
-───────────────────────────────────────── */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.032;
-  pointer-events: none;
-  z-index: 9998;
-  mix-blend-mode: overlay;
-}
 
 /* ─────────────────────────────────────────
    SCROLL PROGRESS BAR
@@ -875,8 +862,8 @@ h2.section-title {
 .service-card {
   padding: 36px 28px;
   background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
+  border: none;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   transition: all var(--transition);
   position: relative;
@@ -894,7 +881,6 @@ h2.section-title {
 }
 .service-card:hover::before { transform: scaleX(1); }
 .service-card:hover {
-  border-color: rgba(212,168,67,0.4);
   box-shadow: var(--shadow-lg);
   transform: translateY(-3px);
 }
@@ -1064,8 +1050,8 @@ h2.section-title {
 .testimonial-card {
   padding: 36px 32px;
   background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
+  border: none;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   position: relative;
 }
