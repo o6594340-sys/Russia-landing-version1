@@ -1204,13 +1204,24 @@ h2.section-title {
 /* ─────────────────────────────────────────
    10. FAQ
 ───────────────────────────────────────── */
-.faq-header {
-  text-align: center;
-  margin-bottom: 52px;
+.faq-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.faq-col-left {
+  position: sticky;
+  top: 104px;
+}
+.faq-col-left .section-title {
+  margin-bottom: 20px;
+}
+.faq-col-left .section-sub {
+  margin-bottom: 32px;
 }
 .faq-list {
-  max-width: 820px;
-  margin: 0 auto;
+  width: 100%;
 }
 .faq-item {
   border-bottom: 1px solid var(--border-light);
@@ -1222,8 +1233,9 @@ h2.section-title {
   gap: 20px;
   padding: 22px 0;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 400;
   color: var(--text);
   transition: color var(--transition);
   user-select: none;
@@ -1700,6 +1712,8 @@ footer {
   .testimonials-grid { grid-template-columns: 1fr; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .team-grid { grid-template-columns: 1fr; }
+  .faq-layout { grid-template-columns: 1fr; gap: 36px; }
+  .faq-col-left { position: static; }
   .cta-grid { grid-template-columns: 1fr; gap: 40px; }
   .footer-top { grid-template-columns: 1fr; gap: 36px; }
   .wa-float .wa-text { display: none; }
@@ -2909,11 +2923,20 @@ footer {
 ════════════════════════════════════════ -->
 <section class="section cut-to-dark" id="faq">
   <div class="container">
-    <div class="faq-header">
-      <h2 class="section-title reveal">Answers to questions<br>from Arab agencies</h2>
-    </div>
+    <div class="faq-layout">
 
-    <div class="faq-list">
+      <!-- Left: sticky title -->
+      <div class="faq-col-left reveal-left">
+        <h2 class="section-title">Answers to questions<br>from Arab agencies</h2>
+        <div class="divider"></div>
+        <p class="section-sub">Everything your agency needs to know before the first booking.</p>
+        <div style="margin-top:32px">
+          <a href="https://wa.me/971503434428?text=Hello!%20I%20have%20a%20question" class="btn btn-gold" target="_blank">💬 Ask on WhatsApp</a>
+        </div>
+      </div>
+
+      <!-- Right: questions -->
+      <div class="faq-list">
       <div class="faq-item reveal">
         <div class="faq-q" onclick="toggleFaq(this)">
           Do you have guides in all three cities?
@@ -2977,12 +3000,9 @@ footer {
           <p>Yes, we offer white-label partnerships. Your clients see only your agency's brand — we work behind the scenes. We provide all the sales materials you need: itineraries, photos and descriptions in Arabic and English.</p>
         </div>
       </div>
-    </div>
+      </div><!-- end faq-list -->
 
-    <div class="faq-wa-cta reveal">
-      <p>Still have questions? We'll answer in Arabic and English.</p>
-      <a href="https://wa.me/971503434428?text=Hello!%20I%20have%20a%20question" class="btn btn-gold" target="_blank">💬 Write on WhatsApp</a>
-    </div>
+    </div><!-- end faq-layout -->
   </div>
 </section>
 
