@@ -523,16 +523,17 @@ const Admin = (() => {
 
   function openAmenityModal(index) {
     const isNew = index === null;
+    const used  = (state.hotel.amenities || []).map(a => a.icon);
     const a = isNew
-      ? { icon: '', title: '', note: '' }
+      ? { icon: pickUniqueEmoji('amenities', used), title: '', note: '' }
       : (state.hotel.amenities || [])[index];
 
     document.getElementById('amenity-modal-title').textContent = isNew ? 'Добавить удобство' : 'Редактировать';
     document.getElementById('am-index').value = isNew ? '' : index;
-    document.getElementById('am-icon').value  = a.icon  || '';
     document.getElementById('am-title').value = a.title || '';
     document.getElementById('am-note').value  = a.note  || '';
     document.getElementById('am-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    renderEmojiPicker('am-icon-grid', 'am-icon', 'amenities', a.icon);
     openModal('modal-amenity');
   }
 
@@ -588,8 +589,9 @@ const Admin = (() => {
 
   function openSightModal(index) {
     const isNew = index === null;
+    const used  = state.sights.map(s => s.emoji);
     const s = isNew
-      ? { title: '', emoji: '🏛', sub: '', distance: '', hours: '', price: '', tags: [], desc: '', tip: '', image: '' }
+      ? { title: '', emoji: pickUniqueEmoji('sights', used), sub: '', distance: '', hours: '', price: '', tags: [], desc: '', tip: '', image: '' }
       : state.sights[index];
 
     document.getElementById('sight-modal-title').textContent = isNew ? 'Добавить место' : 'Редактировать';
@@ -606,6 +608,7 @@ const Admin = (() => {
     document.getElementById('si-image').value    = s.image    || '';
     showImgThumb('si-image', s.image || '');
     document.getElementById('si-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    renderEmojiPicker('si-emoji-grid', 'si-emoji', 'sights', s.emoji);
     openModal('modal-sight');
   }
 
@@ -670,8 +673,9 @@ const Admin = (() => {
 
   function openRestaurantModal(index) {
     const isNew = index === null;
+    const used  = state.restaurants.map(r => r.emoji);
     const r = isNew
-      ? { title: '', emoji: '🍜', cuisine: '', price: '¥¥', type: 'free', metro: '', hours: '', address: '', note: '', desc: '', image: '' }
+      ? { title: '', emoji: pickUniqueEmoji('restaurants', used), cuisine: '', price: '¥¥', type: 'free', metro: '', hours: '', address: '', note: '', desc: '', image: '' }
       : state.restaurants[index];
 
     document.getElementById('restaurant-modal-title').textContent = isNew ? 'Добавить ресторан' : 'Редактировать';
@@ -689,6 +693,7 @@ const Admin = (() => {
     document.getElementById('r-image').value   = r.image   || '';
     showImgThumb('r-image', r.image || '');
     document.getElementById('r-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    renderEmojiPicker('r-emoji-grid', 'r-emoji', 'restaurants', r.emoji);
     openModal('modal-restaurant');
   }
 
@@ -753,8 +758,9 @@ const Admin = (() => {
 
   function openCuisineModal(index) {
     const isNew = index === null;
+    const used  = state.cuisine.map(d => d.emoji);
     const d = isNew
-      ? { title: '', emoji: '🥢', cn: '', price: '', where: '', desc: '', must: false }
+      ? { title: '', emoji: pickUniqueEmoji('cuisine', used), cn: '', price: '', where: '', desc: '', must: false }
       : state.cuisine[index];
 
     document.getElementById('cuisine-modal-title').textContent = isNew ? 'Добавить блюдо' : 'Редактировать';
@@ -767,6 +773,7 @@ const Admin = (() => {
     document.getElementById('c-desc').value  = d.desc  || '';
     document.getElementById('c-must').checked = !!d.must;
     document.getElementById('c-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    renderEmojiPicker('c-emoji-grid', 'c-emoji', 'cuisine', d.emoji);
     openModal('modal-cuisine');
   }
 
@@ -901,6 +908,36 @@ const Admin = (() => {
     showToast('Удалено');
   }
 
+  /* ─── EMOJI PICKER ───────────────────── */
+  const EMOJI_POOLS = {
+    cuisine:     ['🦆','🍜','🍤','🥟','🍲','🥩','🍣','🍱','🫕','🧆','🍛','🍝','🥗','🫔','🍢','🍡','🥮','🧋','🍕','🌮','🌯','🥪','🍖','🍗','🧀','🍩','🍰','🎂','🍦','🍵','🥐','🦐','🦀','🦞','🐟','🍔','🥙','🌽','🥑','🫙'],
+    sights:      ['🏯','🏛️','🗼','🌿','🏔️','🗻','🏖️','🌊','🏙️','⛩️','🕌','⛪','🏰','🎡','🌃','🌉','🗽','🏟️','🎭','🌅','🏜️','💎','🔮','🌸','🌋','🏝️','🎪','🚀','🌁','🏞️','⛰️','🌄','🗿','🏗️','🌺','🚦','⛵','🛕','☸️','🕍'],
+    restaurants: ['🍜','🦆','🍣','🥩','🍕','🌮','🥐','🦞','🍢','🥟','🍛','🧆','🫕','🐟','🥗','🦐','🦀','☕','🥂','🍷','🍺','🍱','🌯','🍔','🥙','🍝','🫖','🍻','🍾','🥘'],
+    amenities:   ['🏊','💪','🧖','🍽','🏪','👔','🚤','⛵','🎾','♨️','🛎️','🌴','🏖️','🛁','💆','🏋️','🅿️','📺','🌐','🏌️','🚁','🎯','🛍️','🧹','🎱','🎰','🧘','🛗','🍸','🌡️'],
+  };
+
+  function pickUniqueEmoji(poolKey, usedEmojis) {
+    const pool = EMOJI_POOLS[poolKey] || EMOJI_POOLS.cuisine;
+    return pool.find(e => !usedEmojis.includes(e)) || pool[0];
+  }
+
+  function renderEmojiPicker(gridId, inputId, poolKey, selected) {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    const pool = EMOJI_POOLS[poolKey] || EMOJI_POOLS.cuisine;
+    grid.innerHTML = pool.map(e => `
+      <button type="button" class="emoji-btn ${e === selected ? 'selected' : ''}"
+        onclick="Admin.selectEmoji('${gridId}','${inputId}','${e}')">${e}</button>
+    `).join('');
+  }
+
+  function selectEmoji(gridId, inputId, emoji) {
+    document.getElementById(inputId).value = emoji;
+    document.querySelectorAll('#' + gridId + ' .emoji-btn').forEach(btn => {
+      btn.classList.toggle('selected', btn.textContent.trim() === emoji);
+    });
+  }
+
   /* ─── IMAGE PICKER ───────────────────── */
   function pickImage(input, targetId) {
     const file = input.files[0];
@@ -981,6 +1018,8 @@ const Admin = (() => {
     // announcement + settings
     saveAnnouncement, clearAnnouncement,
     saveSettings, updateBrandPreview, onBrandColorPicker, onBrandColorHex,
+    // emoji
+    selectEmoji,
     // image
     pickImage,
     // modal

@@ -298,6 +298,24 @@ textarea { resize: vertical; }
   border-radius: 10px; border: 1px solid var(--border);
 }
 
+/* ===== EMOJI PICKER ===== */
+.emoji-grid {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  padding: 10px; background: var(--bg);
+  border: 1.5px solid var(--border); border-radius: 10px;
+  max-height: 140px; overflow-y: auto;
+}
+.emoji-btn {
+  width: 36px; height: 36px;
+  border: 2px solid transparent; border-radius: 8px;
+  background: white; font-size: 20px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s; flex-shrink: 0;
+  line-height: 1;
+}
+.emoji-btn:hover  { border-color: var(--border); background: var(--surface); transform: scale(1.15); }
+.emoji-btn.selected { border-color: var(--accent); background: var(--accent-l); transform: scale(1.15); }
+
 /* ===== IMAGE PICKER ===== */
 .img-field {
   display: flex; gap: 8px; align-items: center;

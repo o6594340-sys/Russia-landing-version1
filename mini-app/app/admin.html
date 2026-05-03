@@ -320,8 +320,12 @@
     <h3 id="amenity-modal-title">Добавить удобство</h3>
     <input type="hidden" id="am-index">
     <div class="form-grid">
-      <div class="form-group"><label>Эмодзи</label><input type="text" id="am-icon" placeholder="🏊" style="font-size:20px"></div>
-      <div class="form-group"><label>Название</label><input type="text" id="am-title" placeholder="Бассейн"></div>
+      <input type="hidden" id="am-icon">
+      <div class="form-group full">
+        <label>Эмодзи</label>
+        <div class="emoji-grid" id="am-icon-grid"></div>
+      </div>
+      <div class="form-group full"><label>Название</label><input type="text" id="am-title" placeholder="Бассейн"></div>
       <div class="form-group full"><label>Уточнение (часы, примечание)</label><input type="text" id="am-note" placeholder="6:00–22:00"></div>
     </div>
     <div class="modal-actions">
@@ -338,8 +342,12 @@
     <h3 id="sight-modal-title">Добавить место</h3>
     <input type="hidden" id="si-index">
     <div class="form-grid">
-      <div class="form-group"><label>Название (рус)</label><input type="text" id="si-title" placeholder="Запретный город"></div>
-      <div class="form-group"><label>Эмодзи</label><input type="text" id="si-emoji" placeholder="🏯"></div>
+      <input type="hidden" id="si-emoji">
+      <div class="form-group full">
+        <label>Эмодзи</label>
+        <div class="emoji-grid" id="si-emoji-grid"></div>
+      </div>
+      <div class="form-group full"><label>Название (рус)</label><input type="text" id="si-title" placeholder="Запретный город"></div>
       <div class="form-group full"><label>Подзаголовок (транскрипция)</label><input type="text" id="si-sub" placeholder="Гугун · 故宫"></div>
       <div class="form-group"><label>Расстояние от отеля</label><input type="text" id="si-distance" placeholder="20 мин от отеля"></div>
       <div class="form-group"><label>Часы работы</label><input type="text" id="si-hours" placeholder="08:30–17:00"></div>
@@ -370,11 +378,15 @@
     <h3 id="restaurant-modal-title">Добавить ресторан</h3>
     <input type="hidden" id="r-index">
     <div class="form-grid">
+      <input type="hidden" id="r-emoji">
+      <div class="form-group full">
+        <label>Эмодзи</label>
+        <div class="emoji-grid" id="r-emoji-grid"></div>
+      </div>
       <div class="form-group full"><label>Название</label><input type="text" id="r-title" placeholder="Da Dong · 大董"></div>
       <div class="form-group"><label>Тип</label>
         <select id="r-type"><option value="program">По программе</option><option value="free">Самостоятельно</option></select>
       </div>
-      <div class="form-group"><label>Эмодзи</label><input type="text" id="r-emoji" placeholder="🦆"></div>
       <div class="form-group"><label>Кухня</label><input type="text" id="r-cuisine" placeholder="Утка по-пекински"></div>
       <div class="form-group"><label>Цена</label>
         <select id="r-price"><option value="¥">¥ Бюджетно</option><option value="¥¥">¥¥ Средне</option><option value="¥¥¥">¥¥¥ Дорого</option></select>
@@ -407,8 +419,12 @@
     <h3 id="cuisine-modal-title">Добавить блюдо</h3>
     <input type="hidden" id="c-index">
     <div class="form-grid">
-      <div class="form-group"><label>Название (рус)</label><input type="text" id="c-title" placeholder="Утка по-пекински"></div>
-      <div class="form-group"><label>Эмодзи</label><input type="text" id="c-emoji" placeholder="🦆"></div>
+      <input type="hidden" id="c-emoji">
+      <div class="form-group full">
+        <label>Эмодзи</label>
+        <div class="emoji-grid" id="c-emoji-grid"></div>
+      </div>
+      <div class="form-group full"><label>Название (рус)</label><input type="text" id="c-title" placeholder="Утка по-пекински"></div>
       <div class="form-group full"><label>Китайское название и транскрипция</label><input type="text" id="c-cn" placeholder="北京烤鸭 · Běijīng Kǎoyā"></div>
       <div class="form-group"><label>Цена</label><input type="text" id="c-price" placeholder="200–380¥ за утку"></div>
       <div class="form-group"><label>Где попробовать</label><input type="text" id="c-where" placeholder="Da Dong, Quanjude"></div>
