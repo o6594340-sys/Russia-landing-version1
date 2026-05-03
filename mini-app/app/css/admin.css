@@ -4,7 +4,7 @@
 
 :root {
   --accent:   #C9353F;
-  --accent-l: #FFF0F0;
+  --accent-light: #FFF0F0;
   --bg:       #F5F5F7;
   --surface:  #FFFFFF;
   --border:   #E5E7EB;
@@ -314,7 +314,7 @@ textarea { resize: vertical; }
   line-height: 1;
 }
 .emoji-btn:hover  { border-color: var(--border); background: var(--surface); transform: scale(1.15); }
-.emoji-btn.selected { border-color: var(--accent); background: var(--accent-l); transform: scale(1.15); }
+.emoji-btn.selected { border-color: var(--accent); background: var(--accent-light); transform: scale(1.15); }
 
 /* ===== IMAGE PICKER ===== */
 .img-field {
@@ -374,4 +374,30 @@ textarea { resize: vertical; }
 }
 .brand-preview-sub {
   font-size: 11px; color: rgba(255,255,255,0.7);
+}
+
+/* ===== BACKUP ===== */
+.backup-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin-bottom: 20px;
+}
+@media (max-width: 600px) { .backup-grid { grid-template-columns: 1fr; } }
+.backup-card {
+  background: white; border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 24px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+}
+.backup-icon { font-size: 32px; }
+.backup-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.backup-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; flex: 1; }
+.backup-upload-label {
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.backup-upload-label input[type="file"] { display: none; }
+.backup-success {
+  margin-top: 8px; padding: 12px 16px;
+  background: #F0FDF4; border: 1.5px solid #86EFAC;
+  border-radius: 10px; color: #166534;
+  font-size: 13px; font-weight: 600;
 }

@@ -32,6 +32,9 @@
       <div class="nav-group-label">Направление</div>
       <button class="nav-btn" onclick="Admin.showSection('templates', this)">🌍 Шаблон страны</button>
 
+      <div class="nav-group-label">Данные</div>
+      <button class="nav-btn" onclick="Admin.showSection('backup', this)">💾 Бэкап</button>
+
       <div class="nav-group-label">Коммуникации</div>
       <button class="nav-btn active" onclick="Admin.showSection('announcement', this)">📢 Объявление</button>
 
@@ -52,6 +55,32 @@
   </aside>
 
   <main class="admin-main">
+
+    <!-- БЭКАП -->
+    <section id="section-backup" class="admin-section hidden">
+      <div class="section-header">
+        <h2>💾 Экспорт и импорт данных</h2>
+        <p>Сохраните все настройки и контент в файл — или восстановите из ранее скачанного файла.</p>
+      </div>
+      <div class="backup-grid">
+        <div class="backup-card">
+          <div class="backup-icon">⬇️</div>
+          <div class="backup-title">Скачать бэкап</div>
+          <div class="backup-desc">Сохраняет всё: программу, отель, кухню, историю и брендинг. Файл .json — откройте позже для восстановления.</div>
+          <button class="btn-primary" onclick="Admin.exportData()">Скачать JSON</button>
+        </div>
+        <div class="backup-card">
+          <div class="backup-icon">⬆️</div>
+          <div class="backup-title">Загрузить бэкап</div>
+          <div class="backup-desc">Восстановит данные из файла. Текущие настройки будут перезаписаны — убедитесь, что файл от этого проекта.</div>
+          <label class="btn-primary backup-upload-label">
+            Выбрать файл
+            <input type="file" accept=".json" class="hidden" onchange="Admin.importData(this)">
+          </label>
+        </div>
+      </div>
+      <div id="backup-status"></div>
+    </section>
 
     <!-- ШАБЛОНЫ -->
     <section id="section-templates" class="admin-section hidden">

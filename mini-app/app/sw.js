@@ -1,11 +1,15 @@
-const CACHE = 'mice-v1';
+const CACHE = 'mice-v3';
 const OFFLINE = [
   '/',
   '/index.html',
   '/css/main.css',
   '/js/data.js',
   '/js/app.js',
+  '/js/templates.js',
   '/manifest.json',
+  '/admin.html',
+  '/css/admin.css',
+  '/js/admin.js',
 ];
 
 self.addEventListener('install', e => {

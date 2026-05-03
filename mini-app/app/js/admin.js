@@ -974,6 +974,51 @@ const Admin = (() => {
     }
   }
 
+  /* ─── BACKUP / RESTORE ────────────────── */
+  function exportData() {
+    const backup = { _version: 1, _exported: new Date().toISOString() };
+    Object.values(KEYS).forEach(key => {
+      const val = localStorage.getItem(key);
+      if (val) { try { backup[key] = JSON.parse(val); } catch { backup[key] = val; } }
+    });
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const a    = document.createElement('a');
+    a.href     = URL.createObjectURL(blob);
+    a.download = 'mice-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('Бэкап скачан');
+  }
+
+  function importData(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (!data._version) throw new Error('Неверный формат — не похоже на файл бэкапа этого приложения');
+        const dateStr = data._exported ? new Date(data._exported).toLocaleString('ru') : 'неизвестно';
+        if (!confirm(`Восстановить данные из файла?\nЭкспортирован: ${dateStr}\n\nТекущие данные будут перезаписаны.`)) {
+          input.value = '';
+          return;
+        }
+        Object.values(KEYS).forEach(key => {
+          if (data[key] !== undefined) localStorage.setItem(key, JSON.stringify(data[key]));
+        });
+        loadAll();
+        input.value = '';
+        const status = document.getElementById('backup-status');
+        if (status) status.innerHTML = `<div class="backup-success">✓ Данные восстановлены из файла от ${dateStr}</div>`;
+        showToast('Данные восстановлены');
+      } catch (err) {
+        alert('Ошибка при чтении файла: ' + err.message);
+        input.value = '';
+      }
+    };
+    reader.readAsText(file);
+  }
+
   /* ─── MODAL / TOAST ───────────────────── */
   function openModal(id) {
     document.getElementById(id).classList.remove('hidden');
@@ -1001,6 +1046,8 @@ const Admin = (() => {
   /* ─── PUBLIC ──────────────────────────── */
   return {
     login, logout, showSection, applyTemplate,
+    // backup
+    exportData, importData,
     // program
     selectProgramDay, openActivityModal, saveActivity, deleteActivity,
     // business
