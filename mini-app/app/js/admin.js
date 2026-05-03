@@ -394,6 +394,7 @@ const Admin = (() => {
     document.getElementById('h-address-cn').value= h.addressCn || '';
     document.getElementById('h-desc').value      = h.desc      || '';
     document.getElementById('h-image').value     = h.image     || '';
+    showImgThumb('h-image', h.image || '');
     document.getElementById('h-tips').value      = (h.tips || []).join('\n');
     renderHotelAmenities();
   }
@@ -525,6 +526,7 @@ const Admin = (() => {
     document.getElementById('si-desc').value     = s.desc     || '';
     document.getElementById('si-tip').value      = s.tip      || '';
     document.getElementById('si-image').value    = s.image    || '';
+    showImgThumb('si-image', s.image || '');
     document.getElementById('si-delete-btn').style.display = isNew ? 'none' : 'inline-block';
     openModal('modal-sight');
   }
@@ -607,6 +609,7 @@ const Admin = (() => {
     document.getElementById('r-note').value    = r.note    || '';
     document.getElementById('r-desc').value    = r.desc    || '';
     document.getElementById('r-image').value   = r.image   || '';
+    showImgThumb('r-image', r.image || '');
     document.getElementById('r-delete-btn').style.display = isNew ? 'none' : 'inline-block';
     openModal('modal-restaurant');
   }
@@ -820,6 +823,42 @@ const Admin = (() => {
     showToast('Удалено');
   }
 
+  /* ─── IMAGE PICKER ───────────────────── */
+  function pickImage(input, targetId) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX    = 900;
+        const scale  = Math.min(1, MAX / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width  = Math.round(img.width  * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
+        const field   = document.getElementById(targetId);
+        if (field) field.value = dataUrl;
+        showImgThumb(targetId, dataUrl);
+        input.value = '';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function showImgThumb(targetId, src) {
+    const thumb = document.getElementById(targetId + '-preview');
+    if (!thumb) return;
+    if (src) {
+      thumb.src = src;
+      thumb.classList.remove('hidden');
+    } else {
+      thumb.classList.add('hidden');
+    }
+  }
+
   /* ─── MODAL / TOAST ───────────────────── */
   function openModal(id) {
     document.getElementById(id).classList.remove('hidden');
@@ -864,6 +903,8 @@ const Admin = (() => {
     // announcement + settings
     saveAnnouncement, clearAnnouncement,
     saveSettings, updateBrandPreview, onBrandColorPicker, onBrandColorHex,
+    // image
+    pickImage,
     // modal
     openModal, closeModal,
   };

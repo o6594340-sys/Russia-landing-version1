@@ -92,9 +92,12 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Логотип (URL картинки)</label>
-          <input type="text" id="s-brand-logo" placeholder="https://company.ru/logo.png"
-            oninput="Admin.updateBrandPreview()">
+          <label>Логотип клиента</label>
+          <div class="img-field">
+            <input type="text" id="s-brand-logo" placeholder="https://... или выберите файл"
+              oninput="Admin.updateBrandPreview()">
+            <label class="img-pick-btn">📎 Выбрать<input type="file" accept="image/*" onchange="Admin.pickImage(this,'s-brand-logo');Admin.updateBrandPreview()"></label>
+          </div>
         </div>
         <div class="form-group full">
           <div class="brand-preview" id="brand-preview">
@@ -164,7 +167,14 @@
         <div class="form-group full"><label>Адрес (EN)</label><input type="text" id="h-address" placeholder="1 Jianguomenwai Ave, Chaoyang District"></div>
         <div class="form-group full"><label>Адрес (中文) — для такси</label><input type="text" id="h-address-cn" placeholder="北京市朝阳区建国门外大街1号"></div>
         <div class="form-group full"><label>Описание</label><textarea id="h-desc" rows="3" placeholder="Пятизвёздочный отель в деловом центре Пекина..."></textarea></div>
-        <div class="form-group full"><label>URL фото</label><input type="text" id="h-image" placeholder="https://..."></div>
+        <div class="form-group full">
+          <label>Фото отеля</label>
+          <div class="img-field">
+            <input type="text" id="h-image" placeholder="https://... или выберите файл">
+            <label class="img-pick-btn">📎 Выбрать<input type="file" accept="image/*" onchange="Admin.pickImage(this,'h-image')"></label>
+          </div>
+          <img id="h-image-preview" class="img-thumb hidden" src="" alt="">
+        </div>
         <div class="form-group full">
           <label>Советы гостям (каждый с новой строки)</label>
           <textarea id="h-tips" rows="4" placeholder="Завтрак в Aria с 6:30...&#10;Попросите карточку адреса на китайском..."></textarea>
@@ -324,7 +334,14 @@
       <div class="form-group"><label>Теги (через запятую)</label><input type="text" id="si-tags" placeholder="По программе, UNESCO"></div>
       <div class="form-group full"><label>Описание</label><textarea id="si-desc" rows="3"></textarea></div>
       <div class="form-group full"><label>Совет туристу</label><textarea id="si-tip" rows="2" placeholder="💡 ..."></textarea></div>
-      <div class="form-group full"><label>URL фото</label><input type="text" id="si-image" placeholder="https://..."></div>
+      <div class="form-group full">
+        <label>Фото</label>
+        <div class="img-field">
+          <input type="text" id="si-image" placeholder="https://... или выберите файл">
+          <label class="img-pick-btn">📎 Выбрать<input type="file" accept="image/*" onchange="Admin.pickImage(this,'si-image')"></label>
+        </div>
+        <img id="si-image-preview" class="img-thumb hidden" src="" alt="">
+      </div>
     </div>
     <div class="modal-actions">
       <button class="btn-primary" onclick="Admin.saveSight()">Сохранить</button>
@@ -354,7 +371,14 @@
       <div class="form-group full"><label>Адрес</label><input type="text" id="r-address"></div>
       <div class="form-group full"><label>Заметка для участника</label><input type="text" id="r-note" placeholder="Включено в программу"></div>
       <div class="form-group full"><label>Описание</label><textarea id="r-desc" rows="3"></textarea></div>
-      <div class="form-group full"><label>URL фото</label><input type="text" id="r-image"></div>
+      <div class="form-group full">
+        <label>Фото</label>
+        <div class="img-field">
+          <input type="text" id="r-image" placeholder="https://... или выберите файл">
+          <label class="img-pick-btn">📎 Выбрать<input type="file" accept="image/*" onchange="Admin.pickImage(this,'r-image')"></label>
+        </div>
+        <img id="r-image-preview" class="img-thumb hidden" src="" alt="">
+      </div>
     </div>
     <div class="modal-actions">
       <button class="btn-primary" onclick="Admin.saveRestaurant()">Сохранить</button>

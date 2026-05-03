@@ -262,6 +262,29 @@ textarea { resize: vertical; }
 }
 .admin-toast.show { opacity: 1; transform: translateY(0); }
 
+/* ===== IMAGE PICKER ===== */
+.img-field {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 8px;
+}
+.img-field input[type="text"] { flex: 1; min-width: 0; }
+.img-pick-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+  background: white; color: var(--text);
+  font-size: 13px; font-weight: 600; font-family: var(--font);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.img-pick-btn:hover { border-color: var(--accent); color: var(--accent); }
+.img-pick-btn input[type="file"] { display: none; }
+.img-thumb {
+  width: 100%; max-height: 160px;
+  object-fit: cover; border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-top: 4px;
+}
+
 /* ===== BRAND PREVIEW ===== */
 .settings-block-title {
   font-size: 12px; font-weight: 700; text-transform: uppercase;
