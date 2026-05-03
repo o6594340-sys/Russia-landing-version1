@@ -1,0 +1,840 @@
+/* ═══════════════════════════════════════════
+   Admin Panel Logic
+   Пароль: forum2024
+   Данные хранятся в localStorage — доступны
+   на том же домене в index.html
+═══════════════════════════════════════════ */
+
+const Admin = (() => {
+
+  const PASSWORD = 'forum2024';
+  const KEYS = {
+    event:        'admin_event',
+    days:         'admin_days',
+    restaurants:  'admin_restaurants',
+    announcement: 'admin_announcement',
+    business:     'admin_business',
+    hotel:        'admin_hotel',
+    sights:       'admin_sights',
+    cuisine:      'admin_cuisine',
+    history:      'admin_history',
+  };
+
+  let state = {
+    section:        'announcement',
+    programDay:     0,
+    historySection: 0,
+    days:           null,
+    restaurants:    null,
+    event:          null,
+    business:       null,
+    hotel:          null,
+    sights:         null,
+    cuisine:        null,
+    history:        null,
+  };
+
+  /* ─── AUTH ────────────────────────────── */
+  function login() {
+    const val = document.getElementById('auth-input').value;
+    if (val === PASSWORD) {
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('admin-panel').classList.remove('hidden');
+      loadAll();
+      showSection('announcement', document.querySelector('.nav-btn'));
+    } else {
+      document.getElementById('auth-error').classList.remove('hidden');
+      document.getElementById('auth-input').value = '';
+    }
+  }
+
+  function logout() {
+    document.getElementById('auth-screen').classList.remove('hidden');
+    document.getElementById('admin-panel').classList.add('hidden');
+    document.getElementById('auth-input').value = '';
+  }
+
+  /* ─── LOAD DATA ───────────────────────── */
+  function loadAll() {
+    state.days        = getStored(KEYS.days)        || JSON.parse(JSON.stringify(DAYS));
+    state.restaurants = getStored(KEYS.restaurants) || JSON.parse(JSON.stringify(RESTAURANTS));
+    state.event       = getStored(KEYS.event)       || JSON.parse(JSON.stringify(EVENT));
+    state.business    = getStored(KEYS.business)    || JSON.parse(JSON.stringify(BUSINESS_SESSIONS));
+    state.hotel       = getStored(KEYS.hotel)       || JSON.parse(JSON.stringify(HOTEL));
+    state.sights      = getStored(KEYS.sights)      || JSON.parse(JSON.stringify(SIGHTS));
+    state.cuisine     = getStored(KEYS.cuisine)     || JSON.parse(JSON.stringify(CUISINE));
+    state.history     = getStored(KEYS.history)     || JSON.parse(JSON.stringify(HISTORY));
+    loadAnnouncementPreview();
+    loadSettingsForm();
+  }
+
+  function getStored(key) {
+    try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : null; } catch { return null; }
+  }
+
+  function save(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  /* ─── NAVIGATION ──────────────────────── */
+  function showSection(name, btn) {
+    document.querySelectorAll('.admin-section').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + name).classList.remove('hidden');
+    if (btn) btn.classList.add('active');
+    state.section = name;
+
+    if (name === 'program')     renderProgramSection();
+    if (name === 'business')    renderBusinessSection();
+    if (name === 'hotel')       renderHotelSection();
+    if (name === 'sights')      renderSightsSection();
+    if (name === 'restaurants') renderRestaurantsSection();
+    if (name === 'cuisine')     renderCuisineSection();
+    if (name === 'history')     renderHistorySection();
+  }
+
+  /* ─── ANNOUNCEMENT ────────────────────── */
+  function saveAnnouncement() {
+    const text = document.getElementById('announcement-text').value.trim();
+    const type = document.getElementById('announcement-type').value;
+    if (!text) { clearAnnouncement(); return; }
+    const data = { text, type, date: new Date().toLocaleString('ru') };
+    save(KEYS.announcement, data);
+    loadAnnouncementPreview();
+    showToast('Объявление опубликовано');
+  }
+
+  function clearAnnouncement() {
+    localStorage.removeItem(KEYS.announcement);
+    document.getElementById('announcement-text').value = '';
+    loadAnnouncementPreview();
+    showToast('Объявление убрано');
+  }
+
+  function loadAnnouncementPreview() {
+    const stored = getStored(KEYS.announcement);
+    const box = document.getElementById('announcement-preview');
+    if (stored) {
+      const icons = { info: 'ℹ️', warning: '⚠️', success: '✅' };
+      box.innerHTML = `
+        <div class="preview-label">Сейчас показывается участникам:</div>
+        <div class="announcement-banner ${stored.type}">
+          ${icons[stored.type] || 'ℹ️'} ${stored.text}
+          <div class="ann-date">Опубликовано: ${stored.date}</div>
+        </div>
+      `;
+      document.getElementById('announcement-text').value = stored.text;
+      document.getElementById('announcement-type').value = stored.type;
+    } else {
+      box.innerHTML = `<div class="preview-empty">Объявление не активно</div>`;
+    }
+  }
+
+  /* ─── SETTINGS ────────────────────────── */
+  function loadSettingsForm() {
+    const e = state.event;
+    document.getElementById('s-title').value       = e.title             || '';
+    document.getElementById('s-dates').value       = e.dates             || '';
+    document.getElementById('s-location').value    = e.location          || '';
+    document.getElementById('s-org-name').value    = e.organizer?.name   || '';
+    document.getElementById('s-org-tg').value      = e.organizer?.telegram || '';
+    document.getElementById('s-wifi-net').value    = e.wifi?.network     || '';
+    document.getElementById('s-wifi-pass').value   = e.wifi?.password    || '';
+    document.getElementById('s-hotel-name').value  = e.hotel?.name       || '';
+    document.getElementById('s-hotel-phone').value = e.hotel?.phone      || '';
+    document.getElementById('s-emergency').value   = e.emergency         || '';
+  }
+
+  function saveSettings() {
+    state.event = {
+      ...state.event,
+      title:    document.getElementById('s-title').value,
+      dates:    document.getElementById('s-dates').value,
+      location: document.getElementById('s-location').value,
+      organizer: {
+        name:     document.getElementById('s-org-name').value,
+        telegram: document.getElementById('s-org-tg').value,
+      },
+      wifi: {
+        network:  document.getElementById('s-wifi-net').value,
+        password: document.getElementById('s-wifi-pass').value,
+      },
+      hotel: {
+        ...state.event.hotel,
+        name:  document.getElementById('s-hotel-name').value,
+        phone: document.getElementById('s-hotel-phone').value,
+      },
+      emergency: document.getElementById('s-emergency').value,
+    };
+    save(KEYS.event, state.event);
+    const hint = document.getElementById('settings-saved');
+    hint.classList.remove('hidden');
+    setTimeout(() => hint.classList.add('hidden'), 2500);
+  }
+
+  /* ─── PROGRAM ─────────────────────────── */
+  function renderProgramSection() {
+    const selector = document.getElementById('day-selector');
+    selector.innerHTML = state.days.map((d, i) => `
+      <button class="day-pill ${i === state.programDay ? 'active' : ''}"
+        style="${i === state.programDay ? 'background:' + d.color : ''}"
+        onclick="Admin.selectProgramDay(${i})">${d.label}</button>
+    `).join('');
+    renderActivityList();
+  }
+
+  function selectProgramDay(i) {
+    state.programDay = i;
+    renderProgramSection();
+  }
+
+  function renderActivityList() {
+    const day  = state.days[state.programDay];
+    const list = document.getElementById('program-list');
+    if (!day.activities.length) {
+      list.innerHTML = `<div class="empty-state">Активностей нет. Добавьте первую.</div>`;
+      return;
+    }
+    list.innerHTML = day.activities.map((a, i) => `
+      <div class="list-item" onclick="Admin.openActivityModal(${i})">
+        <div class="list-item-left">
+          <span class="list-time">${a.time}</span>
+          <div>
+            <div class="list-title">${a.title}</div>
+            <div class="list-sub">📍 ${a.location}${a.note ? ' · ' + a.note : ''}</div>
+          </div>
+        </div>
+        <span class="list-edit">✏️</span>
+      </div>
+    `).join('');
+  }
+
+  function openActivityModal(index) {
+    const isNew = index === null;
+    const a = isNew ? { time: '', title: '', location: '', type: 'business', note: '' }
+                    : state.days[state.programDay].activities[index];
+
+    document.getElementById('activity-modal-title').textContent = isNew ? 'Добавить активность' : 'Редактировать';
+    document.getElementById('a-index').value    = isNew ? '' : index;
+    document.getElementById('a-time').value     = a.time     || '';
+    document.getElementById('a-title').value    = a.title    || '';
+    document.getElementById('a-location').value = a.location || '';
+    document.getElementById('a-type').value     = a.type     || 'business';
+    document.getElementById('a-note').value     = a.note     || '';
+    document.getElementById('a-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    openModal('modal-activity');
+  }
+
+  function saveActivity() {
+    const idx   = document.getElementById('a-index').value;
+    const isNew = idx === '';
+    const activity = {
+      time:     document.getElementById('a-time').value.trim(),
+      title:    document.getElementById('a-title').value.trim(),
+      location: document.getElementById('a-location').value.trim(),
+      type:     document.getElementById('a-type').value,
+      note:     document.getElementById('a-note').value.trim() || undefined,
+    };
+    if (!activity.title || !activity.time) { alert('Заполните время и название'); return; }
+
+    const acts = state.days[state.programDay].activities;
+    if (isNew) acts.push(activity);
+    else       acts[parseInt(idx)] = activity;
+
+    save(KEYS.days, state.days);
+    closeModal('modal-activity');
+    renderActivityList();
+    showToast('Сохранено');
+  }
+
+  function deleteActivity() {
+    const idx = parseInt(document.getElementById('a-index').value);
+    state.days[state.programDay].activities.splice(idx, 1);
+    save(KEYS.days, state.days);
+    closeModal('modal-activity');
+    renderActivityList();
+    showToast('Удалено');
+  }
+
+  /* ─── BUSINESS SESSIONS ───────────────── */
+  const TRACK_LABELS = { '': 'Пленарная', A: 'Трек A', B: 'Трек B', C: 'Трек C' };
+  const TRACK_COLORS = { '': '#6B7280', A: '#C9353F', B: '#2563EB', C: '#16A34A' };
+
+  function renderBusinessSection() {
+    const list = document.getElementById('business-list');
+    if (!state.business.length) {
+      list.innerHTML = `<div class="empty-state">Сессий нет. Добавьте первую.</div>`;
+      return;
+    }
+    list.innerHTML = state.business.map((s, i) => {
+      const trackColor = TRACK_COLORS[s.track || ''] || '#6B7280';
+      const trackLabel = TRACK_LABELS[s.track || ''] || s.track;
+      return `
+        <div class="list-item" onclick="Admin.openBusinessModal(${i})">
+          <div class="list-item-left">
+            <span class="list-time">${s.time}</span>
+            <div>
+              <div class="list-title">${s.title}</div>
+              <div class="list-sub">
+                <span style="color:${trackColor};font-weight:700">${trackLabel}</span>
+                · ${s.day} · ${s.room || ''}
+              </div>
+            </div>
+          </div>
+          <span class="list-edit">✏️</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function openBusinessModal(index) {
+    const isNew = index === null;
+    const s = isNew
+      ? { day: 'День 2', time: '', duration: '', track: '', title: '', room: '', speakers: [], desc: '' }
+      : state.business[index];
+
+    document.getElementById('business-modal-title').textContent = isNew ? 'Добавить сессию' : 'Редактировать';
+    document.getElementById('b-index').value    = isNew ? '' : index;
+    document.getElementById('b-day').value      = s.day      || 'День 2';
+    document.getElementById('b-time').value     = s.time     || '';
+    document.getElementById('b-duration').value = s.duration || '';
+    document.getElementById('b-track').value    = s.track    || '';
+    document.getElementById('b-title').value    = s.title    || '';
+    document.getElementById('b-room').value     = s.room     || '';
+    document.getElementById('b-speakers').value = (s.speakers || []).join('\n');
+    document.getElementById('b-desc').value     = s.desc     || '';
+    document.getElementById('b-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    openModal('modal-business');
+  }
+
+  function saveBusiness() {
+    const idx   = document.getElementById('b-index').value;
+    const isNew = idx === '';
+    const speakersRaw = document.getElementById('b-speakers').value.trim();
+    const session = {
+      id:       isNew ? 'b' + Date.now() : state.business[parseInt(idx)].id,
+      day:      document.getElementById('b-day').value,
+      time:     document.getElementById('b-time').value.trim(),
+      duration: document.getElementById('b-duration').value.trim(),
+      track:    document.getElementById('b-track').value,
+      title:    document.getElementById('b-title').value.trim(),
+      room:     document.getElementById('b-room').value.trim(),
+      speakers: speakersRaw ? speakersRaw.split('\n').map(l => l.trim()).filter(Boolean) : [],
+      desc:     document.getElementById('b-desc').value.trim(),
+    };
+    if (!session.title) { alert('Введите название сессии'); return; }
+
+    if (isNew) state.business.push(session);
+    else       state.business[parseInt(idx)] = session;
+
+    save(KEYS.business, state.business);
+    closeModal('modal-business');
+    renderBusinessSection();
+    showToast('Сохранено');
+  }
+
+  function deleteBusiness() {
+    const idx = parseInt(document.getElementById('b-index').value);
+    state.business.splice(idx, 1);
+    save(KEYS.business, state.business);
+    closeModal('modal-business');
+    renderBusinessSection();
+    showToast('Удалено');
+  }
+
+  /* ─── HOTEL ──────────────────────────── */
+  function renderHotelSection() {
+    const h = state.hotel;
+    document.getElementById('h-name').value      = h.name      || '';
+    document.getElementById('h-name-cn').value   = h.nameCn    || '';
+    document.getElementById('h-phone').value     = h.phone     || '';
+    document.getElementById('h-metro').value     = h.metro     || '';
+    document.getElementById('h-checkin').value   = h.checkin   || '';
+    document.getElementById('h-checkout').value  = h.checkout  || '';
+    document.getElementById('h-breakfast').value = h.breakfast || '';
+    document.getElementById('h-address').value   = h.address   || '';
+    document.getElementById('h-address-cn').value= h.addressCn || '';
+    document.getElementById('h-desc').value      = h.desc      || '';
+    document.getElementById('h-image').value     = h.image     || '';
+    document.getElementById('h-tips').value      = (h.tips || []).join('\n');
+    renderHotelAmenities();
+  }
+
+  function renderHotelAmenities() {
+    const list = document.getElementById('hotel-amenities-list');
+    const amenities = state.hotel.amenities || [];
+    if (!amenities.length) {
+      list.innerHTML = `<div class="empty-state">Удобств нет. Добавьте первое.</div>`;
+      return;
+    }
+    list.innerHTML = amenities.map((a, i) => `
+      <div class="list-item" onclick="Admin.openAmenityModal(${i})">
+        <div class="list-item-left">
+          <span style="font-size:22px">${a.icon}</span>
+          <div>
+            <div class="list-title">${a.title}</div>
+            <div class="list-sub">${a.note}</div>
+          </div>
+        </div>
+        <span class="list-edit">✏️</span>
+      </div>
+    `).join('');
+  }
+
+  function saveHotel() {
+    const tipsRaw = document.getElementById('h-tips').value.trim();
+    state.hotel = {
+      ...state.hotel,
+      name:      document.getElementById('h-name').value.trim(),
+      nameCn:    document.getElementById('h-name-cn').value.trim(),
+      phone:     document.getElementById('h-phone').value.trim(),
+      metro:     document.getElementById('h-metro').value.trim(),
+      checkin:   document.getElementById('h-checkin').value.trim(),
+      checkout:  document.getElementById('h-checkout').value.trim(),
+      breakfast: document.getElementById('h-breakfast').value.trim(),
+      address:   document.getElementById('h-address').value.trim(),
+      addressCn: document.getElementById('h-address-cn').value.trim(),
+      desc:      document.getElementById('h-desc').value.trim(),
+      image:     document.getElementById('h-image').value.trim() || state.hotel.image,
+      tips:      tipsRaw ? tipsRaw.split('\n').map(l => l.trim()).filter(Boolean) : [],
+    };
+    save(KEYS.hotel, state.hotel);
+    const hint = document.getElementById('hotel-saved');
+    hint.classList.remove('hidden');
+    setTimeout(() => hint.classList.add('hidden'), 2500);
+  }
+
+  function openAmenityModal(index) {
+    const isNew = index === null;
+    const a = isNew
+      ? { icon: '', title: '', note: '' }
+      : (state.hotel.amenities || [])[index];
+
+    document.getElementById('amenity-modal-title').textContent = isNew ? 'Добавить удобство' : 'Редактировать';
+    document.getElementById('am-index').value = isNew ? '' : index;
+    document.getElementById('am-icon').value  = a.icon  || '';
+    document.getElementById('am-title').value = a.title || '';
+    document.getElementById('am-note').value  = a.note  || '';
+    document.getElementById('am-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    openModal('modal-amenity');
+  }
+
+  function saveAmenity() {
+    const idx   = document.getElementById('am-index').value;
+    const isNew = idx === '';
+    const amenity = {
+      icon:  document.getElementById('am-icon').value.trim() || '✅',
+      title: document.getElementById('am-title').value.trim(),
+      note:  document.getElementById('am-note').value.trim(),
+    };
+    if (!amenity.title) { alert('Введите название'); return; }
+
+    if (!state.hotel.amenities) state.hotel.amenities = [];
+    if (isNew) state.hotel.amenities.push(amenity);
+    else       state.hotel.amenities[parseInt(idx)] = amenity;
+
+    save(KEYS.hotel, state.hotel);
+    closeModal('modal-amenity');
+    renderHotelAmenities();
+    showToast('Сохранено');
+  }
+
+  function deleteAmenity() {
+    const idx = parseInt(document.getElementById('am-index').value);
+    state.hotel.amenities.splice(idx, 1);
+    save(KEYS.hotel, state.hotel);
+    closeModal('modal-amenity');
+    renderHotelAmenities();
+    showToast('Удалено');
+  }
+
+  /* ─── SIGHTS ──────────────────────────── */
+  function renderSightsSection() {
+    const list = document.getElementById('sights-list');
+    if (!state.sights.length) {
+      list.innerHTML = `<div class="empty-state">Мест нет. Добавьте первое.</div>`;
+      return;
+    }
+    list.innerHTML = state.sights.map((s, i) => `
+      <div class="list-item" onclick="Admin.openSightModal(${i})">
+        <div class="list-item-left">
+          <span style="font-size:22px">${s.emoji}</span>
+          <div>
+            <div class="list-title">${s.title}</div>
+            <div class="list-sub">${s.sub || ''} · ${s.distance || ''}</div>
+          </div>
+        </div>
+        <span class="list-edit">✏️</span>
+      </div>
+    `).join('');
+  }
+
+  function openSightModal(index) {
+    const isNew = index === null;
+    const s = isNew
+      ? { title: '', emoji: '🏛', sub: '', distance: '', hours: '', price: '', tags: [], desc: '', tip: '', image: '' }
+      : state.sights[index];
+
+    document.getElementById('sight-modal-title').textContent = isNew ? 'Добавить место' : 'Редактировать';
+    document.getElementById('si-index').value    = isNew ? '' : index;
+    document.getElementById('si-title').value    = s.title    || '';
+    document.getElementById('si-emoji').value    = s.emoji    || '🏛';
+    document.getElementById('si-sub').value      = s.sub      || '';
+    document.getElementById('si-distance').value = s.distance || '';
+    document.getElementById('si-hours').value    = s.hours    || '';
+    document.getElementById('si-price').value    = s.price    || '';
+    document.getElementById('si-tags').value     = (s.tags || []).join(', ');
+    document.getElementById('si-desc').value     = s.desc     || '';
+    document.getElementById('si-tip').value      = s.tip      || '';
+    document.getElementById('si-image').value    = s.image    || '';
+    document.getElementById('si-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    openModal('modal-sight');
+  }
+
+  function saveSight() {
+    const idx   = document.getElementById('si-index').value;
+    const isNew = idx === '';
+    const tagsRaw = document.getElementById('si-tags').value.trim();
+    const sight = {
+      id:       isNew ? 's' + Date.now() : state.sights[parseInt(idx)].id,
+      title:    document.getElementById('si-title').value.trim(),
+      emoji:    document.getElementById('si-emoji').value.trim() || '🏛',
+      sub:      document.getElementById('si-sub').value.trim(),
+      distance: document.getElementById('si-distance').value.trim(),
+      hours:    document.getElementById('si-hours').value.trim(),
+      price:    document.getElementById('si-price').value.trim(),
+      tags:     tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [],
+      desc:     document.getElementById('si-desc').value.trim(),
+      tip:      document.getElementById('si-tip').value.trim(),
+      image:    document.getElementById('si-image').value.trim() ||
+                'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=700&q=80',
+    };
+    if (!sight.title) { alert('Введите название'); return; }
+
+    if (isNew) state.sights.push(sight);
+    else       state.sights[parseInt(idx)] = sight;
+
+    save(KEYS.sights, state.sights);
+    closeModal('modal-sight');
+    renderSightsSection();
+    showToast('Сохранено');
+  }
+
+  function deleteSight() {
+    const idx = parseInt(document.getElementById('si-index').value);
+    state.sights.splice(idx, 1);
+    save(KEYS.sights, state.sights);
+    closeModal('modal-sight');
+    renderSightsSection();
+    showToast('Удалено');
+  }
+
+  /* ─── RESTAURANTS ─────────────────────── */
+  function renderRestaurantsSection() {
+    const list = document.getElementById('restaurants-list');
+    if (!state.restaurants.length) {
+      list.innerHTML = `<div class="empty-state">Ресторанов нет. Добавьте первый.</div>`;
+      return;
+    }
+    list.innerHTML = state.restaurants.map((r, i) => `
+      <div class="list-item" onclick="Admin.openRestaurantModal(${i})">
+        <div class="list-item-left">
+          <span style="font-size:22px">${r.emoji}</span>
+          <div>
+            <div class="list-title">${r.title}</div>
+            <div class="list-sub">${r.cuisine} · ${r.price} · ${r.type === 'program' ? 'По программе' : 'Самостоятельно'}</div>
+          </div>
+        </div>
+        <span class="list-edit">✏️</span>
+      </div>
+    `).join('');
+  }
+
+  function openRestaurantModal(index) {
+    const isNew = index === null;
+    const r = isNew
+      ? { title: '', emoji: '🍜', cuisine: '', price: '¥¥', type: 'free', metro: '', hours: '', address: '', note: '', desc: '', image: '' }
+      : state.restaurants[index];
+
+    document.getElementById('restaurant-modal-title').textContent = isNew ? 'Добавить ресторан' : 'Редактировать';
+    document.getElementById('r-index').value   = isNew ? '' : index;
+    document.getElementById('r-title').value   = r.title   || '';
+    document.getElementById('r-emoji').value   = r.emoji   || '🍜';
+    document.getElementById('r-cuisine').value = r.cuisine || '';
+    document.getElementById('r-price').value   = r.price   || '¥¥';
+    document.getElementById('r-type').value    = r.type    || 'free';
+    document.getElementById('r-metro').value   = r.metro   || '';
+    document.getElementById('r-hours').value   = r.hours   || '';
+    document.getElementById('r-address').value = r.address || '';
+    document.getElementById('r-note').value    = r.note    || '';
+    document.getElementById('r-desc').value    = r.desc    || '';
+    document.getElementById('r-image').value   = r.image   || '';
+    document.getElementById('r-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    openModal('modal-restaurant');
+  }
+
+  function saveRestaurant() {
+    const idx   = document.getElementById('r-index').value;
+    const isNew = idx === '';
+    const rest = {
+      id:      isNew ? 'r' + Date.now() : state.restaurants[parseInt(idx)].id,
+      title:   document.getElementById('r-title').value.trim(),
+      emoji:   document.getElementById('r-emoji').value.trim() || '🍜',
+      cuisine: document.getElementById('r-cuisine').value.trim(),
+      price:   document.getElementById('r-price').value,
+      type:    document.getElementById('r-type').value,
+      metro:   document.getElementById('r-metro').value.trim(),
+      hours:   document.getElementById('r-hours').value.trim(),
+      address: document.getElementById('r-address').value.trim(),
+      note:    document.getElementById('r-note').value.trim(),
+      desc:    document.getElementById('r-desc').value.trim(),
+      image:   document.getElementById('r-image').value.trim() ||
+               'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80',
+    };
+    if (!rest.title) { alert('Введите название'); return; }
+
+    if (isNew) state.restaurants.push(rest);
+    else       state.restaurants[parseInt(idx)] = rest;
+
+    save(KEYS.restaurants, state.restaurants);
+    closeModal('modal-restaurant');
+    renderRestaurantsSection();
+    showToast('Сохранено');
+  }
+
+  function deleteRestaurant() {
+    const idx = parseInt(document.getElementById('r-index').value);
+    state.restaurants.splice(idx, 1);
+    save(KEYS.restaurants, state.restaurants);
+    closeModal('modal-restaurant');
+    renderRestaurantsSection();
+    showToast('Удалено');
+  }
+
+  /* ─── CUISINE ─────────────────────────── */
+  function renderCuisineSection() {
+    const list = document.getElementById('cuisine-list');
+    if (!state.cuisine.length) {
+      list.innerHTML = `<div class="empty-state">Блюд нет. Добавьте первое.</div>`;
+      return;
+    }
+    list.innerHTML = state.cuisine.map((d, i) => `
+      <div class="list-item" onclick="Admin.openCuisineModal(${i})">
+        <div class="list-item-left">
+          <span style="font-size:22px">${d.emoji}</span>
+          <div>
+            <div class="list-title">${d.title} ${d.must ? '<span style="color:#C9353F;font-size:11px;font-weight:700">МАСТ</span>' : ''}</div>
+            <div class="list-sub">${d.cn || ''} · ${d.price || ''}</div>
+          </div>
+        </div>
+        <span class="list-edit">✏️</span>
+      </div>
+    `).join('');
+  }
+
+  function openCuisineModal(index) {
+    const isNew = index === null;
+    const d = isNew
+      ? { title: '', emoji: '🥢', cn: '', price: '', where: '', desc: '', must: false }
+      : state.cuisine[index];
+
+    document.getElementById('cuisine-modal-title').textContent = isNew ? 'Добавить блюдо' : 'Редактировать';
+    document.getElementById('c-index').value = isNew ? '' : index;
+    document.getElementById('c-title').value = d.title || '';
+    document.getElementById('c-emoji').value = d.emoji || '🥢';
+    document.getElementById('c-cn').value    = d.cn    || '';
+    document.getElementById('c-price').value = d.price || '';
+    document.getElementById('c-where').value = d.where || '';
+    document.getElementById('c-desc').value  = d.desc  || '';
+    document.getElementById('c-must').checked = !!d.must;
+    document.getElementById('c-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    openModal('modal-cuisine');
+  }
+
+  function saveCuisine() {
+    const idx   = document.getElementById('c-index').value;
+    const isNew = idx === '';
+    const dish = {
+      id:    isNew ? 'c' + Date.now() : state.cuisine[parseInt(idx)].id,
+      title: document.getElementById('c-title').value.trim(),
+      emoji: document.getElementById('c-emoji').value.trim() || '🥢',
+      cn:    document.getElementById('c-cn').value.trim(),
+      price: document.getElementById('c-price').value.trim(),
+      where: document.getElementById('c-where').value.trim(),
+      desc:  document.getElementById('c-desc').value.trim(),
+      must:  document.getElementById('c-must').checked,
+    };
+    if (!dish.title) { alert('Введите название блюда'); return; }
+
+    if (isNew) state.cuisine.push(dish);
+    else       state.cuisine[parseInt(idx)] = dish;
+
+    save(KEYS.cuisine, state.cuisine);
+    closeModal('modal-cuisine');
+    renderCuisineSection();
+    showToast('Сохранено');
+  }
+
+  function deleteCuisine() {
+    const idx = parseInt(document.getElementById('c-index').value);
+    state.cuisine.splice(idx, 1);
+    save(KEYS.cuisine, state.cuisine);
+    closeModal('modal-cuisine');
+    renderCuisineSection();
+    showToast('Удалено');
+  }
+
+  /* ─── HISTORY ─────────────────────────── */
+  function renderHistorySection() {
+    const selector = document.getElementById('history-section-selector');
+    selector.innerHTML = state.history.map((sec, i) => `
+      <button class="day-pill ${i === state.historySection ? 'active' : ''}"
+        style="${i === state.historySection ? 'background:#C9353F' : ''}"
+        onclick="Admin.selectHistorySection(${i})">${sec.emoji} ${sec.section}</button>
+    `).join('');
+    renderHistoryList();
+  }
+
+  function selectHistorySection(i) {
+    state.historySection = i;
+    renderHistorySection();
+  }
+
+  function renderHistoryList() {
+    const sec  = state.history[state.historySection];
+    const list = document.getElementById('history-list');
+    if (!sec.facts.length) {
+      list.innerHTML = `<div class="empty-state">Фактов нет. Добавьте первый.</div>`;
+      return;
+    }
+    list.innerHTML = sec.facts.map((f, i) => `
+      <div class="list-item" onclick="Admin.openHistoryModal(${i})">
+        <div class="list-item-left">
+          <span style="font-size:20px">${f.wow ? '🤯' : '📌'}</span>
+          <div>
+            <div class="list-title">${f.title}</div>
+            <div class="list-sub">${(f.text || '').slice(0, 60)}${f.text && f.text.length > 60 ? '…' : ''}</div>
+          </div>
+        </div>
+        <span class="list-edit">✏️</span>
+      </div>
+    `).join('');
+  }
+
+  function openHistoryModal(index) {
+    const isNew = index === null;
+    const f = isNew
+      ? { title: '', text: '', wow: false }
+      : state.history[state.historySection].facts[index];
+
+    // populate section dropdown
+    const sel = document.getElementById('h-section-select');
+    sel.innerHTML = state.history.map((sec, i) => `
+      <option value="${i}" ${i === state.historySection ? 'selected' : ''}>${sec.emoji} ${sec.section}</option>
+    `).join('');
+
+    document.getElementById('history-modal-title').textContent = isNew ? 'Добавить факт' : 'Редактировать';
+    document.getElementById('h-index').value         = isNew ? '' : index;
+    document.getElementById('h-section-index').value = state.historySection;
+    document.getElementById('h-title').value = f.title || '';
+    document.getElementById('h-text').value  = f.text  || '';
+    document.getElementById('h-wow').checked = !!f.wow;
+    document.getElementById('h-delete-btn').style.display = isNew ? 'none' : 'inline-block';
+    openModal('modal-history');
+  }
+
+  function saveHistory() {
+    const idx        = document.getElementById('h-index').value;
+    const isNew      = idx === '';
+    const fromSec    = parseInt(document.getElementById('h-section-index').value);
+    const toSec      = parseInt(document.getElementById('h-section-select').value);
+    const fact = {
+      title: document.getElementById('h-title').value.trim(),
+      text:  document.getElementById('h-text').value.trim(),
+      wow:   document.getElementById('h-wow').checked,
+    };
+    if (!fact.title) { alert('Введите заголовок факта'); return; }
+
+    if (!isNew && fromSec !== toSec) {
+      // move fact to different section
+      state.history[fromSec].facts.splice(parseInt(idx), 1);
+      state.history[toSec].facts.push(fact);
+    } else if (isNew) {
+      state.history[toSec].facts.push(fact);
+    } else {
+      state.history[fromSec].facts[parseInt(idx)] = fact;
+    }
+
+    save(KEYS.history, state.history);
+    state.historySection = toSec;
+    closeModal('modal-history');
+    renderHistorySection();
+    showToast('Сохранено');
+  }
+
+  function deleteHistory() {
+    const idx    = parseInt(document.getElementById('h-index').value);
+    const secIdx = parseInt(document.getElementById('h-section-index').value);
+    state.history[secIdx].facts.splice(idx, 1);
+    save(KEYS.history, state.history);
+    closeModal('modal-history');
+    renderHistorySection();
+    showToast('Удалено');
+  }
+
+  /* ─── MODAL / TOAST ───────────────────── */
+  function openModal(id) {
+    document.getElementById(id).classList.remove('hidden');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+  }
+
+  let toastTimer;
+  function showToast(msg) {
+    let el = document.getElementById('admin-toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'admin-toast';
+      el.className = 'admin-toast';
+      document.body.appendChild(el);
+    }
+    el.textContent = '✓ ' + msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+  }
+
+  /* ─── PUBLIC ──────────────────────────── */
+  return {
+    login, logout, showSection,
+    // program
+    selectProgramDay, openActivityModal, saveActivity, deleteActivity,
+    // business
+    openBusinessModal, saveBusiness, deleteBusiness,
+    // hotel
+    saveHotel, openAmenityModal, saveAmenity, deleteAmenity,
+    // sights
+    openSightModal, saveSight, deleteSight,
+    // restaurants
+    openRestaurantModal, saveRestaurant, deleteRestaurant,
+    // cuisine
+    openCuisineModal, saveCuisine, deleteCuisine,
+    // history
+    selectHistorySection, openHistoryModal, saveHistory, deleteHistory,
+    // announcement + settings
+    saveAnnouncement, clearAnnouncement,
+    saveSettings,
+    // modal
+    openModal, closeModal,
+  };
+
+})();
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => {
+    if (e.target === el) el.classList.add('hidden');
+  });
+});

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#C9353F">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Деловой форум Пекин 2024</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏯</text></svg>">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<!-- ═══ HEADER ════════════════════════════ -->
+<header class="app-header">
+  <div>
+    <div class="header-title" id="header-title">Форум Пекин 2024</div>
+    <div class="header-sub" id="header-sub">18–21 ноября · Пекин</div>
+  </div>
+  <button class="faq-trigger" onclick="App.openFAQ()" aria-label="Часто задаваемые вопросы">?</button>
+</header>
+
+<!-- ═══ TAB BAR ═══════════════════════════ -->
+<nav class="tab-bar" id="tab-bar">
+  <button class="tab active" data-tab="today"       onclick="App.switchTab('today', this)">☀️ Сегодня</button>
+  <button class="tab"        data-tab="program"     onclick="App.switchTab('program', this)">📅 Программа</button>
+  <button class="tab"        data-tab="business"    onclick="App.switchTab('business', this)">💼 Деловая</button>
+  <button class="tab"        data-tab="hotel"       onclick="App.switchTab('hotel', this)">🏨 Отель</button>
+  <button class="tab"        data-tab="sights"      onclick="App.switchTab('sights', this)">🏛 Места</button>
+  <button class="tab"        data-tab="restaurants" onclick="App.switchTab('restaurants', this)">🍜 Рестораны</button>
+  <button class="tab"        data-tab="cuisine"     onclick="App.switchTab('cuisine', this)">🥢 Кухня</button>
+  <button class="tab"        data-tab="history"     onclick="App.switchTab('history', this)">📜 История</button>
+</nav>
+
+<!-- ═══ CONTENT ══════════════════════════ -->
+<main class="main-content">
+  <div id="tab-today"       class="tab-panel"></div>
+  <div id="tab-program"     class="tab-panel hidden"></div>
+  <div id="tab-business"    class="tab-panel hidden"></div>
+  <div id="tab-hotel"       class="tab-panel hidden"></div>
+  <div id="tab-sights"      class="tab-panel hidden"></div>
+  <div id="tab-restaurants" class="tab-panel hidden"></div>
+  <div id="tab-cuisine"     class="tab-panel hidden"></div>
+  <div id="tab-history"    class="tab-panel hidden"></div>
+</main>
+
+<!-- ═══ MODAL: FAQ ═══════════════════════ -->
+<div class="modal-overlay" id="modal-faq" onclick="if(event.target===this)App.closeFAQ()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h2>Вопросы и ответы</h2>
+    <input class="faq-search" id="faq-search" type="text"
+      placeholder="🔍  Найти ответ..."
+      oninput="App.searchFAQ(this.value)">
+    <div id="faq-list"></div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

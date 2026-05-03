@@ -1,0 +1,17 @@
+{
+  "name": "Деловой форум Пекин 2024",
+  "short_name": "Форум Пекин",
+  "description": "Программа и гид участника делового форума",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFAF6",
+  "theme_color": "#C9353F",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23C9353F'/><text y='140' x='96' font-size='110' text-anchor='middle'>🏯</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

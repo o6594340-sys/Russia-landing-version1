@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель администратора — Форум Пекин 2024</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ═══ AUTH ══════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">🏯</div>
+    <h1 class="auth-title">Панель организатора</h1>
+    <p class="auth-sub">Деловой форум Пекин 2024</p>
+    <input type="password" id="auth-input" class="auth-input"
+      placeholder="Пароль администратора"
+      onkeydown="if(event.key==='Enter')Admin.login()">
+    <button class="auth-btn" onclick="Admin.login()">Войти</button>
+    <div class="auth-error hidden" id="auth-error">Неверный пароль</div>
+    <a class="auth-link" href="index.html">← Перейти к сайту участника</a>
+  </div>
+</div>
+
+<!-- ═══ ADMIN PANEL ════════════════════════ -->
+<div id="admin-panel" class="hidden">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">🏯 Организатор</div>
+    <nav class="sidebar-nav">
+      <div class="nav-group-label">Коммуникации</div>
+      <button class="nav-btn active" onclick="Admin.showSection('announcement', this)">📢 Объявление</button>
+
+      <div class="nav-group-label">Контент</div>
+      <button class="nav-btn" onclick="Admin.showSection('settings', this)">⚙️ Настройки события</button>
+      <button class="nav-btn" onclick="Admin.showSection('program', this)">📅 Программа</button>
+      <button class="nav-btn" onclick="Admin.showSection('business', this)">💼 Деловая часть</button>
+      <button class="nav-btn" onclick="Admin.showSection('hotel', this)">🏨 Отель</button>
+      <button class="nav-btn" onclick="Admin.showSection('sights', this)">🏛 Достопримечательности</button>
+      <button class="nav-btn" onclick="Admin.showSection('restaurants', this)">🍜 Рестораны</button>
+      <button class="nav-btn" onclick="Admin.showSection('cuisine', this)">🥢 Кухня</button>
+      <button class="nav-btn" onclick="Admin.showSection('history', this)">📜 История</button>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="index.html" target="_blank" class="preview-link">👁 Просмотр сайта ↗</a>
+      <button class="logout-btn" onclick="Admin.logout()">Выйти</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- ОБЪЯВЛЕНИЕ -->
+    <section id="section-announcement" class="admin-section">
+      <div class="section-header">
+        <h2>📢 Объявление участникам</h2>
+        <p>Появится баннером вверху сайта. Используйте для срочных изменений в программе.</p>
+      </div>
+      <div class="form-group">
+        <label>Текст объявления</label>
+        <textarea id="announcement-text" rows="4"
+          placeholder="Например: ⚠️ Автобус на Великую стену задерживается. Сбор в лобби в 08:30."></textarea>
+      </div>
+      <div class="form-row">
+        <select id="announcement-type">
+          <option value="info">ℹ️ Информация</option>
+          <option value="warning">⚠️ Внимание</option>
+          <option value="success">✅ Хорошая новость</option>
+        </select>
+        <button class="btn-primary" onclick="Admin.saveAnnouncement()">Опубликовать</button>
+        <button class="btn-danger" onclick="Admin.clearAnnouncement()">Убрать</button>
+      </div>
+      <div class="preview-box" id="announcement-preview"></div>
+    </section>
+
+    <!-- НАСТРОЙКИ -->
+    <section id="section-settings" class="admin-section hidden">
+      <div class="section-header">
+        <h2>⚙️ Настройки события</h2>
+        <p>Основная информация — название, Wi-Fi, контакты.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Название события</label><input type="text" id="s-title"></div>
+        <div class="form-group"><label>Даты</label><input type="text" id="s-dates"></div>
+        <div class="form-group"><label>Город и страна</label><input type="text" id="s-location"></div>
+        <div class="form-group"><label>Имя организатора</label><input type="text" id="s-org-name"></div>
+        <div class="form-group"><label>Telegram организатора</label><input type="text" id="s-org-tg"></div>
+        <div class="form-group"><label>Сеть Wi-Fi</label><input type="text" id="s-wifi-net"></div>
+        <div class="form-group"><label>Пароль Wi-Fi</label><input type="text" id="s-wifi-pass"></div>
+        <div class="form-group"><label>Название отеля</label><input type="text" id="s-hotel-name"></div>
+        <div class="form-group"><label>Телефон отеля</label><input type="text" id="s-hotel-phone"></div>
+        <div class="form-group"><label>Экстренный контакт</label><input type="text" id="s-emergency"></div>
+      </div>
+      <button class="btn-primary" onclick="Admin.saveSettings()">Сохранить настройки</button>
+      <div class="save-hint hidden" id="settings-saved">✓ Сохранено</div>
+    </section>
+
+    <!-- ПРОГРАММА -->
+    <section id="section-program" class="admin-section hidden">
+      <div class="section-header">
+        <h2>📅 Программа по дням</h2>
+        <p>Расписание мероприятия. Изменения сразу видны участникам.</p>
+      </div>
+      <div class="day-selector" id="day-selector"></div>
+      <div id="program-list"></div>
+      <button class="btn-add" onclick="Admin.openActivityModal(null)">+ Добавить активность</button>
+    </section>
+
+    <!-- ДЕЛОВАЯ ЧАСТЬ -->
+    <section id="section-business" class="admin-section hidden">
+      <div class="section-header">
+        <h2>💼 Деловая часть</h2>
+        <p>Сессии, спикеры, треки. Отображается на вкладке «Деловая».</p>
+      </div>
+      <div id="business-list"></div>
+      <button class="btn-add" onclick="Admin.openBusinessModal(null)">+ Добавить сессию</button>
+    </section>
+
+    <!-- ОТЕЛЬ -->
+    <section id="section-hotel" class="admin-section hidden">
+      <div class="section-header">
+        <h2>🏨 Отель</h2>
+        <p>Информация об отеле для участников.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Название</label><input type="text" id="h-name" placeholder="China World Hotel Beijing"></div>
+        <div class="form-group"><label>Название (中文)</label><input type="text" id="h-name-cn" placeholder="中国大饭店"></div>
+        <div class="form-group"><label>Телефон</label><input type="text" id="h-phone" placeholder="+86 10 6505 2266"></div>
+        <div class="form-group"><label>Метро / ориентир</label><input type="text" id="h-metro" placeholder="Guomao (線路 1) — 3 мин"></div>
+        <div class="form-group"><label>Заезд (Check-in)</label><input type="text" id="h-checkin" placeholder="15:00"></div>
+        <div class="form-group"><label>Выезд (Check-out)</label><input type="text" id="h-checkout" placeholder="12:00"></div>
+        <div class="form-group full"><label>Завтрак</label><input type="text" id="h-breakfast" placeholder="Ресторан Aria · 6:30–10:30 · включён"></div>
+        <div class="form-group full"><label>Адрес (EN)</label><input type="text" id="h-address" placeholder="1 Jianguomenwai Ave, Chaoyang District"></div>
+        <div class="form-group full"><label>Адрес (中文) — для такси</label><input type="text" id="h-address-cn" placeholder="北京市朝阳区建国门外大街1号"></div>
+        <div class="form-group full"><label>Описание</label><textarea id="h-desc" rows="3" placeholder="Пятизвёздочный отель в деловом центре Пекина..."></textarea></div>
+        <div class="form-group full"><label>URL фото</label><input type="text" id="h-image" placeholder="https://..."></div>
+        <div class="form-group full">
+          <label>Советы гостям (каждый с новой строки)</label>
+          <textarea id="h-tips" rows="4" placeholder="Завтрак в Aria с 6:30...&#10;Попросите карточку адреса на китайском..."></textarea>
+        </div>
+      </div>
+      <div class="section-title" style="margin:16px 0 10px">Удобства</div>
+      <div id="hotel-amenities-list"></div>
+      <button class="btn-add" onclick="Admin.openAmenityModal(null)">+ Добавить удобство</button>
+      <div style="margin-top:20px">
+        <button class="btn-primary" onclick="Admin.saveHotel()">Сохранить</button>
+        <span class="save-hint hidden" id="hotel-saved">✓ Сохранено</span>
+      </div>
+    </section>
+
+    <!-- ДОСТОПРИМЕЧАТЕЛЬНОСТИ -->
+    <section id="section-sights" class="admin-section hidden">
+      <div class="section-header">
+        <h2>🏛 Достопримечательности</h2>
+        <p>Места для посещения с описаниями и советами.</p>
+      </div>
+      <div id="sights-list"></div>
+      <button class="btn-add" onclick="Admin.openSightModal(null)">+ Добавить место</button>
+    </section>
+
+    <!-- РЕСТОРАНЫ -->
+    <section id="section-restaurants" class="admin-section hidden">
+      <div class="section-header">
+        <h2>🍜 Рестораны</h2>
+        <p>По программе и для самостоятельного посещения.</p>
+      </div>
+      <div id="restaurants-list"></div>
+      <button class="btn-add" onclick="Admin.openRestaurantModal(null)">+ Добавить ресторан</button>
+    </section>
+
+    <!-- КУХНЯ -->
+    <section id="section-cuisine" class="admin-section hidden">
+      <div class="section-header">
+        <h2>🥢 Местная кухня</h2>
+        <p>Блюда, которые стоит попробовать.</p>
+      </div>
+      <div id="cuisine-list"></div>
+      <button class="btn-add" onclick="Admin.openCuisineModal(null)">+ Добавить блюдо</button>
+    </section>
+
+    <!-- ИСТОРИЯ -->
+    <section id="section-history" class="admin-section hidden">
+      <div class="section-header">
+        <h2>📜 История и факты</h2>
+        <p>Интересные факты по разделам.</p>
+      </div>
+      <div class="day-selector" id="history-section-selector"></div>
+      <div id="history-list"></div>
+      <button class="btn-add" onclick="Admin.openHistoryModal(null)">+ Добавить факт</button>
+    </section>
+
+  </main>
+</div>
+
+<!-- ═══ MODAL: АКТИВНОСТЬ ═════════════════ -->
+<div class="modal-overlay hidden" id="modal-activity">
+  <div class="modal-box">
+    <h3 id="activity-modal-title">Добавить активность</h3>
+    <input type="hidden" id="a-index">
+    <div class="form-grid">
+      <div class="form-group"><label>Время</label><input type="text" id="a-time" placeholder="10:00"></div>
+      <div class="form-group"><label>Тип</label>
+        <select id="a-type">
+          <option value="business">💼 Деловое</option>
+          <option value="meal">🍽 Питание</option>
+          <option value="transfer">🚌 Трансфер</option>
+          <option value="excursion">🏛 Экскурсия</option>
+          <option value="hotel">🏨 Отель</option>
+          <option value="dinner">🍷 Ужин</option>
+          <option value="gala">🥂 Гала</option>
+          <option value="free">🛍 Свободное</option>
+        </select>
+      </div>
+      <div class="form-group full"><label>Название</label><input type="text" id="a-title" placeholder="Пленарная сессия"></div>
+      <div class="form-group full"><label>Место / локация</label><input type="text" id="a-location" placeholder="Grand Ballroom"></div>
+      <div class="form-group full"><label>Примечание (необязательно)</label><input type="text" id="a-note" placeholder="Присутствие обязательно"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="Admin.saveActivity()">Сохранить</button>
+      <button class="btn-secondary" onclick="Admin.closeModal('modal-activity')">Отмена</button>
+      <button class="btn-danger" id="a-delete-btn" onclick="Admin.deleteActivity()">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: ДЕЛОВАЯ СЕССИЯ ════════════ -->
+<div class="modal-overlay hidden" id="modal-business">
+  <div class="modal-box">
+    <h3 id="business-modal-title">Добавить сессию</h3>
+    <input type="hidden" id="b-index">
+    <div class="form-grid">
+      <div class="form-group"><label>День</label>
+        <select id="b-day">
+          <option value="День 2">День 2</option>
+          <option value="День 3">День 3</option>
+          <option value="День 1">День 1</option>
+          <option value="День 4">День 4</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Время</label><input type="text" id="b-time" placeholder="10:00"></div>
+      <div class="form-group"><label>Длительность</label><input type="text" id="b-duration" placeholder="90 мин"></div>
+      <div class="form-group"><label>Трек</label>
+        <select id="b-track">
+          <option value="">— Пленарная —</option>
+          <option value="A">Трек A</option>
+          <option value="B">Трек B</option>
+          <option value="C">Трек C</option>
+        </select>
+      </div>
+      <div class="form-group full"><label>Название сессии</label><input type="text" id="b-title" placeholder="Пленарная сессия: ..."></div>
+      <div class="form-group full"><label>Зал / комната</label><input type="text" id="b-room" placeholder="Grand Ballroom"></div>
+      <div class="form-group full"><label>Спикеры (каждый с новой строки)</label><textarea id="b-speakers" rows="3" placeholder="Иван Петров — Минэкономразвития"></textarea></div>
+      <div class="form-group full"><label>Описание</label><textarea id="b-desc" rows="3" placeholder="Краткое описание сессии..."></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="Admin.saveBusiness()">Сохранить</button>
+      <button class="btn-secondary" onclick="Admin.closeModal('modal-business')">Отмена</button>
+      <button class="btn-danger" id="b-delete-btn" onclick="Admin.deleteBusiness()">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: УДОБСТВО ОТЕЛЯ ════════════ -->
+<div class="modal-overlay hidden" id="modal-amenity">
+  <div class="modal-box">
+    <h3 id="amenity-modal-title">Добавить удобство</h3>
+    <input type="hidden" id="am-index">
+    <div class="form-grid">
+      <div class="form-group"><label>Эмодзи</label><input type="text" id="am-icon" placeholder="🏊" style="font-size:20px"></div>
+      <div class="form-group"><label>Название</label><input type="text" id="am-title" placeholder="Бассейн"></div>
+      <div class="form-group full"><label>Уточнение (часы, примечание)</label><input type="text" id="am-note" placeholder="6:00–22:00"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="Admin.saveAmenity()">Сохранить</button>
+      <button class="btn-secondary" onclick="Admin.closeModal('modal-amenity')">Отмена</button>
+      <button class="btn-danger" id="am-delete-btn" onclick="Admin.deleteAmenity()">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: МЕСТО ══════════════════════ -->
+<div class="modal-overlay hidden" id="modal-sight">
+  <div class="modal-box">
+    <h3 id="sight-modal-title">Добавить место</h3>
+    <input type="hidden" id="si-index">
+    <div class="form-grid">
+      <div class="form-group"><label>Название (рус)</label><input type="text" id="si-title" placeholder="Запретный город"></div>
+      <div class="form-group"><label>Эмодзи</label><input type="text" id="si-emoji" placeholder="🏯"></div>
+      <div class="form-group full"><label>Подзаголовок (транскрипция)</label><input type="text" id="si-sub" placeholder="Гугун · 故宫"></div>
+      <div class="form-group"><label>Расстояние от отеля</label><input type="text" id="si-distance" placeholder="20 мин от отеля"></div>
+      <div class="form-group"><label>Часы работы</label><input type="text" id="si-hours" placeholder="08:30–17:00"></div>
+      <div class="form-group"><label>Цена входа</label><input type="text" id="si-price" placeholder="60¥ (~720₽)"></div>
+      <div class="form-group"><label>Теги (через запятую)</label><input type="text" id="si-tags" placeholder="По программе, UNESCO"></div>
+      <div class="form-group full"><label>Описание</label><textarea id="si-desc" rows="3"></textarea></div>
+      <div class="form-group full"><label>Совет туристу</label><textarea id="si-tip" rows="2" placeholder="💡 ..."></textarea></div>
+      <div class="form-group full"><label>URL фото</label><input type="text" id="si-image" placeholder="https://..."></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="Admin.saveSight()">Сохранить</button>
+      <button class="btn-secondary" onclick="Admin.closeModal('modal-sight')">Отмена</button>
+      <button class="btn-danger" id="si-delete-btn" onclick="Admin.deleteSight()">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: РЕСТОРАН ═══════════════════ -->
+<div class="modal-overlay hidden" id="modal-restaurant">
+  <div class="modal-box">
+    <h3 id="restaurant-modal-title">Добавить ресторан</h3>
+    <input type="hidden" id="r-index">
+    <div class="form-grid">
+      <div class="form-group full"><label>Название</label><input type="text" id="r-title" placeholder="Da Dong · 大董"></div>
+      <div class="form-group"><label>Тип</label>
+        <select id="r-type"><option value="program">По программе</option><option value="free">Самостоятельно</option></select>
+      </div>
+      <div class="form-group"><label>Эмодзи</label><input type="text" id="r-emoji" placeholder="🦆"></div>
+      <div class="form-group"><label>Кухня</label><input type="text" id="r-cuisine" placeholder="Утка по-пекински"></div>
+      <div class="form-group"><label>Цена</label>
+        <select id="r-price"><option value="¥">¥ Бюджетно</option><option value="¥¥">¥¥ Средне</option><option value="¥¥¥">¥¥¥ Дорого</option></select>
+      </div>
+      <div class="form-group"><label>Метро / ориентир</label><input type="text" id="r-metro" placeholder="Guomao"></div>
+      <div class="form-group"><label>Часы работы</label><input type="text" id="r-hours" placeholder="11:00–22:00"></div>
+      <div class="form-group full"><label>Адрес</label><input type="text" id="r-address"></div>
+      <div class="form-group full"><label>Заметка для участника</label><input type="text" id="r-note" placeholder="Включено в программу"></div>
+      <div class="form-group full"><label>Описание</label><textarea id="r-desc" rows="3"></textarea></div>
+      <div class="form-group full"><label>URL фото</label><input type="text" id="r-image"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="Admin.saveRestaurant()">Сохранить</button>
+      <button class="btn-secondary" onclick="Admin.closeModal('modal-restaurant')">Отмена</button>
+      <button class="btn-danger" id="r-delete-btn" onclick="Admin.deleteRestaurant()">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: БЛЮДО ══════════════════════ -->
+<div class="modal-overlay hidden" id="modal-cuisine">
+  <div class="modal-box">
+    <h3 id="cuisine-modal-title">Добавить блюдо</h3>
+    <input type="hidden" id="c-index">
+    <div class="form-grid">
+      <div class="form-group"><label>Название (рус)</label><input type="text" id="c-title" placeholder="Утка по-пекински"></div>
+      <div class="form-group"><label>Эмодзи</label><input type="text" id="c-emoji" placeholder="🦆"></div>
+      <div class="form-group full"><label>Китайское название и транскрипция</label><input type="text" id="c-cn" placeholder="北京烤鸭 · Běijīng Kǎoyā"></div>
+      <div class="form-group"><label>Цена</label><input type="text" id="c-price" placeholder="200–380¥ за утку"></div>
+      <div class="form-group"><label>Где попробовать</label><input type="text" id="c-where" placeholder="Da Dong, Quanjude"></div>
+      <div class="form-group full"><label>Описание</label><textarea id="c-desc" rows="3"></textarea></div>
+      <div class="form-group full">
+        <label class="checkbox-label">
+          <input type="checkbox" id="c-must"> Отметить как «Маст» (обязательно попробовать)
+        </label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="Admin.saveCuisine()">Сохранить</button>
+      <button class="btn-secondary" onclick="Admin.closeModal('modal-cuisine')">Отмена</button>
+      <button class="btn-danger" id="c-delete-btn" onclick="Admin.deleteCuisine()">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: ФАКТ ИСТОРИИ ═══════════════ -->
+<div class="modal-overlay hidden" id="modal-history">
+  <div class="modal-box">
+    <h3 id="history-modal-title">Добавить факт</h3>
+    <input type="hidden" id="h-index">
+    <input type="hidden" id="h-section-index">
+    <div class="form-grid">
+      <div class="form-group full"><label>Раздел</label>
+        <select id="h-section-select"></select>
+      </div>
+      <div class="form-group full"><label>Заголовок факта</label><input type="text" id="h-title" placeholder="9 999 комнат — намеренно"></div>
+      <div class="form-group full"><label>Текст</label><textarea id="h-text" rows="4" placeholder="Интересный факт..."></textarea></div>
+      <div class="form-group full">
+        <label class="checkbox-label">
+          <input type="checkbox" id="h-wow"> Отметить как «🤯 Вот это да!»
+        </label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="Admin.saveHistory()">Сохранить</button>
+      <button class="btn-secondary" onclick="Admin.closeModal('modal-history')">Отмена</button>
+      <button class="btn-danger" id="h-delete-btn" onclick="Admin.deleteHistory()">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
