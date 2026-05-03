@@ -85,12 +85,90 @@ const Admin = (() => {
     state.section = name;
 
     if (name === 'program')     renderProgramSection();
+    if (name === 'templates')   renderTemplatesSection();
     if (name === 'business')    renderBusinessSection();
     if (name === 'hotel')       renderHotelSection();
     if (name === 'sights')      renderSightsSection();
     if (name === 'restaurants') renderRestaurantsSection();
     if (name === 'cuisine')     renderCuisineSection();
     if (name === 'history')     renderHistorySection();
+  }
+
+  /* ─── TEMPLATES ──────────────────────── */
+  function renderTemplatesSection() {
+    const activeKey = localStorage.getItem('admin_template') || '';
+    const grid = document.getElementById('template-grid');
+
+    grid.innerHTML = Object.entries(TEMPLATES).map(([key, tpl]) => {
+      const active = key === activeKey;
+      return `
+        <div class="template-card ${active ? 'active' : ''}" onclick="Admin.applyTemplate('${key}')"
+          style="${active ? '--tpl-color:' + tpl.meta.color : ''}">
+          <div class="template-flag">${tpl.meta.flag}</div>
+          <div class="template-name">${tpl.meta.name}</div>
+          <div class="template-desc">${tpl.meta.desc}</div>
+          <div class="template-bar" style="background:${tpl.meta.color}"></div>
+          ${active ? '<div class="template-badge">✓ Активен</div>' : ''}
+        </div>
+      `;
+    }).join('');
+
+    const activeInfo = document.getElementById('template-active');
+    if (activeKey && TEMPLATES[activeKey]) {
+      const tpl = TEMPLATES[activeKey];
+      activeInfo.innerHTML = `
+        <div class="template-hint">
+          Сейчас загружен: <strong>${tpl.meta.flag} ${tpl.meta.name}</strong>.
+          Чтобы сменить направление — нажмите на другую карточку.
+        </div>
+      `;
+    } else {
+      activeInfo.innerHTML = `<div class="template-hint">Шаблон не выбран. Нажмите на страну, чтобы загрузить данные.</div>`;
+    }
+  }
+
+  function applyTemplate(key) {
+    const tpl = TEMPLATES[key];
+    if (!tpl) return;
+    const current = localStorage.getItem('admin_template') || '';
+    if (current === key) return;
+
+    if (!confirm(`Загрузить шаблон «${tpl.meta.flag} ${tpl.meta.name}»?\n\nЭто перезапишет: историю, кухню, достопримечательности, рестораны и отель.\nПрограмма мероприятия и расписание останутся без изменений.`)) return;
+
+    // Beijing reuses existing data.js constants
+    const hotel       = tpl.hotel       || JSON.parse(JSON.stringify(HOTEL));
+    const sights      = tpl.sights      || JSON.parse(JSON.stringify(SIGHTS));
+    const restaurants = tpl.restaurants || JSON.parse(JSON.stringify(RESTAURANTS));
+    const cuisine     = tpl.cuisine     || JSON.parse(JSON.stringify(CUISINE));
+    const history     = tpl.history     || JSON.parse(JSON.stringify(HISTORY));
+
+    // patch event: update location + brand, keep title/dates/wifi/organizer/emergency
+    const currentEvent = getStored(KEYS.event) || JSON.parse(JSON.stringify(EVENT));
+    const patchedEvent = {
+      ...currentEvent,
+      location: tpl.event.location,
+      subtitle: tpl.event.subtitle,
+      brand:    tpl.event.brand,
+    };
+
+    save(KEYS.event,       patchedEvent);
+    save(KEYS.hotel,       hotel);
+    save(KEYS.sights,      sights);
+    save(KEYS.restaurants, restaurants);
+    save(KEYS.cuisine,     cuisine);
+    save(KEYS.history,     history);
+    localStorage.setItem('admin_template', key);
+
+    // reload state
+    state.event       = patchedEvent;
+    state.hotel       = hotel;
+    state.sights      = sights;
+    state.restaurants = restaurants;
+    state.cuisine     = cuisine;
+    state.history     = history;
+
+    renderTemplatesSection();
+    showToast(`${tpl.meta.flag} Шаблон «${tpl.meta.name}» загружен`);
   }
 
   /* ─── ANNOUNCEMENT ────────────────────── */
@@ -885,7 +963,7 @@ const Admin = (() => {
 
   /* ─── PUBLIC ──────────────────────────── */
   return {
-    login, logout, showSection,
+    login, logout, showSection, applyTemplate,
     // program
     selectProgramDay, openActivityModal, saveActivity, deleteActivity,
     // business

@@ -29,6 +29,9 @@
   <aside class="sidebar">
     <div class="sidebar-logo">🏯 Организатор</div>
     <nav class="sidebar-nav">
+      <div class="nav-group-label">Направление</div>
+      <button class="nav-btn" onclick="Admin.showSection('templates', this)">🌍 Шаблон страны</button>
+
       <div class="nav-group-label">Коммуникации</div>
       <button class="nav-btn active" onclick="Admin.showSection('announcement', this)">📢 Объявление</button>
 
@@ -49,6 +52,16 @@
   </aside>
 
   <main class="admin-main">
+
+    <!-- ШАБЛОНЫ -->
+    <section id="section-templates" class="admin-section hidden">
+      <div class="section-header">
+        <h2>🌍 Шаблон страны</h2>
+        <p>Выберите направление — загрузятся история, кухня, достопримечательности и рестораны. Программа мероприятия остаётся пустой — вы заполняете её сами.</p>
+      </div>
+      <div class="template-grid" id="template-grid"></div>
+      <div class="template-active" id="template-active"></div>
+    </section>
 
     <!-- ОБЪЯВЛЕНИЕ -->
     <section id="section-announcement" class="admin-section">
@@ -441,6 +454,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/templates.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>
