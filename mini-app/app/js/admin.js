@@ -132,22 +132,60 @@ const Admin = (() => {
 
   /* ─── SETTINGS ────────────────────────── */
   function loadSettingsForm() {
-    const e = state.event;
-    document.getElementById('s-title').value       = e.title             || '';
-    document.getElementById('s-dates').value       = e.dates             || '';
-    document.getElementById('s-location').value    = e.location          || '';
-    document.getElementById('s-org-name').value    = e.organizer?.name   || '';
-    document.getElementById('s-org-tg').value      = e.organizer?.telegram || '';
-    document.getElementById('s-wifi-net').value    = e.wifi?.network     || '';
-    document.getElementById('s-wifi-pass').value   = e.wifi?.password    || '';
-    document.getElementById('s-hotel-name').value  = e.hotel?.name       || '';
-    document.getElementById('s-hotel-phone').value = e.hotel?.phone      || '';
-    document.getElementById('s-emergency').value   = e.emergency         || '';
+    const e     = state.event;
+    const brand = e.brand || {};
+    const color = brand.color || '#C9353F';
+
+    document.getElementById('s-brand-color').value     = color;
+    document.getElementById('s-brand-color-hex').value = color;
+    document.getElementById('s-brand-logo').value      = brand.logo || '';
+    document.getElementById('s-title').value           = e.title             || '';
+    document.getElementById('s-dates').value           = e.dates             || '';
+    document.getElementById('s-location').value        = e.location          || '';
+    document.getElementById('s-org-name').value        = e.organizer?.name   || '';
+    document.getElementById('s-org-tg').value          = e.organizer?.telegram || '';
+    document.getElementById('s-wifi-net').value        = e.wifi?.network     || '';
+    document.getElementById('s-wifi-pass').value       = e.wifi?.password    || '';
+    document.getElementById('s-hotel-name').value      = e.hotel?.name       || '';
+    document.getElementById('s-hotel-phone').value     = e.hotel?.phone      || '';
+    document.getElementById('s-emergency').value       = e.emergency         || '';
+    updateBrandPreview();
+  }
+
+  function updateBrandPreview() {
+    const color   = document.getElementById('s-brand-color').value;
+    const logo    = document.getElementById('s-brand-logo').value.trim();
+    const title   = document.getElementById('s-title').value || 'Название события';
+    const bar     = document.getElementById('brand-preview-bar');
+    const titleEl = document.getElementById('brand-preview-title');
+    const logoEl  = document.getElementById('brand-preview-logo');
+    if (bar)     bar.style.background = color;
+    if (titleEl) titleEl.textContent  = title;
+    if (logoEl) {
+      if (logo) { logoEl.src = logo; logoEl.classList.remove('hidden'); }
+      else      { logoEl.classList.add('hidden'); }
+    }
+  }
+
+  // sync hex text ↔ color picker
+  function onBrandColorPicker(val) {
+    document.getElementById('s-brand-color-hex').value = val;
+    updateBrandPreview();
+  }
+  function onBrandColorHex(val) {
+    if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+      document.getElementById('s-brand-color').value = val;
+      updateBrandPreview();
+    }
   }
 
   function saveSettings() {
     state.event = {
       ...state.event,
+      brand: {
+        color: document.getElementById('s-brand-color').value,
+        logo:  document.getElementById('s-brand-logo').value.trim(),
+      },
       title:    document.getElementById('s-title').value,
       dates:    document.getElementById('s-dates').value,
       location: document.getElementById('s-location').value,
@@ -825,7 +863,7 @@ const Admin = (() => {
     selectHistorySection, openHistoryModal, saveHistory, deleteHistory,
     // announcement + settings
     saveAnnouncement, clearAnnouncement,
-    saveSettings,
+    saveSettings, updateBrandPreview, onBrandColorPicker, onBrandColorHex,
     // modal
     openModal, closeModal,
   };

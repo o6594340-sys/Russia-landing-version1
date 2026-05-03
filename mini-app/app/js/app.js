@@ -36,8 +36,51 @@ const App = (() => {
 
   let state = { tab: 'today', programDay: TODAY_INDEX };
 
+  /* ─── BRANDING ───────────────────────── */
+  function applyBranding() {
+    const ev    = getEvent();
+    const brand = ev.brand || {};
+    const color = brand.color || '#C9353F';
+
+    // accent colour cascade
+    document.documentElement.style.setProperty('--accent', color);
+    document.documentElement.style.setProperty('--accent-dark', shadeColor(color, -15));
+    document.documentElement.style.setProperty('--accent-light', hexToRgba(color, 0.08));
+
+    // header title + sub
+    const titleEl = document.getElementById('header-title');
+    const subEl   = document.getElementById('header-sub');
+    if (titleEl) titleEl.textContent = ev.title    || titleEl.textContent;
+    if (subEl)   subEl.textContent   = ev.dates    ? ev.dates + (ev.location ? ' · ' + ev.location : '') : subEl.textContent;
+
+    // logo
+    const logoEl = document.getElementById('header-logo');
+    if (logoEl) {
+      if (brand.logo) {
+        logoEl.src = brand.logo;
+        logoEl.classList.remove('hidden');
+      } else {
+        logoEl.classList.add('hidden');
+      }
+    }
+  }
+
+  function shadeColor(hex, pct) {
+    const num = parseInt(hex.replace('#', ''), 16);
+    const r = Math.min(255, Math.max(0, (num >> 16) + pct));
+    const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + pct));
+    const b = Math.min(255, Math.max(0, (num & 0xff) + pct));
+    return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+  }
+
+  function hexToRgba(hex, alpha) {
+    const num = parseInt(hex.replace('#', ''), 16);
+    return `rgba(${num >> 16},${(num >> 8) & 0xff},${num & 0xff},${alpha})`;
+  }
+
   /* ─── INIT ────────────────────────────── */
   function init() {
+    applyBranding();
     renderAnnouncement();
     renderToday();
   }

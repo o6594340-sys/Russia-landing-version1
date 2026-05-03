@@ -261,3 +261,40 @@ textarea { resize: vertical; }
   z-index: 9999;
 }
 .admin-toast.show { opacity: 1; transform: translateY(0); }
+
+/* ===== BRAND PREVIEW ===== */
+.settings-block-title {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-2);
+  margin: 20px 0 12px;
+}
+.color-picker-row {
+  display: flex; gap: 8px; align-items: center;
+}
+.color-picker-row input[type="color"] {
+  width: 44px; height: 40px; padding: 2px; border-radius: 8px;
+  border: 1.5px solid var(--border); cursor: pointer; flex-shrink: 0;
+}
+.color-picker-row input[type="text"] {
+  flex: 1;
+}
+.brand-preview {
+  border: 1.5px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.brand-preview-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  background: #C9353F;
+  transition: background 0.2s;
+}
+.brand-preview-header img {
+  height: 28px; width: auto; border-radius: 4px;
+  object-fit: contain; flex-shrink: 0;
+}
+.brand-preview-title {
+  font-size: 14px; font-weight: 700; color: white;
+}
+.brand-preview-sub {
+  font-size: 11px; color: rgba(255,255,255,0.7);
+}

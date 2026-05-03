@@ -627,6 +627,17 @@ body {
   line-height: 1.65;
 }
 
+/* ===== HEADER BRANDING ===== */
+.header-brand {
+  display: flex; align-items: center; gap: 10px;
+  min-width: 0;
+}
+.header-logo {
+  height: 34px; width: auto; max-width: 80px;
+  object-fit: contain; border-radius: 4px;
+  flex-shrink: 0;
+}
+
 /* ===== HOTEL TAB ===== */
 .hotel-photo {
   width: 100%; height: 220px;

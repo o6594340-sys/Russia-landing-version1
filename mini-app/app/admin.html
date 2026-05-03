@@ -77,8 +77,39 @@
     <section id="section-settings" class="admin-section hidden">
       <div class="section-header">
         <h2>⚙️ Настройки события</h2>
-        <p>Основная информация — название, Wi-Fi, контакты.</p>
+        <p>Основная информация — название, Wi-Fi, контакты, брендинг.</p>
       </div>
+
+      <div class="settings-block-title">🎨 Брендинг клиента</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Цвет бренда</label>
+          <div class="color-picker-row">
+            <input type="color" id="s-brand-color" value="#C9353F"
+              oninput="Admin.onBrandColorPicker(this.value)">
+            <input type="text"  id="s-brand-color-hex" placeholder="#C9353F" maxlength="7"
+              oninput="Admin.onBrandColorHex(this.value)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Логотип (URL картинки)</label>
+          <input type="text" id="s-brand-logo" placeholder="https://company.ru/logo.png"
+            oninput="Admin.updateBrandPreview()">
+        </div>
+        <div class="form-group full">
+          <div class="brand-preview" id="brand-preview">
+            <div class="brand-preview-header" id="brand-preview-bar">
+              <img id="brand-preview-logo" class="hidden" src="" alt="">
+              <div>
+                <div class="brand-preview-title" id="brand-preview-title">Форум Пекин 2024</div>
+                <div class="brand-preview-sub">18–21 ноября · Пекин</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-block-title">📋 Основное</div>
       <div class="form-grid">
         <div class="form-group"><label>Название события</label><input type="text" id="s-title"></div>
         <div class="form-group"><label>Даты</label><input type="text" id="s-dates"></div>

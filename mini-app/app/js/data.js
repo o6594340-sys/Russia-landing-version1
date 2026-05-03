@@ -7,6 +7,11 @@ const EVENT = {
   subtitle: 'Российско-китайское сотрудничество',
   dates:    '18–21 ноября 2024',
   location: 'Пекин, Китай',
+  brand: {
+    color:     '#C9353F',
+    logo:      '',
+    logoEmoji: '🏯',
+  },
   hotel: {
     name:     'China World Hotel Beijing ★★★★★',
     address:  '1 Jianguomenwai Ave, Chaoyang District',
