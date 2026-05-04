@@ -402,6 +402,42 @@ textarea { resize: vertical; }
   font-size: 13px; font-weight: 600;
 }
 
+/* ===== CARD STYLE SELECTOR ===== */
+.cardstyle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.cardstyle-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 14px 12px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  position: relative;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.cardstyle-card:hover { border-color: #9CA3AF; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.cardstyle-card.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,53,63,.12); }
+.cardstyle-preview {
+  height: 44px;
+  border-radius: 8px;
+  display: flex; align-items: center; padding: 0 10px;
+  font-size: 10px; font-weight: 600; color: var(--text-2);
+}
+.cardstyle-preview.p-elevated { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.1), 0 4px 12px rgba(0,0,0,.08); border: 1px solid rgba(255,255,255,0.6); }
+.cardstyle-preview.p-flat     { background: #fff; border: 1px solid rgba(0,0,0,0.09); }
+.cardstyle-preview.p-glass    { background: rgba(255,255,255,0.72); border: 1px solid rgba(255,255,255,0.55); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.cardstyle-preview.p-outlined { background: #fff; border: 1.5px solid var(--accent); }
+.cardstyle-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.cardstyle-mood { font-size: 11px; color: var(--text-2); }
+.cardstyle-check {
+  position: absolute; top: 8px; right: 10px;
+  font-size: 13px; font-weight: 700; color: var(--accent);
+}
+
 /* ===== GRADIENT RECIPE SELECTOR ===== */
 .grad-grid {
   display: grid;

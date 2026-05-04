@@ -134,11 +134,18 @@ const App = (() => {
     root.style.setProperty('--now-shadow', `0 4px 20px ${hexToRgba(accent, 0.35)}`);
   }
 
+  function applyCardStyle() {
+    const style = localStorage.getItem('admin_card_style') || 'elevated';
+    document.body.classList.remove('cs-flat', 'cs-glass', 'cs-outlined');
+    if (style !== 'elevated') document.body.classList.add('cs-' + style);
+  }
+
   /* ─── INIT ────────────────────────────── */
   function init() {
     applyTypography();
     applyBranding();
     applyGradient();
+    applyCardStyle();
     renderAnnouncement();
     renderToday();
   }

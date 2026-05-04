@@ -20,6 +20,14 @@ const Admin = (() => {
     history:      'admin_history',
     typography:   'admin_typography',
     gradient:     'admin_gradient',
+    cardStyle:    'admin_card_style',
+  };
+
+  const CARD_STYLES = {
+    elevated: { name: 'Elevated', mood: 'По умолчанию', previewClass: 'p-elevated' },
+    flat:     { name: 'Flat',     mood: 'Минимализм',   previewClass: 'p-flat'     },
+    glass:    { name: 'Glass',    mood: 'Стекло',       previewClass: 'p-glass'    },
+    outlined: { name: 'Outlined', mood: 'Акцент-рамка', previewClass: 'p-outlined' },
   };
 
   const GRADIENT_RECIPES = {
@@ -266,9 +274,33 @@ const Admin = (() => {
     document.getElementById('s-hotel-name').value      = e.hotel?.name       || '';
     document.getElementById('s-hotel-phone').value     = e.hotel?.phone      || '';
     document.getElementById('s-emergency').value       = e.emergency         || '';
+    renderCardStyleGrid();
     renderGradientGrid();
     renderTypoGrid();
     updateBrandPreview();
+  }
+
+  function renderCardStyleGrid() {
+    const grid = document.getElementById('cardstyle-grid');
+    if (!grid) return;
+    const current = localStorage.getItem(KEYS.cardStyle) || 'elevated';
+
+    grid.innerHTML = Object.entries(CARD_STYLES).map(([key, s]) => {
+      const active = key === current;
+      return `
+        <div class="cardstyle-card ${active ? 'active' : ''}" onclick="Admin.selectCardStyle('${key}')">
+          ${active ? '<div class="cardstyle-check">✓</div>' : ''}
+          <div class="cardstyle-preview ${s.previewClass}">Программа</div>
+          <div class="cardstyle-name">${s.name}</div>
+          <div class="cardstyle-mood">${s.mood}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function selectCardStyle(key) {
+    if (!CARD_STYLES[key]) return;
+    localStorage.setItem(KEYS.cardStyle, key);
+    renderCardStyleGrid();
   }
 
   function renderGradientGrid() {
@@ -1169,6 +1201,7 @@ const Admin = (() => {
     saveSettings, updateBrandPreview, onBrandColorPicker, onBrandColorHex,
     selectTypography,
     selectGradient,
+    selectCardStyle,
     // emoji
     selectEmoji,
     // image

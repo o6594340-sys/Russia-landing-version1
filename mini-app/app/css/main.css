@@ -771,3 +771,43 @@ body {
 h2 { font-family: var(--font-disp); font-size: 19px; font-weight: 700; }
 h3 { font-size: 15px; font-weight: 700; }
 p  { font-size: 13px; line-height: 1.65; color: var(--text-secondary); }
+
+/* ===== CARD STYLE VARIANTS (PRO) ===== */
+.cs-cards { --_cards: .card, .next-block, .business-card, .sight-card, .rest-card, .cuisine-card, .fact-card; }
+
+body.cs-flat .card,
+body.cs-flat .next-block,
+body.cs-flat .business-card,
+body.cs-flat .sight-card,
+body.cs-flat .rest-card,
+body.cs-flat .cuisine-card,
+body.cs-flat .fact-card {
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.09);
+}
+
+body.cs-glass .card,
+body.cs-glass .next-block,
+body.cs-glass .business-card,
+body.cs-glass .sight-card,
+body.cs-glass .rest-card,
+body.cs-glass .cuisine-card,
+body.cs-glass .fact-card {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+body.cs-outlined .card,
+body.cs-outlined .next-block,
+body.cs-outlined .business-card,
+body.cs-outlined .sight-card,
+body.cs-outlined .rest-card,
+body.cs-outlined .cuisine-card,
+body.cs-outlined .fact-card {
+  box-shadow: none;
+  border: 1.5px solid var(--accent-light);
+  background: #FFFFFF;
+}
