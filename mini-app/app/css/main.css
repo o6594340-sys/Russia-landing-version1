@@ -111,7 +111,7 @@ body {
   white-space: nowrap;
   background: var(--bg-secondary);
   color: var(--text-secondary);
-  transition: all 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+  transition: all var(--motion-ui-dur, 0.2s) var(--motion-ui-ease, cubic-bezier(0.34, 1.4, 0.64, 1));
   display: inline-flex;
   align-items: center;
 }
@@ -124,13 +124,21 @@ body {
 
 /* ===== MAIN CONTENT ===== */
 .main-content { min-height: calc(100dvh - var(--header-h) - var(--tabbar-h)); }
-.tab-panel { animation: fadeSlide 0.25s ease; }
+.tab-panel { animation: var(--motion-tab-anim, fadeSlide) var(--motion-tab-dur, 0.25s) var(--motion-tab-ease, ease); }
 .tab-panel.hidden { display: none; }
 .section-pad { padding: 16px; }
 
 @keyframes fadeSlide {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeSlideDeep {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadePlain {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ===== ANNOUNCEMENT BANNER ===== */
@@ -372,7 +380,7 @@ body {
   font-family: var(--font);
   background: var(--bg-secondary);
   color: var(--text-secondary);
-  transition: all 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+  transition: all var(--motion-ui-dur, 0.2s) var(--motion-ui-ease, cubic-bezier(0.34, 1.4, 0.64, 1));
   display: inline-flex;
   align-items: center;
 }

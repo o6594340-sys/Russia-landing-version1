@@ -134,6 +134,33 @@ const App = (() => {
     root.style.setProperty('--now-shadow', `0 4px 20px ${hexToRgba(accent, 0.35)}`);
   }
 
+  function applyMotion() {
+    const style = localStorage.getItem('admin_motion') || 'swift';
+    const root  = document.documentElement;
+    switch (style) {
+      case 'elegant':
+        root.style.setProperty('--motion-tab-dur',  '0.4s');
+        root.style.setProperty('--motion-tab-ease', 'cubic-bezier(0.16, 1, 0.3, 1)');
+        root.style.setProperty('--motion-tab-anim', 'fadeSlideDeep');
+        root.style.setProperty('--motion-ui-dur',   '0.3s');
+        root.style.setProperty('--motion-ui-ease',  'cubic-bezier(0.16, 1, 0.3, 1)');
+        break;
+      case 'minimal':
+        root.style.setProperty('--motion-tab-dur',  '0.15s');
+        root.style.setProperty('--motion-tab-ease', 'ease');
+        root.style.setProperty('--motion-tab-anim', 'fadePlain');
+        root.style.setProperty('--motion-ui-dur',   '0.1s');
+        root.style.setProperty('--motion-ui-ease',  'ease');
+        break;
+      default: // swift
+        root.style.removeProperty('--motion-tab-dur');
+        root.style.removeProperty('--motion-tab-ease');
+        root.style.removeProperty('--motion-tab-anim');
+        root.style.removeProperty('--motion-ui-dur');
+        root.style.removeProperty('--motion-ui-ease');
+    }
+  }
+
   function applyCardStyle() {
     const style = localStorage.getItem('admin_card_style') || 'elevated';
     document.body.classList.remove('cs-flat', 'cs-glass', 'cs-outlined');
@@ -145,6 +172,7 @@ const App = (() => {
     applyTypography();
     applyBranding();
     applyGradient();
+    applyMotion();
     applyCardStyle();
     renderAnnouncement();
     renderToday();

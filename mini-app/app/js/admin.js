@@ -21,6 +21,13 @@ const Admin = (() => {
     typography:   'admin_typography',
     gradient:     'admin_gradient',
     cardStyle:    'admin_card_style',
+    motion:       'admin_motion',
+  };
+
+  const MOTION_STYLES = {
+    swift:   { icon: '⚡', name: 'Swift',   desc: 'Быстрые функциональные переходы', spec: '0.25s ease' },
+    elegant: { icon: '🎬', name: 'Elegant', desc: 'Плавные замедленные переходы',    spec: '0.4s expo-out' },
+    minimal: { icon: '○',  name: 'Minimal', desc: 'Только появление, без движения',  spec: '0.15s fade' },
   };
 
   const CARD_STYLES = {
@@ -274,10 +281,35 @@ const Admin = (() => {
     document.getElementById('s-hotel-name').value      = e.hotel?.name       || '';
     document.getElementById('s-hotel-phone').value     = e.hotel?.phone      || '';
     document.getElementById('s-emergency').value       = e.emergency         || '';
+    renderMotionGrid();
     renderCardStyleGrid();
     renderGradientGrid();
     renderTypoGrid();
     updateBrandPreview();
+  }
+
+  function renderMotionGrid() {
+    const grid = document.getElementById('motion-grid');
+    if (!grid) return;
+    const current = localStorage.getItem(KEYS.motion) || 'swift';
+
+    grid.innerHTML = Object.entries(MOTION_STYLES).map(([key, m]) => {
+      const active = key === current;
+      return `
+        <div class="motion-card ${active ? 'active' : ''}" onclick="Admin.selectMotion('${key}')">
+          ${active ? '<div class="motion-card-check">✓</div>' : ''}
+          <div class="motion-card-icon">${m.icon}</div>
+          <div class="motion-card-name">${m.name}</div>
+          <div class="motion-card-desc">${m.desc}</div>
+          <div class="motion-card-spec">${m.spec}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function selectMotion(key) {
+    if (!MOTION_STYLES[key]) return;
+    localStorage.setItem(KEYS.motion, key);
+    renderMotionGrid();
   }
 
   function renderCardStyleGrid() {
@@ -1202,6 +1234,7 @@ const Admin = (() => {
     selectTypography,
     selectGradient,
     selectCardStyle,
+    selectMotion,
     // emoji
     selectEmoji,
     // image

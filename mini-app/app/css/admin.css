@@ -402,6 +402,34 @@ textarea { resize: vertical; }
   font-size: 13px; font-weight: 600;
 }
 
+/* ===== MOTION STYLE SELECTOR ===== */
+.motion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.motion-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  position: relative;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.motion-card:hover { border-color: #9CA3AF; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.motion-card.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,53,63,.12); }
+.motion-card-icon { font-size: 22px; line-height: 1; }
+.motion-card-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.motion-card-desc { font-size: 11px; color: var(--text-2); line-height: 1.4; }
+.motion-card-spec { font-size: 10px; color: #9CA3AF; font-family: monospace; margin-top: 2px; }
+.motion-card-check {
+  position: absolute; top: 8px; right: 10px;
+  font-size: 13px; font-weight: 700; color: var(--accent);
+}
+
 /* ===== CARD STYLE SELECTOR ===== */
 .cardstyle-grid {
   display: grid;
