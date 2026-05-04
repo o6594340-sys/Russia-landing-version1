@@ -22,6 +22,7 @@ const Admin = (() => {
     gradient:     'admin_gradient',
     cardStyle:    'admin_card_style',
     motion:       'admin_motion',
+    brandKits:    'admin_brand_kits',
   };
 
   const MOTION_STYLES = {
@@ -146,6 +147,7 @@ const Admin = (() => {
     if (name === 'restaurants') renderRestaurantsSection();
     if (name === 'cuisine')     renderCuisineSection();
     if (name === 'history')     renderHistorySection();
+    if (name === 'brandkits')   renderBrandKitsSection();
   }
 
   /* ─── TEMPLATES ──────────────────────── */
@@ -1140,6 +1142,98 @@ const Admin = (() => {
     }
   }
 
+  /* ─── BRAND KITS ─────────────────────── */
+  const LABEL_MAP = {
+    typography: { modern: 'Modern', executive: 'Executive', editorial: 'Editorial', friendly: 'Friendly', tech: 'Tech' },
+    gradient:   { glow: 'Glow', diagonal: 'Diagonal', vertical: 'Vertical', mesh: 'Mesh', flat: 'Flat' },
+    cardStyle:  { elevated: 'Elevated', flat: 'Flat', glass: 'Glass', outlined: 'Outlined' },
+    motion:     { swift: 'Swift', elegant: 'Elegant', minimal: 'Minimal' },
+  };
+
+  function renderBrandKitsSection() {
+    const list  = document.getElementById('brand-kits-list');
+    if (!list) return;
+    const kits  = getStored(KEYS.brandKits) || [];
+
+    if (!kits.length) {
+      list.innerHTML = '<div class="brandkit-empty">Нет сохранённых пресетов.<br>Настройте оформление и нажмите «Сохранить текущие настройки».</div>';
+      return;
+    }
+
+    list.innerHTML = kits.map(kit => {
+      const date = new Date(kit.savedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
+      return `
+        <div class="brandkit-card">
+          <div class="brandkit-card-header" style="background:${kit.color}">
+            <div class="brandkit-card-swatch" style="background:${kit.color}; filter:brightness(1.3)"></div>
+            <div class="brandkit-card-name">${kit.name}</div>
+            <button class="brandkit-card-delete" onclick="Admin.deleteBrandKit('${kit.id}')" title="Удалить">✕</button>
+          </div>
+          <div class="brandkit-card-body">
+            <div class="brandkit-card-row"><span>Шрифт</span><span>${LABEL_MAP.typography[kit.typography] || kit.typography}</span></div>
+            <div class="brandkit-card-row"><span>Градиент</span><span>${LABEL_MAP.gradient[kit.gradient] || kit.gradient}</span></div>
+            <div class="brandkit-card-row"><span>Карточки</span><span>${LABEL_MAP.cardStyle[kit.cardStyle] || kit.cardStyle}</span></div>
+            <div class="brandkit-card-row"><span>Анимации</span><span>${LABEL_MAP.motion[kit.motion] || kit.motion}</span></div>
+            <div class="brandkit-date">Сохранён ${date}</div>
+            <button class="brandkit-card-apply" onclick="Admin.applyBrandKit('${kit.id}')">Применить к событию</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function saveBrandKit() {
+    const nameInput = document.getElementById('kit-name-input');
+    const name = (nameInput?.value || '').trim();
+    if (!name) { nameInput?.focus(); showToast('Введите название пресета'); return; }
+
+    const kit = {
+      id:         Date.now().toString(),
+      name,
+      color:      state.event?.brand?.color || '#C9353F',
+      logo:       state.event?.brand?.logo  || '',
+      typography: localStorage.getItem(KEYS.typography) || 'modern',
+      gradient:   localStorage.getItem(KEYS.gradient)   || 'glow',
+      cardStyle:  localStorage.getItem(KEYS.cardStyle)  || 'elevated',
+      motion:     localStorage.getItem(KEYS.motion)     || 'swift',
+      savedAt:    new Date().toISOString(),
+    };
+
+    const kits = getStored(KEYS.brandKits) || [];
+    kits.unshift(kit);
+    save(KEYS.brandKits, kits);
+
+    if (nameInput) nameInput.value = '';
+    renderBrandKitsSection();
+    showToast('Brand Kit «' + name + '» сохранён');
+  }
+
+  function applyBrandKit(id) {
+    const kits = getStored(KEYS.brandKits) || [];
+    const kit  = kits.find(k => k.id === id);
+    if (!kit) return;
+
+    state.event = {
+      ...state.event,
+      brand: { color: kit.color, logo: kit.logo },
+    };
+    save(KEYS.event, state.event);
+    localStorage.setItem(KEYS.typography, kit.typography);
+    localStorage.setItem(KEYS.gradient,   kit.gradient);
+    localStorage.setItem(KEYS.cardStyle,  kit.cardStyle);
+    localStorage.setItem(KEYS.motion,     kit.motion);
+
+    loadSettingsForm();
+    showToast('Применён «' + kit.name + '»');
+  }
+
+  function deleteBrandKit(id) {
+    const kits    = getStored(KEYS.brandKits) || [];
+    const updated = kits.filter(k => k.id !== id);
+    save(KEYS.brandKits, updated);
+    renderBrandKitsSection();
+    showToast('Пресет удалён');
+  }
+
   /* ─── BACKUP / RESTORE ────────────────── */
   function exportData() {
     const backup = { _version: 1, _exported: new Date().toISOString() };
@@ -1235,6 +1329,8 @@ const Admin = (() => {
     selectGradient,
     selectCardStyle,
     selectMotion,
+    // brand kits
+    saveBrandKit, applyBrandKit, deleteBrandKit,
     // emoji
     selectEmoji,
     // image

@@ -38,6 +38,9 @@
       <div class="nav-group-label">Коммуникации</div>
       <button class="nav-btn active" onclick="Admin.showSection('announcement', this)">📢 Объявление</button>
 
+      <div class="nav-group-label">PRO</div>
+      <button class="nav-btn" onclick="Admin.showSection('brandkits', this)">🎨 Brand Kit</button>
+
       <div class="nav-group-label">Контент</div>
       <button class="nav-btn" onclick="Admin.showSection('settings', this)">⚙️ Настройки события</button>
       <button class="nav-btn" onclick="Admin.showSection('program', this)">📅 Программа</button>
@@ -55,6 +58,25 @@
   </aside>
 
   <main class="admin-main">
+
+    <!-- BRAND KITS -->
+    <section id="section-brandkits" class="admin-section hidden">
+      <div class="section-header">
+        <h2>🎨 Brand Kit</h2>
+        <p>Сохраните набор настроек оформления — цвет, шрифт, градиент, карточки, анимации. Применяйте к любому событию одним кликом.</p>
+      </div>
+
+      <div class="brandkit-save-row">
+        <input type="text" id="kit-name-input" class="brandkit-name-input"
+          placeholder="Название пресета, например «Золотой Дубай»"
+          onkeydown="if(event.key==='Enter')Admin.saveBrandKit()">
+        <button class="btn-primary" onclick="Admin.saveBrandKit()">Сохранить текущие настройки</button>
+      </div>
+
+      <div class="brandkit-hint">Текущие настройки — из раздела «Настройки события».</div>
+
+      <div id="brand-kits-list" class="brandkit-list"></div>
+    </section>
 
     <!-- БЭКАП -->
     <section id="section-backup" class="admin-section hidden">

@@ -402,6 +402,96 @@ textarea { resize: vertical; }
   font-size: 13px; font-weight: 600;
 }
 
+/* ===== BRAND KIT ===== */
+.brandkit-save-row {
+  display: flex; gap: 10px; align-items: center;
+  margin-bottom: 8px;
+}
+.brandkit-name-input {
+  flex: 1; height: 42px; padding: 0 14px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-size: 14px; font-family: var(--font); color: var(--text);
+  background: var(--surface);
+  transition: border-color .15s;
+}
+.brandkit-name-input:focus { outline: none; border-color: var(--accent); }
+.brandkit-hint {
+  font-size: 12px; color: var(--text-2);
+  margin-bottom: 20px;
+}
+.brandkit-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 4px;
+}
+.brandkit-empty {
+  grid-column: 1 / -1;
+  padding: 32px;
+  text-align: center;
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  color: var(--text-2);
+  font-size: 14px;
+}
+.brandkit-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: box-shadow .15s;
+}
+.brandkit-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.brandkit-card-header {
+  height: 52px;
+  display: flex; align-items: center;
+  padding: 0 16px; gap: 12px;
+}
+.brandkit-card-swatch {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.4);
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+.brandkit-card-name {
+  font-size: 14px; font-weight: 700; color: #fff;
+  flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.brandkit-card-delete {
+  background: rgba(255,255,255,0.2);
+  border: none; cursor: pointer;
+  color: #fff; font-size: 14px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.brandkit-card-delete:hover { background: rgba(255,255,255,0.35); }
+.brandkit-card-body {
+  padding: 12px 16px 14px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.brandkit-card-row {
+  font-size: 11px; color: var(--text-2);
+  display: flex; gap: 6px;
+}
+.brandkit-card-row span:first-child { color: var(--text-2); opacity: 0.6; min-width: 72px; }
+.brandkit-card-apply {
+  margin-top: 10px;
+  width: 100%; height: 36px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: opacity .15s;
+}
+.brandkit-card-apply:hover { opacity: 0.88; }
+.brandkit-date {
+  font-size: 10px; color: #9CA3AF; margin-top: 6px;
+}
+
 /* ===== MOTION STYLE SELECTOR ===== */
 .motion-grid {
   display: grid;
