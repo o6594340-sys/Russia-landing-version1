@@ -98,10 +98,47 @@ const App = (() => {
     document.documentElement.style.setProperty('--font-disp', `'${pair.disp}', var(--font)`);
   }
 
+  function applyGradient() {
+    const root   = document.documentElement;
+    const accent = root.style.getPropertyValue('--accent').trim() || '#C9353F';
+    const dark   = shadeColor(accent, -40);
+    const darker = shadeColor(accent, -60);
+    const light  = shadeColor(accent, +50);
+    const recipe = localStorage.getItem('admin_gradient') || 'glow';
+
+    let headerBg, nowBg;
+    switch (recipe) {
+      case 'diagonal':
+        headerBg = `linear-gradient(135deg, ${accent} 0%, ${dark} 100%)`;
+        nowBg    = `linear-gradient(135deg, ${accent} 0%, ${dark} 100%)`;
+        break;
+      case 'vertical':
+        headerBg = `linear-gradient(180deg, ${accent} 0%, ${darker} 100%)`;
+        nowBg    = `linear-gradient(180deg, ${accent} 0%, ${darker} 100%)`;
+        break;
+      case 'mesh':
+        headerBg = `radial-gradient(ellipse at 20% 50%, ${light} 0%, ${accent} 55%, ${dark} 100%)`;
+        nowBg    = `radial-gradient(ellipse at 30% 20%, ${light} 0%, ${accent} 50%, ${dark} 100%)`;
+        break;
+      case 'flat':
+        headerBg = accent;
+        nowBg    = accent;
+        break;
+      default: // glow
+        headerBg = accent;
+        nowBg    = `linear-gradient(135deg, ${accent} 0%, ${dark} 100%)`;
+    }
+
+    root.style.setProperty('--header-bg', headerBg);
+    root.style.setProperty('--now-bg',    nowBg);
+    root.style.setProperty('--now-shadow', `0 4px 20px ${hexToRgba(accent, 0.35)}`);
+  }
+
   /* ─── INIT ────────────────────────────── */
   function init() {
     applyTypography();
     applyBranding();
+    applyGradient();
     renderAnnouncement();
     renderToday();
   }

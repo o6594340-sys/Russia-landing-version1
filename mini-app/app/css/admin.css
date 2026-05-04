@@ -402,6 +402,42 @@ textarea { resize: vertical; }
   font-size: 13px; font-weight: 600;
 }
 
+/* ===== GRADIENT RECIPE SELECTOR ===== */
+.grad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.grad-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 0 0 12px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  position: relative;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.grad-card:hover { border-color: #9CA3AF; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.grad-card.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,53,63,.12); }
+.grad-card-preview {
+  height: 52px;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+}
+.grad-card-name {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  margin: 8px 12px 2px;
+}
+.grad-card-mood { font-size: 11px; color: var(--text-2); margin: 0 12px; }
+.grad-card-check {
+  position: absolute; top: 6px; right: 8px;
+  font-size: 12px; font-weight: 700;
+  color: white; text-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
+
 /* ===== TYPOGRAPHY SELECTOR ===== */
 .typo-grid {
   display: grid;

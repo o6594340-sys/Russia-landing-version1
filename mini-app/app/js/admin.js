@@ -19,7 +19,37 @@ const Admin = (() => {
     cuisine:      'admin_cuisine',
     history:      'admin_history',
     typography:   'admin_typography',
+    gradient:     'admin_gradient',
   };
+
+  const GRADIENT_RECIPES = {
+    glow:     { name: 'Glow',     mood: 'По умолчанию' },
+    diagonal: { name: 'Diagonal', mood: 'Диагональ ↗'  },
+    vertical: { name: 'Vertical', mood: 'Глубина ↓'    },
+    mesh:     { name: 'Mesh',     mood: 'Органичный'   },
+    flat:     { name: 'Flat',     mood: 'Минимализм'   },
+  };
+
+  function shadeHex(hex, pct) {
+    const n = parseInt(hex.replace('#',''), 16);
+    const r = Math.min(255, Math.max(0, (n >> 16) + pct));
+    const g = Math.min(255, Math.max(0, ((n >> 8) & 0xff) + pct));
+    const b = Math.min(255, Math.max(0, (n & 0xff) + pct));
+    return '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+  }
+
+  function gradientForRecipe(key, accent) {
+    const dark   = shadeHex(accent, -40);
+    const darker = shadeHex(accent, -60);
+    const light  = shadeHex(accent, +50);
+    switch (key) {
+      case 'diagonal': return { header: `linear-gradient(135deg, ${accent} 0%, ${dark} 100%)`,   now: `linear-gradient(135deg, ${accent} 0%, ${dark} 100%)` };
+      case 'vertical': return { header: `linear-gradient(180deg, ${accent} 0%, ${darker} 100%)`, now: `linear-gradient(180deg, ${accent} 0%, ${darker} 100%)` };
+      case 'mesh':     return { header: `radial-gradient(ellipse at 20% 50%, ${light} 0%, ${accent} 55%, ${dark} 100%)`, now: `radial-gradient(ellipse at 30% 20%, ${light} 0%, ${accent} 50%, ${dark} 100%)` };
+      case 'flat':     return { header: accent, now: accent };
+      default:         return { header: accent, now: `linear-gradient(135deg, ${accent} 0%, ${dark} 100%)` };
+    }
+  }
 
   const FONT_PAIRS = {
     modern:    { name: 'Modern',    mood: 'Нейтральный',  dispLabel: 'Poppins',           bodyLabel: 'Inter',    disp: 'Poppins',            body: 'Inter',    url: null },
@@ -236,8 +266,34 @@ const Admin = (() => {
     document.getElementById('s-hotel-name').value      = e.hotel?.name       || '';
     document.getElementById('s-hotel-phone').value     = e.hotel?.phone      || '';
     document.getElementById('s-emergency').value       = e.emergency         || '';
+    renderGradientGrid();
     renderTypoGrid();
     updateBrandPreview();
+  }
+
+  function renderGradientGrid() {
+    const grid = document.getElementById('gradient-grid');
+    if (!grid) return;
+    const current = localStorage.getItem(KEYS.gradient) || 'glow';
+    const accent  = state.event?.brand?.color || '#C9353F';
+
+    grid.innerHTML = Object.entries(GRADIENT_RECIPES).map(([key, r]) => {
+      const active = key === current;
+      const grad   = gradientForRecipe(key, accent);
+      return `
+        <div class="grad-card ${active ? 'active' : ''}" onclick="Admin.selectGradient('${key}')">
+          ${active ? '<div class="grad-card-check">✓</div>' : ''}
+          <div class="grad-card-preview" style="background:${grad.now}"></div>
+          <div class="grad-card-name">${r.name}</div>
+          <div class="grad-card-mood">${r.mood}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function selectGradient(key) {
+    if (!GRADIENT_RECIPES[key]) return;
+    localStorage.setItem(KEYS.gradient, key);
+    renderGradientGrid();
   }
 
   function renderTypoGrid() {
@@ -1112,6 +1168,7 @@ const Admin = (() => {
     saveAnnouncement, clearAnnouncement,
     saveSettings, updateBrandPreview, onBrandColorPicker, onBrandColorHex,
     selectTypography,
+    selectGradient,
     // emoji
     selectEmoji,
     // image
