@@ -18,6 +18,15 @@ const Admin = (() => {
     sights:       'admin_sights',
     cuisine:      'admin_cuisine',
     history:      'admin_history',
+    typography:   'admin_typography',
+  };
+
+  const FONT_PAIRS = {
+    modern:    { name: 'Modern',    mood: 'Нейтральный',  dispLabel: 'Poppins',           bodyLabel: 'Inter',    disp: 'Poppins',            body: 'Inter',    url: null },
+    executive: { name: 'Executive', mood: 'Люкс · банки', dispLabel: 'Playfair Display',  bodyLabel: 'Inter',    disp: 'Playfair Display',   body: 'Inter',    url: 'Playfair+Display:wght@600;700|Inter:wght@400;500;600;700' },
+    editorial: { name: 'Editorial', mood: 'Премиум',      dispLabel: 'Cormorant',         bodyLabel: 'Jost',     disp: 'Cormorant Garamond', body: 'Jost',     url: 'Cormorant+Garamond:wght@600;700|Jost:wght@400;500;600' },
+    friendly:  { name: 'Friendly',  mood: 'Тепло · MICE', dispLabel: 'Jakarta Sans',      bodyLabel: 'DM Sans',  disp: 'Plus Jakarta Sans',  body: 'DM Sans',  url: 'Plus+Jakarta+Sans:wght@600;700;800|DM+Sans:wght@400;500;600' },
+    tech:      { name: 'Tech',      mood: 'IT-компании',  dispLabel: 'Space Grotesk',     bodyLabel: 'DM Sans',  disp: 'Space Grotesk',      body: 'DM Sans',  url: 'Space+Grotesk:wght@600;700|DM+Sans:wght@400;500;600' },
   };
 
   let state = {
@@ -227,7 +236,44 @@ const Admin = (() => {
     document.getElementById('s-hotel-name').value      = e.hotel?.name       || '';
     document.getElementById('s-hotel-phone').value     = e.hotel?.phone      || '';
     document.getElementById('s-emergency').value       = e.emergency         || '';
+    renderTypoGrid();
     updateBrandPreview();
+  }
+
+  function renderTypoGrid() {
+    const grid = document.getElementById('typo-grid');
+    if (!grid) return;
+    const current = localStorage.getItem(KEYS.typography) || 'modern';
+
+    // preload all non-default fonts for preview
+    Object.values(FONT_PAIRS).forEach(p => {
+      if (p.url && !document.querySelector(`link[data-typo="${p.name}"]`)) {
+        const lk = document.createElement('link');
+        lk.rel = 'stylesheet';
+        lk.dataset.typo = p.name;
+        lk.href = `https://fonts.googleapis.com/css2?family=${p.url}&display=swap`;
+        document.head.appendChild(lk);
+      }
+    });
+
+    grid.innerHTML = Object.entries(FONT_PAIRS).map(([key, p]) => {
+      const active = key === current;
+      return `
+        <div class="typo-card ${active ? 'active' : ''}" onclick="Admin.selectTypography('${key}')">
+          ${active ? '<div class="typo-card-check">✓</div>' : ''}
+          <div class="typo-card-sample-disp" style="font-family:'${p.disp}',serif">Aa</div>
+          <div class="typo-card-sample-body" style="font-family:'${p.body}',sans-serif">Программа · 15:00</div>
+          <div class="typo-card-name">${p.name}</div>
+          <div class="typo-card-meta">${p.dispLabel} · ${p.bodyLabel}</div>
+          <div class="typo-card-meta">${p.mood}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function selectTypography(key) {
+    if (!FONT_PAIRS[key]) return;
+    localStorage.setItem(KEYS.typography, key);
+    renderTypoGrid();
   }
 
   function updateBrandPreview() {
@@ -1065,6 +1111,7 @@ const Admin = (() => {
     // announcement + settings
     saveAnnouncement, clearAnnouncement,
     saveSettings, updateBrandPreview, onBrandColorPicker, onBrandColorHex,
+    selectTypography,
     // emoji
     selectEmoji,
     // image

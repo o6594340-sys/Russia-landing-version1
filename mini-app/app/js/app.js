@@ -78,8 +78,29 @@ const App = (() => {
     return `rgba(${num >> 16},${(num >> 8) & 0xff},${num & 0xff},${alpha})`;
   }
 
+  const FONT_PAIRS = {
+    modern:    { disp: 'Poppins',            body: 'Inter',    url: null },
+    executive: { disp: 'Playfair Display',   body: 'Inter',    url: 'Playfair+Display:wght@600;700|Inter:wght@400;500;600;700' },
+    editorial: { disp: 'Cormorant Garamond', body: 'Jost',     url: 'Cormorant+Garamond:wght@600;700|Jost:wght@400;500;600' },
+    friendly:  { disp: 'Plus Jakarta Sans',  body: 'DM Sans',  url: 'Plus+Jakarta+Sans:wght@600;700;800|DM+Sans:wght@400;500;600' },
+    tech:      { disp: 'Space Grotesk',      body: 'DM Sans',  url: 'Space+Grotesk:wght@600;700|DM+Sans:wght@400;500;600' },
+  };
+
+  function applyTypography() {
+    const key  = localStorage.getItem('admin_typography') || 'modern';
+    const pair = FONT_PAIRS[key];
+    if (!pair || !pair.url) return;
+    const lk = document.createElement('link');
+    lk.rel  = 'stylesheet';
+    lk.href = `https://fonts.googleapis.com/css2?family=${pair.url}&display=swap`;
+    document.head.appendChild(lk);
+    document.documentElement.style.setProperty('--font',      `'${pair.body}', -apple-system, BlinkMacSystemFont, sans-serif`);
+    document.documentElement.style.setProperty('--font-disp', `'${pair.disp}', var(--font)`);
+  }
+
   /* ─── INIT ────────────────────────────── */
   function init() {
+    applyTypography();
     applyBranding();
     renderAnnouncement();
     renderToday();
