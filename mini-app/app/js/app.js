@@ -160,6 +160,18 @@ const App = (() => {
       `;
     }
 
+    // WiFi quick access — сразу после NEXT, до таймлайна
+    const ev = getEvent();
+    html += `
+      <div class="wifi-row" onclick="App.copyWifi()">
+        <span>📶</span>
+        <span class="wifi-net">${ev.wifi.network}</span>
+        <span class="wifi-sep">·</span>
+        <span class="wifi-pass">${ev.wifi.password}</span>
+        <span class="wifi-copy" id="wifi-copied">Скопировано ✓</span>
+      </div>
+    `;
+
     // Full day mini-timeline
     html += `<div class="section-title" style="margin-top:24px">Программа дня</div>`;
     html += `<div class="card"><div class="card-body">`;
@@ -178,8 +190,14 @@ const App = (() => {
     });
     html += `</div></div>`;
 
-    // Practical tip
-    const tip = PRACTICAL[Math.floor(Math.random() * PRACTICAL.length)];
+    // Practical tip — sessionStorage чтобы не менялся при каждом возврате
+    const tipKey = 'today_tip_idx';
+    let tipIdx = parseInt(sessionStorage.getItem(tipKey));
+    if (isNaN(tipIdx) || tipIdx >= PRACTICAL.length) {
+      tipIdx = Math.floor(Math.random() * PRACTICAL.length);
+      sessionStorage.setItem(tipKey, tipIdx);
+    }
+    const tip = PRACTICAL[tipIdx];
     html += `
       <div class="tip-card">
         <div class="tip-icon">${tip.icon}</div>
@@ -187,18 +205,6 @@ const App = (() => {
           <div class="tip-title">Совет: ${tip.title}</div>
           <div class="tip-text">${tip.text}</div>
         </div>
-      </div>
-    `;
-
-    // WiFi quick access
-    const ev = getEvent();
-    html += `
-      <div class="wifi-row" onclick="App.copyWifi()">
-        <span>📶</span>
-        <span class="wifi-net">${ev.wifi.network}</span>
-        <span class="wifi-sep">·</span>
-        <span class="wifi-pass">${ev.wifi.password}</span>
-        <span class="wifi-copy" id="wifi-copied">Скопировано ✓</span>
       </div>
     `;
 
