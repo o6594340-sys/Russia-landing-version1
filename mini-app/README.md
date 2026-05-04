@@ -46,7 +46,20 @@ app/
 
 Открывается по `/admin.html`, защищена паролем.
 
-Разделы:
+### PRO — оформление
+
+| Раздел | Что делает |
+|---|---|
+| 🎨 **Brand Kit** | Сохранить набор настроек как пресет, применить к событию одним кликом |
+| ✨ **Анимации** | Swift (быстро) / Elegant (плавно, ease-out) / Minimal (только fade) |
+| 🃏 **Стиль карточек** | Elevated (тень) / Flat (без тени) / Glass (blur) / Outlined (рамка акцента) |
+| 🎨 **Градиент** | 5 рецептов: Glow / Diagonal / Vertical / Mesh / Flat — для шапки и NOW-блока |
+| 🔤 **Типографика** | 5 шрифтовых пар: Modern / Executive / Editorial / Friendly / Tech |
+| 🖌 **Цвет бренда** | Hex-пикер + авто-генерация hover/muted/shadow из одного цвета |
+| 🖼 **Логотип** | Загрузка файла или URL, отображается в шапке приложения |
+
+### Контент
+
 - **Объявление** — баннер вверху сайта участника (info / warning / success)
 - **Настройки события** — название, даты, Wi-Fi, контакты организатора, отель
 - **Программа** — CRUD активностей по дням
@@ -56,6 +69,11 @@ app/
 - **Рестораны** — CRUD ресторанов
 - **Кухня** — CRUD блюд с флагом «Маст»
 - **История** — CRUD фактов по разделам с флагом «🤯»
+
+### Данные
+
+- **Шаблон страны** — загрузить контент по направлению (Пекин / Токио / Дубай / Бангкок)
+- **Бэкап** — экспорт всех данных в JSON, импорт из файла
 
 ---
 
@@ -68,9 +86,14 @@ app/
 
 Ключи:
 ```
+# Контент
 admin_announcement   admin_event   admin_days    admin_business
 admin_hotel          admin_sights  admin_restaurants
 admin_cuisine        admin_history
+
+# PRO-оформление
+admin_typography     admin_gradient   admin_card_style
+admin_motion         admin_brand_kits
 ```
 
 > Оба файла (`index.html` и `admin.html`) должны лежать на **одном домене** — иначе localStorage не шарится.
@@ -97,7 +120,17 @@ admin_cuisine        admin_history
 - Шрифты: Inter (интерфейс) + Poppins (заголовки) — Google Fonts
 - PWA: `theme-color`, `manifest.json`, Service Worker с офлайн-кэшем
 
-### Последние UX-улучшения (май 2026)
+### PRO-кастомизация (май 2026)
+
+Система **constrained customization** — организатор выбирает параметры, система гарантирует профессиональный результат.
+
+- **Brand Kit** — сохранить весь набор настроек оформления как именованный пресет, применять к будущим событиям в один клик
+- **Градиентные рецепты** — 5 рецептов (Glow / Diagonal / Vertical / Mesh / Flat) применяются к шапке и NOW-блоку; цвета деривируются из единого brand color
+- **Стиль карточек** — 4 варианта через body-классы (`cs-flat`, `cs-glass`, `cs-outlined`); Glass использует `backdrop-filter: blur(14px)`
+- **Типографика** — 5 кураторских шрифтовых пар (Modern/Executive/Editorial/Friendly/Tech); шрифты подгружаются из Google Fonts динамически
+- **Анимации** — Swift (0.25s ease) / Elegant (0.4s expo-out + глубокий слайд) / Minimal (0.15s fade); управляются CSS-переменными `--motion-*`
+
+### UX-улучшения (май 2026)
 
 - **Таб-бар:** правый край плавно уходит в белый (`mask-image`) — видно что вкладок больше
 - **Touch targets:** минимум 44px на всех кнопках-вкладках (соответствует Apple HIG и Material)
