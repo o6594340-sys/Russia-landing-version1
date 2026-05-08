@@ -148,6 +148,7 @@ const Admin = (() => {
     if (name === 'cuisine')     renderCuisineSection();
     if (name === 'history')     renderHistorySection();
     if (name === 'brandkits')   renderBrandKitsSection();
+    if (name === 'ai-import')   loadAiSection();
   }
 
   /* ─── TEMPLATES ──────────────────────── */
@@ -1234,6 +1235,238 @@ const Admin = (() => {
     showToast('Пресет удалён');
   }
 
+  /* ─── IMPORT ──────────────────────── */
+  let aiResult = null;
+
+  const IMPORT_TEMPLATE = `День 1 | 18 ноября, понедельник
+09:00 | Завтрак в ресторане отеля
+10:30 | Трансфер до конференц-центра
+11:00 | Деловая: Открытие форума
+13:00 | Обед
+19:00 | Приветственный ужин
+
+День 2 | 19 ноября, вторник
+09:00 | Завтрак
+10:00 | Деловая: Круглый стол
+13:30 | Обед
+15:00 | Экскурсия по городу`;
+
+  function copyTemplate() {
+    navigator.clipboard.writeText(IMPORT_TEMPLATE).then(() => {
+      showToast('Шаблон скопирован!');
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = IMPORT_TEMPLATE;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Шаблон скопирован!');
+    });
+  }
+
+  function parseImportText(text) {
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    const days = [];
+    let currentDay = null;
+    let dayIndex = 0;
+    const business = [];
+    const DAY_COLORS = ['#C9353F', '#1D4ED8', '#047857', '#7C3AED', '#EA580C', '#6B7280'];
+
+    for (const line of lines) {
+      const dayMatch = line.match(/^(?:день|day)\s*(\d+)\s*[|—\-–:.]?\s*(.+)/i);
+      if (dayMatch) {
+        dayIndex++;
+        currentDay = {
+          id: dayIndex,
+          label: `День ${dayIndex}`,
+          date: dayMatch[2].trim(),
+          theme: '',
+          color: DAY_COLORS[(dayIndex - 1) % DAY_COLORS.length],
+          activities: [],
+        };
+        days.push(currentDay);
+        continue;
+      }
+
+      const timeMatch = line.match(/^(\d{1,2}[:.]\d{2})\s*[|—\-–]?\s*(.+)/);
+      if (timeMatch && currentDay) {
+        const time = timeMatch[1].replace('.', ':');
+        const desc = timeMatch[2].trim();
+        const bizMatch = desc.match(/^(?:деловая[яе]?|сессия)[:\-–\s]+(.+)/i);
+        if (bizMatch) {
+          const title = bizMatch[1].trim();
+          business.push({ id: `b${business.length + 1}`, time, day: currentDay.label, duration: '', track: null, title, speakers: [], room: '', desc: '' });
+          currentDay.activities.push({ time, title, location: '', type: 'business', note: null });
+        } else {
+          const low = desc.toLowerCase();
+          let type = 'key';
+          if (/завтрак|обед|ужин|банкет/.test(low))         type = 'meal';
+          else if (/гала|gala/.test(low))                    type = 'gala';
+          else if (/трансфер|автобус|вылет|прилёт|аэропорт/.test(low)) type = 'transfer';
+          else if (/экскурс/.test(low))                      type = 'excursion';
+          else if (/отель|check.in|заселен|заезд|выселен/.test(low))   type = 'hotel';
+          currentDay.activities.push({ time, title: desc, location: '', type, note: null });
+        }
+      }
+    }
+    return { days, business };
+  }
+
+  function parseProgram() {
+    const text   = document.getElementById('ai-program-text').value.trim();
+    const status = document.getElementById('ai-status');
+    if (!text) { showToast('Вставьте текст программы'); return; }
+
+    const parsed = parseImportText(text);
+    if (!parsed.days.length) {
+      status.textContent = '❌ Дни не найдены. Используйте формат: «День 1 | 18 ноября»';
+      return;
+    }
+
+    aiResult = { days: parsed.days, business: parsed.business };
+    status.textContent = '';
+    showAIPreview(aiResult);
+  }
+
+  function handleFileDrop(e) {
+    e.preventDefault();
+    document.getElementById('file-upload-zone').classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+  }
+
+  function handleFileUpload(input) {
+    const file = input.files[0];
+    if (file) processFile(file);
+    input.value = '';
+  }
+
+  function processFile(file) {
+    const status = document.getElementById('ai-status');
+    const ext = file.name.split('.').pop().toLowerCase();
+    status.textContent = '⏳ Читаю файл…';
+    document.getElementById('ai-result').classList.add('hidden');
+
+    if (ext === 'txt') {
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('ai-program-text').value = e.target.result;
+        status.textContent = '';
+        parseProgram();
+      };
+      reader.readAsText(file, 'UTF-8');
+
+    } else if (ext === 'docx') {
+      if (typeof mammoth === 'undefined') { status.textContent = '❌ Библиотека не загружена, проверьте интернет'; return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        mammoth.extractRawText({ arrayBuffer: e.target.result })
+          .then(result => {
+            document.getElementById('ai-program-text').value = result.value;
+            status.textContent = '';
+            parseProgram();
+          })
+          .catch(err => { status.textContent = '❌ Ошибка Word: ' + err.message; });
+      };
+      reader.readAsArrayBuffer(file);
+
+    } else if (ext === 'pdf') {
+      if (typeof pdfjsLib === 'undefined') { status.textContent = '❌ Библиотека не загружена, проверьте интернет'; return; }
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const reader = new FileReader();
+      reader.onload = async e => {
+        try {
+          const pdf = await pdfjsLib.getDocument({ data: e.target.result }).promise;
+          let text = '';
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            text += content.items.map(item => item.str).join(' ') + '\n';
+          }
+          document.getElementById('ai-program-text').value = text;
+          status.textContent = '';
+          parseProgram();
+        } catch (err) {
+          status.textContent = '❌ Ошибка PDF: ' + err.message;
+        }
+      };
+      reader.readAsArrayBuffer(file);
+
+    } else {
+      status.textContent = '❌ Формат не поддерживается. Используйте .docx, .pdf или .txt';
+    }
+  }
+
+  function showAIPreview(result) {
+    const daysCount  = (result.days || []).length;
+    const actsCount  = (result.days || []).reduce((n, d) => n + (d.activities || []).length, 0);
+    const bizCount   = (result.business || []).length;
+
+    document.getElementById('ai-result-summary').textContent =
+      `Найдено: ${daysCount} дн., ${actsCount} активностей, ${bizCount} деловых сессий`;
+
+    let html = '';
+    if (result.event?.title) {
+      html += `<div class="ai-preview-block"><strong>📋 ${result.event.title}</strong> · ${result.event.dates || ''} · ${result.event.location || ''}</div>`;
+    }
+    (result.days || []).forEach(day => {
+      html += `<div class="ai-preview-block">
+        <strong style="color:${day.color}">${day.label} — ${day.date}</strong>
+        ${(day.activities || []).map(a => `<div class="ai-preview-item">⏰ ${a.time} &nbsp; ${a.title} · 📍 ${a.location || '—'}</div>`).join('')}
+      </div>`;
+    });
+    if (bizCount) {
+      html += `<div class="ai-preview-block"><strong>💼 Деловые сессии</strong>`;
+      (result.business || []).forEach(s => {
+        html += `<div class="ai-preview-item">${s.day} · ${s.time} · ${s.title}</div>`;
+      });
+      html += `</div>`;
+    }
+    if (result.hotel?.name) {
+      html += `<div class="ai-preview-block"><strong>🏨 Отель:</strong> ${result.hotel.name}</div>`;
+    }
+
+    document.getElementById('ai-result-preview').innerHTML = html;
+    document.getElementById('ai-result').classList.remove('hidden');
+  }
+
+  function applyAIResult() {
+    if (!aiResult) return;
+
+    if (aiResult.event && Object.keys(aiResult.event).length) {
+      const cur = getStored(KEYS.event) || JSON.parse(JSON.stringify(EVENT));
+      const merged = { ...cur, ...aiResult.event };
+      save(KEYS.event, merged);
+      state.event = merged;
+    }
+    if ((aiResult.days || []).length) {
+      save(KEYS.days, aiResult.days);
+      state.days = aiResult.days;
+    }
+    if ((aiResult.business || []).length) {
+      save(KEYS.business, aiResult.business);
+      state.business = aiResult.business;
+    }
+    if (aiResult.hotel?.name) {
+      const cur = getStored(KEYS.hotel) || JSON.parse(JSON.stringify(HOTEL));
+      const merged = { ...cur, ...aiResult.hotel };
+      save(KEYS.hotel, merged);
+      state.hotel = merged;
+    }
+
+    aiResult = null;
+    document.getElementById('ai-result').classList.add('hidden');
+    document.getElementById('ai-program-text').value = '';
+    loadSettingsForm();
+    showToast('✅ Программа загружена в приложение!');
+  }
+
+  function discardAIResult() {
+    aiResult = null;
+    document.getElementById('ai-result').classList.add('hidden');
+  }
+
   /* ─── BACKUP / RESTORE ────────────────── */
   function exportData() {
     const backup = { _version: 1, _exported: new Date().toISOString() };
@@ -1329,6 +1562,8 @@ const Admin = (() => {
     selectGradient,
     selectCardStyle,
     selectMotion,
+    // import
+    copyTemplate, parseProgram, handleFileUpload, handleFileDrop, applyAIResult, discardAIResult,
     // brand kits
     saveBrandKit, applyBrandKit, deleteBrandKit,
     // emoji

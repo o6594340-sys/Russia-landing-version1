@@ -29,6 +29,9 @@
   <aside class="sidebar">
     <div class="sidebar-logo">🏯 Организатор</div>
     <nav class="sidebar-nav">
+      <div class="nav-group-label">AI</div>
+      <button class="nav-btn" onclick="Admin.showSection('ai-import', this)">📥 Импорт программы</button>
+
       <div class="nav-group-label">Направление</div>
       <button class="nav-btn" onclick="Admin.showSection('templates', this)">🌍 Шаблон страны</button>
 
@@ -58,6 +61,72 @@
   </aside>
 
   <main class="admin-main">
+
+    <!-- AI IMPORT -->
+    <section id="section-ai-import" class="admin-section hidden">
+      <div class="section-header">
+        <h2>📥 Импорт программы</h2>
+        <p>Наберите или вставьте текст программы по шаблону — приложение разберёт автоматически, без внешних сервисов.</p>
+      </div>
+
+      <div class="import-template-box">
+        <div class="import-template-header">
+          <strong>Шаблон формата</strong>
+          <button class="btn-small" onclick="Admin.copyTemplate()">📋 Скопировать шаблон</button>
+        </div>
+        <pre class="import-template-pre">День 1 | 18 ноября, понедельник
+09:00 | Завтрак в ресторане отеля
+10:30 | Трансфер до конференц-центра
+11:00 | Деловая: Открытие форума
+13:00 | Обед
+19:00 | Приветственный ужин
+
+День 2 | 19 ноября, вторник
+09:00 | Завтрак
+10:00 | Деловая: Круглый стол
+13:30 | Обед
+15:00 | Экскурсия по городу</pre>
+      </div>
+
+      <label class="file-upload-zone" id="file-upload-zone"
+             ondragover="event.preventDefault();this.classList.add('drag-over')"
+             ondragleave="this.classList.remove('drag-over')"
+             ondrop="Admin.handleFileDrop(event)">
+        <input type="file" accept=".docx,.pdf,.txt" class="hidden"
+               onchange="Admin.handleFileUpload(this)">
+        <div class="file-upload-icon">📄</div>
+        <div class="file-upload-text">Загрузить файл Word, PDF или TXT</div>
+        <div class="file-upload-hint">Перетащите сюда или нажмите для выбора · .docx · .pdf · .txt</div>
+      </label>
+
+      <div class="import-hint-box">
+        <span>💡</span>
+        <span>Деловые сессии начинаются с <strong>Деловая:</strong> — или просто вставьте любой текст, приложение разберёт автоматически.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Текст программы (или отредактируйте после загрузки файла)</label>
+        <textarea id="ai-program-text" rows="10"
+          placeholder="Текст появится здесь после загрузки файла, или вставьте вручную..."></textarea>
+      </div>
+
+      <div class="ai-parse-row">
+        <button class="btn-primary" onclick="Admin.parseProgram()" id="ai-parse-btn">🔍 Разобрать программу</button>
+        <span id="ai-status" class="ai-status"></span>
+      </div>
+
+      <div id="ai-result" class="hidden">
+        <div class="ai-result-header">
+          <h3>✅ Программа разобрана</h3>
+          <p id="ai-result-summary"></p>
+        </div>
+        <div id="ai-result-preview"></div>
+        <div class="ai-apply-row">
+          <button class="btn-primary" onclick="Admin.applyAIResult()">Загрузить в приложение</button>
+          <button class="btn-secondary" onclick="Admin.discardAIResult()">Отмена</button>
+        </div>
+      </div>
+    </section>
 
     <!-- BRAND KITS -->
     <section id="section-brandkits" class="admin-section hidden">
@@ -544,6 +613,8 @@
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="js/data.js"></script>
 <script src="js/templates.js"></script>
 <script src="js/admin.js"></script>

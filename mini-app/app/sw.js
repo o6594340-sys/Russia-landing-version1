@@ -1,4 +1,4 @@
-const CACHE = 'mice-v3';
+const CACHE = 'mice-v8';
 const OFFLINE = [
   '/',
   '/index.html',
@@ -25,6 +25,7 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  if (!e.request.url.startsWith(self.location.origin)) return;
   e.respondWith(
     caches.match(e.request).then(cached => {
       const network = fetch(e.request).then(res => {
