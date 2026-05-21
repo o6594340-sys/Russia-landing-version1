@@ -264,3 +264,37 @@
 - **Amplify**: "Every buyer at this table is personally known to us." → в hero, крупно
 - **RU версия** — не перевод, а локализация: байеры в России отвечают на insider-тон, не на process-язык
 - **Добавить**: breakdown аудитории ("42% corporate buyers, 38% MICE agencies...") вместо просто "1,500+"
+
+---
+
+## Концепция названия MICE Signature — идея для копирайта
+
+*Записано май 2026 — текст сырой, нужна доработка*
+
+**Ключевая идея:** "Signature" = подпись. Не просто красивое слово — это концепция личной ответственности Match Point за каждого участника. Три смысла работают одновременно:
+- **Подпись** — личная ответственность за каждого байера в зале
+- **Фирменный почерк** — метод Match Point, отработанный за 20 лет
+- **Эксклюзивная серия** — как signature collection в моде, не mass market
+
+Это усиливает главный аргумент сайта ("personally qualified buyers") и объясняет название через смысл, а не через описание формата.
+
+### Варианты текста (черновики)
+
+**Hero sub — 1 строка:**
+EN: A signature is a personal commitment. Every name in this room is ours.
+RU: Подпись — это личная ответственность. Каждое имя в этом зале — наш выбор.
+
+**Compact tagline:**
+EN: We put our name on every meeting in this room.
+RU: Мы ставим своё имя под каждой встречей в этом зале.
+
+**About блок (средний, черновик):**
+> EN: A signature is not a logo. It is a promise with your name on it.
+> Every buyer at MICE Signature has been personally selected by Match Point. Not filtered by a form. Not qualified by a questionnaire. Known to us — by reputation, by history, by a phone call.
+> When we say "no random visitors," we mean it the way you mean it when you sign something. We are accountable for this room.
+>
+> RU: Подпись — это не логотип. Это обещание с именем под ним.
+> Каждый байер на MICE Signature отобран Match Point лично. Не через форму. Не через анкету. Мы знаем их — по репутации, по истории работы, по звонку.
+> Когда мы говорим «никаких случайных гостей» — мы имеем это в виду так же, как вы имеете в виду это, когда ставите подпись. Мы несём ответственность за этот зал.
+
+**Статус:** идея одобрена, текст требует доработки перед внедрением.
