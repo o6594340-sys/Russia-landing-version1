@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MICE Signature — Inaugural Edition | Moscow 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+
+    /* ══════════════════════════════════════
+       TOKENS
+    ══════════════════════════════════════ */
+    :root {
+      --ink:       #14140F;
+      --green:     #1C1814;
+      --green-mid: #231F1B;
+      --cream:     #F9F6F0;
+      --chalk:     #FAFAF8;
+      --gold:      #C8A44A;
+      --gold-dim:  #8B6E2F;
+      --warm:      #7A736B;
+      --line:      #E2DAD0;
+    }
+
+    /* ══════════════════════════════════════
+       RESET & BASE
+    ══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--chalk);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════
+       GRAIN FILTER
+    ══════════════════════════════════════ */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: overlay;
+    }
+
+    /* ══════════════════════════════════════
+       SCROLL REVEAL
+    ══════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: .1s; }
+    .reveal-d2 { transition-delay: .2s; }
+    .reveal-d3 { transition-delay: .3s; }
+    .reveal-d4 { transition-delay: .4s; }
+    .reveal-d5 { transition-delay: .5s; }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 300;
+      padding: 22px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background .35s, padding .35s;
+    }
+    nav.scrolled {
+      background: rgba(20,20,15,.97);
+      backdrop-filter: blur(12px);
+      padding: 13px 60px;
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--chalk);
+      text-decoration: none;
+    }
+    .nav-logo em { color: var(--gold); font-style: normal; }
+    .nav-right { display: flex; align-items: center; gap: 28px; }
+    .lang-sw { display: flex; align-items: center; gap: 2px; }
+    .lang-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: .68rem; font-weight: 500;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(250,250,248,.38);
+      padding: 5px 9px;
+      transition: color .2s;
+    }
+    .lang-btn.active { color: var(--gold); }
+    .lang-sep { width: 1px; height: 11px; background: rgba(250,250,248,.2); }
+    .nav-cta {
+      font-family: 'Jost', sans-serif;
+      font-size: .68rem; font-weight: 500;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(200,164,74,.5);
+      padding: 9px 22px;
+      text-decoration: none;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    .hero {
+      background: #14140F;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: stretch;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 30% 60%, rgba(28,24,20,.95) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 70% at 80% 20%, rgba(200,164,74,.06) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* animated gradient orb */
+    .hero-orb {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,164,74,.08) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      animation: orbFloat 8s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-30px, 40px) scale(1.05); }
+    }
+    /* grain */
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: screen;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 130px 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      max-width: 860px;
+    }
+    /* vertical sidebar text */
+    .hero-side {
+      position: relative;
+      z-index: 2;
+      width: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: 1px solid rgba(200,164,74,.12);
+      padding: 130px 0 80px;
+    }
+    .hero-side-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .58rem;
+      font-weight: 600;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(200,164,74,.4);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    }
+
+    /* hero animations */
+    .h-tag, .hero-h1, .hero-sub, .hero-meta, .hero-btns {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero.loaded .h-tag { animation: fadeUp .6s ease forwards .1s; }
+    .hero.loaded .hero-h1 { animation: fadeUp .7s ease forwards .25s; }
+    .hero.loaded .hero-sub { animation: fadeUp .6s ease forwards .45s; }
+    .hero.loaded .hero-meta { animation: fadeUp .6s ease forwards .6s; }
+    .hero.loaded .hero-btns { animation: fadeUp .6s ease forwards .75s; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: none; }
+    }
+
+    .h-tag {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 32px;
+    }
+    .h-tag-line {
+      width: 0; height: 1px; background: var(--gold);
+      animation: lineGrow .8s ease forwards .9s;
+    }
+    @keyframes lineGrow { to { width: 40px; } }
+    .h-tag-text {
+      font-family: 'Jost', sans-serif;
+      font-size: .62rem; font-weight: 500;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .hero-h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 5.5vw, 5.6rem);
+      font-weight: 700;
+      line-height: 1.0;
+      color: var(--chalk);
+      letter-spacing: -.01em;
+      margin-bottom: 22px;
+    }
+    .hero-h1 em {
+      font-style: italic;
+      color: var(--gold);
+      font-weight: 700;
+      font-family: 'Jost', sans-serif;
+    }
+    .hero-sub {
+      font-size: .75rem; font-weight: 400;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(250,250,248,.42);
+      margin-bottom: 52px;
+    }
+    .hero-meta {
+      display: flex; align-items: stretch;
+      gap: 0; margin-bottom: 48px;
+      border: 1px solid rgba(200,164,74,.14);
+      width: fit-content;
+    }
+    .meta-item {
+      padding: 16px 32px;
+      display: flex; flex-direction: column; gap: 5px;
+      border-right: 1px solid rgba(200,164,74,.14);
+    }
+    .meta-item:last-child { border-right: none; }
+    .meta-label {
+      font-size: .55rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .meta-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .95rem; font-weight: 600;
+      color: var(--chalk);
+      letter-spacing: .02em;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-fill {
+      display: inline-block;
+      font-family: 'Jost', sans-serif;
+      font-size: .7rem; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      background: var(--gold); color: var(--ink);
+      border: 1px solid var(--gold);
+      padding: 15px 36px; text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .btn-fill:hover { background: #D9B55E; transform: translateY(-1px); }
+    .btn-ghost {
+      display: inline-block;
+      font-family: 'Jost', sans-serif;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .16em; text-transform: uppercase;
+      background: transparent; color: rgba(250,250,248,.7);
+      border: 1px solid rgba(250,250,248,.22);
+      padding: 15px 36px; text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: rgba(250,250,248,.6); color: var(--chalk); }
+
+    /* ══════════════════════════════════════
+       MARQUEE STRIP
+    ══════════════════════════════════════ */
+    .marquee-strip {
+      background: var(--gold);
+      overflow: hidden;
+      padding: 13px 0;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marqueeScroll 22s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--ink);
+      padding: 0 40px;
+    }
+    .marquee-dot {
+      color: rgba(13,26,22,.35);
+      font-size: .5rem;
+      vertical-align: middle;
+    }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ══════════════════════════════════════
+       SECTION UTILITY
+    ══════════════════════════════════════ */
+    .section { padding: 112px 60px; }
+    .inner { max-width: 1160px; margin: 0 auto; }
+    .s-tag {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 20px;
+    }
+    .s-tag-line { width: 32px; height: 1px; background: var(--gold); flex-shrink: 0; }
+    .s-tag-text {
+      font-family: 'Jost', sans-serif;
+      font-size: .6rem; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ══════════════════════════════════════
+       ABOUT
+    ══════════════════════════════════════ */
+    .about { background: var(--chalk); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 52% 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.6rem, 4.5vw, 4.4rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+    .about-body {
+      font-size: .95rem; font-weight: 400;
+      color: var(--warm);
+      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+    /* big quote */
+    .about-quote {
+      margin-top: 36px;
+      padding: 28px 32px;
+      border-left: 3px solid var(--gold);
+      background: rgba(200,164,74,.05);
+    }
+    .about-quote p {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem; font-weight: 700;
+      letter-spacing: .02em;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    /* pillars */
+    .pillars { border-top: 1px solid var(--line); }
+    .pillar {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 20px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+    .pillar-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.4rem; font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+    .pillar-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+      letter-spacing: .01em;
+    }
+    .pillar-desc {
+      font-size: .85rem; font-weight: 400;
+      color: var(--warm);
+      line-height: 1.75;
+    }
+
+    /* ══════════════════════════════════════
+       STATS
+    ══════════════════════════════════════ */
+    .stats {
+      background: var(--green);
+      position: relative;
+      overflow: hidden;
+    }
+    .stats::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      background-size: 220px; pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    .stats-inner {
+      position: relative; z-index: 1;
+      max-width: 1160px; margin: 0 auto;
+      padding: 0 60px;
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 0;
+    }
+    .stat {
+      padding: 80px 40px;
+      border-right: 1px solid rgba(200,164,74,.1);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3.8rem, 5.5vw, 6rem);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: .9;
+      letter-spacing: -.03em;
+      margin-bottom: 16px;
+      white-space: nowrap;
+    }
+    .stat-num sup {
+      font-size: .38em;
+      vertical-align: top;
+      margin-top: .15em;
+      color: var(--gold-dim);
+    }
+    .stat-label {
+      font-family: 'Jost', sans-serif;
+      font-size: .68rem; font-weight: 400;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(248,244,238,.4);
+      line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════
+       PROGRAM
+    ══════════════════════════════════════ */
+    .program { background: var(--cream); }
+    .program h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin-bottom: 60px;
+    }
+    .prog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .prog-part {
+      background: var(--chalk);
+      padding: 44px 40px;
+      position: relative;
+    }
+    .prog-part::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--gold);
+      opacity: .5;
+    }
+    .prog-part-label {
+      font-family: 'Jost', sans-serif;
+      font-size: .6rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .prog-part-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--line);
+    }
+    .prog-row {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 12px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .prog-row:last-child { border-bottom: none; }
+    .prog-time {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .85rem; font-weight: 700;
+      color: var(--gold);
+      letter-spacing: .02em;
+    }
+    .prog-act {
+      font-size: .85rem; font-weight: 400;
+      color: var(--ink); line-height: 1.55;
+    }
+
+    /* ══════════════════════════════════════
+       EXHIBITORS
+    ══════════════════════════════════════ */
+    .exhibitors {
+      background: var(--ink);
+      position: relative; overflow: hidden;
+    }
+    .ex-grain {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px; pointer-events: none;
+      mix-blend-mode: screen; z-index: 0;
+    }
+    .exhibitors .inner { position: relative; z-index: 1; }
+    .exhibitors h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--chalk);
+      margin-bottom: 14px;
+    }
+    .ex-intro {
+      font-size: .88rem; font-weight: 300;
+      color: rgba(248,244,238,.45);
+      line-height: 1.85;
+      max-width: 560px;
+      margin-bottom: 64px;
+    }
+    .ex-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 0;
+      border-top: 1px solid rgba(200,164,74,.1);
+      border-left: 1px solid rgba(200,164,74,.1);
+    }
+    .ex-card {
+      padding: 44px 36px;
+      border-right: 1px solid rgba(200,164,74,.1);
+      border-bottom: 1px solid rgba(200,164,74,.1);
+      position: relative;
+      overflow: hidden;
+      transition: background .25s;
+    }
+    .ex-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .35s ease;
+    }
+    .ex-card:hover { background: rgba(200,164,74,.04); }
+    .ex-card:hover::after { transform: scaleX(1); }
+    .ex-icon { width: 34px; height: 34px; margin-bottom: 20px; }
+    .ex-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--chalk);
+      margin-bottom: 10px;
+      letter-spacing: .01em;
+    }
+    .ex-card p {
+      font-size: .8rem; font-weight: 300;
+      color: rgba(248,244,238,.42);
+      line-height: 1.8;
+    }
+
+    /* ══════════════════════════════════════
+       REGISTER
+    ══════════════════════════════════════ */
+    .register {
+      background: var(--green);
+      position: relative; overflow: hidden;
+      text-align: center;
+    }
+    .register::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 800px; height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,164,74,.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .reg-inner {
+      position: relative; z-index: 1;
+      max-width: 620px; margin: 0 auto;
+    }
+    .register h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -.02em;
+      color: var(--chalk);
+      margin-bottom: 22px;
+    }
+    .reg-body {
+      font-size: .9rem; font-weight: 300;
+      color: rgba(248,244,238,.5);
+      line-height: 1.85;
+      margin-bottom: 48px;
+    }
+    .btn-register {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-family: 'Jost', sans-serif;
+      font-size: .72rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      background: var(--gold); color: var(--ink);
+      border: none;
+      padding: 19px 52px; text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .btn-register:hover { background: #D9B55E; transform: translateY(-2px); }
+    .btn-register svg { transition: transform .2s; }
+    .btn-register:hover svg { transform: translateX(4px); }
+    .reg-note {
+      margin-top: 22px;
+      font-size: .7rem; font-weight: 300;
+      color: rgba(248,244,238,.3);
+      letter-spacing: .04em;
+    }
+
+    /* ══════════════════════════════════════
+       CONTACT
+    ══════════════════════════════════════ */
+    .contact { background: var(--chalk); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .contact h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 3.5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin-bottom: 48px;
+    }
+    .c-list { display: flex; flex-direction: column; gap: 24px; }
+    .c-label {
+      font-size: .58rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 4px;
+    }
+    .c-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--ink);
+    }
+    .c-value a { color: var(--ink); text-decoration: none; transition: color .2s; }
+    .c-value a:hover { color: var(--gold); }
+    /* match point card */
+    .mp-card {
+      background: var(--green);
+      padding: 52px 48px;
+      position: relative; overflow: hidden;
+    }
+    .mp-card::before {
+      content: 'MP';
+      position: absolute;
+      bottom: -20px; right: -10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9rem; font-weight: 700;
+      color: rgba(200,164,74,.06);
+      letter-spacing: -.05em;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .mp-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .mp-tag {
+      font-size: .78rem; font-weight: 300;
+      font-style: italic;
+      color: rgba(248,244,238,.4);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+    .mp-stats { display: flex; flex-direction: column; gap: 12px; }
+    .mp-stat { display: flex; align-items: center; gap: 14px; }
+    .mp-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+    }
+    .mp-stat span {
+      font-size: .78rem; font-weight: 400;
+      color: rgba(248,244,238,.45);
+    }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      background: var(--ink);
+      padding: 22px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      border-top: 1px solid rgba(200,164,74,.1);
+    }
+    footer p {
+      font-size: .65rem; font-weight: 400;
+      color: rgba(248,244,238,.22);
+      letter-spacing: .06em;
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 1000px) {
+      nav, nav.scrolled { padding: 16px 32px; }
+      .hero-content { padding: 110px 32px 70px; }
+      .hero-side { display: none; }
+      .section { padding: 80px 32px; }
+      .stats-inner { padding: 0 32px; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .stats-inner { grid-template-columns: 1fr; gap: 0; }
+      .stat { border-right: none; border-bottom: 1px solid rgba(200,164,74,.1); }
+      .stat:last-child { border-bottom: none; }
+      .prog-grid { grid-template-columns: 1fr; }
+      .ex-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      footer { padding: 18px 32px; }
+    }
+    @media (max-width: 620px) {
+      nav, nav.scrolled { padding: 14px 20px; }
+      .nav-cta { display: none; }
+      .hero-content { padding: 96px 20px 56px; }
+      .hero-h1 { font-size: 2.8rem; }
+      .hero-meta { flex-direction: column; width: 100%; }
+      .meta-item { border-right: none; border-bottom: 1px solid rgba(200,164,74,.14); }
+      .meta-item:last-child { border-bottom: none; }
+      .hero-btns { flex-direction: column; }
+      .hero-btns a { text-align: center; }
+      .section { padding: 60px 20px; }
+      .stats-inner { padding: 0 20px; }
+      .stat { padding: 56px 20px; }
+      .prog-part { padding: 32px 22px; }
+      .ex-grid { grid-template-columns: 1fr; }
+      .ex-card { padding: 36px 26px; }
+      footer { flex-direction: column; text-align: center; padding: 18px 20px; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ NAV ════════ -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">MICE <em>Signature</em></a>
+  <div class="nav-right">
+    <div class="lang-sw">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <div class="lang-sep"></div>
+      <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
+    </div>
+    <a href="#register" class="nav-cta">
+      <span data-en="Schedule Meetings" data-ru="Записаться">Schedule Meetings</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero" id="top">
+  <div class="hero-orb"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+    <div class="h-tag">
+      <div class="h-tag-line"></div>
+      <span class="h-tag-text" data-en="Inaugural Edition · Moscow · May 2026" data-ru="Первое издание · Москва · Май 2026">Inaugural Edition · Moscow · May 2026</span>
+    </div>
+    <h1 class="hero-h1">
+      <span data-en="Where <em>international</em><br>MICE meets Russia." data-ru="Здесь <em>международный</em><br>MICE встречает Россию.">Where <em>international</em><br>MICE meets Russia.</span>
+    </h1>
+    <p class="hero-sub" data-en="No noise. No random visitors. Real business." data-ru="Без шума. Без случайных гостей. Только бизнес.">No noise. No random visitors. Real business.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label" data-en="Date" data-ru="Дата">Date</span>
+        <span class="meta-value" data-en="May 20, 2026" data-ru="20 мая 2026">May 20, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label" data-en="Venue" data-ru="Место">Venue</span>
+        <span class="meta-value">ENZO Hotel Moscow 5★</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label" data-en="Format" data-ru="Формат">Format</span>
+        <span class="meta-value" data-en="B2B Workshop + Cocktail" data-ru="B2B Воркшоп + Коктейль">B2B Workshop + Cocktail</span>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="#register" class="btn-fill" data-en="Schedule My Meetings" data-ru="Записаться на встречи">Schedule My Meetings</a>
+      <a href="#about" class="btn-ghost" data-en="About the Event" data-ru="О мероприятии">About the Event</a>
+    </div>
+  </div>
+  <div class="hero-side">
+    <span class="hero-side-text" data-en="B2B MICE Workshop · Moscow · 2026" data-ru="B2B MICE Воркшоп · Москва · 2026">B2B MICE Workshop · Moscow · 2026</span>
+  </div>
+</section>
+
+<!-- ════════ MARQUEE ════════ -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">B2B MICE Workshop <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Moscow · ENZO Hotel 5★ <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Inaugural Edition · May 2026 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">International Partners <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Russian MICE Market <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Pre-Scheduled Meetings <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">No Random Visitors <span class="marquee-dot">◆</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">B2B MICE Workshop <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Moscow · ENZO Hotel 5★ <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Inaugural Edition · May 2026 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">International Partners <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Russian MICE Market <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Pre-Scheduled Meetings <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">No Random Visitors <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- ════════ ABOUT ════════ -->
+<section class="section about" id="about">
+  <div class="inner about-grid">
+    <div>
+      <div class="s-tag reveal">
+        <div class="s-tag-line"></div>
+        <span class="s-tag-text" data-en="About" data-ru="О мероприятии">About</span>
+      </div>
+      <h2 class="reveal reveal-d1" data-en="Not just<br>presence.<br>Real matches." data-ru="Не просто<br>присутствие.<br>Реальные сделки.">Not just<br>presence.<br>Real matches.</h2>
+      <p class="about-body reveal reveal-d2" data-en="MICE Signature is a closed-format B2B workshop — a focused entry point into the Russian outbound MICE market for international hotels, DMCs, airlines and destinations." data-ru="MICE Signature — закрытый B2B-воркшоп, созданный как точка входа на российский выездной MICE-рынок для международных отелей, DMC, авиакомпаний и дестинаций.">MICE Signature is a closed-format B2B workshop — a focused entry point into the Russian outbound MICE market for international hotels, DMCs, airlines and destinations.</p>
+      <p class="about-body reveal reveal-d2" data-en="We don't do mass events. Every buyer at this table has been personally qualified by Match Point — 20 years inside the Russian MICE market." data-ru="Мы не делаем массовых мероприятий. Каждый байер за этим столом лично отобран Match Point — 20 лет внутри российского MICE-рынка.">We don't do mass events. Every buyer at this table has been personally qualified by Match Point — 20 years inside the Russian MICE market.</p>
+      <div class="about-quote reveal reveal-d3">
+        <p data-en="We do not waste your time. We do not waste theirs." data-ru="Мы не тратим ваше время. Мы не тратим их время.">We do not waste your time. We do not waste theirs.</p>
+      </div>
+    </div>
+    <div>
+      <div class="pillars">
+        <div class="pillar reveal reveal-d1">
+          <div class="pillar-num">01</div>
+          <div>
+            <div class="pillar-title" data-en="Pre-scheduled meetings" data-ru="Предзаписанные встречи">Pre-scheduled meetings</div>
+            <div class="pillar-desc" data-en="No waiting. No wandering the floor. Your agenda is confirmed before you arrive." data-ru="Никакого ожидания. Ваше расписание готово до приезда.">No waiting. No wandering the floor. Your agenda is confirmed before you arrive.</div>
+          </div>
+        </div>
+        <div class="pillar reveal reveal-d2">
+          <div class="pillar-num">02</div>
+          <div>
+            <div class="pillar-title" data-en="Qualified buyers only" data-ru="Только квалифицированные байеры">Qualified buyers only</div>
+            <div class="pillar-desc" data-en="MICE agencies, incentive planners, corporate buyers — people who actually book international groups." data-ru="MICE-агентства, incentive-планировщики, корпоративные закупщики — те, кто реально покупает.">MICE agencies, incentive planners, corporate buyers — people who actually book international groups.</div>
+          </div>
+        </div>
+        <div class="pillar reveal reveal-d3">
+          <div class="pillar-num">03</div>
+          <div>
+            <div class="pillar-title" data-en="Two debuts, one platform" data-ru="Два дебюта, одна платформа">Two debuts, one platform</div>
+            <div class="pillar-desc" data-en="MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026." data-ru="Первое издание MICE Signature проходит в ENZO Hotel — новом 5★ отеле Москвы, открытом весной 2026.">MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ STATS ════════ -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat reveal">
+      <div class="stat-num">1,500<sup>+</sup></div>
+      <div class="stat-label" data-en="Qualified MICE buyers<br>in the Match Point database" data-ru="Квалифицированных MICE-байеров<br>в базе Match Point">Qualified MICE buyers<br>in the Match Point database</div>
+    </div>
+    <div class="stat reveal reveal-d1">
+      <div class="stat-num">20</div>
+      <div class="stat-label" data-en="Years navigating<br>the Russian MICE market" data-ru="Лет в российском<br>MICE-рынке">Years navigating<br>the Russian MICE market</div>
+    </div>
+    <div class="stat reveal reveal-d2">
+      <div class="stat-num">80<sup>%</sup></div>
+      <div class="stat-label" data-en="of Russian corporate MICE trips<br>are international" data-ru="российских корпоративных<br>MICE-поездок — за рубеж">of Russian corporate MICE trips<br>are international</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ PROGRAM ════════ -->
+<section class="section program" id="program">
+  <div class="inner">
+    <div class="s-tag reveal">
+      <div class="s-tag-line"></div>
+      <span class="s-tag-text" data-en="Programme" data-ru="Программа">Programme</span>
+    </div>
+    <h2 class="reveal reveal-d1" data-en="One day.<br>Two business sessions." data-ru="Один день.<br>Две деловые сессии.">One day.<br>Two business sessions.</h2>
+    <div class="prog-grid">
+      <div class="prog-part reveal reveal-d2">
+        <div class="prog-part-label" data-en="Business Part I · Morning" data-ru="Деловая часть I · Утро">Business Part I · Morning</div>
+        <div class="prog-row">
+          <span class="prog-time">10:30–11:00</span>
+          <span class="prog-act" data-en="Registration &amp; Late Breakfast" data-ru="Регистрация и поздний завтрак">Registration &amp; Late Breakfast</span>
+        </div>
+        <div class="prog-row">
+          <span class="prog-time">11:00–14:00</span>
+          <span class="prog-act" data-en="B2B Pre-scheduled Workshop" data-ru="B2B воркшоп по предзаписи">B2B Pre-scheduled Workshop</span>
+        </div>
+        <div class="prog-row">
+          <span class="prog-time">14:00–15:00</span>
+          <span class="prog-act" data-en="Coffee Break &amp; Lottery" data-ru="Кофе-брейк и лотерея">Coffee Break &amp; Lottery</span>
+        </div>
+      </div>
+      <div class="prog-part reveal reveal-d3">
+        <div class="prog-part-label" data-en="Business Part II · Evening" data-ru="Деловая часть II · Вечер">Business Part II · Evening</div>
+        <div class="prog-row">
+          <span class="prog-time">15:00–15:30</span>
+          <span class="prog-act" data-en="Registration" data-ru="Регистрация">Registration</span>
+        </div>
+        <div class="prog-row">
+          <span class="prog-time">15:30–18:00</span>
+          <span class="prog-act" data-en="B2B Pre-scheduled Workshop" data-ru="B2B воркшоп по предзаписи">B2B Pre-scheduled Workshop</span>
+        </div>
+        <div class="prog-row">
+          <span class="prog-time">18:00–22:00</span>
+          <span class="prog-act" data-en="Evening Cocktail · Destination Presentations · Lottery · Networking" data-ru="Вечерний коктейль · Презентации дестинаций · Лотерея · Нетворкинг">Evening Cocktail · Destination Presentations · Lottery · Networking</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ EXHIBITORS ════════ -->
+<section class="section exhibitors" id="exhibitors">
+  <div class="ex-grain"></div>
+  <div class="inner">
+    <div class="s-tag reveal">
+      <div class="s-tag-line"></div>
+      <span class="s-tag-text" data-en="Who Exhibits" data-ru="Экспоненты">Who Exhibits</span>
+    </div>
+    <h2 class="reveal reveal-d1" data-en="International partners.<br>Russian market." data-ru="Международные партнёры.<br>Российский рынок.">International partners.<br>Russian market.</h2>
+    <p class="ex-intro reveal reveal-d2" data-en="All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise." data-ru="Все экспоненты — международные компании, которые напрямую представляют свой продукт квалифицированным российским байерам. Без посредников. Без лишнего шума.">All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise.</p>
+    <div class="ex-grid">
+      <div class="ex-card reveal">
+        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><rect x="6" y="12" width="24" height="20" rx="1" stroke="#C8A44A" stroke-width="1.4"/><path d="M12 32V24h12v8" stroke="#C8A44A" stroke-width="1.4"/><path d="M6 12 18 4l12 8" stroke="#C8A44A" stroke-width="1.4"/><rect x="15" y="17" width="6" height="6" stroke="#C8A44A" stroke-width="1.2"/></svg>
+        <h3 data-en="International Hotels" data-ru="Международные отели">International Hotels</h3>
+        <p data-en="4★ and 5★ properties with MICE infrastructure and group capacity." data-ru="Объекты 4★ и 5★ с MICE-инфраструктурой и возможностями для групп.">4★ and 5★ properties with MICE infrastructure and group capacity.</p>
+      </div>
+      <div class="ex-card reveal reveal-d1">
+        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="11" stroke="#C8A44A" stroke-width="1.4"/><path d="M7 18h22M18 7c-4 3.5-5.5 7-5.5 11s1.5 7.5 5.5 11M18 7c4 3.5 5.5 7 5.5 11S22 25.5 18 29" stroke="#C8A44A" stroke-width="1.2"/></svg>
+        <h3 data-en="DMCs &amp; Tour Operators" data-ru="DMC и туроператоры">DMCs &amp; Tour Operators</h3>
+        <p data-en="Destination Management Companies specialising in incentive travel and corporate groups." data-ru="Компании по управлению дестинациями для инсентив-программ и корпоративных групп.">Destination Management Companies specialising in incentive travel and corporate groups.</p>
+      </div>
+      <div class="ex-card reveal reveal-d2">
+        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><path d="M4 26 18 8l14 18H4z" stroke="#C8A44A" stroke-width="1.4" stroke-linejoin="round"/><circle cx="27" cy="10" r="2.5" stroke="#C8A44A" stroke-width="1.3"/></svg>
+        <h3 data-en="Destinations" data-ru="Дестинации">Destinations</h3>
+        <p data-en="National tourism offices promoting their MICE potential to Russian planners." data-ru="Национальные туристические офисы, продвигающие MICE-потенциал своих направлений.">National tourism offices promoting their MICE potential to Russian planners.</p>
+      </div>
+      <div class="ex-card reveal reveal-d1">
+        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><path d="M30 18 18 6 6 18v14h7v-8h10v8h7V18z" stroke="#C8A44A" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <h3 data-en="Airlines" data-ru="Авиакомпании">Airlines</h3>
+        <p data-en="International carriers with group fares, charter options and MICE priority service." data-ru="Международные перевозчики с групповыми тарифами и чартерными опциями для MICE.">International carriers with group fares, charter options and MICE priority service.</p>
+      </div>
+      <div class="ex-card reveal reveal-d2">
+        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><rect x="4" y="8" width="28" height="22" rx="1" stroke="#C8A44A" stroke-width="1.4"/><path d="M4 15h28M13 8v7M23 8v7" stroke="#C8A44A" stroke-width="1.4"/><path d="M10 21h6M20 21h6M10 27h4M18 27h8" stroke="#C8A44A" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <h3 data-en="MICE Venues" data-ru="MICE-площадки">MICE Venues</h3>
+        <p data-en="Congress centres and unique venues equipped for professional MICE events." data-ru="Конгресс-центры и уникальные площадки для профессиональных MICE-мероприятий.">Congress centres and unique venues equipped for professional MICE events.</p>
+      </div>
+      <div class="ex-card reveal reveal-d3">
+        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><circle cx="14" cy="13" r="5" stroke="#C8A44A" stroke-width="1.4"/><circle cx="26" cy="17" r="4" stroke="#C8A44A" stroke-width="1.4"/><path d="M4 31c0-5.523 4.477-10 10-10h2" stroke="#C8A44A" stroke-width="1.4" stroke-linecap="round"/><path d="M20 31c0-3.866 2.686-7 6-7" stroke="#C8A44A" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <h3 data-en="Incentive &amp; Event Services" data-ru="Инсентив и ивент-сервисы">Incentive &amp; Event Services</h3>
+        <p data-en="Entertainment, team building, gala services and specialist MICE providers." data-ru="Развлечения, тимбилдинг, гала-услуги и другие MICE-сервисные компании.">Entertainment, team building, gala services and specialist MICE providers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ REGISTER ════════ -->
+<section class="section register" id="register">
+  <div class="reg-inner">
+    <div class="s-tag reveal" style="justify-content:center;">
+      <div class="s-tag-line"></div>
+      <span class="s-tag-text" data-en="Meetings" data-ru="Встречи">Meetings</span>
+      <div class="s-tag-line"></div>
+    </div>
+    <h2 class="reveal reveal-d1" data-en="Schedule your<br>meetings." data-ru="Запишитесь<br>на встречи.">Schedule your<br>meetings.</h2>
+    <p class="reg-body reveal reveal-d2" data-en="All meetings at MICE Signature are pre-scheduled. Select the partners you want to meet — we'll build your personal agenda for the day. No queuing. No wasted time." data-ru="Все встречи на MICE Signature проходят по предзаписи. Выберите партнёров — мы составим ваше расписание на день. Без очередей. Без потери времени.">All meetings at MICE Signature are pre-scheduled. Select the partners you want to meet — we'll build your personal agenda for the day. No queuing. No wasted time.</p>
+    <a href="#" class="btn-register reveal reveal-d3" data-en="Open Meeting Planner" data-ru="Открыть планировщик встреч">
+      <span data-en="Open Meeting Planner" data-ru="Открыть планировщик встреч">Open Meeting Planner</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <p class="reg-note reveal reveal-d4" data-en="The meeting planner will open once registration is confirmed." data-ru="Планировщик встреч будет доступен после подтверждения регистрации.">The meeting planner will open once registration is confirmed.</p>
+  </div>
+</section>
+
+<!-- ════════ CONTACT ════════ -->
+<section class="section contact" id="contact">
+  <div class="inner contact-grid">
+    <div>
+      <div class="s-tag reveal">
+        <div class="s-tag-line"></div>
+        <span class="s-tag-text" data-en="Contact" data-ru="Контакты">Contact</span>
+      </div>
+      <h2 class="reveal reveal-d1" data-en="Questions?<br>We're here." data-ru="Вопросы?<br>Мы здесь.">Questions?<br>We're here.</h2>
+      <div class="c-list reveal reveal-d2">
+        <div>
+          <div class="c-label" data-en="Name" data-ru="Имя">Name</div>
+          <div class="c-value">Olga Kharlenok</div>
+        </div>
+        <div>
+          <div class="c-label">Email</div>
+          <div class="c-value"><a href="mailto:olga@matchpoints.ru">olga@matchpoints.ru</a></div>
+        </div>
+        <div>
+          <div class="c-label">WhatsApp / Telegram</div>
+          <div class="c-value"><a href="tel:+79104003460">+7 (910) 400-34-60</a></div>
+        </div>
+        <div>
+          <div class="c-label" data-en="Website" data-ru="Сайт">Website</div>
+          <div class="c-value"><a href="https://matchpoints.ru" target="_blank" rel="noopener">matchpoints.ru</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="mp-card reveal reveal-d2">
+      <div class="mp-name">MATCH POINT</div>
+      <div class="mp-tag" data-en="Securing new opportunities<br>in the Russian outbound MICE market" data-ru="Открываем новые возможности<br>на российском выездном MICE-рынке">Securing new opportunities<br>in the Russian outbound MICE market</div>
+      <div class="mp-stats">
+        <div class="mp-stat"><div class="mp-dot"></div><span data-en="20 years in Russian MICE" data-ru="20 лет в российском MICE">20 years in Russian MICE</span></div>
+        <div class="mp-stat"><div class="mp-dot"></div><span data-en="1,500+ qualified buyers in our database" data-ru="1500+ квалифицированных байеров в базе">1,500+ qualified buyers in our database</span></div>
+        <div class="mp-stat"><div class="mp-dot"></div><span data-en="Partners across 9 countries" data-ru="Партнёры в 9 странах">Partners across 9 countries</span></div>
+        <div class="mp-stat"><div class="mp-dot"></div><span data-en="90% success rate in tenders" data-ru="90% успеха в тендерах">90% success rate in tenders</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <p>© 2026 MICE Signature. <span data-en="Organised by Match Point." data-ru="Организовано Match Point.">Organised by Match Point.</span></p>
+  <p data-en="ENZO Hotel Moscow · 20 May 2026 · Inaugural Edition" data-ru="ENZO Hotel Москва · 20 мая 2026 · Первое издание">ENZO Hotel Moscow · 20 May 2026 · Inaugural Edition</p>
+</footer>
+
+<!-- ════════ JS ════════ -->
+<script>
+  /* ── Language ── */
+  function setLang(lang) {
+    document.querySelectorAll('[data-en]').forEach(el => {
+      el.innerHTML = lang === 'en'
+        ? el.getAttribute('data-en')
+        : (el.getAttribute('data-ru') || el.getAttribute('data-en'));
+    });
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+    document.documentElement.lang = lang;
+    localStorage.setItem('ms-lang', lang);
+  }
+  const saved = localStorage.getItem('ms-lang');
+  if (saved && saved !== 'en') setLang(saved);
+
+  /* ── Hero load animation ── */
+  window.addEventListener('load', () => {
+    document.querySelector('.hero').classList.add('loaded');
+  });
+
+  /* ── Sticky nav ── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  /* ── Scroll reveal ── */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+
+</body>
+</html>
