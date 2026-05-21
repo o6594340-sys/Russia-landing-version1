@@ -15,8 +15,8 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 ## Design tokens
 
 ```
---ink:   #14140F   (primary dark, almost-black warm)
---green: #1C1814   (dark sections: stats, register, exhibitors, MP card)
+--ink:   #141018   (primary dark, aubergine-black — violet undertone, cold vs warm gold tension)
+--green: #1A1520   (dark sections: stats, register, exhibitors, MP card)
 --cream: #F9F6F0   (light section backgrounds)
 --chalk: #FAFAF8   (lightest background, body)
 --gold:  #C8A44A   (accent — buttons, borders, icons, numbers)
