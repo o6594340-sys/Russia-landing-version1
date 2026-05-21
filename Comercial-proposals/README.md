@@ -15,7 +15,7 @@
 
 ## Деплой (Railway)
 
-Приложение задеплоено на Railway: **russia-landing-version1-production.up.railway.app**
+Приложение задеплоено на Railway: **https://russia-landing-version1-production.up.railway.app**
 
 Для деплоя на новый аккаунт:
 1. Railway → New Project → GitHub Repo → выбрать репозиторий
