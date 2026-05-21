@@ -143,3 +143,124 @@
 - **Адаптив:** CSS Grid + Flexbox, breakpoint 768px
 - **Встречи:** кнопка `href="#"` → заменить на URL EventRocks
 - **Хостинг:** статика, любой (GitHub Pages / Netlify / хостинг организатора)
+
+---
+
+## Экспертный аудит дизайна — май 2026
+
+*Три независимых эксперта: визуальный дизайн & тренды / типографика & лэйаут / бренд-стратегия & позиционирование*
+
+### Итоговая оценка: 5.5 / 10 "задаём тренды"
+
+Палитра и grain-текстура — хорошая база. Но CSS-язык движения и логика лэйаута — учебник 2022–2023 года. Сайт говорит "я знаю хороший дизайн", а не "я определяю хороший дизайн". Нужна хирургия, не перестройка.
+
+---
+
+### Что работает — не трогать
+
+- **Grain SVG-текстура** (feTurbulence data URI, mix-blend-mode: screen) — именно так делают редакционные агентства
+- **Вертикальный сайдбар** в hero (writing-mode: vertical-rl) — уровень Wallpaper*/Monocle, убирать на 1000px правильно
+- **Hero-meta блок** с золотыми border-dividers — читается как fashion lookbook stat strip или авиабилет
+- **s-tag паттерн** (gold line + spaced uppercase micro-label) — coherent visual language по всему сайту, lineGrow анимация — хорошее касание
+- **Marquee strip** — правильно поставлен, правильный темп 22s, технически корректный seamless loop
+- **"No noise. No random visitors. Real business."** — сильнейшая строка на странице, нигде в индустрии нет такой же
+- **"Every buyer personally qualified"** — самый дифференцирующий claim, сейчас зарыт в третьем параграфе about
+- **"Two debuts, one platform"** (MICE Signature + ENZO Hotel) — умный угол, даёт прессе что написать
+- **clamp() типографика** — правильно реализована, fluid scaling без breakpoint прыжков
+- **MP card ghost watermark** — редакционный приём, масштабировать до 12rem / opacity .09
+
+---
+
+### Критические проблемы (убивают доверие)
+
+**1. Кнопка "Open Meeting Planner" → href="#" + note "плanner откроется после подтверждения"**
+Для дебютного мероприятия, где просят международный бюджет — это провал доверия именно там, где нужна уверенность. Заменить на `mailto:olga@matchpoints.ru?subject=MICE Signature — Meeting Request` или Typeform до запуска.
+
+**2. Ольга нигде не представлена как named authority**
+Сайт продаёт "20 лет в MICE" без лица и имени в нарративных секциях. M&I Forums, IBTM, все дебютные события — продают именем. Для inaugural edition Ольга И ЕСТЬ доверие к событию. Нужна фото + 2 строки credentialing в about или contact.
+
+**3. Нет секции для байеров**
+Российские байеры открывают сайт и видят: всё о том, как их продают иностранцам. Нужно минимум 3 bullet "Почему стоит прийти как байер". Иначе они не понимают свою ценность.
+
+**4. Exhibitor proposition без конкретики**
+"Pre-scheduled meetings" — это описание формата, не outcome. M&I Forums говорит "40 targeted meetings" — это конкретная deliverable. Нужен ответ на вопрос: сколько встреч, с кем, по сколько минут.
+
+---
+
+### Что устарело — менять
+
+| Элемент | Почему проблема | Что вместо |
+|---------|----------------|------------|
+| Gradient orb в hero | Самый заезженный паттерн 2023–24, есть на каждом SaaS и крипто-сайте | Outlined text "2026" через `-webkit-text-stroke: 1px rgba(200,164,74,.09)` на oversized numeral |
+| `translateY(28px) + opacity` scroll reveal | Самая generic web анимация — в каждом туториале, каждом builder | `clip-path: inset(0 100% 0 0)` → `inset(0 0% 0 0)` горизонтальный wipe, cubic-bezier(.16,1,.3,1) |
+| Left-border blockquote (about-quote) | Medium blog, 2015, WordPress theme ощущение | Манифест на всю ширину, разрывающий grid — luxury fashion approach |
+| Hover `scaleX` underline на ex-cards | 2019-era Material Design microinteraction | Outlined → fill on hover через -webkit-text-stroke на stat numbers |
+| Uniform 3-col exhibitor grid | Идентично каждому SaaS сайту 2022–2024 | Асимметричная сетка: первая карточка span 2 rows, разные typographic веса |
+| Второй radial gradient orb в Register | Дублирует hero orb, exhausted pattern дважды | Убрать, оставить чистый тёмный фон — restraint = luxury |
+| Ghost number за content в MP card | Peaked 2020–2021, Dribbble card cliché | Масштабировать как явный design element или убрать |
+| Space Grotesk + Jost паринг | Оба humanist grotesque — нет контраста между heading и body register. Читается как B2B SaaS, не luxury event | Добавить Cormorant Garamond italic для hero-sub и body accent |
+
+---
+
+### Типографические проблемы
+
+- **hero-sub** `.75rem` all-caps — "No noise. No random visitors." рендерится ~12px, disappears. Сильнейший копирайт в невидимом шрифте
+- **Hero H1 line break** неправильный: рвётся "Where international" / "MICE meets Russia." — нужно "Where international MICE" / "meets Russia." — "Russia." как hammer-blow short second line
+- **pillar-num** 2.4rem gold доминирует над pillar-title 1rem — декоративный элемент перевешивает информацию
+- **meta-label** `.55rem` ≈ 8.8px — ниже порога комфортного чтения для аудитории 40+
+- **stat-label** rgba(..., 0.4) на тёмном фоне — слишком слабый контраст для senior MICE buyers
+- **h2 во всех секциях идентичны** — нет rhythmic shift при скролле, всё одинаковое
+
+---
+
+### Конкретные CSS решения (приоритет)
+
+**A. Убить orb → outlined year**
+```css
+.hero::after {
+  content: '2026';
+  position: absolute; right: -0.05em; top: -0.1em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(18rem, 28vw, 34rem); font-weight: 700;
+  letter-spacing: -.05em; line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(200,164,74,.09);
+  pointer-events: none; z-index: 0; user-select: none;
+}
+```
+
+**B. Horizontal clip-path reveal вместо translateY**
+```css
+.reveal { clip-path: inset(0 100% 0 0); transition: clip-path .8s cubic-bezier(.16,1,.3,1); }
+.reveal.in { clip-path: inset(0 0% 0 0); }
+```
+
+**C. Stat numbers — outlined → fill on hover**
+```css
+.stat-num { color: transparent; -webkit-text-stroke: 1.5px var(--gold); }
+.stat:hover .stat-num { color: var(--gold); -webkit-text-stroke: none; transition: color .3s; }
+```
+
+**D. Hero-sub → Cormorant Garamond italic**
+```css
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300; font-style: italic;
+  letter-spacing: .01em; text-transform: none;
+  color: rgba(250,250,248,.55);
+}
+```
+
+**E. Exhibitor grid asymmetry**
+```css
+.ex-card:first-child { grid-row: span 2; background: rgba(200,164,74,.07); border: 1px solid rgba(200,164,74,.2); }
+```
+
+---
+
+### Контент-решения (требуют решения Ольги)
+
+- **Hero H1** — рассмотреть замену на конкретное число: "60 meetings. One day. Zero wasted conversations." Radical specificity = главный luxury сигнал для дебютного события без истории
+- **Amplify**: "Every buyer at this table is personally known to us." → в hero, крупно
+- **RU версия** — не перевод, а локализация: байеры в России отвечают на insider-тон, не на process-язык
+- **Добавить**: breakdown аудитории ("42% corporate buyers, 38% MICE agencies...") вместо просто "1,500+"
