@@ -6,7 +6,7 @@
   <title>MICE Signature — Inaugural Edition | Moscow 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
   <style>
 
     /* ══════════════════════════════════════
@@ -30,7 +30,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       background: var(--chalk);
       color: var(--ink);
       font-size: 16px;
@@ -96,9 +96,6 @@
       dominant-baseline: auto;
       fill: rgba(200,164,74,.92);
     }
-    .pen-tip {
-      filter: drop-shadow(0 0 5px rgba(200,164,74,.9));
-    }
 
     /* thin gold line below signature */
     .splash-line {
@@ -112,7 +109,7 @@
 
     /* sub-label */
     .splash-sub {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .58rem;
       font-weight: 500;
       letter-spacing: .32em;
@@ -147,7 +144,7 @@
       top: 36px;
       left: 50%;
       transform: translateX(-50%);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: .7rem;
       font-weight: 700;
       letter-spacing: .24em;
@@ -207,8 +204,8 @@
     }
 
     .gate-role-en {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-family: 'Cormorant Garamond', sans-serif;
+      font-size: clamp(4rem, 7.5vw, 8.5rem);
       font-weight: 700;
       color: var(--chalk);
       letter-spacing: -.02em;
@@ -219,9 +216,9 @@
     .gate-half:hover .gate-role-en { color: var(--gold); }
 
     .gate-role-ru {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: clamp(.85rem, 1.4vw, 1.2rem);
-      font-weight: 300;
+      font-weight: 400;
       color: rgba(248,244,238,.28);
       letter-spacing: .22em;
       text-transform: uppercase;
@@ -232,7 +229,7 @@
 
     .gate-desc {
       font-size: .72rem;
-      font-weight: 300;
+      font-weight: 400;
       color: rgba(248,244,238,.2);
       letter-spacing: .06em;
       line-height: 1.9;
@@ -255,7 +252,7 @@
       transform: translateY(0);
     }
     .gate-enter-text {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .6rem;
       font-weight: 600;
       letter-spacing: .2em;
@@ -333,7 +330,7 @@
       background: none;
       border: none;
       cursor: pointer;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .6rem;
       font-weight: 500;
       letter-spacing: .12em;
@@ -365,7 +362,7 @@
       padding: 13px 60px;
     }
     .nav-logo {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: 1rem;
       font-weight: 700;
       letter-spacing: .18em;
@@ -378,7 +375,7 @@
     .lang-sw { display: flex; align-items: center; gap: 2px; }
     .lang-btn {
       background: none; border: none; cursor: pointer;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .68rem; font-weight: 500;
       letter-spacing: .14em; text-transform: uppercase;
       color: rgba(250,250,248,.38);
@@ -388,7 +385,7 @@
     .lang-btn.active { color: var(--gold); }
     .lang-sep { width: 1px; height: 11px; background: rgba(250,250,248,.2); }
     .nav-cta {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .68rem; font-weight: 500;
       letter-spacing: .15em; text-transform: uppercase;
       color: var(--gold);
@@ -415,25 +412,49 @@
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 30% 60%, rgba(20,16,24,.95) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 70% at 80% 20%, rgba(200,164,74,.06) 0%, transparent 55%);
+      background: radial-gradient(ellipse 85% 65% at 12% 78%, rgba(14,10,18,.96) 0%, transparent 55%);
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
     }
-    .hero-orb {
+    /* De Chirico ambient light — three slow pools of colour */
+    .chirico-orb {
       position: absolute;
-      width: 600px; height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,164,74,.08) 0%, transparent 70%);
-      top: -100px; right: -100px;
-      animation: orbFloat 8s ease-in-out infinite;
       pointer-events: none;
       z-index: 0;
     }
-    @keyframes orbFloat {
-      0%, 100% { transform: translate(0,0) scale(1); }
-      50% { transform: translate(-30px, 40px) scale(1.05); }
+    .chirico-orb-1 {
+      width: 1100px; height: 900px;
+      background: radial-gradient(ellipse, rgba(200,164,74,.07) 0%, transparent 62%);
+      top: -280px; right: -260px;
+      animation: chirico1 40s ease-in-out infinite;
+    }
+    .chirico-orb-2 {
+      width: 800px; height: 750px;
+      background: radial-gradient(ellipse, rgba(90,60,150,.055) 0%, transparent 58%);
+      bottom: -180px; left: -200px;
+      animation: chirico2 51s ease-in-out infinite;
+    }
+    .chirico-orb-3 {
+      width: 640px; height: 520px;
+      background: radial-gradient(ellipse, rgba(170,110,20,.045) 0%, transparent 65%);
+      top: 38%; left: 28%;
+      animation: chirico3 34s ease-in-out infinite;
+    }
+    @keyframes chirico1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      28%  { transform: translate(-160px, 110px) scale(1.08); }
+      62%  { transform: translate(-50px, -70px) scale(0.96); }
+    }
+    @keyframes chirico2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      38%  { transform: translate(130px, -100px) scale(1.12); }
+      72%  { transform: translate(50px, 90px) scale(0.92); }
+    }
+    @keyframes chirico3 {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: .65; }
+      32%  { transform: translate(-90px, 70px) scale(1.18); opacity: 1; }
+      68%  { transform: translate(110px, -45px) scale(0.82); opacity: .45; }
     }
     .hero-grain {
       position: absolute;
@@ -451,7 +472,22 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      max-width: 860px;
+    }
+    /* Left architectural line — runs through hero */
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: 60px;
+      top: 80px;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(200,164,74,.18) 12%,
+        rgba(200,164,74,.12) 70%,
+        transparent 100%);
+      pointer-events: none;
+      z-index: 1;
     }
     .hero-side {
       position: relative;
@@ -464,7 +500,7 @@
       padding: 130px 0 80px;
     }
     .hero-side-text {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: .58rem;
       font-weight: 600;
       letter-spacing: .25em;
@@ -476,15 +512,18 @@
     }
 
     /* hero animations */
-    .h-tag, .hero-h1, .hero-sub, .hero-meta, .hero-btns {
+    .h-tag, .hero-mice, .hero-tagline, .hero-sub, .hero-meta, .hero-btns {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(18px);
     }
-    .hero.loaded .h-tag { animation: fadeUp .6s ease forwards .1s; }
-    .hero.loaded .hero-h1 { animation: fadeUp .7s ease forwards .25s; }
-    .hero.loaded .hero-sub { animation: fadeUp .6s ease forwards .45s; }
-    .hero.loaded .hero-meta { animation: fadeUp .6s ease forwards .6s; }
-    .hero.loaded .hero-btns { animation: fadeUp .6s ease forwards .75s; }
+    .hero-sig { opacity: 0; } /* GSAP handles it */
+    .hero.loaded .h-tag       { animation: fadeUp .55s ease forwards .05s; }
+    .hero.loaded .hero-mice   { animation: fadeUp .5s  ease forwards .18s; }
+    /* .hero-sig — animated via animateHeroTitle() */
+    .hero.loaded .hero-tagline { animation: fadeUp .6s ease forwards 1.45s; }
+    .hero.loaded .hero-sub    { animation: fadeUp .6s ease forwards 1.65s; }
+    .hero.loaded .hero-meta   { animation: fadeUp .6s ease forwards 1.8s; }
+    .hero.loaded .hero-btns   { animation: fadeUp .6s ease forwards 1.95s; }
     @keyframes fadeUp {
       to { opacity: 1; transform: none; }
     }
@@ -499,25 +538,45 @@
     }
     @keyframes lineGrow { to { width: 40px; } }
     .h-tag-text {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .62rem; font-weight: 500;
       letter-spacing: .22em; text-transform: uppercase;
       color: var(--gold);
     }
     .hero-h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.8rem, 5.5vw, 5.6rem);
-      font-weight: 700;
-      line-height: 1.0;
-      color: var(--chalk);
-      letter-spacing: -.01em;
-      margin-bottom: 22px;
+      line-height: 1;
+      margin-bottom: 0;
     }
-    .hero-h1 em {
-      font-style: italic;
-      color: var(--gold);
+    .hero-mice {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(.85rem, 1.6vw, 1.3rem);
+      font-weight: 400;
+      letter-spacing: .55em;
+      text-transform: uppercase;
+      color: rgba(200,164,74,.6);
+      margin-bottom: .1em;
+    }
+    .hero-sig {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
       font-weight: 700;
-      font-family: 'Jost', sans-serif;
+      font-style: italic;
+      color: var(--chalk);
+      line-height: .85;
+      white-space: nowrap;
+      letter-spacing: 0;
+      /* font-size set by JS */
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.75rem);
+      font-weight: 400;
+      font-style: italic;
+      color: rgba(250,250,248,.38);
+      margin-top: .55em;
+      margin-bottom: 44px;
+      line-height: 1.3;
     }
     .hero-sub {
       font-size: .75rem; font-weight: 400;
@@ -543,7 +602,7 @@
       color: var(--gold);
     }
     .meta-value {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: .95rem; font-weight: 600;
       color: var(--chalk);
       letter-spacing: .02em;
@@ -551,7 +610,7 @@
     .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
     .btn-fill {
       display: inline-block;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .7rem; font-weight: 600;
       letter-spacing: .16em; text-transform: uppercase;
       background: var(--gold); color: var(--ink);
@@ -562,7 +621,7 @@
     .btn-fill:hover { background: #D9B55E; transform: translateY(-1px); }
     .btn-ghost {
       display: inline-block;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .7rem; font-weight: 500;
       letter-spacing: .16em; text-transform: uppercase;
       background: transparent; color: rgba(250,250,248,.7);
@@ -586,7 +645,7 @@
       animation: marqueeScroll 22s linear infinite;
     }
     .marquee-item {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .65rem; font-weight: 700;
       letter-spacing: .2em; text-transform: uppercase;
       color: var(--ink);
@@ -605,15 +664,31 @@
     /* ══════════════════════════════════════
        SECTION UTILITY
     ══════════════════════════════════════ */
-    .section { padding: 112px 60px; }
+    .section { padding: 112px 60px; position: relative; }
     .inner { max-width: 1160px; margin: 0 auto; }
+    /* Architectural left line continues through about + stats */
+    .about::before,
+    .exhibitors::before {
+      content: '';
+      position: absolute;
+      left: 60px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom,
+        rgba(200,164,74,.13) 0%,
+        rgba(200,164,74,.08) 60%,
+        transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
     .s-tag {
       display: flex; align-items: center; gap: 14px;
       margin-bottom: 20px;
     }
     .s-tag-line { width: 32px; height: 1px; background: var(--gold); flex-shrink: 0; }
     .s-tag-text {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .6rem; font-weight: 600;
       letter-spacing: .22em; text-transform: uppercase;
       color: var(--gold);
@@ -630,7 +705,7 @@
       align-items: start;
     }
     .about h2 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: clamp(2.6rem, 4.5vw, 4.4rem);
       font-weight: 700;
       line-height: 1.05;
@@ -651,7 +726,7 @@
       background: rgba(200,164,74,.05);
     }
     .about-quote p {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: 1.05rem; font-weight: 700;
       letter-spacing: .02em;
       color: var(--ink);
@@ -667,14 +742,14 @@
       align-items: start;
     }
     .pillar-num {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: 2.4rem; font-weight: 700;
       color: var(--gold);
       line-height: 1;
       letter-spacing: -.02em;
     }
     .pillar-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: 1rem; font-weight: 700;
       color: var(--ink);
       margin-bottom: 6px;
@@ -716,7 +791,7 @@
     }
     .stat:last-child { border-right: none; }
     .stat-num {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: clamp(3.8rem, 5.5vw, 6rem);
       font-weight: 700;
       color: var(--gold);
@@ -732,7 +807,7 @@
       color: var(--gold-dim);
     }
     .stat-label {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .68rem; font-weight: 400;
       letter-spacing: .1em; text-transform: uppercase;
       color: rgba(248,244,238,.4);
@@ -744,7 +819,7 @@
     ══════════════════════════════════════ */
     .program { background: var(--cream); }
     .program h2 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: clamp(2.4rem, 4vw, 4rem);
       font-weight: 700;
       line-height: 1.05;
@@ -771,7 +846,7 @@
       opacity: .5;
     }
     .prog-part-label {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .6rem; font-weight: 600;
       letter-spacing: .2em; text-transform: uppercase;
       color: var(--gold);
@@ -791,7 +866,7 @@
     }
     .prog-row:last-child { border-bottom: none; }
     .prog-time {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: .85rem; font-weight: 700;
       color: var(--gold);
       letter-spacing: .02em;
@@ -816,7 +891,7 @@
     }
     .exhibitors .inner { position: relative; z-index: 1; }
     .exhibitors h2 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: clamp(2.4rem, 4vw, 4rem);
       font-weight: 700;
       line-height: 1.05;
@@ -825,7 +900,7 @@
       margin-bottom: 14px;
     }
     .ex-intro {
-      font-size: .88rem; font-weight: 300;
+      font-size: .88rem; font-weight: 400;
       color: rgba(248,244,238,.45);
       line-height: 1.85;
       max-width: 560px;
@@ -860,14 +935,14 @@
     .ex-card:hover::after { transform: scaleX(1); }
     .ex-icon { width: 34px; height: 34px; margin-bottom: 20px; }
     .ex-card h3 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: 1.05rem; font-weight: 700;
       color: var(--chalk);
       margin-bottom: 10px;
       letter-spacing: .01em;
     }
     .ex-card p {
-      font-size: .8rem; font-weight: 300;
+      font-size: .8rem; font-weight: 400;
       color: rgba(248,244,238,.42);
       line-height: 1.8;
     }
@@ -895,7 +970,7 @@
       max-width: 620px; margin: 0 auto;
     }
     .register h2 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: clamp(2.6rem, 5vw, 5rem);
       font-weight: 700;
       line-height: 1.0;
@@ -904,14 +979,14 @@
       margin-bottom: 22px;
     }
     .reg-body {
-      font-size: .9rem; font-weight: 300;
+      font-size: .9rem; font-weight: 400;
       color: rgba(248,244,238,.5);
       line-height: 1.85;
       margin-bottom: 48px;
     }
     .btn-register {
       display: inline-flex; align-items: center; gap: 12px;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Instrument Sans', sans-serif;
       font-size: .72rem; font-weight: 600;
       letter-spacing: .18em; text-transform: uppercase;
       background: var(--gold); color: var(--ink);
@@ -924,7 +999,7 @@
     .btn-register:hover svg { transform: translateX(4px); }
     .reg-note {
       margin-top: 22px;
-      font-size: .7rem; font-weight: 300;
+      font-size: .7rem; font-weight: 400;
       color: rgba(248,244,238,.3);
       letter-spacing: .04em;
     }
@@ -939,7 +1014,7 @@
       gap: 80px; align-items: start;
     }
     .contact h2 {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: clamp(2.2rem, 3.5vw, 3.6rem);
       font-weight: 700;
       line-height: 1.05;
@@ -954,7 +1029,7 @@
       color: var(--gold); margin-bottom: 4px;
     }
     .c-value {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: 1rem; font-weight: 600;
       color: var(--ink);
     }
@@ -969,7 +1044,7 @@
       content: 'MP';
       position: absolute;
       bottom: -20px; right: -10px;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: 9rem; font-weight: 700;
       color: rgba(200,164,74,.06);
       letter-spacing: -.05em;
@@ -977,14 +1052,14 @@
       pointer-events: none;
     }
     .mp-name {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Cormorant Garamond', sans-serif;
       font-size: 1.6rem; font-weight: 700;
       letter-spacing: .08em; text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 6px;
     }
     .mp-tag {
-      font-size: .78rem; font-weight: 300;
+      font-size: .78rem; font-weight: 400;
       font-style: italic;
       color: rgba(248,244,238,.4);
       margin-bottom: 40px;
@@ -1077,7 +1152,6 @@
       </mask>
     </defs>
     <text class="sig-text" x="430" y="158" mask="url(#sig-mask)">MICE Signature</text>
-    <circle class="pen-tip" id="pen-tip" r="3" fill="#C8A44A" cx="-50" cy="130" opacity="0"/>
   </svg>
   <div class="splash-line" id="splash-line"></div>
   <p class="splash-sub" id="splash-sub">B2B MICE Workshop · Moscow · 2026</p>
@@ -1143,7 +1217,9 @@
 
 <!-- ════════ HERO ════════ -->
 <section class="hero" id="top">
-  <div class="hero-orb"></div>
+  <div class="chirico-orb chirico-orb-1"></div>
+  <div class="chirico-orb chirico-orb-2"></div>
+  <div class="chirico-orb chirico-orb-3"></div>
   <div class="hero-grain"></div>
   <div class="hero-content">
     <div class="h-tag">
@@ -1151,9 +1227,13 @@
       <span class="h-tag-text" data-en="Inaugural Edition · Moscow · May 2026" data-ru="Первое издание · Москва · Май 2026">Inaugural Edition · Moscow · May 2026</span>
     </div>
     <h1 class="hero-h1">
-      <span class="ex-only" data-en="Your market.<br><em>Direct access.</em>" data-ru="Ваш рынок.<br><em>Прямой доступ.</em>">Your market.<br><em>Direct access.</em></span>
-      <span class="buyer-only" data-en="Where <em>international</em><br>MICE meets Russia." data-ru="Здесь <em>международный</em><br>MICE встречает Россию.">Where <em>international</em><br>MICE meets Russia.</span>
+      <span class="hero-mice">MICE</span>
+      <span class="hero-sig" id="hero-sig">SIGNATURE</span>
     </h1>
+    <p class="hero-tagline">
+      <span class="ex-only" data-en="Your market. Direct access." data-ru="Ваш рынок. Прямой доступ.">Your market. Direct access.</span>
+      <span class="buyer-only" data-en="Where international MICE meets Russia." data-ru="Здесь международный MICE встречает Россию.">Where international MICE meets Russia.</span>
+    </p>
     <p class="hero-sub" data-en="No noise. No random visitors. Real business." data-ru="Без шума. Без случайных гостей. Только бизнес.">No noise. No random visitors. Real business.</p>
     <div class="hero-meta">
       <div class="meta-item">
@@ -1437,7 +1517,6 @@
     const main        = document.getElementById('main');
     const sigText     = document.querySelector('.sig-text');
     const writingPath = document.getElementById('writing-path');
-    const penTip      = document.getElementById('pen-tip');
     const splashLine  = document.getElementById('splash-line');
     const splashSub   = document.getElementById('splash-sub');
 
@@ -1535,25 +1614,12 @@
 
       const totalLen = writingPath.getTotalLength();
       gsap.set(writingPath, { attr: { 'stroke-dasharray': totalLen, 'stroke-dashoffset': totalLen } });
-      gsap.set(penTip, { opacity: 1, attr: { cx: chars[0].x1, cy: 72 } });
-
       gsap.to(writingPath, {
         attr: { 'stroke-dashoffset': 0 },
         duration: 5.5,
         ease: 'power1.inOut',
 
-        onUpdate() {
-          /* Read the ACTUAL animated dashoffset (not time-progress) so the
-             pen tip stays exactly at the leading edge regardless of easing */
-          const offset  = parseFloat(writingPath.getAttribute('stroke-dashoffset')) || 0;
-          const drawn   = Math.max(0, totalLen - offset);
-          const pt      = writingPath.getPointAtLength(drawn);
-          penTip.setAttribute('cx', pt.x);
-          penTip.setAttribute('cy', pt.y);
-        },
-
         onComplete() {
-          gsap.to(penTip, { opacity: 0, duration: 0.5 });
           splashLine.classList.add('grow');
           setTimeout(() => splashSub.classList.add('show'), 300);
           /* Pause so the viewer can read the finished signature */
@@ -1594,6 +1660,47 @@
     });
   })();
 
+  /* ─── Hero: fit SIGNATURE to full content width, then animate in ─── */
+  function fitHeroSig() {
+    const el = document.getElementById('hero-sig');
+    if (!el) return 0;
+    const container = el.closest('.hero-content');
+    const style = window.getComputedStyle(container);
+    const targetW = container.clientWidth
+      - parseFloat(style.paddingLeft)
+      - parseFloat(style.paddingRight);
+    el.style.letterSpacing = '0px';
+    let lo = 20, hi = 700;
+    while (hi - lo > 0.5) {
+      const mid = (hi + lo) / 2;
+      el.style.fontSize = mid + 'px';
+      (el.scrollWidth <= targetW) ? (lo = mid) : (hi = mid);
+    }
+    el.style.fontSize = Math.floor(lo) + 'px';
+    return Math.floor(lo);
+  }
+
+  function animateHeroTitle() {
+    const el = document.getElementById('hero-sig');
+    if (!el) return;
+    const fittedSize = fitHeroSig();
+    gsap.set(el, { fontSize: Math.round(fittedSize * 0.6) + 'px', opacity: 0 });
+    gsap.to(el, {
+      fontSize: fittedSize + 'px',
+      opacity: 1,
+      duration: 1.15,
+      ease: 'power3.out',
+      delay: 0.5
+    });
+    /* Refit on resize */
+    if (!window._heroSigObserver && window.ResizeObserver) {
+      window._heroSigObserver = new ResizeObserver(() => {
+        if (parseFloat(el.style.opacity || 0) > 0.5) fitHeroSig();
+      });
+      window._heroSigObserver.observe(el.closest('.hero-content'));
+    }
+  }
+
   /* ─── Choose role ─── */
   function chooseRole(role) {
     const gate = document.getElementById('gate');
@@ -1614,6 +1721,7 @@
       if (savedLang && savedLang !== 'en') setLang(savedLang);
 
       document.querySelector('.hero').classList.add('loaded');
+      animateHeroTitle();
       initReveal();
     }, 500);
   }

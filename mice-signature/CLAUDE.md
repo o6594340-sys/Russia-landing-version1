@@ -26,8 +26,8 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 
 ## Typography
 
-- Display / headings: `'Space Grotesk'`, weight 700
-- Body / nav / buttons: `'Jost'`, weight 300–600
+- Display / headings: `'Cormorant Garamond'`, weight 600–700 (italic variant for `em` elements)
+- Body / nav / buttons: `'Instrument Sans'`, weight 400–700
 - Splash signature: `'Pinyon Script'` — loaded from Google Fonts alongside the main pair
 
 ## Entry experience (splash → gate → content)
