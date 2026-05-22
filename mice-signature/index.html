@@ -67,59 +67,6 @@
     .reveal-d4 { transition-delay: .4s; }
     .reveal-d5 { transition-delay: .5s; }
 
-    /* ══════════════════════════════════════
-       SPLASH
-    ══════════════════════════════════════ */
-    #splash {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: var(--ink);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      transition: opacity .9s ease;
-    }
-    #splash.fade-out { opacity: 0; pointer-events: none; }
-
-    .splash-svg {
-      width: min(80vw, 720px);
-      overflow: visible;
-      display: block;
-    }
-    .sig-text {
-      font-family: 'Pinyon Script', cursive;
-      font-size: 108px;
-      text-anchor: middle;
-      dominant-baseline: auto;
-      fill: rgba(200,164,74,.92);
-    }
-
-    /* thin gold line below signature */
-    .splash-line {
-      width: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin-top: 8px;
-      transition: width 1s ease .2s;
-    }
-    .splash-line.grow { width: min(60vw, 420px); }
-
-    /* sub-label */
-    .splash-sub {
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: .58rem;
-      font-weight: 500;
-      letter-spacing: .32em;
-      text-transform: uppercase;
-      color: rgba(200,164,74,.35);
-      margin-top: 20px;
-      opacity: 0;
-      transition: opacity .8s ease;
-    }
-    .splash-sub.show { opacity: 1; }
 
     /* ══════════════════════════════════════
        GATE (ROLE CHOOSER)
@@ -128,7 +75,6 @@
       position: fixed;
       inset: 0;
       z-index: 999;
-      display: flex;
       opacity: 0;
       pointer-events: none;
       transition: opacity .7s ease;
@@ -136,6 +82,67 @@
     }
     #gate.visible {
       opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── Gate brand overlay (Phase 1) ── */
+    .gate-brand {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .gate-mice-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: .04em;
+    }
+    .gm {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5.5rem, 17vw, 15rem);
+      font-weight: 700;
+      color: var(--chalk);
+      line-height: .88;
+      letter-spacing: 0.18em;
+      display: inline-block;
+      opacity: 0;
+      will-change: opacity;
+    }
+    .gate-sig-block {
+      margin-top: -.12em;
+      opacity: 0;
+    }
+    .gate-sig-svg {
+      width: min(90vw, 820px);
+      overflow: visible;
+      display: block;
+    }
+    .gsig-text {
+      font-family: 'Pinyon Script', cursive;
+      font-size: 168px;
+      text-anchor: middle;
+      dominant-baseline: auto;
+      fill: rgba(200,164,74,.92);
+    }
+
+    /* ── Gate panels (Phase 2) ── */
+    .gate-panels {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      opacity: 0;
+      filter: blur(12px);
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity .7s ease, filter .7s ease;
+    }
+    .gate-panels.gate-revealed {
+      opacity: 1;
+      filter: blur(0);
       pointer-events: all;
     }
 
@@ -165,11 +172,13 @@
       justify-content: center;
       cursor: pointer;
       overflow: hidden;
-      transition: background .4s;
+      transition: flex .45s cubic-bezier(.4,0,.2,1), background .4s;
     }
-    .gate-half:first-of-type {
+    #gate-ex {
       border-right: 1px solid rgba(200,164,74,.15);
     }
+    .gate-panels:hover .gate-half { flex: .7; }
+    .gate-panels:hover .gate-half:hover { flex: 1.3; }
 
     /* radial glow on hover */
     .gate-half::before {
@@ -302,6 +311,21 @@
       background: var(--gold);
       margin: 8px 0;
       flex-shrink: 0;
+    }
+
+    /* ── Pen overlay SVG ── */
+    #gate-pen-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 3;
+    }
+    #gate-pen-tip {
+      opacity: 0;
+      filter: drop-shadow(0 0 10px rgba(200,164,74,.8));
     }
 
     /* ══════════════════════════════════════
@@ -1131,65 +1155,80 @@
       footer { flex-direction: column; text-align: center; padding: 18px 20px; gap: 6px; }
 
       /* gate mobile */
-      #gate { flex-direction: column; }
-      .gate-half:first-of-type { border-right: none; border-bottom: 1px solid rgba(200,164,74,.15); }
+      .gate-panels { flex-direction: column; }
+      #gate-ex { border-right: none; border-bottom: 1px solid rgba(200,164,74,.15); }
       .gate-divider { display: none; }
       .gate-role-en { font-size: 3rem; }
+      .gm { font-size: clamp(3.5rem, 20vw, 8rem); }
     }
   </style>
 </head>
 <body>
 
-<!-- ════════ SPLASH ════════ -->
-<div id="splash">
-  <svg class="splash-svg" viewBox="0 0 860 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <mask id="sig-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="860" height="200">
-        <rect fill="black" width="860" height="200"/>
-        <!-- growing white stroke = the "pen" that reveals the text below -->
-        <path id="writing-path" fill="none" stroke="white" stroke-width="160"
-              stroke-linecap="round" stroke-linejoin="round"/>
-      </mask>
-    </defs>
-    <text class="sig-text" x="430" y="158" mask="url(#sig-mask)">MICE Signature</text>
-  </svg>
-  <div class="splash-line" id="splash-line"></div>
-  <p class="splash-sub" id="splash-sub">B2B MICE Workshop · Moscow · 2026</p>
-</div>
-
 <!-- ════════ GATE ════════ -->
 <div id="gate" role="main" aria-label="Choose your role">
-  <div class="gate-logo">MICE <em>Signature</em></div>
 
-  <div class="gate-half" id="gate-ex" onclick="chooseRole('exhibitor')" role="button" tabindex="0" aria-label="Enter as Exhibitor">
-    <div class="gate-content">
-      <div class="gate-role-en">Exhibitor</div>
-      <div class="gate-role-ru">Экспонент</div>
-      <div class="gate-desc">International hotels, DMCs,<br>airlines &amp; destinations</div>
-      <div class="gate-enter">
-        <span class="gate-enter-text">Enter</span>
-        <div class="gate-enter-line"></div>
+  <!-- Phase 1: brand animation -->
+  <div class="gate-brand" id="gate-brand">
+    <div class="gate-mice-wrap">
+      <span class="gm">M</span>
+      <span class="gm">I</span>
+      <span class="gm">C</span>
+      <span class="gm">E</span>
+    </div>
+    <div class="gate-sig-block" id="gate-sig-block">
+      <svg class="gate-sig-svg" viewBox="0 0 860 200" overflow="visible" aria-hidden="true">
+        <defs>
+          <mask id="gsig-mask" maskUnits="userSpaceOnUse" x="-10" y="-130" width="900" height="420">
+            <rect id="gsig-wipe" fill="white" x="-10" y="-130" width="0" height="420"/>
+          </mask>
+        </defs>
+        <text class="gsig-text" x="430" y="158" mask="url(#gsig-mask)">Signature</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Pen overlay (tracks across MICE then into Signature) -->
+  <svg id="gate-pen-svg" aria-hidden="true">
+    <path id="gate-pen-path" fill="none" stroke="none" d=""/>
+    <circle id="gate-pen-tip" r="3.5" fill="#C8A44A"/>
+  </svg>
+
+  <!-- Phase 2: role panels -->
+  <div class="gate-panels" id="gate-panels">
+    <div class="gate-logo">MICE <em>Signature</em></div>
+
+    <div class="gate-half" id="gate-ex" onclick="chooseRole('exhibitor')" role="button" tabindex="0" aria-label="Enter as Exhibitor">
+      <div class="gate-content">
+        <div class="gate-role-en">Exhibitor</div>
+        <div class="gate-role-ru">Экспонент</div>
+        <div class="gate-desc">International hotels, DMCs,<br>airlines &amp; destinations</div>
+        <div class="gate-enter">
+          <span class="gate-enter-text">Enter</span>
+          <div class="gate-enter-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate-divider">
+      <div class="gate-div-line"></div>
+      <div class="gate-div-dot"></div>
+      <div class="gate-div-line"></div>
+    </div>
+
+    <div class="gate-half" id="gate-buyer" onclick="chooseRole('buyer')" role="button" tabindex="0" aria-label="Enter as Buyer">
+      <div class="gate-content">
+        <div class="gate-role-en">Buyer</div>
+        <div class="gate-role-ru">Посетитель</div>
+        <div class="gate-desc">MICE agencies, incentive planners<br>&amp; corporate buyers</div>
+        <div class="gate-enter">
+          <span class="gate-enter-text">Enter</span>
+          <div class="gate-enter-line"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="gate-divider">
-    <div class="gate-div-line"></div>
-    <div class="gate-div-dot"></div>
-    <div class="gate-div-line"></div>
-  </div>
-
-  <div class="gate-half" id="gate-buyer" onclick="chooseRole('buyer')" role="button" tabindex="0" aria-label="Enter as Buyer">
-    <div class="gate-content">
-      <div class="gate-role-en">Buyer</div>
-      <div class="gate-role-ru">Посетитель</div>
-      <div class="gate-desc">MICE agencies, incentive planners<br>&amp; corporate buyers</div>
-      <div class="gate-enter">
-        <span class="gate-enter-text">Enter</span>
-        <div class="gate-enter-line"></div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ════════ MAIN ════════ -->
@@ -1510,21 +1549,131 @@
 <!-- ════════ JS ════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
-  /* ─── Splash + Gate ─── */
-  (function () {
-    const splash      = document.getElementById('splash');
-    const gate        = document.getElementById('gate');
-    const main        = document.getElementById('main');
-    const sigText     = document.querySelector('.sig-text');
-    const writingPath = document.getElementById('writing-path');
-    const splashLine  = document.getElementById('splash-line');
-    const splashSub   = document.getElementById('splash-sub');
+  /* ─── Gate animation: pen sweeps MICE then writes Signature ─── */
+  function runGateAnimation() {
+    const brand    = document.getElementById('gate-brand');
+    const panels   = document.getElementById('gate-panels');
+    const sigBlk   = document.getElementById('gate-sig-block');
+    const penPath  = document.getElementById('gate-pen-path');
+    const penTip   = document.getElementById('gate-pen-tip');
+    const mLetters = [...document.querySelectorAll('.gm')];
 
-    /* If role already chosen this session — skip splash entirely */
+    /* reset */
+    brand.style.opacity = '1';
+    brand.style.display = 'flex';
+    panels.classList.remove('gate-revealed');
+    gsap.set(mLetters, { opacity: 0, y: 0 });
+    gsap.set(sigBlk,   { opacity: 0 });
+    gsap.set(penTip,   { opacity: 0 });
+
+    /* wait one frame for layout, then measure positions */
+    requestAnimationFrame(() => {
+      const W        = window.innerWidth;
+      const miceWrap = document.querySelector('.gate-mice-wrap');
+      const mRect    = miceWrap.getBoundingClientRect();
+      const miceY    = mRect.top + mRect.height * 0.80; /* near cap baseline */
+
+      /* nearly flat arc: stays close to MICE baseline the whole way */
+      const tPathD = `M -60 ${miceY} C ${W * .35} ${miceY - 12} ${W * .65} ${miceY - 12} ${W + 60} ${miceY}`;
+      penPath.setAttribute('d', tPathD);
+      const tLen = penPath.getTotalLength();
+
+      /* trigger when pen reaches left edge of each letter (letters appear as pen enters them) */
+      const triggers = mLetters.map(el => {
+        const r  = el.getBoundingClientRect();
+        const cx = r.left + r.width * 0.08;  /* 8% in from left edge */
+        let lo = 0, hi = tLen;
+        for (let k = 0; k < 22; k++) {
+          const m = (lo + hi) / 2;
+          penPath.getPointAtLength(m).x < cx ? (lo = m) : (hi = m);
+        }
+        return { el, len: (lo + hi) / 2, done: false };
+      });
+
+      /* place pen at start, then fade in */
+      const p0 = penPath.getPointAtLength(0);
+      penTip.setAttribute('cx', p0.x);
+      penTip.setAttribute('cy', p0.y);
+      gsap.to(penTip, { opacity: 1, duration: 0.22, delay: 0.08 });
+
+      /* sweep across MICE area — slow, deliberate */
+      const sweep = { t: 0 };
+      gsap.to(sweep, {
+        t: tLen, duration: 3.6, ease: 'power1.inOut', delay: 0.12,
+        onUpdate() {
+          const pt = penPath.getPointAtLength(sweep.t);
+          penTip.setAttribute('cx', pt.x);
+          penTip.setAttribute('cy', pt.y);
+          triggers.forEach(tr => {
+            if (!tr.done && sweep.t >= tr.len) {
+              tr.done = true;
+              /* short fade — letter is mostly visible by the time pen exits it */
+              gsap.to(tr.el, { opacity: 1, duration: 0.18, ease: 'power2.out' });
+            }
+          });
+        },
+        onComplete: startSig
+      });
+    });
+
+    function startSig() {
+      const sigSvg = document.querySelector('.gate-sig-svg');
+      const wipeRect = document.getElementById('gsig-wipe');
+      if (!sigSvg || !wipeRect) { revealPanels(); return; }
+
+      gsap.set(sigBlk, { opacity: 1 });
+      wipeRect.setAttribute('width', '0');
+
+      const ctm = sigSvg.getScreenCTM();
+
+      /* pen arrives at left edge of signature text */
+      const penY = ctm ? ctm.d * 138 + ctm.f : window.innerHeight * 0.6;
+      const penX0 = ctm ? ctm.a * (-8) + ctm.e : 0;
+      gsap.to(penTip, {
+        attr: { cx: penX0, cy: penY }, duration: 0.32, ease: 'power2.inOut',
+        onComplete() {
+          /* wipe rect grows left→right: pen tracks leading edge exactly */
+          const totalW = 890;
+          const wipe = { x: -8 };
+          gsap.to(wipe, {
+            x: totalW,
+            duration: 4.2,
+            ease: 'power1.inOut',
+            onUpdate() {
+              const w = wipe.x + 10; /* rect x=-10, so width = x+10 */
+              wipeRect.setAttribute('width', Math.max(0, w));
+              if (ctm) {
+                penTip.setAttribute('cx', ctm.a * wipe.x + ctm.e);
+                penTip.setAttribute('cy', penY);
+              }
+            },
+            onComplete() {
+              gsap.to(penTip, { opacity: 0, duration: 0.45, delay: 0.25 });
+              revealPanels();
+            }
+          });
+        }
+      });
+    }
+
+    function revealPanels() {
+      setTimeout(() => {
+        gsap.to(brand, { opacity: 0, duration: .8, ease: 'power1.in',
+          onComplete: () => { brand.style.display = 'none'; }
+        });
+        setTimeout(() => { panels.classList.add('gate-revealed'); }, 350);
+      }, 1100);
+    }
+  }
+
+  /* ─── Gate startup ─── */
+  (function () {
+    const gate = document.getElementById('gate');
+    const main = document.getElementById('main');
+
     const savedRole = sessionStorage.getItem('ms-role');
     if (savedRole) {
-      splash.style.display = 'none';
-      gate.style.display   = 'none';
+      gate.style.display = 'none';
       main.removeAttribute('hidden');
       applyRole(savedRole);
       window.addEventListener('load', () => {
@@ -1535,124 +1684,12 @@
     }
 
     window.addEventListener('load', () => {
-      document.fonts.ready.then(startWriting);
+      document.fonts.ready.then(() => {
+        gate.classList.add('visible');
+        runGateAnimation();
+      });
     });
 
-    /* ── Build center-line writing path ─────────────────────────────── */
-    function buildPath(chars) {
-      /*
-        Technique: for each letter, the pen enters at the top of the
-        character (cap-height for capitals, x-height for lowercase) and
-        sweeps down to the baseline / descender.  Between letters a
-        short lift-and-connect arc bridges the gap.  The path is used as
-        a growing white stroke inside an SVG <mask> — as the stroke
-        expands it reveals the underlying Pinyon Script text.
-      */
-      const BL   = 152;   /* baseline y */
-      const CAP  = 72;    /* top of capitals */
-      const XH   = 112;   /* top of lowercase */
-      const DESC = 182;   /* descender bottom */
-
-      let d = '';
-      let px = 0, py = 0; /* previous exit coords */
-
-      chars.forEach((ch) => {
-        if (ch.char === ' ') {
-          px = ch.x2;
-          py = BL - 28;
-          return;
-        }
-
-        const upper = ch.char >= 'A' && ch.char <= 'Z';
-        const desc  = 'gjpqy'.includes(ch.char);
-        const asc   = 'bdfhiklt'.includes(ch.char);
-
-        const ey  = upper ? CAP  : (asc ? CAP + 18 : XH);   /* enter y */
-        const xy  = desc  ? DESC : BL;                       /* exit  y */
-        const w   = ch.x2 - ch.x1;
-
-        if (!d) {
-          /* Very first stroke starts from slightly above-left */
-          d = `M${ch.x1 - 2},${ey + 4}`;
-        } else {
-          /* Connect: lift from previous exit up to new entry */
-          const lift = Math.min(py, ey) - 14;
-          d += ` C${px + 7},${lift} ${ch.x1 - 7},${lift} ${ch.x1},${ey}`;
-        }
-
-        /* Main stroke: enter high → sweep to exit at baseline/descender.
-           The control points pull the curve through the body of the letter. */
-        d += ` C${ch.x1 + w * 0.38},${xy} ${ch.x1 + w * 0.62},${xy} ${ch.x2},${xy}`;
-
-        px = ch.x2;
-        py = xy;
-      });
-
-      return d;
-    }
-
-    /* ── Run animation ───────────────────────────────────────────────── */
-    function startWriting() {
-      const str = sigText.textContent;
-
-      /* Measure every character's screen position */
-      const chars = [];
-      for (let i = 0; i < str.length; i++) {
-        try {
-          chars.push({
-            char: str[i],
-            x1: sigText.getStartPositionOfChar(i).x,
-            x2: sigText.getEndPositionOfChar(i).x
-          });
-        } catch (e) {}
-      }
-
-      if (!chars.length) { simpleFade(); return; }
-
-      const pathD = buildPath(chars);
-      writingPath.setAttribute('d', pathD);
-
-      const totalLen = writingPath.getTotalLength();
-      gsap.set(writingPath, { attr: { 'stroke-dasharray': totalLen, 'stroke-dashoffset': totalLen } });
-      gsap.to(writingPath, {
-        attr: { 'stroke-dashoffset': 0 },
-        duration: 5.5,
-        ease: 'power1.inOut',
-
-        onComplete() {
-          splashLine.classList.add('grow');
-          setTimeout(() => splashSub.classList.add('show'), 300);
-          /* Pause so the viewer can read the finished signature */
-          setTimeout(() => {
-            splash.classList.add('fade-out');
-            setTimeout(() => {
-              splash.style.display = 'none';
-              gate.classList.add('visible');
-            }, 900);
-          }, 2200);
-        }
-      });
-    }
-
-    /* ── Fallback if font/SVG measurements unavailable ───────────────── */
-    function simpleFade() {
-      gsap.fromTo(sigText, { opacity: 0 }, {
-        opacity: 1, duration: 1.2, delay: 0.5,
-        onComplete() {
-          splashLine.classList.add('grow');
-          setTimeout(() => splashSub.classList.add('show'), 200);
-          setTimeout(() => {
-            splash.classList.add('fade-out');
-            setTimeout(() => {
-              splash.style.display = 'none';
-              gate.classList.add('visible');
-            }, 900);
-          }, 900);
-        }
-      });
-    }
-
-    /* Keyboard support on gate halves */
     document.querySelectorAll('.gate-half').forEach(half => {
       half.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') half.click();
@@ -1732,16 +1769,21 @@
     document.body.classList.add('body-role-' + role);
   }
 
-  /* ─── Reset to gate ─── */
+  /* ─── Reset to gate (skip animation, show panels directly) ─── */
   function resetRole() {
     sessionStorage.removeItem('ms-role');
-    const main = document.getElementById('main');
-    const gate = document.getElementById('gate');
+    const main   = document.getElementById('main');
+    const gate   = document.getElementById('gate');
+    const brand  = document.getElementById('gate-brand');
+    const panels = document.getElementById('gate-panels');
+    const penTip = document.getElementById('gate-pen-tip');
     main.setAttribute('hidden', '');
+    brand.style.display = 'none';
+    panels.classList.add('gate-revealed');
+    if (penTip) gsap.set(penTip, { opacity: 0 });
     gate.style.display = '';
     gate.style.opacity = '0';
     gate.style.pointerEvents = 'none';
-    /* Small delay to let display:flex apply before fading in */
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         gate.style.transition = 'opacity .5s ease';
