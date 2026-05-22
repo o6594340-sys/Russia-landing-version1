@@ -6,7 +6,7 @@
   <title>MICE Signature — Inaugural Edition | Moscow 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
   <style>
 
     /* ══════════════════════════════════════
@@ -66,6 +66,285 @@
     .reveal-d3 { transition-delay: .3s; }
     .reveal-d4 { transition-delay: .4s; }
     .reveal-d5 { transition-delay: .5s; }
+
+    /* ══════════════════════════════════════
+       SPLASH
+    ══════════════════════════════════════ */
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      transition: opacity .9s ease;
+    }
+    #splash.fade-out { opacity: 0; pointer-events: none; }
+
+    .splash-svg {
+      width: min(80vw, 720px);
+      overflow: visible;
+      display: block;
+    }
+    .sig-text {
+      font-family: 'Pinyon Script', cursive;
+      font-size: 108px;
+      text-anchor: middle;
+      dominant-baseline: auto;
+      fill: rgba(200,164,74,.92);
+    }
+    .pen-tip {
+      filter: drop-shadow(0 0 5px rgba(200,164,74,.9));
+    }
+
+    /* thin gold line below signature */
+    .splash-line {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin-top: 8px;
+      transition: width 1s ease .2s;
+    }
+    .splash-line.grow { width: min(60vw, 420px); }
+
+    /* sub-label */
+    .splash-sub {
+      font-family: 'Jost', sans-serif;
+      font-size: .58rem;
+      font-weight: 500;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: rgba(200,164,74,.35);
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity .8s ease;
+    }
+    .splash-sub.show { opacity: 1; }
+
+    /* ══════════════════════════════════════
+       GATE (ROLE CHOOSER)
+    ══════════════════════════════════════ */
+    #gate {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: flex;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .7s ease;
+      background: var(--ink);
+    }
+    #gate.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .gate-logo {
+      position: absolute;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(200,164,74,.4);
+      white-space: nowrap;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .gate-logo em { color: rgba(200,164,74,.7); font-style: normal; }
+
+    .gate-half {
+      flex: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      transition: background .4s;
+    }
+    .gate-half:first-of-type {
+      border-right: 1px solid rgba(200,164,74,.15);
+    }
+
+    /* radial glow on hover */
+    .gate-half::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 65% 65% at 50% 55%, rgba(200,164,74,.08) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity .4s;
+      pointer-events: none;
+    }
+    .gate-half:hover::before { opacity: 1; }
+
+    /* subtle bottom border on hover */
+    .gate-half::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform .45s cubic-bezier(.4,0,.2,1);
+    }
+    .gate-half:hover::after { transform: scaleX(1); }
+
+    .gate-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 40px;
+    }
+
+    .gate-role-en {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-weight: 700;
+      color: var(--chalk);
+      letter-spacing: -.02em;
+      line-height: 1;
+      margin-bottom: 10px;
+      transition: color .3s;
+    }
+    .gate-half:hover .gate-role-en { color: var(--gold); }
+
+    .gate-role-ru {
+      font-family: 'Jost', sans-serif;
+      font-size: clamp(.85rem, 1.4vw, 1.2rem);
+      font-weight: 300;
+      color: rgba(248,244,238,.28);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      transition: color .3s;
+    }
+    .gate-half:hover .gate-role-ru { color: rgba(200,164,74,.55); }
+
+    .gate-desc {
+      font-size: .72rem;
+      font-weight: 300;
+      color: rgba(248,244,238,.2);
+      letter-spacing: .06em;
+      line-height: 1.9;
+      max-width: 230px;
+      margin-bottom: 52px;
+      transition: color .3s;
+    }
+    .gate-half:hover .gate-desc { color: rgba(248,244,238,.35); }
+
+    .gate-enter {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .3s, transform .3s;
+    }
+    .gate-half:hover .gate-enter {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .gate-enter-text {
+      font-family: 'Jost', sans-serif;
+      font-size: .6rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .gate-enter-line {
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      position: relative;
+    }
+    .gate-enter-line::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 6px;
+      height: 6px;
+      border-right: 1px solid var(--gold);
+      border-top: 1px solid var(--gold);
+      transform: rotate(45deg);
+    }
+
+    /* center divider ornament */
+    .gate-divider {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 28vh;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .gate-div-line {
+      flex: 1;
+      width: 1px;
+      background: rgba(200,164,74,.18);
+    }
+    .gate-div-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin: 8px 0;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       MAIN WRAPPER
+    ══════════════════════════════════════ */
+    #main[hidden] { display: none !important; }
+
+    /* ══════════════════════════════════════
+       ROLE VISIBILITY
+    ══════════════════════════════════════ */
+    .ex-only, .buyer-only { display: none; }
+    .body-role-exhibitor .ex-only { display: block; }
+    .body-role-buyer .buyer-only { display: block; }
+    /* for inline / flex contexts */
+    .body-role-exhibitor .ex-only-inline { display: inline; }
+    .body-role-buyer .buyer-only-inline { display: inline; }
+
+    /* role switcher in nav */
+    .role-sw {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-right: 4px;
+    }
+    .role-sw-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: .6rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(250,250,248,.28);
+      padding: 4px 8px;
+      transition: color .2s;
+      white-space: nowrap;
+    }
+    .role-sw-btn:hover { color: rgba(200,164,74,.7); }
+    .role-sw-sep { width: 1px; height: 10px; background: rgba(250,250,248,.12); }
 
     /* ══════════════════════════════════════
        NAV
@@ -142,7 +421,6 @@
       pointer-events: none;
       z-index: 0;
     }
-    /* animated gradient orb */
     .hero-orb {
       position: absolute;
       width: 600px; height: 600px;
@@ -157,7 +435,6 @@
       0%, 100% { transform: translate(0,0) scale(1); }
       50% { transform: translate(-30px, 40px) scale(1.05); }
     }
-    /* grain */
     .hero-grain {
       position: absolute;
       inset: 0;
@@ -176,7 +453,6 @@
       justify-content: flex-end;
       max-width: 860px;
     }
-    /* vertical sidebar text */
     .hero-side {
       position: relative;
       z-index: 2;
@@ -368,7 +644,6 @@
       line-height: 1.85;
       margin-bottom: 18px;
     }
-    /* big quote */
     .about-quote {
       margin-top: 36px;
       padding: 28px 32px;
@@ -382,7 +657,6 @@
       color: var(--ink);
       line-height: 1.5;
     }
-    /* pillars */
     .pillars { border-top: 1px solid var(--line); }
     .pillar {
       display: grid;
@@ -686,7 +960,6 @@
     }
     .c-value a { color: var(--ink); text-decoration: none; transition: color .2s; }
     .c-value a:hover { color: var(--gold); }
-    /* match point card */
     .mp-card {
       background: var(--green);
       padding: 52px 48px;
@@ -781,22 +1054,89 @@
       .ex-grid { grid-template-columns: 1fr; }
       .ex-card { padding: 36px 26px; }
       footer { flex-direction: column; text-align: center; padding: 18px 20px; gap: 6px; }
+
+      /* gate mobile */
+      #gate { flex-direction: column; }
+      .gate-half:first-of-type { border-right: none; border-bottom: 1px solid rgba(200,164,74,.15); }
+      .gate-divider { display: none; }
+      .gate-role-en { font-size: 3rem; }
     }
   </style>
 </head>
 <body>
 
+<!-- ════════ SPLASH ════════ -->
+<div id="splash">
+  <svg class="splash-svg" viewBox="0 0 860 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <mask id="sig-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="860" height="200">
+        <rect fill="black" width="860" height="200"/>
+        <!-- growing white stroke = the "pen" that reveals the text below -->
+        <path id="writing-path" fill="none" stroke="white" stroke-width="160"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </mask>
+    </defs>
+    <text class="sig-text" x="430" y="158" mask="url(#sig-mask)">MICE Signature</text>
+    <circle class="pen-tip" id="pen-tip" r="3" fill="#C8A44A" cx="-50" cy="130" opacity="0"/>
+  </svg>
+  <div class="splash-line" id="splash-line"></div>
+  <p class="splash-sub" id="splash-sub">B2B MICE Workshop · Moscow · 2026</p>
+</div>
+
+<!-- ════════ GATE ════════ -->
+<div id="gate" role="main" aria-label="Choose your role">
+  <div class="gate-logo">MICE <em>Signature</em></div>
+
+  <div class="gate-half" id="gate-ex" onclick="chooseRole('exhibitor')" role="button" tabindex="0" aria-label="Enter as Exhibitor">
+    <div class="gate-content">
+      <div class="gate-role-en">Exhibitor</div>
+      <div class="gate-role-ru">Экспонент</div>
+      <div class="gate-desc">International hotels, DMCs,<br>airlines &amp; destinations</div>
+      <div class="gate-enter">
+        <span class="gate-enter-text">Enter</span>
+        <div class="gate-enter-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gate-divider">
+    <div class="gate-div-line"></div>
+    <div class="gate-div-dot"></div>
+    <div class="gate-div-line"></div>
+  </div>
+
+  <div class="gate-half" id="gate-buyer" onclick="chooseRole('buyer')" role="button" tabindex="0" aria-label="Enter as Buyer">
+    <div class="gate-content">
+      <div class="gate-role-en">Buyer</div>
+      <div class="gate-role-ru">Посетитель</div>
+      <div class="gate-desc">MICE agencies, incentive planners<br>&amp; corporate buyers</div>
+      <div class="gate-enter">
+        <span class="gate-enter-text">Enter</span>
+        <div class="gate-enter-line"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ MAIN ════════ -->
+<div id="main" hidden>
+
 <!-- ════════ NAV ════════ -->
 <nav id="navbar">
   <a href="#" class="nav-logo">MICE <em>Signature</em></a>
   <div class="nav-right">
+    <div class="role-sw">
+      <button class="role-sw-btn" onclick="resetRole()" data-en="← Switch role" data-ru="← Сменить роль">← Switch role</button>
+      <div class="role-sw-sep"></div>
+    </div>
     <div class="lang-sw">
       <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
       <div class="lang-sep"></div>
       <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
     </div>
     <a href="#register" class="nav-cta">
-      <span data-en="Schedule Meetings" data-ru="Записаться">Schedule Meetings</span>
+      <span class="ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</span>
+      <span class="buyer-only" data-en="Schedule Meetings" data-ru="Записаться">Schedule Meetings</span>
     </a>
   </div>
 </nav>
@@ -811,7 +1151,8 @@
       <span class="h-tag-text" data-en="Inaugural Edition · Moscow · May 2026" data-ru="Первое издание · Москва · Май 2026">Inaugural Edition · Moscow · May 2026</span>
     </div>
     <h1 class="hero-h1">
-      <span data-en="Where <em>international</em><br>MICE meets Russia." data-ru="Здесь <em>международный</em><br>MICE встречает Россию.">Where <em>international</em><br>MICE meets Russia.</span>
+      <span class="ex-only" data-en="Your market.<br><em>Direct access.</em>" data-ru="Ваш рынок.<br><em>Прямой доступ.</em>">Your market.<br><em>Direct access.</em></span>
+      <span class="buyer-only" data-en="Where <em>international</em><br>MICE meets Russia." data-ru="Здесь <em>международный</em><br>MICE встречает Россию.">Where <em>international</em><br>MICE meets Russia.</span>
     </h1>
     <p class="hero-sub" data-en="No noise. No random visitors. Real business." data-ru="Без шума. Без случайных гостей. Только бизнес.">No noise. No random visitors. Real business.</p>
     <div class="hero-meta">
@@ -829,7 +1170,8 @@
       </div>
     </div>
     <div class="hero-btns">
-      <a href="#register" class="btn-fill" data-en="Schedule My Meetings" data-ru="Записаться на встречи">Schedule My Meetings</a>
+      <a href="#register" class="btn-fill ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+      <a href="#register" class="btn-fill buyer-only" data-en="Schedule My Meetings" data-ru="Записаться на встречи">Schedule My Meetings</a>
       <a href="#about" class="btn-ghost" data-en="About the Event" data-ru="О мероприятии">About the Event</a>
     </div>
   </div>
@@ -848,7 +1190,6 @@
     <span class="marquee-item">Russian MICE Market <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Pre-Scheduled Meetings <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">No Random Visitors <span class="marquee-dot">◆</span></span>
-    <!-- duplicate for seamless loop -->
     <span class="marquee-item">B2B MICE Workshop <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Moscow · ENZO Hotel 5★ <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Inaugural Edition · May 2026 <span class="marquee-dot">◆</span></span>
@@ -868,7 +1209,8 @@
         <span class="s-tag-text" data-en="About" data-ru="О мероприятии">About</span>
       </div>
       <h2 class="reveal reveal-d1" data-en="Not just<br>presence.<br>Real matches." data-ru="Не просто<br>присутствие.<br>Реальные сделки.">Not just<br>presence.<br>Real matches.</h2>
-      <p class="about-body reveal reveal-d2" data-en="MICE Signature is a closed-format B2B workshop — a focused entry point into the Russian outbound MICE market for international hotels, DMCs, airlines and destinations." data-ru="MICE Signature — закрытый B2B-воркшоп, созданный как точка входа на российский выездной MICE-рынок для международных отелей, DMC, авиакомпаний и дестинаций.">MICE Signature is a closed-format B2B workshop — a focused entry point into the Russian outbound MICE market for international hotels, DMCs, airlines and destinations.</p>
+      <p class="about-body reveal reveal-d2 ex-only" data-en="MICE Signature is a closed-format B2B workshop — a focused entry point into the Russian outbound MICE market for international hotels, DMCs, airlines and destinations." data-ru="MICE Signature — закрытый B2B-воркшоп, созданный как точка входа на российский выездной MICE-рынок для международных отелей, DMC, авиакомпаний и дестинаций.">MICE Signature is a closed-format B2B workshop — a focused entry point into the Russian outbound MICE market for international hotels, DMCs, airlines and destinations.</p>
+      <p class="about-body reveal reveal-d2 buyer-only" data-en="MICE Signature is a closed-format B2B workshop bringing qualified Russian buyers face-to-face with leading international MICE destinations, hotels and DMCs — all in one focused day." data-ru="MICE Signature — закрытый B2B-воркшоп, где квалифицированные российские байеры встречаются напрямую с ведущими международными дестинациями, отелями и DMC — в рамках одного насыщенного дня.">MICE Signature is a closed-format B2B workshop bringing qualified Russian buyers face-to-face with leading international MICE destinations, hotels and DMCs — all in one focused day.</p>
       <p class="about-body reveal reveal-d2" data-en="We don't do mass events. Every buyer at this table has been personally qualified by Match Point — 20 years inside the Russian MICE market." data-ru="Мы не делаем массовых мероприятий. Каждый байер за этим столом лично отобран Match Point — 20 лет внутри российского MICE-рынка.">We don't do mass events. Every buyer at this table has been personally qualified by Match Point — 20 years inside the Russian MICE market.</p>
       <div class="about-quote reveal reveal-d3">
         <p data-en="We do not waste your time. We do not waste theirs." data-ru="Мы не тратим ваше время. Мы не тратим их время.">We do not waste your time. We do not waste theirs.</p>
@@ -969,10 +1311,12 @@
   <div class="inner">
     <div class="s-tag reveal">
       <div class="s-tag-line"></div>
-      <span class="s-tag-text" data-en="Who Exhibits" data-ru="Экспоненты">Who Exhibits</span>
+      <span class="s-tag-text ex-only" data-en="Who Exhibits" data-ru="Экспоненты">Who Exhibits</span>
+      <span class="s-tag-text buyer-only" data-en="Who You Will Meet" data-ru="С кем вы встретитесь">Who You Will Meet</span>
     </div>
     <h2 class="reveal reveal-d1" data-en="International partners.<br>Russian market." data-ru="Международные партнёры.<br>Российский рынок.">International partners.<br>Russian market.</h2>
-    <p class="ex-intro reveal reveal-d2" data-en="All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise." data-ru="Все экспоненты — международные компании, которые напрямую представляют свой продукт квалифицированным российским байерам. Без посредников. Без лишнего шума.">All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise.</p>
+    <p class="ex-intro reveal reveal-d2 ex-only" data-en="All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise." data-ru="Все экспоненты — международные компании, которые напрямую представляют свой продукт квалифицированным российским байерам. Без посредников. Без лишнего шума.">All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise.</p>
+    <p class="ex-intro reveal reveal-d2 buyer-only" data-en="At your table: international hotels 4–5★, DMCs, airlines and national tourism offices — all presenting their best MICE product exclusively to qualified Russian buyers like you." data-ru="За вашим столом: международные отели 4–5★, DMC, авиакомпании и национальные туристические офисы — все представляют свой лучший MICE-продукт исключительно квалифицированным российским байерам.">At your table: international hotels 4–5★, DMCs, airlines and national tourism offices — all presenting their best MICE product exclusively to qualified Russian buyers like you.</p>
     <div class="ex-grid">
       <div class="ex-card reveal">
         <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><rect x="6" y="12" width="24" height="20" rx="1" stroke="#C8A44A" stroke-width="1.4"/><path d="M12 32V24h12v8" stroke="#C8A44A" stroke-width="1.4"/><path d="M6 12 18 4l12 8" stroke="#C8A44A" stroke-width="1.4"/><rect x="15" y="17" width="6" height="6" stroke="#C8A44A" stroke-width="1.2"/></svg>
@@ -1013,16 +1357,24 @@
   <div class="reg-inner">
     <div class="s-tag reveal" style="justify-content:center;">
       <div class="s-tag-line"></div>
-      <span class="s-tag-text" data-en="Meetings" data-ru="Встречи">Meetings</span>
+      <span class="s-tag-text ex-only" data-en="Participation" data-ru="Участие">Participation</span>
+      <span class="s-tag-text buyer-only" data-en="Meetings" data-ru="Встречи">Meetings</span>
       <div class="s-tag-line"></div>
     </div>
-    <h2 class="reveal reveal-d1" data-en="Schedule your<br>meetings." data-ru="Запишитесь<br>на встречи.">Schedule your<br>meetings.</h2>
-    <p class="reg-body reveal reveal-d2" data-en="All meetings at MICE Signature are pre-scheduled. Select the partners you want to meet — we'll build your personal agenda for the day. No queuing. No wasted time." data-ru="Все встречи на MICE Signature проходят по предзаписи. Выберите партнёров — мы составим ваше расписание на день. Без очередей. Без потери времени.">All meetings at MICE Signature are pre-scheduled. Select the partners you want to meet — we'll build your personal agenda for the day. No queuing. No wasted time.</p>
-    <a href="#" class="btn-register reveal reveal-d3" data-en="Open Meeting Planner" data-ru="Открыть планировщик встреч">
+    <h2 class="reveal reveal-d1 ex-only" data-en="Secure your<br>stand." data-ru="Забронируйте<br>место.">Secure your<br>stand.</h2>
+    <h2 class="reveal reveal-d1 buyer-only" data-en="Schedule your<br>meetings." data-ru="Запишитесь<br>на встречи.">Schedule your<br>meetings.</h2>
+    <p class="reg-body reveal reveal-d2 ex-only" data-en="MICE Signature is a closed format. Exhibitor places are limited and allocated by category. Apply early — we confirm your participation and build your meeting schedule before the event." data-ru="MICE Signature — закрытый формат. Количество мест для экспонентов ограничено и распределяется по категориям. Подайте заявку заранее — мы подтвердим участие и составим расписание встреч.">MICE Signature is a closed format. Exhibitor places are limited and allocated by category. Apply early — we confirm your participation and build your meeting schedule before the event.</p>
+    <p class="reg-body reveal reveal-d2 buyer-only" data-en="All meetings at MICE Signature are pre-scheduled. Select the partners you want to meet — we'll build your personal agenda for the day. No queuing. No wasted time." data-ru="Все встречи на MICE Signature проходят по предзаписи. Выберите партнёров — мы составим ваше расписание на день. Без очередей. Без потери времени.">All meetings at MICE Signature are pre-scheduled. Select the partners you want to meet — we'll build your personal agenda for the day. No queuing. No wasted time.</p>
+    <a href="#" class="btn-register reveal reveal-d3 ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">
+      <span data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#" class="btn-register reveal reveal-d3 buyer-only" data-en="Open Meeting Planner" data-ru="Открыть планировщик встреч">
       <span data-en="Open Meeting Planner" data-ru="Открыть планировщик встреч">Open Meeting Planner</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <p class="reg-note reveal reveal-d4" data-en="The meeting planner will open once registration is confirmed." data-ru="Планировщик встреч будет доступен после подтверждения регистрации.">The meeting planner will open once registration is confirmed.</p>
+    <p class="reg-note reveal reveal-d4 ex-only" data-en="Places are limited. We will confirm your category and schedule within 3 business days." data-ru="Количество мест ограничено. Подтверждение категории и расписания — в течение 3 рабочих дней.">Places are limited. We will confirm your category and schedule within 3 business days.</p>
+    <p class="reg-note reveal reveal-d4 buyer-only" data-en="The meeting planner will open once registration is confirmed." data-ru="Планировщик встреч будет доступен после подтверждения регистрации.">The meeting planner will open once registration is confirmed.</p>
   </div>
 </section>
 
@@ -1073,9 +1425,224 @@
   <p data-en="ENZO Hotel Moscow · 20 May 2026 · Inaugural Edition" data-ru="ENZO Hotel Москва · 20 мая 2026 · Первое издание">ENZO Hotel Moscow · 20 May 2026 · Inaugural Edition</p>
 </footer>
 
+</div><!-- /#main -->
+
 <!-- ════════ JS ════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
-  /* ── Language ── */
+  /* ─── Splash + Gate ─── */
+  (function () {
+    const splash      = document.getElementById('splash');
+    const gate        = document.getElementById('gate');
+    const main        = document.getElementById('main');
+    const sigText     = document.querySelector('.sig-text');
+    const writingPath = document.getElementById('writing-path');
+    const penTip      = document.getElementById('pen-tip');
+    const splashLine  = document.getElementById('splash-line');
+    const splashSub   = document.getElementById('splash-sub');
+
+    /* If role already chosen this session — skip splash entirely */
+    const savedRole = sessionStorage.getItem('ms-role');
+    if (savedRole) {
+      splash.style.display = 'none';
+      gate.style.display   = 'none';
+      main.removeAttribute('hidden');
+      applyRole(savedRole);
+      window.addEventListener('load', () => {
+        document.querySelector('.hero').classList.add('loaded');
+        initReveal();
+      });
+      return;
+    }
+
+    window.addEventListener('load', () => {
+      document.fonts.ready.then(startWriting);
+    });
+
+    /* ── Build center-line writing path ─────────────────────────────── */
+    function buildPath(chars) {
+      /*
+        Technique: for each letter, the pen enters at the top of the
+        character (cap-height for capitals, x-height for lowercase) and
+        sweeps down to the baseline / descender.  Between letters a
+        short lift-and-connect arc bridges the gap.  The path is used as
+        a growing white stroke inside an SVG <mask> — as the stroke
+        expands it reveals the underlying Pinyon Script text.
+      */
+      const BL   = 152;   /* baseline y */
+      const CAP  = 72;    /* top of capitals */
+      const XH   = 112;   /* top of lowercase */
+      const DESC = 182;   /* descender bottom */
+
+      let d = '';
+      let px = 0, py = 0; /* previous exit coords */
+
+      chars.forEach((ch) => {
+        if (ch.char === ' ') {
+          px = ch.x2;
+          py = BL - 28;
+          return;
+        }
+
+        const upper = ch.char >= 'A' && ch.char <= 'Z';
+        const desc  = 'gjpqy'.includes(ch.char);
+        const asc   = 'bdfhiklt'.includes(ch.char);
+
+        const ey  = upper ? CAP  : (asc ? CAP + 18 : XH);   /* enter y */
+        const xy  = desc  ? DESC : BL;                       /* exit  y */
+        const w   = ch.x2 - ch.x1;
+
+        if (!d) {
+          /* Very first stroke starts from slightly above-left */
+          d = `M${ch.x1 - 2},${ey + 4}`;
+        } else {
+          /* Connect: lift from previous exit up to new entry */
+          const lift = Math.min(py, ey) - 14;
+          d += ` C${px + 7},${lift} ${ch.x1 - 7},${lift} ${ch.x1},${ey}`;
+        }
+
+        /* Main stroke: enter high → sweep to exit at baseline/descender.
+           The control points pull the curve through the body of the letter. */
+        d += ` C${ch.x1 + w * 0.38},${xy} ${ch.x1 + w * 0.62},${xy} ${ch.x2},${xy}`;
+
+        px = ch.x2;
+        py = xy;
+      });
+
+      return d;
+    }
+
+    /* ── Run animation ───────────────────────────────────────────────── */
+    function startWriting() {
+      const str = sigText.textContent;
+
+      /* Measure every character's screen position */
+      const chars = [];
+      for (let i = 0; i < str.length; i++) {
+        try {
+          chars.push({
+            char: str[i],
+            x1: sigText.getStartPositionOfChar(i).x,
+            x2: sigText.getEndPositionOfChar(i).x
+          });
+        } catch (e) {}
+      }
+
+      if (!chars.length) { simpleFade(); return; }
+
+      const pathD = buildPath(chars);
+      writingPath.setAttribute('d', pathD);
+
+      const totalLen = writingPath.getTotalLength();
+      gsap.set(writingPath, { attr: { 'stroke-dasharray': totalLen, 'stroke-dashoffset': totalLen } });
+      gsap.set(penTip, { opacity: 1, attr: { cx: chars[0].x1, cy: 72 } });
+
+      gsap.to(writingPath, {
+        attr: { 'stroke-dashoffset': 0 },
+        duration: 5.5,
+        ease: 'power1.inOut',
+
+        onUpdate() {
+          /* Read the ACTUAL animated dashoffset (not time-progress) so the
+             pen tip stays exactly at the leading edge regardless of easing */
+          const offset  = parseFloat(writingPath.getAttribute('stroke-dashoffset')) || 0;
+          const drawn   = Math.max(0, totalLen - offset);
+          const pt      = writingPath.getPointAtLength(drawn);
+          penTip.setAttribute('cx', pt.x);
+          penTip.setAttribute('cy', pt.y);
+        },
+
+        onComplete() {
+          gsap.to(penTip, { opacity: 0, duration: 0.5 });
+          splashLine.classList.add('grow');
+          setTimeout(() => splashSub.classList.add('show'), 300);
+          /* Pause so the viewer can read the finished signature */
+          setTimeout(() => {
+            splash.classList.add('fade-out');
+            setTimeout(() => {
+              splash.style.display = 'none';
+              gate.classList.add('visible');
+            }, 900);
+          }, 2200);
+        }
+      });
+    }
+
+    /* ── Fallback if font/SVG measurements unavailable ───────────────── */
+    function simpleFade() {
+      gsap.fromTo(sigText, { opacity: 0 }, {
+        opacity: 1, duration: 1.2, delay: 0.5,
+        onComplete() {
+          splashLine.classList.add('grow');
+          setTimeout(() => splashSub.classList.add('show'), 200);
+          setTimeout(() => {
+            splash.classList.add('fade-out');
+            setTimeout(() => {
+              splash.style.display = 'none';
+              gate.classList.add('visible');
+            }, 900);
+          }, 900);
+        }
+      });
+    }
+
+    /* Keyboard support on gate halves */
+    document.querySelectorAll('.gate-half').forEach(half => {
+      half.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') half.click();
+      });
+    });
+  })();
+
+  /* ─── Choose role ─── */
+  function chooseRole(role) {
+    const gate = document.getElementById('gate');
+    const main = document.getElementById('main');
+
+    gate.style.transition = 'opacity .5s ease';
+    gate.style.opacity = '0';
+    gate.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+      gate.style.display = 'none';
+      main.removeAttribute('hidden');
+      applyRole(role);
+      sessionStorage.setItem('ms-role', role);
+
+      /* Restore saved language preference */
+      const savedLang = localStorage.getItem('ms-lang');
+      if (savedLang && savedLang !== 'en') setLang(savedLang);
+
+      document.querySelector('.hero').classList.add('loaded');
+      initReveal();
+    }, 500);
+  }
+
+  /* ─── Apply role classes + show/hide role text ─── */
+  function applyRole(role) {
+    document.body.classList.remove('body-role-exhibitor', 'body-role-buyer');
+    document.body.classList.add('body-role-' + role);
+  }
+
+  /* ─── Reset to gate ─── */
+  function resetRole() {
+    sessionStorage.removeItem('ms-role');
+    const main = document.getElementById('main');
+    const gate = document.getElementById('gate');
+    main.setAttribute('hidden', '');
+    gate.style.display = '';
+    gate.style.opacity = '0';
+    gate.style.pointerEvents = 'none';
+    /* Small delay to let display:flex apply before fading in */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        gate.style.transition = 'opacity .5s ease';
+        gate.classList.add('visible');
+      });
+    });
+  }
+
+  /* ─── Language ─── */
   function setLang(lang) {
     document.querySelectorAll('[data-en]').forEach(el => {
       el.innerHTML = lang === 'en'
@@ -1087,30 +1654,30 @@
     document.documentElement.lang = lang;
     localStorage.setItem('ms-lang', lang);
   }
-  const saved = localStorage.getItem('ms-lang');
-  if (saved && saved !== 'en') setLang(saved);
 
-  /* ── Hero load animation ── */
-  window.addEventListener('load', () => {
-    document.querySelector('.hero').classList.add('loaded');
-  });
-
-  /* ── Sticky nav ── */
+  /* ─── Sticky nav ─── */
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   }, { passive: true });
 
-  /* ── Scroll reveal ── */
-  const revealObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        revealObs.unobserve(e.target);
-      }
+  /* ─── Scroll reveal ─── */
+  let revealObs;
+  function initReveal() {
+    if (revealObs) revealObs.disconnect();
+    revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => {
+      el.classList.remove('in');
+      revealObs.observe(el);
     });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+  }
 </script>
 
 </body>
