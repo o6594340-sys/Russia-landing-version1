@@ -13,8 +13,9 @@ A portal for registered participants — international exhibitors and invited Ru
 ## Stack
 
 - Single `index.html` file — inline CSS + vanilla JS, no build step
-- Fonts: Space Grotesk (700) + Jost via Google Fonts
-- EN / RU language switcher (localStorage)
+- Fonts: Cormorant Garamond + Instrument Sans + Pinyon Script via Google Fonts
+- GSAP 3.12.5 (CDN) for gate animation
+- EN / RU language switcher (sessionStorage)
 - Responsive: CSS Grid + Flexbox, breakpoints at 1000px and 620px
 
 ## Files
