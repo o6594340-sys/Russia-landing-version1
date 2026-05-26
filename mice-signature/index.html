@@ -1071,7 +1071,7 @@
        REGISTER
     ══════════════════════════════════════ */
     .register {
-      background: var(--chalk);
+      background: var(--ink);
       position: relative; overflow: hidden;
       text-align: center;
     }
@@ -1080,9 +1080,9 @@
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%,-50%);
-      width: 800px; height: 800px;
+      width: 900px; height: 900px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,164,74,.06) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(200,164,74,.055) 0%, transparent 60%);
       pointer-events: none;
     }
     .reg-inner {
@@ -1091,37 +1091,40 @@
     }
     .register h2 {
       font-family: 'Cormorant Garamond', sans-serif;
-      font-size: clamp(2.6rem, 5vw, 5rem);
+      font-size: clamp(3rem, 6vw, 6.4rem);
       font-weight: 700;
-      line-height: 1.0;
+      line-height: .95;
       letter-spacing: -.02em;
-      color: var(--ink);
-      margin-bottom: 22px;
+      font-style: italic;
+      color: var(--chalk);
+      margin-bottom: 32px;
     }
     .reg-body {
-      font-size: .9rem; font-weight: 400;
-      color: var(--warm);
-      line-height: 1.85;
-      margin-bottom: 48px;
+      font-size: .8rem; font-weight: 400;
+      color: rgba(248,244,238,.38);
+      line-height: 1.9;
+      letter-spacing: .04em;
+      margin-bottom: 52px;
     }
     .btn-register {
-      display: inline-flex; align-items: center; gap: 12px;
+      display: inline-flex; align-items: center; gap: 14px;
       font-family: 'Instrument Sans', sans-serif;
       font-size: .72rem; font-weight: 600;
       letter-spacing: .18em; text-transform: uppercase;
       background: var(--gold); color: var(--ink);
       border: none;
-      padding: 19px 52px; text-decoration: none;
+      padding: 21px 60px; text-decoration: none;
       transition: background .2s, transform .15s;
     }
     .btn-register:hover { background: #D9B55E; transform: translateY(-2px); }
     .btn-register svg { transition: transform .2s; }
     .btn-register:hover svg { transform: translateX(4px); }
     .reg-note {
-      margin-top: 22px;
-      font-size: .7rem; font-weight: 400;
-      color: var(--warm);
-      letter-spacing: .04em;
+      margin-top: 24px;
+      font-size: .65rem; font-weight: 400;
+      color: rgba(248,244,238,.2);
+      letter-spacing: .1em;
+      text-transform: uppercase;
     }
 
     /* ══════════════════════════════════════
@@ -1577,8 +1580,8 @@
   <div class="reg-inner">
     <h2 class="reveal reveal-d1 ex-only" data-en="Secure your<br>stand." data-ru="Забронируйте<br>место.">Secure your<br>stand.</h2>
     <h2 class="reveal reveal-d1 buyer-only" data-en="Schedule your<br>meetings." data-ru="Запишитесь<br>на встречи.">Schedule your<br>meetings.</h2>
-    <p class="reg-body reveal reveal-d2 ex-only" data-en="MICE Signature is a closed format. Exhibitor places are limited and allocated by category. Apply early — we confirm your participation and build your meeting schedule before the event." data-ru="MICE Signature — закрытый формат. Количество мест для экспонентов ограничено и распределяется по категориям. Подайте заявку заранее — мы подтвердим участие и составим расписание встреч.">MICE Signature is a closed format. Exhibitor places are limited and allocated by category. Apply early — we confirm your participation and build your meeting schedule before the event.</p>
-    <p class="reg-body reveal reveal-d2 buyer-only" data-en="All meetings at MICE Signature are pre-scheduled. Select the partners you want to meet — we'll build your personal agenda for the day. No queuing. No wasted time." data-ru="Все встречи на MICE Signature проходят по предзаписи. Выберите партнёров — мы составим ваше расписание на день. Без очередей. Без потери времени.">All meetings at MICE Signature are pre-scheduled. Select the partners you want to meet — we'll build your personal agenda for the day. No queuing. No wasted time.</p>
+    <p class="reg-body reveal reveal-d2 ex-only" data-en="Closed format · Limited places · 20 August 2026 · Moscow" data-ru="Закрытый формат · Ограниченное число мест · 20 августа 2026 · Москва">Closed format · Limited places · 20 August 2026 · Moscow</p>
+    <p class="reg-body reveal reveal-d2 buyer-only" data-en="Pre-scheduled meetings · No queuing · 20 August 2026 · Moscow" data-ru="Встречи по предзаписи · Без очередей · 20 августа 2026 · Москва">Pre-scheduled meetings · No queuing · 20 August 2026 · Moscow</p>
     <a href="#" class="btn-register reveal reveal-d3 ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">
       <span data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
