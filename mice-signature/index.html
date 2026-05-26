@@ -523,6 +523,22 @@
       32%  { transform: translate(-90px, 70px) scale(1.18); opacity: 1; }
       68%  { transform: translate(110px, -45px) scale(0.82); opacity: .45; }
     }
+    .hero-date-bg {
+      position: absolute;
+      bottom: -0.15em;
+      right: -0.05em;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(8rem, 18vw, 22rem);
+      font-weight: 700;
+      color: rgba(200,164,74,.045);
+      line-height: 1;
+      letter-spacing: -.04em;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      z-index: 0;
+    }
+
     .hero-grain {
       position: absolute;
       inset: 0;
@@ -1131,7 +1147,11 @@
       color: var(--ink);
       margin-bottom: 48px;
     }
-    .c-list { display: flex; flex-direction: column; gap: 24px; }
+    .c-contacts { display: flex; flex-direction: column; gap: 0; }
+    .c-person { padding: 28px 0; }
+    .c-person:first-child { padding-top: 0; }
+    .c-divider { height: 1px; background: var(--line); }
+    .c-list { display: flex; flex-direction: column; gap: 18px; }
     .c-label {
       font-size: .58rem; font-weight: 600;
       letter-spacing: .18em; text-transform: uppercase;
@@ -1369,10 +1389,11 @@
   <div class="chirico-orb chirico-orb-2"></div>
   <div class="chirico-orb chirico-orb-3"></div>
   <div class="hero-grain"></div>
+  <div class="hero-date-bg" aria-hidden="true">20.08</div>
   <div class="hero-content">
     <div class="h-tag">
       <div class="h-tag-line"></div>
-      <span class="h-tag-text" data-en="Inaugural Edition · Moscow · May 2026" data-ru="Первое издание · Москва · Май 2026">Inaugural Edition · Moscow · May 2026</span>
+      <span class="h-tag-text" data-en="Inaugural Edition · Moscow · August 2026" data-ru="Первое издание · Москва · Август 2026">Inaugural Edition · Moscow · August 2026</span>
     </div>
     <h1 class="hero-h1">
       <span class="hero-mice">MICE</span>
@@ -1385,7 +1406,7 @@
     <div class="hero-meta">
       <div class="meta-item">
         <span class="meta-label" data-en="Date" data-ru="Дата">Date</span>
-        <span class="meta-value" data-en="May 20, 2026" data-ru="20 мая 2026">May 20, 2026</span>
+        <span class="meta-value" data-en="August 20, 2026" data-ru="20 августа 2026">August 20, 2026</span>
       </div>
       <div class="meta-item">
         <span class="meta-label" data-en="Venue" data-ru="Место">Venue</span>
@@ -1411,14 +1432,14 @@
   <div class="marquee-track">
     <span class="marquee-item">B2B MICE Workshop <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Moscow · ENZO Hotel 5★ <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">Inaugural Edition · May 2026 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Inaugural Edition · August 2026 <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">International Partners <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Russian MICE Market <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Pre-Scheduled Meetings <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">No Random Visitors <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">B2B MICE Workshop <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Moscow · ENZO Hotel 5★ <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">Inaugural Edition · May 2026 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Inaugural Edition · August 2026 <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">International Partners <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Russian MICE Market <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">Pre-Scheduled Meetings <span class="marquee-dot">◆</span></span>
@@ -1430,10 +1451,6 @@
 <section class="section about" id="about">
   <div class="inner about-grid">
     <div>
-      <div class="s-tag reveal">
-        <div class="s-tag-line"></div>
-        <span class="s-tag-text" data-en="About" data-ru="О мероприятии">About</span>
-      </div>
       <h2 class="reveal reveal-d1" data-en="Not just<br>presence.<br>Real matches." data-ru="Не просто<br>присутствие.<br>Реальные сделки.">Not just<br>presence.<br>Real matches.</h2>
       <p class="about-body reveal reveal-d2 ex-only" data-en="MICE Signature is a closed-format B2B workshop — a focused entry point into the Russian outbound MICE market for international hotels, DMCs, airlines and destinations." data-ru="MICE Signature — закрытый B2B-воркшоп, созданный как точка входа на российский выездной MICE-рынок для международных отелей, DMC, авиакомпаний и дестинаций.">MICE Signature is a closed-format B2B workshop — a focused entry point into the Russian outbound MICE market for international hotels, DMCs, airlines and destinations.</p>
       <p class="about-body reveal reveal-d2 buyer-only" data-en="MICE Signature is a closed-format B2B workshop bringing qualified Russian buyers face-to-face with leading international MICE destinations, hotels and DMCs — all in one focused day." data-ru="MICE Signature — закрытый B2B-воркшоп, где квалифицированные российские байеры встречаются напрямую с ведущими международными дестинациями, отелями и DMC — в рамках одного насыщенного дня.">MICE Signature is a closed-format B2B workshop bringing qualified Russian buyers face-to-face with leading international MICE destinations, hotels and DMCs — all in one focused day.</p>
@@ -1497,10 +1514,6 @@
 <!-- ════════ PROGRAM ════════ -->
 <section class="section program" id="program">
   <div class="inner">
-    <div class="s-tag reveal">
-      <div class="s-tag-line"></div>
-      <span class="s-tag-text" data-en="Programme" data-ru="Программа">Programme</span>
-    </div>
     <h2 class="reveal reveal-d1" data-en="One day.<br>Two business sessions." data-ru="Один день.<br>Две деловые сессии.">One day.<br>Two business sessions.</h2>
     <div class="prog-grid">
       <div class="prog-part reveal reveal-d2">
@@ -1541,11 +1554,6 @@
 <section class="section exhibitors" id="exhibitors">
   <div class="ex-grain"></div>
   <div class="inner">
-    <div class="s-tag reveal">
-      <div class="s-tag-line"></div>
-      <span class="s-tag-text ex-only" data-en="Who Exhibits" data-ru="Экспоненты">Who Exhibits</span>
-      <span class="s-tag-text buyer-only" data-en="Who You Will Meet" data-ru="С кем вы встретитесь">Who You Will Meet</span>
-    </div>
     <h2 class="reveal reveal-d1" data-en="International partners.<br>Russian market." data-ru="Международные партнёры.<br>Российский рынок.">International partners.<br>Russian market.</h2>
     <p class="ex-intro reveal reveal-d2 ex-only" data-en="All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise." data-ru="Все экспоненты — международные компании, которые напрямую представляют свой продукт квалифицированным российским байерам. Без посредников. Без лишнего шума.">All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise.</p>
     <p class="ex-intro reveal reveal-d2 buyer-only" data-en="At your table: international hotels 4–5★, DMCs, airlines and national tourism offices — all presenting their best MICE product exclusively to qualified Russian buyers like you." data-ru="За вашим столом: международные отели 4–5★, DMC, авиакомпании и национальные туристические офисы — все представляют свой лучший MICE-продукт исключительно квалифицированным российским байерам.">At your table: international hotels 4–5★, DMCs, airlines and national tourism offices — all presenting their best MICE product exclusively to qualified Russian buyers like you.</p>
@@ -1587,12 +1595,6 @@
 <!-- ════════ REGISTER ════════ -->
 <section class="section register" id="register">
   <div class="reg-inner">
-    <div class="s-tag reveal" style="justify-content:center;">
-      <div class="s-tag-line"></div>
-      <span class="s-tag-text ex-only" data-en="Participation" data-ru="Участие">Participation</span>
-      <span class="s-tag-text buyer-only" data-en="Meetings" data-ru="Встречи">Meetings</span>
-      <div class="s-tag-line"></div>
-    </div>
     <h2 class="reveal reveal-d1 ex-only" data-en="Secure your<br>stand." data-ru="Забронируйте<br>место.">Secure your<br>stand.</h2>
     <h2 class="reveal reveal-d1 buyer-only" data-en="Schedule your<br>meetings." data-ru="Запишитесь<br>на встречи.">Schedule your<br>meetings.</h2>
     <p class="reg-body reveal reveal-d2 ex-only" data-en="MICE Signature is a closed format. Exhibitor places are limited and allocated by category. Apply early — we confirm your participation and build your meeting schedule before the event." data-ru="MICE Signature — закрытый формат. Количество мест для экспонентов ограничено и распределяется по категориям. Подайте заявку заранее — мы подтвердим участие и составим расписание встреч.">MICE Signature is a closed format. Exhibitor places are limited and allocated by category. Apply early — we confirm your participation and build your meeting schedule before the event.</p>
@@ -1619,19 +1621,41 @@
         <span class="s-tag-text" data-en="Contact" data-ru="Контакты">Contact</span>
       </div>
       <h2 class="reveal reveal-d1" data-en="Questions?<br>We're here." data-ru="Вопросы?<br>Мы здесь.">Questions?<br>We're here.</h2>
-      <div class="c-list reveal reveal-d2">
-        <div>
-          <div class="c-label" data-en="Name" data-ru="Имя">Name</div>
-          <div class="c-value">Olga Kharlenok</div>
+      <div class="c-contacts reveal reveal-d2">
+        <div class="c-person">
+          <div class="c-list">
+            <div>
+              <div class="c-label" data-en="Name" data-ru="Имя">Name</div>
+              <div class="c-value">Olga Kharlenok</div>
+            </div>
+            <div>
+              <div class="c-label">Email</div>
+              <div class="c-value"><a href="mailto:olga@matchpoints.ru">olga@matchpoints.ru</a></div>
+            </div>
+            <div>
+              <div class="c-label">WhatsApp / Telegram</div>
+              <div class="c-value"><a href="tel:+79104003460">+7 (910) 400-34-60</a></div>
+            </div>
+          </div>
         </div>
-        <div>
-          <div class="c-label">Email</div>
-          <div class="c-value"><a href="mailto:olga@matchpoints.ru">olga@matchpoints.ru</a></div>
+        <div class="c-divider"></div>
+        <div class="c-person">
+          <div class="c-list">
+            <div>
+              <div class="c-label" data-en="Name" data-ru="Имя">Name</div>
+              <div class="c-value">Daria Ignatieva</div>
+            </div>
+            <div>
+              <div class="c-label">Email</div>
+              <div class="c-value"><a href="mailto:daria@matchpoints.ru">daria@matchpoints.ru</a></div>
+            </div>
+            <div>
+              <div class="c-label">WhatsApp / Telegram</div>
+              <div class="c-value"><a href="tel:+79164250150">+7 (916) 425-01-50</a></div>
+            </div>
+          </div>
         </div>
-        <div>
-          <div class="c-label">WhatsApp / Telegram</div>
-          <div class="c-value"><a href="tel:+79104003460">+7 (910) 400-34-60</a></div>
-        </div>
+        <div class="c-divider"></div>
         <div>
           <div class="c-label" data-en="Website" data-ru="Сайт">Website</div>
           <div class="c-value"><a href="https://matchpoints.ru" target="_blank" rel="noopener">matchpoints.ru</a></div>
@@ -1654,7 +1678,7 @@
 <!-- ════════ FOOTER ════════ -->
 <footer>
   <p>© 2026 MICE Signature. <span data-en="Organised by Match Point." data-ru="Организовано Match Point.">Organised by Match Point.</span></p>
-  <p data-en="ENZO Hotel Moscow · 20 May 2026 · Inaugural Edition" data-ru="ENZO Hotel Москва · 20 мая 2026 · Первое издание">ENZO Hotel Moscow · 20 May 2026 · Inaugural Edition</p>
+  <p data-en="ENZO Hotel Moscow · 20 August 2026 · Inaugural Edition" data-ru="ENZO Hotel Москва · 20 августа 2026 · Первое издание">ENZO Hotel Moscow · 20 August 2026 · Inaugural Edition</p>
 </footer>
 
 </div><!-- /#main -->
