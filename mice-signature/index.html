@@ -908,35 +908,42 @@
       padding: 0 60px;
       display: grid;
       grid-template-columns: repeat(3,1fr);
-      gap: 0;
+      gap: 0 64px;
     }
     .stat {
-      padding: 80px 40px;
-      border-right: 1px solid var(--line);
+      padding: 96px 48px 96px 0;
     }
-    .stat:last-child { border-right: none; }
+    .stat::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--gold);
+      margin-bottom: 32px;
+      opacity: .6;
+    }
     .stat-num {
       font-family: 'Cormorant Garamond', sans-serif;
-      font-size: clamp(3.8rem, 5.5vw, 6rem);
+      font-size: clamp(4rem, 6vw, 7rem);
       font-weight: 700;
-      color: var(--gold);
-      line-height: .9;
+      color: var(--ink);
+      line-height: .85;
       letter-spacing: -.03em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       white-space: nowrap;
     }
     .stat-num sup {
       font-size: .38em;
       vertical-align: top;
       margin-top: .15em;
-      color: var(--gold-dim);
+      color: var(--gold);
     }
     .stat-label {
       font-family: 'Instrument Sans', sans-serif;
-      font-size: .68rem; font-weight: 400;
-      letter-spacing: .1em; text-transform: uppercase;
+      font-size: .82rem; font-weight: 400;
+      letter-spacing: 0;
       color: var(--warm);
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
     /* ══════════════════════════════════════
@@ -953,48 +960,39 @@
       margin-bottom: 60px;
     }
     .prog-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 720px;
     }
     .prog-part {
-      background: var(--chalk);
-      padding: 44px 40px;
-      position: relative;
+      padding: 0;
+      margin-bottom: 56px;
     }
-    .prog-part::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--gold);
-      opacity: .5;
-    }
+    .prog-part:last-child { margin-bottom: 0; }
     .prog-part-label {
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: .6rem; font-weight: 600;
-      letter-spacing: .2em; text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 28px;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .prog-part-label::after {
-      content: ''; flex: 1; height: 1px; background: var(--line);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      font-weight: 600;
+      font-style: italic;
+      color: var(--ink);
+      margin-bottom: 24px;
+      line-height: 1;
     }
     .prog-row {
       display: grid;
-      grid-template-columns: 108px 1fr;
-      gap: 12px;
-      padding: 16px 0;
+      grid-template-columns: 130px 1fr;
+      gap: 0;
+      padding: 14px 0;
       border-bottom: 1px solid var(--line);
       align-items: baseline;
     }
-    .prog-row:last-child { border-bottom: none; }
+    .prog-row:first-of-type { border-top: 1px solid var(--line); }
     .prog-time {
-      font-family: 'Cormorant Garamond', sans-serif;
-      font-size: .85rem; font-weight: 700;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .72rem; font-weight: 500;
       color: var(--gold);
-      letter-spacing: .02em;
+      letter-spacing: .04em;
     }
     .prog-act {
       font-size: .85rem; font-weight: 400;
@@ -1233,7 +1231,6 @@
       .stats-inner { grid-template-columns: 1fr; gap: 0; }
       .stat { border-right: none; border-bottom: 1px solid rgba(200,164,74,.1); }
       .stat:last-child { border-bottom: none; }
-      .prog-grid { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: 1fr; gap: 48px; }
       footer { padding: 18px 32px; }
     }
@@ -1250,7 +1247,6 @@
       .section { padding: 60px 20px; }
       .stats-inner { padding: 0 20px; }
       .stat { padding: 56px 20px; }
-      .prog-part { padding: 32px 22px; }
       .ex-item-name { font-size: clamp(1.8rem, 8vw, 3rem); }
       .ex-item-desc { display: none; }
       footer { flex-direction: column; text-align: center; padding: 18px 20px; gap: 6px; }
@@ -1507,7 +1503,7 @@
     <h2 class="reveal reveal-d1" data-en="One day.<br>Two business sessions." data-ru="Один день.<br>Две деловые сессии.">One day.<br>Two business sessions.</h2>
     <div class="prog-grid">
       <div class="prog-part reveal reveal-d2">
-        <div class="prog-part-label" data-en="Business Part I · Morning" data-ru="Деловая часть I · Утро">Business Part I · Morning</div>
+        <div class="prog-part-label" data-en="Morning." data-ru="Утро.">Morning.</div>
         <div class="prog-row">
           <span class="prog-time">10:30–11:00</span>
           <span class="prog-act" data-en="Registration &amp; Late Breakfast" data-ru="Регистрация и поздний завтрак">Registration &amp; Late Breakfast</span>
@@ -1522,7 +1518,7 @@
         </div>
       </div>
       <div class="prog-part reveal reveal-d3">
-        <div class="prog-part-label" data-en="Business Part II · Evening" data-ru="Деловая часть II · Вечер">Business Part II · Evening</div>
+        <div class="prog-part-label" data-en="Evening." data-ru="Вечер.">Evening.</div>
         <div class="prog-row">
           <span class="prog-time">15:00–15:30</span>
           <span class="prog-act" data-en="Registration" data-ru="Регистрация">Registration</span>
