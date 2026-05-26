@@ -1228,38 +1228,52 @@
       nav, nav.scrolled { padding: 16px 32px; }
       .hero-content { padding: 110px 32px 70px; }
       .hero-side { display: none; }
+      .hero::after { left: 32px; }
       .section { padding: 80px 32px; }
+      .manifesto { padding: 80px 32px; }
       .stats-inner { padding: 0 32px; }
       .about-grid { grid-template-columns: 1fr; gap: 48px; }
       .stats-inner { grid-template-columns: 1fr; gap: 0; }
-      .stat { border-right: none; border-bottom: 1px solid rgba(200,164,74,.1); }
+      .stat { padding-right: 0; border-bottom: 1px solid rgba(200,164,74,.1); }
       .stat:last-child { border-bottom: none; }
+      .about::before, .exhibitors::before { left: 32px; }
       .contact-grid { grid-template-columns: 1fr; gap: 48px; }
       footer { padding: 18px 32px; }
     }
     @media (max-width: 620px) {
       nav, nav.scrolled { padding: 14px 20px; }
       .nav-cta { display: none; }
-      .hero-content { padding: 96px 20px 56px; }
-      .hero-h1 { font-size: 2.8rem; }
-      .hero-meta { flex-direction: column; width: 100%; }
-      .meta-item { border-right: none; border-bottom: 1px solid rgba(200,164,74,.14); }
+      .role-sw { display: none; }
+      .hero-content { padding: 100px 20px 60px; }
+      .hero::after, .about::before, .exhibitors::before { display: none; }
+      .hero-meta { flex-direction: column; gap: 10px; margin-bottom: 36px; }
+      .meta-item + .meta-item::before { display: none; }
+      .meta-item { padding: 8px 0; border-bottom: 1px solid rgba(200,164,74,.1); }
       .meta-item:last-child { border-bottom: none; }
       .hero-btns { flex-direction: column; }
-      .hero-btns a { text-align: center; }
-      .section { padding: 60px 20px; }
+      .hero-btns a { text-align: center; justify-content: center; }
+      .section { padding: 64px 20px; }
+      .manifesto { padding: 64px 20px; }
       .stats-inner { padding: 0 20px; }
-      .stat { padding: 56px 20px; }
+      .stat { padding: 48px 0; }
+      .prog-row { grid-template-columns: 82px 1fr; }
+      .prog-part-label { font-size: clamp(2rem, 9vw, 3.2rem); }
+      .ex-item { padding: 20px 0; }
       .ex-item-name { font-size: clamp(1.8rem, 8vw, 3rem); }
       .ex-item-desc { display: none; }
+      .btn-register { width: 100%; justify-content: center; padding: 18px 20px; }
+      .mp-card { padding: 36px 24px; }
       footer { flex-direction: column; text-align: center; padding: 18px 20px; gap: 6px; }
 
       /* gate mobile */
       .gate-panels { flex-direction: column; }
+      .gate-half { min-height: 50vh; }
       #gate-ex { border-right: none; border-bottom: 1px solid rgba(200,164,74,.15); }
       .gate-divider { display: none; }
-      .gate-role-en { font-size: 3rem; }
-      .gm { font-size: clamp(3.5rem, 20vw, 8rem); }
+      .gate-role-en { font-size: clamp(2.6rem, 11vw, 4rem); }
+      .gate-desc { display: none; }
+      .gm { font-size: clamp(3.2rem, 18vw, 7rem); }
+      .gate-sig-svg { width: min(88vw, 400px); }
     }
   </style>
 </head>
