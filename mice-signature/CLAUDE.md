@@ -17,7 +17,7 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 ```
 --ink:   #141018   (primary dark — hero, marquee, exhibitors, gate)
 --green: #1A1520   (MP card background only)
---cream: #F9F6F0   (light section backgrounds — stats, program, register)
+--cream: #F9F6F0   (light section backgrounds — stats, program)
 --chalk: #FAFAF8   (lightest — about, contact, body)
 --gold:  #C8A44A   (accent — buttons, borders, icons, numbers)
 --warm:  #7A736B   (secondary text on light sections)
@@ -35,7 +35,7 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 | Stats | `--cream` (light) |
 | Programme | `--cream` (light) |
 | Exhibitors | `--ink` (dark) |
-| Register | `--chalk` (light) |
+| Register | `--ink` (dark) |
 | Contact | `--chalk` (light) |
 
 ## Typography
@@ -108,11 +108,14 @@ Full-screen dark (`#141018`) screen, two phases:
 ## Design decisions (do not revert without asking)
 
 - **No `s-tag` repeats** — gold line + uppercase label removed from all sections except Contact
-- **No marquee** — removed as too generic; if restored, keep background `--ink` with gold text
+- **Marquee — keep, redesign later.** Currently `--ink` background, gold uppercase text. Пользователю нравится, но стиль будет переработан.
 - **No numbered pillars** (01/02/03) — removed as cliché; pillars in About are title + description only
 - **SIGNATURE removed from hero** — nav logo already carries the name; repetition in large type was redundant
 - **Manifesto section** — standalone dark section between About and Stats with the key quote
 - **Exhibitors = typographic list** — replaced 3×2 card grid with full-width rows: large italic category name (Cormorant), hover → name turns gold + description fades in right. No icons, no rectangles.
+- **Register = dark** — `--ink` background, large italic h2, one meta line, full-width gold button on mobile. Matches Hero / Manifesto / Exhibitors rhythm.
+- **About grid = 60/40** — left column (text) dominates editorially. Pillar titles are evocative, not descriptive: *"No floor wandering." / "Everyone here books." / "Two debuts, one platform."*
+- **Mobile responsive** — two breakpoints: 1000px (tablet) and 620px (phone). Gate panels stack vertically on mobile, architectural lines hidden, programme time column reduced to 82px.
 
 ## What not to change without asking
 
