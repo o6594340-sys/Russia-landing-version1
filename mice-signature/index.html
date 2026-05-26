@@ -702,7 +702,7 @@
        MARQUEE STRIP
     ══════════════════════════════════════ */
     .marquee-strip {
-      background: var(--gold);
+      background: var(--ink);
       overflow: hidden;
       padding: 13px 0;
       white-space: nowrap;
@@ -713,13 +713,13 @@
     }
     .marquee-item {
       font-family: 'Instrument Sans', sans-serif;
-      font-size: .65rem; font-weight: 700;
+      font-size: .65rem; font-weight: 600;
       letter-spacing: .2em; text-transform: uppercase;
-      color: var(--ink);
+      color: rgba(200,164,74,.7);
       padding: 0 40px;
     }
     .marquee-dot {
-      color: rgba(13,26,22,.35);
+      color: rgba(200,164,74,.3);
       font-size: .5rem;
       vertical-align: middle;
     }
@@ -832,7 +832,7 @@
        STATS
     ══════════════════════════════════════ */
     .stats {
-      background: var(--green);
+      background: var(--cream);
       position: relative;
       overflow: hidden;
     }
@@ -854,7 +854,7 @@
     }
     .stat {
       padding: 80px 40px;
-      border-right: 1px solid rgba(200,164,74,.1);
+      border-right: 1px solid var(--line);
     }
     .stat:last-child { border-right: none; }
     .stat-num {
@@ -877,7 +877,7 @@
       font-family: 'Instrument Sans', sans-serif;
       font-size: .68rem; font-weight: 400;
       letter-spacing: .1em; text-transform: uppercase;
-      color: rgba(248,244,238,.4);
+      color: var(--warm);
       line-height: 1.7;
     }
 
@@ -1018,7 +1018,7 @@
        REGISTER
     ══════════════════════════════════════ */
     .register {
-      background: var(--green);
+      background: var(--chalk);
       position: relative; overflow: hidden;
       text-align: center;
     }
@@ -1029,7 +1029,7 @@
       transform: translate(-50%,-50%);
       width: 800px; height: 800px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,164,74,.07) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(200,164,74,.06) 0%, transparent 65%);
       pointer-events: none;
     }
     .reg-inner {
@@ -1042,12 +1042,12 @@
       font-weight: 700;
       line-height: 1.0;
       letter-spacing: -.02em;
-      color: var(--chalk);
+      color: var(--ink);
       margin-bottom: 22px;
     }
     .reg-body {
       font-size: .9rem; font-weight: 400;
-      color: rgba(248,244,238,.5);
+      color: var(--warm);
       line-height: 1.85;
       margin-bottom: 48px;
     }
@@ -1067,7 +1067,7 @@
     .reg-note {
       margin-top: 22px;
       font-size: .7rem; font-weight: 400;
-      color: rgba(248,244,238,.3);
+      color: var(--warm);
       letter-spacing: .04em;
     }
 
@@ -1334,7 +1334,6 @@
     </div>
     <h1 class="hero-h1">
       <span class="hero-mice">MICE</span>
-      <span class="hero-sig" id="hero-sig">SIGNATURE</span>
     </h1>
     <p class="hero-tagline">
       <span class="ex-only" data-en="Your market. Direct access." data-ru="Ваш рынок. Прямой доступ.">Your market. Direct access.</span>
@@ -1770,9 +1769,9 @@
     if (!el) return 0;
     const container = el.closest('.hero-content');
     const style = window.getComputedStyle(container);
-    const targetW = container.clientWidth
+    const targetW = (container.clientWidth
       - parseFloat(style.paddingLeft)
-      - parseFloat(style.paddingRight);
+      - parseFloat(style.paddingRight)) * 0.38;
     el.style.letterSpacing = '0px';
     let lo = 20, hi = 700;
     while (hi - lo > 0.5) {
@@ -1825,7 +1824,6 @@
       if (savedLang && savedLang !== 'en') setLang(savedLang);
 
       document.querySelector('.hero').classList.add('loaded');
-      animateHeroTitle();
       initReveal();
     }, 500);
   }
