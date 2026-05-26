@@ -15,14 +15,28 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 ## Design tokens
 
 ```
---ink:   #141018   (primary dark, aubergine-black — violet undertone, cold vs warm gold tension)
---green: #1A1520   (dark sections: stats, register, exhibitors, MP card)
---cream: #F9F6F0   (light section backgrounds)
---chalk: #FAFAF8   (lightest background, body)
+--ink:   #141018   (primary dark — hero, marquee, exhibitors, gate)
+--green: #1A1520   (MP card background only)
+--cream: #F9F6F0   (light section backgrounds — stats, program, register)
+--chalk: #FAFAF8   (lightest — about, contact, body)
 --gold:  #C8A44A   (accent — buttons, borders, icons, numbers)
---warm:  #7A736B   (secondary text)
---line:  #E2DAD0   (dividers)
+--warm:  #7A736B   (secondary text on light sections)
+--line:  #E2DAD0   (dividers on light sections)
 ```
+
+## Section rhythm (light/dark)
+
+| Section | Background |
+|---|---|
+| Hero | `--ink` (dark) |
+| Marquee | `--ink` (dark, gold text) |
+| About | `--chalk` (light) |
+| Manifesto quote | `--ink` (dark) |
+| Stats | `--cream` (light) |
+| Programme | `--cream` (light) |
+| Exhibitors | `--ink` (dark) |
+| Register | `--chalk` (light) |
+| Contact | `--chalk` (light) |
 
 ## Typography
 
@@ -67,9 +81,11 @@ Full-screen dark (`#141018`) screen, two phases:
 
 ## Key content facts
 
-- **Date:** 20 May 2026
+- **Date:** 20 August 2026
 - **Venue:** ENZO Hotel Moscow 5★ (opened spring 2026 — new hotel, relevant detail)
-- **Organiser:** Match Point, Olga Kharlenok, olga@matchpoints.ru, +7 (910) 400-34-60
+- **Organiser:** Match Point
+  - Olga Kharlenok, olga@matchpoints.ru, +7 (910) 400-34-60
+  - Daria Ignatieva, daria@matchpoints.ru, +7 (916) 425-01-50
 - **Database:** 1,500+ qualified MICE buyers
 - **Experience:** 20 years in Russian MICE market
 - **Stat:** 80% of Russian corporate MICE trips are international
@@ -80,8 +96,32 @@ Full-screen dark (`#141018`) screen, two phases:
 - **Buyers** — Russian: MICE agencies, incentive agencies, corporate buyers, PCOs, travel agencies. Invited by Match Point, do not pay.
 - **Exhibitors** — International only: hotels 4–5★, DMCs, airlines, congress centres, national tourism offices. Pay to participate.
 
+## Hero structure
+
+- Small `MICE` label (Cormorant, faded gold, spaced caps)
+- Main headline: tagline in large italic Cormorant Garamond (`clamp(2.6rem, 4.8vw, 5.2rem)`, bold, chalk)
+- Sub: "No noise. No random visitors. Real business." (caps, faded)
+- Meta line: Date · Venue · Format — inline text, no borders, gold dots as separators
+- Single CTA button (no ghost button)
+- Background watermark: `20.08` in huge faded gold (`clamp(8rem, 18vw, 22rem)`), bottom-right
+
+## Design decisions (do not revert without asking)
+
+- **No `s-tag` repeats** — gold line + uppercase label removed from all sections except Contact
+- **No marquee** — removed as too generic; if restored, keep background `--ink` with gold text
+- **No numbered pillars** (01/02/03) — removed as cliché
+- **SIGNATURE removed from hero** — nav logo already carries the name; repetition in large type was redundant
+- **Manifesto section** — standalone dark section between About and Stats with the key quote
+
 ## What not to change without asking
 
+- The gate animation (Phase 1 pen + Phase 2 role panels) — considered final
 - The "two debuts" angle in pillar 03 (MICE Signature inaugural + ENZO Hotel new opening)
 - The quote: "We do not waste your time. We do not waste theirs."
 - The tagline: "No noise. No random visitors. Real business."
+
+## Deploy
+
+- GitHub Pages: https://o6594340-sys.github.io/mice-signature/
+- Deploy repo: `c:\Users\usrr\OneDrive\Документы\Projects\mice-signature-deploy`
+- After each change: copy `index.html` to deploy repo, commit, push to `origin main`

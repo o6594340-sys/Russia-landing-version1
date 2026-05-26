@@ -816,7 +816,7 @@
     .pillars { border-top: 1px solid var(--line); }
     .pillar {
       display: grid;
-      grid-template-columns: 56px 1fr;
+      grid-template-columns: 1fr;
       gap: 20px;
       padding: 26px 0;
       border-bottom: 1px solid var(--line);
@@ -1031,46 +1031,43 @@
       max-width: 560px;
       margin-bottom: 64px;
     }
-    .ex-grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 0;
-      border-top: 1px solid rgba(200,164,74,.1);
-      border-left: 1px solid rgba(200,164,74,.1);
+    .ex-list {
+      margin-top: 56px;
+      border-top: 1px solid rgba(200,164,74,.12);
     }
-    .ex-card {
-      padding: 44px 36px;
-      border-right: 1px solid rgba(200,164,74,.1);
-      border-bottom: 1px solid rgba(200,164,74,.1);
-      position: relative;
-      overflow: hidden;
-      transition: background .25s;
+    .ex-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(200,164,74,.12);
+      cursor: default;
+      transition: border-color .3s;
     }
-    .ex-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 100%; height: 2px;
-      background: var(--gold);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .35s ease;
+    .ex-item:hover { border-bottom-color: rgba(200,164,74,.4); }
+    .ex-item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4.5vw, 4.8rem);
+      font-weight: 600;
+      font-style: italic;
+      color: rgba(248,244,238,.9);
+      line-height: 1;
+      white-space: nowrap;
+      transition: color .3s;
     }
-    .ex-card:hover { background: rgba(200,164,74,.04); }
-    .ex-card:hover::after { transform: scaleX(1); }
-    .ex-icon { width: 34px; height: 34px; margin-bottom: 20px; }
-    .ex-card h3 {
-      font-family: 'Cormorant Garamond', sans-serif;
-      font-size: 1.05rem; font-weight: 700;
-      color: var(--chalk);
-      margin-bottom: 10px;
-      letter-spacing: .01em;
+    .ex-item:hover .ex-item-name { color: var(--gold); }
+    .ex-item-desc {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .78rem;
+      font-weight: 400;
+      color: rgba(248,244,238,.0);
+      line-height: 1.65;
+      max-width: 420px;
+      text-align: right;
+      transition: color .35s ease;
     }
-    .ex-card p {
-      font-size: .8rem; font-weight: 400;
-      color: rgba(248,244,238,.42);
-      line-height: 1.8;
-    }
+    .ex-item:hover .ex-item-desc { color: rgba(248,244,238,.38); }
 
     /* ══════════════════════════════════════
        REGISTER
@@ -1237,7 +1234,6 @@
       .stat { border-right: none; border-bottom: 1px solid rgba(200,164,74,.1); }
       .stat:last-child { border-bottom: none; }
       .prog-grid { grid-template-columns: 1fr; }
-      .ex-grid { grid-template-columns: 1fr 1fr; }
       .contact-grid { grid-template-columns: 1fr; gap: 48px; }
       footer { padding: 18px 32px; }
     }
@@ -1255,8 +1251,8 @@
       .stats-inner { padding: 0 20px; }
       .stat { padding: 56px 20px; }
       .prog-part { padding: 32px 22px; }
-      .ex-grid { grid-template-columns: 1fr; }
-      .ex-card { padding: 36px 26px; }
+      .ex-item-name { font-size: clamp(1.8rem, 8vw, 3rem); }
+      .ex-item-desc { display: none; }
       footer { flex-direction: column; text-align: center; padding: 18px 20px; gap: 6px; }
 
       /* gate mobile */
@@ -1462,21 +1458,18 @@
     <div>
       <div class="pillars">
         <div class="pillar reveal reveal-d1">
-          <div class="pillar-num">01</div>
           <div>
             <div class="pillar-title" data-en="Pre-scheduled meetings" data-ru="Предзаписанные встречи">Pre-scheduled meetings</div>
             <div class="pillar-desc" data-en="No waiting. No wandering the floor. Your agenda is confirmed before you arrive." data-ru="Никакого ожидания. Ваше расписание готово до приезда.">No waiting. No wandering the floor. Your agenda is confirmed before you arrive.</div>
           </div>
         </div>
         <div class="pillar reveal reveal-d2">
-          <div class="pillar-num">02</div>
           <div>
             <div class="pillar-title" data-en="Qualified buyers only" data-ru="Только квалифицированные байеры">Qualified buyers only</div>
             <div class="pillar-desc" data-en="MICE agencies, incentive planners, corporate buyers — people who actually book international groups." data-ru="MICE-агентства, incentive-планировщики, корпоративные закупщики — те, кто реально покупает.">MICE agencies, incentive planners, corporate buyers — people who actually book international groups.</div>
           </div>
         </div>
         <div class="pillar reveal reveal-d3">
-          <div class="pillar-num">03</div>
           <div>
             <div class="pillar-title" data-en="Two debuts, one platform" data-ru="Два дебюта, одна платформа">Two debuts, one platform</div>
             <div class="pillar-desc" data-en="MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026." data-ru="Первое издание MICE Signature проходит в ENZO Hotel — новом 5★ отеле Москвы, открытом весной 2026.">MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026.</div>
@@ -1557,36 +1550,30 @@
     <h2 class="reveal reveal-d1" data-en="International partners.<br>Russian market." data-ru="Международные партнёры.<br>Российский рынок.">International partners.<br>Russian market.</h2>
     <p class="ex-intro reveal reveal-d2 ex-only" data-en="All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise." data-ru="Все экспоненты — международные компании, которые напрямую представляют свой продукт квалифицированным российским байерам. Без посредников. Без лишнего шума.">All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise.</p>
     <p class="ex-intro reveal reveal-d2 buyer-only" data-en="At your table: international hotels 4–5★, DMCs, airlines and national tourism offices — all presenting their best MICE product exclusively to qualified Russian buyers like you." data-ru="За вашим столом: международные отели 4–5★, DMC, авиакомпании и национальные туристические офисы — все представляют свой лучший MICE-продукт исключительно квалифицированным российским байерам.">At your table: international hotels 4–5★, DMCs, airlines and national tourism offices — all presenting their best MICE product exclusively to qualified Russian buyers like you.</p>
-    <div class="ex-grid">
-      <div class="ex-card reveal">
-        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><rect x="6" y="12" width="24" height="20" rx="1" stroke="#C8A44A" stroke-width="1.4"/><path d="M12 32V24h12v8" stroke="#C8A44A" stroke-width="1.4"/><path d="M6 12 18 4l12 8" stroke="#C8A44A" stroke-width="1.4"/><rect x="15" y="17" width="6" height="6" stroke="#C8A44A" stroke-width="1.2"/></svg>
-        <h3 data-en="International Hotels" data-ru="Международные отели">International Hotels</h3>
-        <p data-en="4★ and 5★ properties with MICE infrastructure and group capacity." data-ru="Объекты 4★ и 5★ с MICE-инфраструктурой и возможностями для групп.">4★ and 5★ properties with MICE infrastructure and group capacity.</p>
+    <div class="ex-list">
+      <div class="ex-item reveal">
+        <span class="ex-item-name" data-en="Hotels." data-ru="Отели.">Hotels.</span>
+        <span class="ex-item-desc" data-en="4★ and 5★ properties with MICE infrastructure and group capacity." data-ru="Объекты 4★ и 5★ с MICE-инфраструктурой и возможностями для групп.">4★ and 5★ properties with MICE infrastructure and group capacity.</span>
       </div>
-      <div class="ex-card reveal reveal-d1">
-        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="11" stroke="#C8A44A" stroke-width="1.4"/><path d="M7 18h22M18 7c-4 3.5-5.5 7-5.5 11s1.5 7.5 5.5 11M18 7c4 3.5 5.5 7 5.5 11S22 25.5 18 29" stroke="#C8A44A" stroke-width="1.2"/></svg>
-        <h3 data-en="DMCs &amp; Tour Operators" data-ru="DMC и туроператоры">DMCs &amp; Tour Operators</h3>
-        <p data-en="Destination Management Companies specialising in incentive travel and corporate groups." data-ru="Компании по управлению дестинациями для инсентив-программ и корпоративных групп.">Destination Management Companies specialising in incentive travel and corporate groups.</p>
+      <div class="ex-item reveal reveal-d1">
+        <span class="ex-item-name" data-en="DMCs." data-ru="DMC.">DMCs.</span>
+        <span class="ex-item-desc" data-en="Destination Management Companies specialising in incentive travel and corporate groups." data-ru="Компании по управлению дестинациями для инсентив-программ и корпоративных групп.">Destination Management Companies specialising in incentive travel and corporate groups.</span>
       </div>
-      <div class="ex-card reveal reveal-d2">
-        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><path d="M4 26 18 8l14 18H4z" stroke="#C8A44A" stroke-width="1.4" stroke-linejoin="round"/><circle cx="27" cy="10" r="2.5" stroke="#C8A44A" stroke-width="1.3"/></svg>
-        <h3 data-en="Destinations" data-ru="Дестинации">Destinations</h3>
-        <p data-en="National tourism offices promoting their MICE potential to Russian planners." data-ru="Национальные туристические офисы, продвигающие MICE-потенциал своих направлений.">National tourism offices promoting their MICE potential to Russian planners.</p>
+      <div class="ex-item reveal reveal-d2">
+        <span class="ex-item-name" data-en="Destinations." data-ru="Дестинации.">Destinations.</span>
+        <span class="ex-item-desc" data-en="National tourism offices promoting their MICE potential to Russian planners." data-ru="Национальные туристические офисы, продвигающие MICE-потенциал своих направлений.">National tourism offices promoting their MICE potential to Russian planners.</span>
       </div>
-      <div class="ex-card reveal reveal-d1">
-        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><path d="M30 18 18 6 6 18v14h7v-8h10v8h7V18z" stroke="#C8A44A" stroke-width="1.4" stroke-linejoin="round"/></svg>
-        <h3 data-en="Airlines" data-ru="Авиакомпании">Airlines</h3>
-        <p data-en="International carriers with group fares, charter options and MICE priority service." data-ru="Международные перевозчики с групповыми тарифами и чартерными опциями для MICE.">International carriers with group fares, charter options and MICE priority service.</p>
+      <div class="ex-item reveal reveal-d1">
+        <span class="ex-item-name" data-en="Airlines." data-ru="Авиакомпании.">Airlines.</span>
+        <span class="ex-item-desc" data-en="International carriers with group fares, charter options and MICE priority service." data-ru="Международные перевозчики с групповыми тарифами и чартерными опциями для MICE.">International carriers with group fares, charter options and MICE priority service.</span>
       </div>
-      <div class="ex-card reveal reveal-d2">
-        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><rect x="4" y="8" width="28" height="22" rx="1" stroke="#C8A44A" stroke-width="1.4"/><path d="M4 15h28M13 8v7M23 8v7" stroke="#C8A44A" stroke-width="1.4"/><path d="M10 21h6M20 21h6M10 27h4M18 27h8" stroke="#C8A44A" stroke-width="1.2" stroke-linecap="round"/></svg>
-        <h3 data-en="MICE Venues" data-ru="MICE-площадки">MICE Venues</h3>
-        <p data-en="Congress centres and unique venues equipped for professional MICE events." data-ru="Конгресс-центры и уникальные площадки для профессиональных MICE-мероприятий.">Congress centres and unique venues equipped for professional MICE events.</p>
+      <div class="ex-item reveal reveal-d2">
+        <span class="ex-item-name" data-en="Venues." data-ru="Площадки.">Venues.</span>
+        <span class="ex-item-desc" data-en="Congress centres and unique venues equipped for professional MICE events." data-ru="Конгресс-центры и уникальные площадки для профессиональных MICE-мероприятий.">Congress centres and unique venues equipped for professional MICE events.</span>
       </div>
-      <div class="ex-card reveal reveal-d3">
-        <svg class="ex-icon" viewBox="0 0 36 36" fill="none"><circle cx="14" cy="13" r="5" stroke="#C8A44A" stroke-width="1.4"/><circle cx="26" cy="17" r="4" stroke="#C8A44A" stroke-width="1.4"/><path d="M4 31c0-5.523 4.477-10 10-10h2" stroke="#C8A44A" stroke-width="1.4" stroke-linecap="round"/><path d="M20 31c0-3.866 2.686-7 6-7" stroke="#C8A44A" stroke-width="1.4" stroke-linecap="round"/></svg>
-        <h3 data-en="Incentive &amp; Event Services" data-ru="Инсентив и ивент-сервисы">Incentive &amp; Event Services</h3>
-        <p data-en="Entertainment, team building, gala services and specialist MICE providers." data-ru="Развлечения, тимбилдинг, гала-услуги и другие MICE-сервисные компании.">Entertainment, team building, gala services and specialist MICE providers.</p>
+      <div class="ex-item reveal reveal-d3">
+        <span class="ex-item-name" data-en="Services." data-ru="Сервисы.">Services.</span>
+        <span class="ex-item-desc" data-en="Entertainment, team building, gala and specialist MICE providers." data-ru="Развлечения, тимбилдинг, гала-услуги и другие MICE-сервисные компании.">Entertainment, team building, gala and specialist MICE providers.</span>
       </div>
     </div>
   </div>
