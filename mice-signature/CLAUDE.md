@@ -109,9 +109,10 @@ Full-screen dark (`#141018`) screen, two phases:
 
 - **No `s-tag` repeats** — gold line + uppercase label removed from all sections except Contact
 - **No marquee** — removed as too generic; if restored, keep background `--ink` with gold text
-- **No numbered pillars** (01/02/03) — removed as cliché
+- **No numbered pillars** (01/02/03) — removed as cliché; pillars in About are title + description only
 - **SIGNATURE removed from hero** — nav logo already carries the name; repetition in large type was redundant
 - **Manifesto section** — standalone dark section between About and Stats with the key quote
+- **Exhibitors = typographic list** — replaced 3×2 card grid with full-width rows: large italic category name (Cormorant), hover → name turns gold + description fades in right. No icons, no rectangles.
 
 ## What not to change without asking
 
