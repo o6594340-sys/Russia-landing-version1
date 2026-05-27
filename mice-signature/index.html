@@ -1208,49 +1208,133 @@
     /* ══════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════ */
+    /* ── Floating mobile CTA ── */
+    .mob-cta {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 16px 20px 24px;
+      background: linear-gradient(to top, rgba(18,24,40,.98) 65%, transparent);
+      pointer-events: none;
+    }
+    .mob-cta a {
+      pointer-events: all;
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .72rem; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      background: var(--gold); color: var(--ink);
+      padding: 16px 20px;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    .mob-cta a:active { opacity: .8; }
+    .mob-cta.hidden { opacity: 0; pointer-events: none; }
+
     @media (max-width: 1000px) {
       nav, nav.scrolled { padding: 16px 32px; }
-      .hero-content { padding: 110px 32px 70px; }
+      .hero-content { padding: 120px 32px 80px; }
       .hero-side { display: none; }
       .hero::after { left: 32px; }
-      .section { padding: 80px 32px; }
-      .manifesto { padding: 80px 32px; }
+      .section { padding: 96px 32px; }
+      .manifesto { padding: 96px 32px; }
       .stats-inner { padding: 0 32px; }
       .about-grid { grid-template-columns: 1fr; gap: 48px; }
-      .stat { flex-direction: column; align-items: flex-start; gap: 12px; padding: 48px 0; }
+      .stat { flex-direction: column; align-items: flex-start; gap: 10px; padding: 48px 0; }
       .stat-label { text-align: left; max-width: 100%; }
-      .prog-grid { grid-template-columns: 1fr; gap: 48px; }
+      .prog-grid { grid-template-columns: 1fr; gap: 52px; }
       .prog-grid::before { display: none; }
       .about::before, .exhibitors::before { left: 32px; }
       .contact-grid { grid-template-columns: 1fr; gap: 48px; }
       footer { padding: 18px 32px; }
     }
+
     @media (max-width: 620px) {
-      nav, nav.scrolled { padding: 14px 20px; }
+      /* ── Nav ── */
+      nav, nav.scrolled { padding: 14px 24px; }
       .nav-cta { display: none; }
       .role-sw { display: none; }
-      .hero-content { padding: 100px 20px 60px; }
-      .hero::after, .about::before, .exhibitors::before { display: none; }
-      .hero-meta { flex-direction: column; gap: 10px; margin-bottom: 36px; }
-      .meta-item + .meta-item::before { display: none; }
-      .meta-item { padding: 8px 0; border-bottom: 1px solid rgba(200,164,74,.1); }
-      .meta-item:last-child { border-bottom: none; }
-      .hero-btns { flex-direction: column; }
-      .hero-btns a { text-align: center; justify-content: center; }
-      .section { padding: 64px 20px; }
-      .manifesto { padding: 64px 20px; }
-      .stats-inner { padding: 0 20px; }
-      .stat { padding: 40px 0; gap: 10px; }
-      .stat-num { font-size: clamp(4rem, 14vw, 7rem); }
-      .prog-part-label { font-size: clamp(2rem, 9vw, 3.2rem); }
-      .ex-item { padding: 20px 0; }
-      .ex-item-name { font-size: clamp(1.8rem, 8vw, 3rem); }
-      .ex-item-desc { display: none; }
-      .btn-register { width: 100%; justify-content: center; padding: 18px 20px; }
-      .mp-card { padding: 36px 24px; }
-      footer { flex-direction: column; text-align: center; padding: 18px 20px; gap: 6px; }
 
-      /* gate mobile */
+      /* ── Hero ── */
+      .hero-content { padding: 108px 24px 100px; }
+      .hero::after, .about::before, .exhibitors::before { display: none; }
+      .hero-tagline { font-size: clamp(2.8rem, 14vw, 5rem); line-height: .97; }
+      .hero-sub { font-size: .65rem; letter-spacing: .16em; margin-bottom: 36px; }
+      .hero-meta { flex-direction: column; gap: 0; margin-bottom: 40px; }
+      .meta-item + .meta-item::before { display: none; }
+      .meta-item {
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(200,164,74,.08);
+        width: 100%;
+      }
+      .meta-item:last-child { border-bottom: none; }
+      .meta-value { font-size: .7rem; letter-spacing: .08em; }
+      .hero-btns { display: none; } /* floating CTA replaces hero buttons on mobile */
+
+      /* ── Sections ── */
+      .section { padding: 80px 24px; }
+      .manifesto { padding: 80px 24px; }
+
+      /* ── Manifesto quote ── */
+      .manifesto-quote { font-size: clamp(1.9rem, 8vw, 3.6rem); max-width: 100%; }
+
+      /* ── Stats — horizontal scroll (peek pattern) ── */
+      .stats { overflow: hidden; }
+      .stats-inner {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        padding: 0;
+        gap: 0;
+      }
+      .stats-inner::-webkit-scrollbar { display: none; }
+      .stat {
+        min-width: 72vw;
+        flex-shrink: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 52px 28px;
+        border-bottom: none;
+        border-top: none;
+        border-right: 1px solid var(--line);
+        scroll-snap-align: start;
+      }
+      .stat:first-child { border-top: none; padding-left: 24px; }
+      .stat:last-child { border-right: none; min-width: 80vw; }
+      .stat-num { font-size: clamp(5rem, 22vw, 8rem); }
+      .stat-label { text-align: left; max-width: 100%; font-size: .82rem; }
+
+      /* ── Programme ── */
+      .prog-grid { grid-template-columns: 1fr; gap: 44px; }
+      .prog-grid::before { display: none; }
+      .prog-part-label { font-size: clamp(2rem, 9vw, 3.2rem); }
+      .prog-act { font-size: clamp(1.05rem, 5vw, 1.35rem); }
+
+      /* ── Exhibitors ── */
+      .ex-item { padding: 22px 0; }
+      .ex-item-name { font-size: clamp(1.8rem, 9vw, 3rem); }
+      .ex-item-desc { display: none; }
+
+      /* ── Register ── */
+      .register h2 { font-size: clamp(2.8rem, 13vw, 6.4rem); }
+      .btn-register { width: 100%; justify-content: center; padding: 18px 20px; }
+
+      /* ── Contact ── */
+      .mp-card { padding: 40px 24px; }
+
+      /* ── Footer ── */
+      footer { flex-direction: column; text-align: center; padding: 18px 24px 88px; gap: 6px; }
+
+      /* ── Floating CTA ── */
+      .mob-cta { display: block; }
+
+      /* ── Gate mobile ── */
       .gate-panels { flex-direction: column; }
       .gate-half { min-height: 50vh; }
       #gate-ex { border-right: none; border-bottom: 1px solid rgba(200,164,74,.15); }
@@ -1639,6 +1723,12 @@
   </div>
 </section>
 
+<!-- ════════ FLOATING MOBILE CTA ════════ -->
+<div class="mob-cta hidden" id="mob-cta">
+  <a href="#register" class="ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+  <a href="#register" class="buyer-only" data-en="Schedule My Meetings" data-ru="Записаться на встречи">Schedule My Meetings</a>
+</div>
+
 <!-- ════════ FOOTER ════════ -->
 <footer>
   <p>© 2026 MICE Signature. <span data-en="Organised by Match Point." data-ru="Организовано Match Point.">Organised by Match Point.</span></p>
@@ -1910,6 +2000,20 @@
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   }, { passive: true });
+
+  /* ─── Floating mobile CTA — show after hero, hide at register ─── */
+  const mobCta = document.getElementById('mob-cta');
+  if (mobCta) {
+    const heroEl = document.querySelector('.hero');
+    const registerEl = document.getElementById('register');
+    window.addEventListener('scroll', () => {
+      if (!heroEl) return;
+      const heroBottom = heroEl.getBoundingClientRect().bottom;
+      const registerTop = registerEl ? registerEl.getBoundingClientRect().top : Infinity;
+      const atRegister = registerTop < window.innerHeight * 0.5;
+      mobCta.classList.toggle('hidden', heroBottom > 0 || atRegister);
+    }, { passive: true });
+  }
 
   /* ─── Scroll reveal ─── */
   let revealObs;
