@@ -15,8 +15,8 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 ## Design tokens
 
 ```
---ink:   #141018   (primary dark — hero, marquee, exhibitors, gate)
---green: #1A1520   (MP card background only)
+--ink:   #121828   (primary dark — hero, marquee, exhibitors, gate — Ночной scheme)
+--green: #1A2035   (MP card background only)
 --cream: #F9F6F0   (light section backgrounds — stats, program)
 --chalk: #FAFAF8   (lightest — about, contact, body)
 --gold:  #C8A44A   (accent — buttons, borders, icons, numbers)
@@ -127,5 +127,6 @@ Full-screen dark (`#141018`) screen, two phases:
 ## Deploy
 
 - GitHub Pages: https://o6594340-sys.github.io/mice-signature/
-- Deploy repo: `c:\Users\usrr\OneDrive\Документы\Projects\mice-signature-deploy`
-- After each change: copy `index.html` to deploy repo, commit, push to `origin main`
+- Repo: `c:\Users\usrr\OneDrive\Документы\Projects\mice-signature` → `origin` = `https://github.com/o6594340-sys/mice-signature.git`
+- After each change: `git add index.html && git commit && git push origin main`
+- No separate deploy folder — one repo, one push.
