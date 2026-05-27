@@ -109,7 +109,7 @@ Full-screen dark (`--ink`) screen, two phases:
 
 ## Design decisions (do not revert without asking)
 
-- **Ночной colour scheme** — `--ink: #121828`, midnight blue. Final choice, do not revert.
+- **Ночной colour scheme** — `--ink: #121828`, midnight blue. **⚠️ На рассмотрении:** добавлен временный пробник (`#colour-switcher`) с 4 вариантами тёмного фона (см. ниже). Финальный выбор ещё не сделан — не удалять пробник до решения.
 - **No `s-tag` repeats** — gold line + uppercase label removed from all sections except Contact.
 - **Marquee — mixed typefaces** — alternates uppercase Instrument Sans (gold, .8rem) and italic Cormorant Garamond (chalk at low opacity, 1.35rem). 38s speed, architectural top/bottom gold hairlines. Content mixes EN slogans and dates.
 - **Stats = editorial rows** — full-width horizontal rows, number left (`clamp(5rem, 10vw, 12rem)`), label right-aligned. Hairline `--line` dividers top and bottom each row. Not a 3-column grid.
@@ -123,6 +123,19 @@ Full-screen dark (`--ink`) screen, two phases:
 - **Personal names in About** — exhibitor copy reads "Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations." Names humanise B2B trust for a first-edition event. Do not revert to generic "Match Point" phrasing.
 - **Parallax on 20.08** — `.hero-date-bg` has `will-change: transform`; JS moves it at `scrollY * 0.22` on scroll. Hero has `overflow: hidden` to clip. Do not remove.
 - **Photos planned** — joint portrait of Olga + Dasha → About/Contact; ENZO hotel photos → Hero/Register. Placeholder until ready.
+
+## Colour variants under review (⚠️ pending decision)
+
+Временный пробник `#colour-switcher` добавлен в `index.html` — **удалить после выбора финального цвета**.
+
+| Вариант | `--ink` | `--green` | `--green-mid` | Характер |
+|---|---|---|---|---|
+| Ночной синий (текущий) | `#121828` | `#1A2035` | `#202840` | Холодный midnight blue |
+| Ночной янтарь | `#1A1610` | `#211C14` | `#282218` | Тёплый, gold «оживает» |
+| Глубокий сланец | `#141820` | `#1B2030` | `#222840` | Нейтральнее, минус синева |
+| Editorial black | `#131313` | `#1A1A1A` | `#212121` | Чистый нейтральный |
+
+После выбора: обновить токены в `:root`, удалить `#colour-switcher` (CSS + HTML + JS), обновить этот раздел и «Design decisions».
 
 ## Mobile (≤620px) — premium patterns
 
@@ -139,7 +152,7 @@ Full-screen dark (`--ink`) screen, two phases:
 - The "two debuts" angle in pillar 03 (MICE Signature inaugural + ENZO Hotel new opening)
 - The quote: "We do not waste your time. We do not waste theirs."
 - The tagline: "No noise. No random visitors. Real business."
-- The Ночной colour scheme (`--ink: #121828`)
+- The Ночной colour scheme (`--ink: #121828`) — пока на рассмотрении (см. пробник)
 
 ## Deploy
 
