@@ -1358,6 +1358,97 @@
       #gate { overflow-x: hidden; }
     }
 
+    /* ══════════════════════════════════════
+       ANIMATION ENHANCEMENTS
+    ══════════════════════════════════════ */
+
+    /* ── 2. Gold line draw-in ── */
+    .gold-line {
+      display: block;
+      height: 1px;
+      background: var(--gold);
+      opacity: .45;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .9s cubic-bezier(.4,0,.2,1);
+      margin: 14px 0 22px;
+    }
+    .gold-line.gl-in { transform: scaleX(1); }
+
+    /* ── 4. Exhibitors accordion (mobile tap) ── */
+    @media (max-width: 620px) {
+      .ex-item-desc {
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height .42s cubic-bezier(.4,0,.2,1),
+                    opacity .3s ease, padding-top .3s ease;
+        padding-top: 0;
+      }
+      .ex-item.ex-open .ex-item-desc {
+        max-height: 100px; opacity: .42; padding-top: 8px;
+      }
+      .ex-item.ex-open .ex-item-name {
+        color: var(--gold); transition: color .3s;
+      }
+    }
+
+    /* ── 5. Floating CTA sweep ── */
+    @media (max-width: 620px) {
+      .mob-cta {
+        transform: translateY(0);
+        transition: transform .42s cubic-bezier(.34,1.56,.64,1);
+      }
+      .mob-cta.hidden {
+        opacity: 1;
+        transform: translateY(110%);
+        pointer-events: none;
+      }
+      .mob-cta a { position: relative; overflow: hidden; }
+      .mob-cta a::after {
+        content: '';
+        position: absolute; top: 0; left: -100%;
+        width: 60%; height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,.18), transparent);
+        pointer-events: none;
+      }
+      .mob-cta a.cta-shimmer::after {
+        animation: shimmer-slide .85s ease forwards .5s;
+      }
+    }
+    @keyframes shimmer-slide { to { left: 150%; } }
+
+    /* ── 6. Programme row stagger ── */
+    .prog-anim .prog-row {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .prog-anim .prog-row.prog-in { opacity: 1; transform: none; }
+
+    /* ── 7. Hero tagline word reveal ── */
+    .hero-tagline.word-anim {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .hero-tagline.word-anim .tw-wrap {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+    .hero-tagline.word-anim .tw {
+      display: inline-block;
+      transform: translateY(105%);
+      opacity: 0;
+      transition: transform .5s cubic-bezier(.33,1,.68,1), opacity .4s ease;
+    }
+    .hero-tagline.word-anim .tw.tw-in {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
   </style>
 </head>
 <body>
@@ -1527,6 +1618,7 @@
   <div class="inner about-grid">
     <div>
       <h2 class="reveal reveal-d1" data-en="Not just<br>presence.<br>Real matches." data-ru="Не просто<br>присутствие.<br>Реальные сделки.">Not just<br>presence.<br>Real matches.</h2>
+      <span class="gold-line"></span>
       <p class="about-body reveal reveal-d2 ex-only" data-en="A closed-format B2B workshop — your direct entry into the Russian outbound MICE market. Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations." data-ru="Закрытый B2B-воркшоп — прямой вход на российский выездной MICE-рынок. Каждый байер лично приглашён Ольгой или Дарьей. Никаких автоматических списков — только проверенные люди.">A closed-format B2B workshop — your direct entry into the Russian outbound MICE market. Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations.</p>
       <p class="about-body reveal reveal-d2 buyer-only" data-en="One day. The right people in the room. Every meeting pre-scheduled, every minute earned — no floor wandering, no cold pitches." data-ru="Один день. Нужные люди в одном зале. Каждая встреча по предзаписи, каждая минута — по делу. Никаких случайных разговоров.">One day. The right people in the room. Every meeting pre-scheduled, every minute earned — no floor wandering, no cold pitches.</p>
     </div>
@@ -1565,15 +1657,15 @@
 <div class="stats">
   <div class="stats-inner">
     <div class="stat reveal">
-      <div class="stat-num">1,500<sup>+</sup></div>
+      <div class="stat-num"><span class="count-num" data-count="1500" data-sep="1">1,500</span><sup>+</sup></div>
       <div class="stat-label" data-en="Qualified MICE buyers<br>in the Match Point database" data-ru="Квалифицированных MICE-байеров<br>в базе Match Point">Qualified MICE buyers<br>in the Match Point database</div>
     </div>
     <div class="stat reveal reveal-d1">
-      <div class="stat-num">20</div>
+      <div class="stat-num"><span class="count-num" data-count="20">20</span></div>
       <div class="stat-label" data-en="Years navigating<br>the Russian MICE market" data-ru="Лет в российском<br>MICE-рынке">Years navigating<br>the Russian MICE market</div>
     </div>
     <div class="stat reveal reveal-d2">
-      <div class="stat-num">80<sup>%</sup></div>
+      <div class="stat-num"><span class="count-num" data-count="80">80</span><sup>%</sup></div>
       <div class="stat-label" data-en="of Russian corporate MICE trips<br>are international" data-ru="российских корпоративных<br>MICE-поездок — за рубеж">of Russian corporate MICE trips<br>are international</div>
     </div>
   </div>
@@ -1586,6 +1678,7 @@
     <div class="prog-grid">
       <div class="prog-part reveal reveal-d2">
         <div class="prog-part-label" data-en="Morning." data-ru="Утро.">Morning.</div>
+        <span class="gold-line"></span>
         <div class="prog-row">
           <span class="prog-time">10:30–11:00</span>
           <span class="prog-act" data-en="Registration &amp; Late Breakfast" data-ru="Регистрация и поздний завтрак">Registration &amp; Late Breakfast</span>
@@ -1601,6 +1694,7 @@
       </div>
       <div class="prog-part reveal reveal-d3">
         <div class="prog-part-label" data-en="Evening." data-ru="Вечер.">Evening.</div>
+        <span class="gold-line"></span>
         <div class="prog-row">
           <span class="prog-time">15:00–15:30</span>
           <span class="prog-act" data-en="Registration" data-ru="Регистрация">Registration</span>
@@ -1883,7 +1977,12 @@
       applyRole(savedRole);
       window.addEventListener('load', () => {
         document.querySelector('.hero').classList.add('loaded');
+        animateHeroTagline(savedRole);
         initReveal();
+        initGoldLines();
+        initCountUp();
+        initExhibitorAccordion();
+        initProgStagger();
       });
       return;
     }
@@ -1963,7 +2062,12 @@
       if (savedLang && savedLang !== 'en') setLang(savedLang);
 
       document.querySelector('.hero').classList.add('loaded');
+      animateHeroTagline(role);
       initReveal();
+      initGoldLines();
+      initCountUp();
+      initExhibitorAccordion();
+      initProgStagger();
     }, 500);
   }
 
@@ -2023,12 +2127,22 @@
   if (mobCta) {
     const heroEl = document.querySelector('.hero');
     const registerEl = document.getElementById('register');
+    let _ctaWasHidden = true;
     window.addEventListener('scroll', () => {
       if (!heroEl) return;
       const heroBottom = heroEl.getBoundingClientRect().bottom;
       const registerTop = registerEl ? registerEl.getBoundingClientRect().top : Infinity;
       const atRegister = registerTop < window.innerHeight * 0.5;
-      mobCta.classList.toggle('hidden', heroBottom > 0 || atRegister);
+      const shouldHide = heroBottom > 0 || atRegister;
+      mobCta.classList.toggle('hidden', shouldHide);
+      if (!shouldHide && _ctaWasHidden) {
+        document.querySelectorAll('.mob-cta a').forEach(a => {
+          a.classList.remove('cta-shimmer');
+          void a.offsetWidth;
+          a.classList.add('cta-shimmer');
+        });
+      }
+      _ctaWasHidden = shouldHide;
     }, { passive: true });
   }
 
@@ -2048,6 +2162,87 @@
       el.classList.remove('in');
       revealObs.observe(el);
     });
+  }
+
+  /* ═══════════════════════════════════════
+     ANIMATION ENHANCEMENTS
+  ═══════════════════════════════════════ */
+
+  /* ── 2. Gold line draw-in ── */
+  function initGoldLines() {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('gl-in'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.gold-line').forEach(el => obs.observe(el));
+  }
+
+  /* ── 3. Count-up numbers ── */
+  function initCountUp() {
+    function countUp(el, target, useSep) {
+      const dur = 1400, start = performance.now();
+      const tick = now => {
+        const t = Math.min((now - start) / dur, 1);
+        const v = Math.floor((1 - Math.pow(1 - t, 3)) * target);
+        el.textContent = useSep ? v.toLocaleString('en-US') : v;
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = useSep ? target.toLocaleString('en-US') : target;
+      };
+      requestAnimationFrame(tick);
+    }
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          countUp(e.target, +e.target.dataset.count, !!e.target.dataset.sep);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.count-num[data-count]').forEach(el => obs.observe(el));
+  }
+
+  /* ── 4. Exhibitors accordion (mobile tap) ── */
+  function initExhibitorAccordion() {
+    document.querySelectorAll('.ex-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const open = item.classList.contains('ex-open');
+        document.querySelectorAll('.ex-item').forEach(i => i.classList.remove('ex-open'));
+        if (!open) item.classList.add('ex-open');
+      });
+    });
+  }
+
+  /* ── 6. Programme row stagger ── */
+  function initProgStagger() {
+    document.querySelectorAll('.prog-grid').forEach(g => g.classList.add('prog-anim'));
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.prog-row').forEach((row, i) =>
+            setTimeout(() => row.classList.add('prog-in'), i * 120)
+          );
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.prog-part').forEach(p => obs.observe(p));
+  }
+
+  /* ── 7. Hero tagline word reveal ── */
+  function animateHeroTagline(role) {
+    const taglineEl = document.querySelector('.hero-tagline');
+    if (!taglineEl) return;
+    const vis = taglineEl.querySelector(role === 'exhibitor' ? '.ex-only' : '.buyer-only');
+    if (!vis) return;
+    const text = vis.textContent.trim();
+    vis.innerHTML = text.split(' ').map(w =>
+      `<span class="tw-wrap"><span class="tw">${w}</span></span>`
+    ).join(' ');
+    taglineEl.classList.add('word-anim');
+    taglineEl.querySelectorAll('.tw').forEach((tw, i) =>
+      setTimeout(() => tw.classList.add('tw-in'), 80 + i * 90)
+    );
   }
 
 </script>
