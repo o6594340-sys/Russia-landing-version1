@@ -116,10 +116,12 @@ Full-screen dark (`--ink`) screen, two phases:
 - **Programme = 2-column** — Morning / Evening side by side on desktop, vertical hairline separator. Time as tiny gold label above each activity. Activity text in italic Cormorant (`clamp(1rem, 1.6vw, 1.35rem)`). No table grid, no row borders.
 - **No numbered pillars** (01/02/03) — removed as cliché; pillars in About are title + description only.
 - **SIGNATURE removed from hero** — nav logo already carries the name; repetition in large type was redundant.
-- **Manifesto section** — standalone dark section between About and Stats with the key quote.
+- **Manifesto section** — standalone dark section between About and Stats with the key quote. Quote at `clamp(2.4rem, 4.8vw, 5.2rem)` desktop / `clamp(2rem, 9.5vw, 3.6rem)` mobile — big, commanding, line-height 1.1. Do not shrink.
 - **Exhibitors = typographic list** — full-width rows, large italic category name (Cormorant), hover → name turns gold + description fades in right. No icons, no rectangles.
 - **Register = dark** — `--ink` background, large italic h2, one meta line, full-width gold button on mobile.
 - **About grid = 60/40** — left column (text) dominates editorially. Pillar titles evocative: *"No floor wandering." / "Everyone here books." / "Two debuts, one platform."*
+- **Personal names in About** — exhibitor copy reads "Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations." Names humanise B2B trust for a first-edition event. Do not revert to generic "Match Point" phrasing.
+- **Parallax on 20.08** — `.hero-date-bg` has `will-change: transform`; JS moves it at `scrollY * 0.22` on scroll. Hero has `overflow: hidden` to clip. Do not remove.
 - **Photos planned** — joint portrait of Olga + Dasha → About/Contact; ENZO hotel photos → Hero/Register. Placeholder until ready.
 
 ## Mobile (≤620px) — premium patterns
