@@ -127,6 +127,15 @@ Full-screen dark (`#141018`) screen, two phases:
 ## Deploy
 
 - GitHub Pages: https://o6594340-sys.github.io/mice-signature/
-- Repo: `c:\Users\usrr\OneDrive\Документы\Projects\mice-signature` → `origin` = `https://github.com/o6594340-sys/mice-signature.git`
-- After each change: `git add index.html && git commit && git push origin main`
-- No separate deploy folder — one repo, one push.
+- Working folder: `c:\Users\usrr\OneDrive\Документы\Projects\mice-signature` (внутри монорепо `Projects`)
+- Монорепо remotes: `origin` → Russia-landing-version1, `github` → mice-signature (GitHub Pages)
+- После каждого изменения — два шага из корня монорепо (`Projects`):
+  ```
+  git add mice-signature/index.html mice-signature/CLAUDE.md
+  git commit -m "..."
+  git push origin main
+  git subtree split --prefix=mice-signature -b deploy-mice
+  git push github deploy-mice:main --force
+  git branch -D deploy-mice
+  ```
+- Папку `mice-signature-deploy` можно удалить — она больше не нужна.
