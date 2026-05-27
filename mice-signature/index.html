@@ -611,13 +611,14 @@
     }
     .hero-tagline {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.6rem, 4.8vw, 5.2rem);
+      font-size: clamp(3.2rem, 6vw, 7.2rem);
       font-weight: 700;
       font-style: italic;
       color: var(--chalk);
-      margin-top: .2em;
-      margin-bottom: 28px;
-      line-height: 1.1;
+      margin-top: .15em;
+      margin-bottom: 36px;
+      line-height: 1.0;
+      letter-spacing: -.01em;
     }
     .hero-sub {
       font-size: .72rem; font-weight: 400;
@@ -676,23 +677,35 @@
     .marquee-strip {
       background: var(--ink);
       overflow: hidden;
-      padding: 13px 0;
+      padding: 22px 0;
       white-space: nowrap;
+      border-top: 1px solid rgba(200,164,74,.1);
+      border-bottom: 1px solid rgba(200,164,74,.1);
     }
     .marquee-track {
       display: inline-flex;
-      animation: marqueeScroll 22s linear infinite;
+      align-items: center;
+      animation: marqueeScroll 38s linear infinite;
     }
     .marquee-item {
       font-family: 'Instrument Sans', sans-serif;
-      font-size: .65rem; font-weight: 600;
-      letter-spacing: .2em; text-transform: uppercase;
-      color: rgba(200,164,74,.7);
-      padding: 0 40px;
+      font-size: .8rem; font-weight: 500;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(200,164,74,.55);
+      padding: 0 52px;
+    }
+    .marquee-em {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 400;
+      font-style: italic;
+      letter-spacing: .02em;
+      text-transform: none;
+      color: rgba(250,250,248,.18);
+      padding: 0 52px;
     }
     .marquee-dot {
-      color: rgba(200,164,74,.3);
-      font-size: .5rem;
+      color: rgba(200,164,74,.25);
+      font-size: .45rem;
       vertical-align: middle;
     }
     @keyframes marqueeScroll {
@@ -703,7 +716,7 @@
     /* ══════════════════════════════════════
        SECTION UTILITY
     ══════════════════════════════════════ */
-    .section { padding: 112px 60px; position: relative; }
+    .section { padding: 148px 60px; position: relative; }
     .inner { max-width: 1160px; margin: 0 auto; }
     /* Architectural left line continues through about + stats */
     .about::before,
@@ -864,44 +877,40 @@
       position: relative; z-index: 1;
       max-width: 1160px; margin: 0 auto;
       padding: 0 60px;
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 0 64px;
     }
     .stat {
-      padding: 96px 48px 96px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 48px;
+      padding: 60px 0;
+      border-bottom: 1px solid var(--line);
     }
-    .stat::before {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: var(--gold);
-      margin-bottom: 32px;
-      opacity: .6;
-    }
+    .stat:first-child { border-top: 1px solid var(--line); }
+    .stat::before { display: none; }
     .stat-num {
-      font-family: 'Cormorant Garamond', sans-serif;
-      font-size: clamp(4rem, 6vw, 7rem);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5rem, 10vw, 12rem);
       font-weight: 700;
       color: var(--ink);
-      line-height: .85;
-      letter-spacing: -.03em;
-      margin-bottom: 20px;
+      line-height: .82;
+      letter-spacing: -.04em;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .stat-num sup {
-      font-size: .38em;
+      font-size: .36em;
       vertical-align: top;
-      margin-top: .15em;
+      margin-top: .18em;
       color: var(--gold);
     }
     .stat-label {
       font-family: 'Instrument Sans', sans-serif;
-      font-size: .82rem; font-weight: 400;
-      letter-spacing: 0;
+      font-size: .85rem; font-weight: 400;
       color: var(--warm);
       line-height: 1.75;
+      text-align: right;
+      max-width: 280px;
     }
 
     /* ══════════════════════════════════════
@@ -918,43 +927,60 @@
       margin-bottom: 60px;
     }
     .prog-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      max-width: 720px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 100px;
+      max-width: 1000px;
+      position: relative;
+    }
+    .prog-grid::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--line) 15%, var(--line) 85%, transparent);
+      transform: translateX(-50px);
+      pointer-events: none;
     }
     .prog-part {
       padding: 0;
-      margin-bottom: 56px;
+      margin-bottom: 0;
     }
     .prog-part:last-child { margin-bottom: 0; }
     .prog-part-label {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      font-size: clamp(2rem, 3.5vw, 3.4rem);
       font-weight: 600;
       font-style: italic;
       color: var(--ink);
-      margin-bottom: 24px;
+      margin-bottom: 0;
       line-height: 1;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--line);
     }
     .prog-row {
-      display: grid;
-      grid-template-columns: 130px 1fr;
-      gap: 0;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--line);
-      align-items: baseline;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(226,218,208,.5);
     }
-    .prog-row:first-of-type { border-top: 1px solid var(--line); }
+    .prog-row:first-of-type { border-top: none; }
     .prog-time {
       font-family: 'Instrument Sans', sans-serif;
-      font-size: .72rem; font-weight: 500;
-      color: var(--gold);
-      letter-spacing: .04em;
+      font-size: .6rem; font-weight: 500;
+      color: rgba(200,164,74,.7);
+      letter-spacing: .08em;
+      display: block;
     }
     .prog-act {
-      font-size: .85rem; font-weight: 400;
-      color: var(--ink); line-height: 1.55;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 1.6vw, 1.35rem);
+      font-weight: 500;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.3;
     }
 
     /* ══════════════════════════════════════
@@ -1191,9 +1217,10 @@
       .manifesto { padding: 80px 32px; }
       .stats-inner { padding: 0 32px; }
       .about-grid { grid-template-columns: 1fr; gap: 48px; }
-      .stats-inner { grid-template-columns: 1fr; gap: 0; }
-      .stat { padding-right: 0; border-bottom: 1px solid rgba(200,164,74,.1); }
-      .stat:last-child { border-bottom: none; }
+      .stat { flex-direction: column; align-items: flex-start; gap: 12px; padding: 48px 0; }
+      .stat-label { text-align: left; max-width: 100%; }
+      .prog-grid { grid-template-columns: 1fr; gap: 48px; }
+      .prog-grid::before { display: none; }
       .about::before, .exhibitors::before { left: 32px; }
       .contact-grid { grid-template-columns: 1fr; gap: 48px; }
       footer { padding: 18px 32px; }
@@ -1213,8 +1240,8 @@
       .section { padding: 64px 20px; }
       .manifesto { padding: 64px 20px; }
       .stats-inner { padding: 0 20px; }
-      .stat { padding: 48px 0; }
-      .prog-row { grid-template-columns: 82px 1fr; }
+      .stat { padding: 40px 0; gap: 10px; }
+      .stat-num { font-size: clamp(4rem, 14vw, 7rem); }
       .prog-part-label { font-size: clamp(2rem, 9vw, 3.2rem); }
       .ex-item { padding: 20px 0; }
       .ex-item-name { font-size: clamp(1.8rem, 8vw, 3rem); }
@@ -1375,19 +1402,25 @@
 <div class="marquee-strip" aria-hidden="true">
   <div class="marquee-track">
     <span class="marquee-item">B2B MICE Workshop <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">Moscow · ENZO Hotel 5★ <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">Inaugural Edition · August 2026 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">Moscow · August 2026</span>
+    <span class="marquee-item">Inaugural Edition <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">No random visitors</span>
+    <span class="marquee-item">ENZO Hotel Moscow 5★ <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">Real business. Real meetings.</span>
     <span class="marquee-item">International Partners <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">Russian MICE Market <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">Russian MICE Market</span>
     <span class="marquee-item">Pre-Scheduled Meetings <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">No Random Visitors <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">20 August 2026</span>
     <span class="marquee-item">B2B MICE Workshop <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">Moscow · ENZO Hotel 5★ <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">Inaugural Edition · August 2026 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">Moscow · August 2026</span>
+    <span class="marquee-item">Inaugural Edition <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">No random visitors</span>
+    <span class="marquee-item">ENZO Hotel Moscow 5★ <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">Real business. Real meetings.</span>
     <span class="marquee-item">International Partners <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">Russian MICE Market <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">Russian MICE Market</span>
     <span class="marquee-item">Pre-Scheduled Meetings <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">No Random Visitors <span class="marquee-dot">◆</span></span>
+    <span class="marquee-em">20 August 2026</span>
   </div>
 </div>
 
