@@ -425,7 +425,7 @@
        HERO
     ══════════════════════════════════════ */
     .hero {
-      background: #141018;
+      background: #1A1610 url(Enzo-hotel-exterior.webp) center/cover no-repeat;
       min-height: 100vh;
       position: relative;
       overflow: hidden;
@@ -437,7 +437,9 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 85% 65% at 12% 78%, rgba(14,10,18,.96) 0%, transparent 55%);
+      background:
+        radial-gradient(ellipse 85% 65% at 12% 78%, rgba(14,10,8,.97) 0%, transparent 55%),
+        linear-gradient(160deg, rgba(20,16,10,.60) 0%, rgba(20,16,10,.68) 100%);
       pointer-events: none;
       z-index: 1;
     }
@@ -1056,9 +1058,17 @@
        REGISTER
     ══════════════════════════════════════ */
     .register {
-      background: var(--ink);
+      background: var(--ink) url(Enzo-hotel-exterior.webp) center/cover no-repeat;
       position: relative; overflow: hidden;
       text-align: center;
+    }
+    .register::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(20,16,10,.82);
+      pointer-events: none;
+      z-index: 0;
     }
     .register::before {
       content: '';
@@ -1069,9 +1079,10 @@
       border-radius: 50%;
       background: radial-gradient(circle, rgba(200,164,74,.055) 0%, transparent 60%);
       pointer-events: none;
+      z-index: 1;
     }
     .reg-inner {
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
       max-width: 620px; margin: 0 auto;
     }
     .register h2 {
