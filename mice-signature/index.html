@@ -1345,9 +1345,122 @@
       .gm { font-size: clamp(3.2rem, 18vw, 7rem); }
       .gate-sig-svg { width: min(88vw, 400px); }
     }
+
+    /* ══════════════════════════════════════
+       COLOUR PREVIEW (ВРЕМЕННЫЙ ПРОБНИК)
+    ══════════════════════════════════════ */
+    #colour-switcher {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      background: rgba(8,8,8,.95);
+      border: 1px solid rgba(200,164,74,.35);
+      border-radius: 12px;
+      padding: 14px 16px 12px;
+      font-family: 'Instrument Sans', sans-serif;
+      backdrop-filter: blur(12px);
+      min-width: 212px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.6);
+    }
+    .cs-title {
+      font-size: .6rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(200,164,74,.55);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(200,164,74,.12);
+    }
+    .cs-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      padding: 7px 8px;
+      cursor: pointer;
+      margin-bottom: 3px;
+      transition: background .18s, border-color .18s;
+    }
+    .cs-btn:hover { background: rgba(200,164,74,.07); }
+    .cs-btn.active {
+      background: rgba(200,164,74,.13);
+      border-color: rgba(200,164,74,.3);
+    }
+    .cs-swatch {
+      width: 22px; height: 22px;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,.12);
+      flex-shrink: 0;
+    }
+    .cs-info { display: flex; flex-direction: column; text-align: left; }
+    .cs-name {
+      font-size: .72rem;
+      font-weight: 500;
+      color: rgba(250,250,248,.82);
+      line-height: 1.2;
+    }
+    .cs-hex {
+      font-size: .6rem;
+      color: rgba(250,250,248,.32);
+      font-family: monospace;
+      letter-spacing: .04em;
+    }
+    .cs-note {
+      font-size: .57rem;
+      color: rgba(250,250,248,.22);
+      margin-top: 9px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(255,255,255,.07);
+      text-align: center;
+      letter-spacing: .06em;
+    }
+
   </style>
 </head>
 <body>
+
+<!-- ════ COLOUR PREVIEW PANEL (ВРЕМЕННЫЙ — удалить после выбора) ════ -->
+<div id="colour-switcher">
+  <div class="cs-title">Пробник тёмного фона</div>
+
+  <button class="cs-btn active" data-scheme="midnight-blue" onclick="applyScheme('midnight-blue')">
+    <span class="cs-swatch" style="background:#121828"></span>
+    <span class="cs-info">
+      <span class="cs-name">Ночной синий</span>
+      <span class="cs-hex">#121828 · текущий</span>
+    </span>
+  </button>
+
+  <button class="cs-btn" data-scheme="amber-black" onclick="applyScheme('amber-black')">
+    <span class="cs-swatch" style="background:#1A1610"></span>
+    <span class="cs-info">
+      <span class="cs-name">Ночной янтарь</span>
+      <span class="cs-hex">#1A1610 · тёплый</span>
+    </span>
+  </button>
+
+  <button class="cs-btn" data-scheme="slate" onclick="applyScheme('slate')">
+    <span class="cs-swatch" style="background:#141820"></span>
+    <span class="cs-info">
+      <span class="cs-name">Глубокий сланец</span>
+      <span class="cs-hex">#141820 · минус синева</span>
+    </span>
+  </button>
+
+  <button class="cs-btn" data-scheme="editorial" onclick="applyScheme('editorial')">
+    <span class="cs-swatch" style="background:#131313"></span>
+    <span class="cs-info">
+      <span class="cs-name">Editorial black</span>
+      <span class="cs-hex">#131313 · нейтральный</span>
+    </span>
+  </button>
+
+  <div class="cs-note">временный пробник · удалить после выбора</div>
+</div>
 
 <!-- ════════ GATE ════════ -->
 <div id="gate" role="main" aria-label="Choose your role">
@@ -2035,6 +2148,40 @@
       el.classList.remove('in');
       revealObs.observe(el);
     });
+  }
+
+  /* ─── COLOUR PREVIEW (временный пробник) ─── */
+  const colourSchemes = {
+    'midnight-blue': {
+      '--ink':       '#121828',
+      '--green':     '#1A2035',
+      '--green-mid': '#202840',
+    },
+    'amber-black': {
+      '--ink':       '#1A1610',
+      '--green':     '#211C14',
+      '--green-mid': '#282218',
+    },
+    'slate': {
+      '--ink':       '#141820',
+      '--green':     '#1B2030',
+      '--green-mid': '#222840',
+    },
+    'editorial': {
+      '--ink':       '#131313',
+      '--green':     '#1A1A1A',
+      '--green-mid': '#212121',
+    },
+  };
+
+  function applyScheme(name) {
+    const root = document.documentElement;
+    const s = colourSchemes[name];
+    if (!s) return;
+    Object.entries(s).forEach(([k, v]) => root.style.setProperty(k, v));
+    document.querySelectorAll('.cs-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.scheme === name)
+    );
   }
 </script>
 
