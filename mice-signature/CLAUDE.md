@@ -15,13 +15,15 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 ## Design tokens
 
 ```
---ink:   #121828   (primary dark — hero, marquee, exhibitors, gate — Ночной scheme)
---green: #1A2035   (MP card background only)
---cream: #F9F6F0   (light section backgrounds — stats, program)
---chalk: #FAFAF8   (lightest — about, contact, body)
---gold:  #C8A44A   (accent — buttons, borders, icons, numbers)
---warm:  #7A736B   (secondary text on light sections)
---line:  #E2DAD0   (dividers on light sections)
+--ink:      #121828   (primary dark — hero, marquee, exhibitors, gate — Ночной scheme)
+--green:    #1A2035   (MP card background only)
+--green-mid:#202840   (mid-dark, used in gate gradients)
+--cream:    #F9F6F0   (light section backgrounds — stats, program)
+--chalk:    #FAFAF8   (lightest — about, contact, body)
+--gold:     #C8A44A   (accent — buttons, borders, icons, numbers)
+--gold-dim: #8B6E2F   (dimmer gold, hover states)
+--warm:     #7A736B   (secondary text on light sections)
+--line:     #E2DAD0   (dividers on light sections)
 ```
 
 ## Section rhythm (light/dark)
@@ -29,7 +31,7 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 | Section | Background |
 |---|---|
 | Hero | `--ink` (dark) |
-| Marquee | `--ink` (dark, gold text) |
+| Marquee | `--ink` (dark, mixed gold caps + chalk italic) |
 | About | `--chalk` (light) |
 | Manifesto quote | `--ink` (dark) |
 | Stats | `--cream` (light) |
@@ -49,7 +51,7 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 Two screens before the main site:
 
 ### 1. Gate — brand animation + role chooser
-Full-screen dark (`#141018`) screen, two phases:
+Full-screen dark (`--ink`) screen, two phases:
 
 **Phase 1 — pen sweeps MICE + writes Signature:**
 - Large white Cormorant Garamond Bold letters **M I C E** (`clamp(5.5rem, 17vw, 15rem)`, letter-spacing 0.18em), initially opacity 0
@@ -99,23 +101,35 @@ Full-screen dark (`#141018`) screen, two phases:
 ## Hero structure
 
 - Small `MICE` label (Cormorant, faded gold, spaced caps)
-- Main headline: tagline in large italic Cormorant Garamond (`clamp(2.6rem, 4.8vw, 5.2rem)`, bold, chalk)
+- Main headline: tagline in large italic Cormorant Garamond (`clamp(3.2rem, 6vw, 7.2rem)`, bold, chalk)
 - Sub: "No noise. No random visitors. Real business." (caps, faded)
-- Meta line: Date · Venue · Format — inline text, no borders, gold dots as separators
-- Single CTA button (no ghost button)
+- Meta line: Date · Venue · Format — inline, gold dots as separators; on mobile stacks vertically with hairline dividers
+- Single CTA button on desktop; **floating gold bar** fixed to bottom on mobile (appears after hero scroll)
 - Background watermark: `20.08` in huge faded gold (`clamp(8rem, 18vw, 22rem)`), bottom-right
 
 ## Design decisions (do not revert without asking)
 
-- **No `s-tag` repeats** — gold line + uppercase label removed from all sections except Contact
-- **Marquee — keep, redesign later.** Currently `--ink` background, gold uppercase text. Пользователю нравится, но стиль будет переработан.
-- **No numbered pillars** (01/02/03) — removed as cliché; pillars in About are title + description only
-- **SIGNATURE removed from hero** — nav logo already carries the name; repetition in large type was redundant
-- **Manifesto section** — standalone dark section between About and Stats with the key quote
-- **Exhibitors = typographic list** — replaced 3×2 card grid with full-width rows: large italic category name (Cormorant), hover → name turns gold + description fades in right. No icons, no rectangles.
-- **Register = dark** — `--ink` background, large italic h2, one meta line, full-width gold button on mobile. Matches Hero / Manifesto / Exhibitors rhythm.
-- **About grid = 60/40** — left column (text) dominates editorially. Pillar titles are evocative, not descriptive: *"No floor wandering." / "Everyone here books." / "Two debuts, one platform."*
-- **Mobile responsive** — two breakpoints: 1000px (tablet) and 620px (phone). Gate panels stack vertically on mobile, architectural lines hidden, programme time column reduced to 82px.
+- **Ночной colour scheme** — `--ink: #121828`, midnight blue. Final choice, do not revert.
+- **No `s-tag` repeats** — gold line + uppercase label removed from all sections except Contact.
+- **Marquee — mixed typefaces** — alternates uppercase Instrument Sans (gold, .8rem) and italic Cormorant Garamond (chalk at low opacity, 1.35rem). 38s speed, architectural top/bottom gold hairlines. Content mixes EN slogans and dates.
+- **Stats = editorial rows** — full-width horizontal rows, number left (`clamp(5rem, 10vw, 12rem)`), label right-aligned. Hairline `--line` dividers top and bottom each row. Not a 3-column grid.
+- **Programme = 2-column** — Morning / Evening side by side on desktop, vertical hairline separator. Time as tiny gold label above each activity. Activity text in italic Cormorant (`clamp(1rem, 1.6vw, 1.35rem)`). No table grid, no row borders.
+- **No numbered pillars** (01/02/03) — removed as cliché; pillars in About are title + description only.
+- **SIGNATURE removed from hero** — nav logo already carries the name; repetition in large type was redundant.
+- **Manifesto section** — standalone dark section between About and Stats with the key quote.
+- **Exhibitors = typographic list** — full-width rows, large italic category name (Cormorant), hover → name turns gold + description fades in right. No icons, no rectangles.
+- **Register = dark** — `--ink` background, large italic h2, one meta line, full-width gold button on mobile.
+- **About grid = 60/40** — left column (text) dominates editorially. Pillar titles evocative: *"No floor wandering." / "Everyone here books." / "Two debuts, one platform."*
+- **Photos planned** — joint portrait of Olga + Dasha → About/Contact; ENZO hotel photos → Hero/Register. Placeholder until ready.
+
+## Mobile (≤620px) — premium patterns
+
+- **Stats horizontal scroll** — peek pattern: cards are 72vw wide, user swipes to see all three. No vertical stack.
+- **Floating CTA** — `.mob-cta` fixed bottom bar with gold button. Appears after hero bottom exits viewport, hides when Register section is in view. JS-driven.
+- **Hero buttons hidden** on mobile — replaced by floating CTA.
+- **vw typography** — hero tagline `14vw`, manifesto `8vw`, register h2 `13vw`, stat numbers `22vw`.
+- **Padding** — 80px vertical, 24px horizontal (was 64/20).
+- Gate panels stack vertically; architectural lines hidden.
 
 ## What not to change without asking
 
@@ -123,13 +137,14 @@ Full-screen dark (`#141018`) screen, two phases:
 - The "two debuts" angle in pillar 03 (MICE Signature inaugural + ENZO Hotel new opening)
 - The quote: "We do not waste your time. We do not waste theirs."
 - The tagline: "No noise. No random visitors. Real business."
+- The Ночной colour scheme (`--ink: #121828`)
 
 ## Deploy
 
 - GitHub Pages: https://o6594340-sys.github.io/mice-signature/
 - Working folder: `c:\Users\usrr\OneDrive\Документы\Projects\mice-signature` (внутри монорепо `Projects`)
-- Монорепо remotes: `origin` → Russia-landing-version1, `github` → mice-signature (GitHub Pages)
-- После каждого изменения — два шага из корня монорепо (`Projects`):
+- Remotes: `origin` → Russia-landing-version1, `github` → mice-signature (GitHub Pages)
+- После каждого изменения — из корня монорепо (`Projects`):
   ```
   git add mice-signature/index.html mice-signature/CLAUDE.md
   git commit -m "..."
@@ -138,4 +153,3 @@ Full-screen dark (`#141018`) screen, two phases:
   git push github deploy-mice:main --force
   git branch -D deploy-mice
   ```
-- Папку `mice-signature-deploy` можно удалить — она больше не нужна.
