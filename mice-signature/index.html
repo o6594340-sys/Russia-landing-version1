@@ -53,6 +53,21 @@
     }
 
     /* ══════════════════════════════════════
+       LIGHT SECTION PAPER GRAIN
+    ══════════════════════════════════════ */
+    .about::after,
+    .program::after,
+    .contact::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+      background-size: 220px;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    /* ══════════════════════════════════════
        SCROLL REVEAL
     ══════════════════════════════════════ */
     .reveal {
@@ -682,8 +697,8 @@
       overflow: hidden;
       padding: 22px 0;
       white-space: nowrap;
-      border-top: 1px solid rgba(200,164,74,.1);
-      border-bottom: 1px solid rgba(200,164,74,.1);
+      border-top: 1px solid rgba(200,164,74,.25);
+      border-bottom: 1px solid rgba(200,164,74,.25);
     }
     .marquee-track {
       display: inline-flex;
@@ -694,7 +709,7 @@
       font-family: 'Instrument Sans', sans-serif;
       font-size: .8rem; font-weight: 500;
       letter-spacing: .18em; text-transform: uppercase;
-      color: rgba(200,164,74,.55);
+      color: rgba(200,164,74,.85);
       padding: 0 52px;
     }
     .marquee-em {
@@ -815,6 +830,10 @@
       color: var(--warm);
       line-height: 1.75;
     }
+    .pillar.ex-only { display: none; }
+    .pillar.buyer-only { display: none; }
+    .body-role-exhibitor .pillar.ex-only { display: grid; }
+    .body-role-buyer .pillar.buyer-only { display: grid; }
 
     /* ══════════════════════════════════════
        MANIFESTO QUOTE
@@ -825,6 +844,8 @@
       text-align: center;
       position: relative;
       overflow: hidden;
+      border-top: 1px solid rgba(200,164,74,.35);
+      border-bottom: 1px solid rgba(200,164,74,.35);
     }
     .manifesto::before {
       content: '\201C';
@@ -858,6 +879,18 @@
       font-size: .6rem; font-weight: 500;
       letter-spacing: .22em; text-transform: uppercase;
       color: rgba(200,164,74,.5);
+    }
+    .manifesto::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 55% at 50% 110%, rgba(200,164,74,.13) 0%, transparent 62%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: auto, 220px;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      z-index: 0;
     }
 
     /* ══════════════════════════════════════
@@ -895,7 +928,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(5rem, 10vw, 12rem);
       font-weight: 700;
-      color: var(--ink);
+      color: var(--gold);
       line-height: .82;
       letter-spacing: -.04em;
       white-space: nowrap;
@@ -956,7 +989,7 @@
       font-size: clamp(2rem, 3.5vw, 3.4rem);
       font-weight: 600;
       font-style: italic;
-      color: var(--ink);
+      color: var(--gold);
       margin-bottom: 0;
       line-height: 1;
       padding-bottom: 24px;
@@ -1053,6 +1086,10 @@
       transition: color .35s ease;
     }
     .ex-item:hover .ex-item-desc { color: rgba(248,244,238,.38); }
+    .ex-item.buyer-only { display: none; }
+    .ex-item.ex-only { display: none; }
+    .body-role-exhibitor .ex-item.ex-only { display: flex; }
+    .body-role-buyer .ex-item.buyer-only { display: flex; }
 
     /* ══════════════════════════════════════
        REGISTER
@@ -1559,10 +1596,10 @@
       <span class="hero-mice">MICE</span>
     </h1>
     <p class="hero-tagline">
-      <span class="ex-only" data-en="Your market. Direct access." data-ru="Ваш рынок. Прямой доступ.">Your market. Direct access.</span>
-      <span class="buyer-only" data-en="Where international MICE meets Russia." data-ru="Здесь международный MICE встречает Россию.">Where international MICE meets Russia.</span>
+      <span class="ex-only" data-en="Your market. Direct access." data-ru="Ваш рынок. Напрямую.">Your market. Direct access.</span>
+      <span class="buyer-only" data-en="International partners. In Moscow. For you." data-ru="Зарубежные партнёры — в Москве. Специально для вас.">Where international MICE meets Russia.</span>
     </p>
-    <p class="hero-sub" data-en="No noise. No random visitors. Real business." data-ru="Без шума. Без случайных гостей. Только бизнес.">No noise. No random visitors. Real business.</p>
+    <p class="hero-sub" data-en="No noise. No random visitors. Real business. And good company." data-ru="Без шума. Без случайных лиц. Только работа. И приятное общение.">No noise. No random visitors. Real business.</p>
     <div class="hero-meta">
       <div class="meta-item">
         <span class="meta-label" data-en="Date" data-ru="Дата">Date</span>
@@ -1617,29 +1654,47 @@
 <section class="section about" id="about">
   <div class="inner about-grid">
     <div>
-      <h2 class="reveal reveal-d1" data-en="Not just<br>presence.<br>Real matches." data-ru="Не просто<br>присутствие.<br>Реальные сделки.">Not just<br>presence.<br>Real matches.</h2>
+      <h2 class="reveal reveal-d1" data-en="Not just<br>presence.<br>Real matches." data-ru="Не выставка.<br>Не конференция.<br>Переговоры.">Not just<br>presence.<br>Real matches.</h2>
       <span class="gold-line"></span>
-      <p class="about-body reveal reveal-d2 ex-only" data-en="A closed-format B2B workshop — your direct entry into the Russian outbound MICE market. Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations." data-ru="Закрытый B2B-воркшоп — прямой вход на российский выездной MICE-рынок. Каждый байер лично приглашён Ольгой или Дарьей. Никаких автоматических списков — только проверенные люди.">A closed-format B2B workshop — your direct entry into the Russian outbound MICE market. Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations.</p>
-      <p class="about-body reveal reveal-d2 buyer-only" data-en="One day. The right people in the room. Every meeting pre-scheduled, every minute earned — no floor wandering, no cold pitches." data-ru="Один день. Нужные люди в одном зале. Каждая встреча по предзаписи, каждая минута — по делу. Никаких случайных разговоров.">One day. The right people in the room. Every meeting pre-scheduled, every minute earned — no floor wandering, no cold pitches.</p>
+      <p class="about-body reveal reveal-d2 ex-only" data-en="A closed-format B2B workshop — your direct entry into the Russian outbound MICE market. Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations." data-ru="Закрытый B2B-воркшоп — прямой выход на российский рынок выездного MICE. Ольга и Дарья приглашают каждого байера лично. Не база контактов — конкретные люди, которые принимают решения о выездном MICE.">A closed-format B2B workshop — your direct entry into the Russian outbound MICE market. Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations.</p>
+      <p class="about-body reveal reveal-d2 buyer-only" data-en="International hotels, DMCs and tourism offices flew to Moscow specifically to meet you. Asia, the Middle East, Europe, the Caucasus — every destination your clients ask about, pre-scheduled, in one day. No flights required." data-ru="Международные отели, DMC и туристические офисы приехали в Москву специально, чтобы встретиться с вами. Азия, Ближний Восток, Европа, Кавказ — все направления, которые нужны вашим клиентам. В одном зале. За один день. Без перелётов.">International hotels, DMCs and tourism offices flew to Moscow specifically to meet you. Asia, the Middle East, Europe, the Caucasus — every destination your clients ask about, pre-scheduled, in one day. No flights required.</p>
     </div>
     <div>
       <div class="pillars">
-        <div class="pillar reveal reveal-d1">
+        <div class="pillar ex-only reveal reveal-d1">
           <div>
-            <div class="pillar-title" data-en="No floor wandering." data-ru="Никаких блужданий.">No floor wandering.</div>
-            <div class="pillar-desc" data-en="Your agenda is confirmed before you arrive. Every meeting has a purpose." data-ru="Расписание готово до приезда. Каждая встреча — по делу.">Your agenda is confirmed before you arrive. Every meeting has a purpose.</div>
+            <div class="pillar-title" data-en="No floor wandering." data-ru="Только нужные встречи.">No floor wandering.</div>
+            <div class="pillar-desc" data-en="Your agenda is confirmed before you arrive. Every meeting has a purpose." data-ru="Программа согласована заранее. Вы знаете, с кем и о чём говорите, ещё до входа в зал.">Your agenda is confirmed before you arrive. Every meeting has a purpose.</div>
           </div>
         </div>
-        <div class="pillar reveal reveal-d2">
+        <div class="pillar ex-only reveal reveal-d2">
           <div>
-            <div class="pillar-title" data-en="Everyone here books." data-ru="Все здесь покупают.">Everyone here books.</div>
-            <div class="pillar-desc" data-en="MICE agencies, incentive planners, corporate buyers — people who actually move groups internationally." data-ru="MICE-агентства, incentive-планировщики, корпоративные закупщики — те, кто реально отправляет группы за рубеж.">MICE agencies, incentive planners, corporate buyers — people who actually move groups internationally.</div>
+            <div class="pillar-title" data-en="Everyone here books." data-ru="Те, кто вывозит группы.">Everyone here books.</div>
+            <div class="pillar-desc" data-en="MICE agencies, incentive planners, corporate buyers — people who actually move groups internationally." data-ru="MICE-агентства, организаторы инсентива, корпоративные закупщики — аудитория, которая ежегодно отправляет группы за рубеж.">MICE agencies, incentive planners, corporate buyers — people who actually move groups internationally.</div>
           </div>
         </div>
-        <div class="pillar reveal reveal-d3">
+        <div class="pillar ex-only reveal reveal-d3">
           <div>
             <div class="pillar-title" data-en="Two debuts, one platform" data-ru="Два дебюта, одна платформа">Two debuts, one platform</div>
-            <div class="pillar-desc" data-en="MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026." data-ru="Первое издание MICE Signature проходит в ENZO Hotel — новом 5★ отеле Москвы, открытом весной 2026.">MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026.</div>
+            <div class="pillar-desc" data-en="MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026." data-ru="Первое издание MICE Signature — в ENZO Hotel, новом пятизвёздочном отеле Москвы, который открылся весной 2026 года.">MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026.</div>
+          </div>
+        </div>
+        <div class="pillar buyer-only reveal reveal-d1">
+          <div>
+            <div class="pillar-title" data-en="They came to you." data-ru="Они приехали к вам.">They came to you.</div>
+            <div class="pillar-desc" data-en="Every international partner flew in from abroad specifically for this event. No trade show crowds — direct access to decision-makers." data-ru="Каждый зарубежный партнёр приехал в Москву специально ради этой встречи. Никаких многолюдных выставок — только переговоры, которые имеют смысл.">Every international partner flew in from abroad specifically for this event. No trade show crowds — direct access to decision-makers.</div>
+          </div>
+        </div>
+        <div class="pillar buyer-only reveal reveal-d2">
+          <div>
+            <div class="pillar-title" data-en="Asia. Middle East. CIS." data-ru="Азия. Ближний Восток. СНГ.">Asia. Middle East. CIS.</div>
+            <div class="pillar-desc" data-en="Hotels, DMCs and national tourism offices from the destinations your clients request most — all in one room, one day." data-ru="Отели, DMC и национальные туристические офисы самых востребованных направлений — в одном зале, за один день.">Hotels, DMCs and national tourism offices from the destinations your clients request most — all in one room, one day.</div>
+          </div>
+        </div>
+        <div class="pillar buyer-only reveal reveal-d3">
+          <div>
+            <div class="pillar-title" data-en="Meetings and a little magic." data-ru="Встречи и немного магии.">Meetings and a little magic.</div>
+            <div class="pillar-desc" data-en="Pre-scheduled meetings matched to your interests, networking with fellow industry professionals... and a few pleasant surprises from the organisers." data-ru="Предзаписанные встречи с партнёрами под ваши направления, общение с коллегами по рынку... и приятные сюрпризы от организаторов.">Pre-scheduled meetings matched to your interests, networking with fellow industry professionals... and a few pleasant surprises from the organisers.</div>
           </div>
         </div>
       </div>
@@ -1649,7 +1704,7 @@
 
 <!-- ════════ MANIFESTO ════════ -->
 <section class="manifesto reveal">
-  <p class="manifesto-quote" data-en="We do not waste your time. We do not waste theirs." data-ru="Мы не тратим ваше время. Мы не тратим их время.">We do not waste your time. We do not waste theirs.</p>
+  <p class="manifesto-quote" data-en="We do not waste your time. We do not waste theirs." data-ru="Здесь не ищут нужного человека. Здесь с ним встречаются.">We do not waste your time. We do not waste theirs.</p>
   <p class="manifesto-attr" data-en="Match Point · 20 years in Russian MICE" data-ru="Match Point · 20 лет в российском MICE">Match Point · 20 years in Russian MICE</p>
 </section>
 
@@ -1658,15 +1713,15 @@
   <div class="stats-inner">
     <div class="stat reveal">
       <div class="stat-num"><span class="count-num" data-count="1500" data-sep="1">1,500</span><sup>+</sup></div>
-      <div class="stat-label" data-en="Qualified MICE buyers<br>in the Match Point database" data-ru="Квалифицированных MICE-байеров<br>в базе Match Point">Qualified MICE buyers<br>in the Match Point database</div>
+      <div class="stat-label" data-en="Qualified MICE buyers<br>in the Match Point database" data-ru="Квалифицированных байеров<br>в базе Match Point">Qualified MICE buyers<br>in the Match Point database</div>
     </div>
     <div class="stat reveal reveal-d1">
       <div class="stat-num"><span class="count-num" data-count="20">20</span></div>
-      <div class="stat-label" data-en="Years navigating<br>the Russian MICE market" data-ru="Лет в российском<br>MICE-рынке">Years navigating<br>the Russian MICE market</div>
+      <div class="stat-label" data-en="Years navigating<br>the Russian MICE market" data-ru="Лет на рынке<br>выездного MICE">Years navigating<br>the Russian MICE market</div>
     </div>
     <div class="stat reveal reveal-d2">
       <div class="stat-num"><span class="count-num" data-count="80">80</span><sup>%</sup></div>
-      <div class="stat-label" data-en="of Russian corporate MICE trips<br>are international" data-ru="российских корпоративных<br>MICE-поездок — за рубеж">of Russian corporate MICE trips<br>are international</div>
+      <div class="stat-label" data-en="of Russian corporate MICE trips<br>are international" data-ru="международных деловых поездок<br>российских компаний">of Russian corporate MICE trips<br>are international</div>
     </div>
   </div>
 </div>
@@ -1717,32 +1772,49 @@
   <div class="ex-grain"></div>
   <div class="inner">
     <h2 class="reveal reveal-d1" data-en="International partners.<br>Russian market." data-ru="Международные партнёры.<br>Российский рынок.">International partners.<br>Russian market.</h2>
-    <p class="ex-intro reveal reveal-d2 ex-only" data-en="All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise." data-ru="Все экспоненты — международные компании, которые напрямую представляют свой продукт квалифицированным российским байерам. Без посредников. Без лишнего шума.">All exhibitors at MICE Signature are international companies presenting their MICE product directly to qualified Russian buyers — no intermediaries, no background noise.</p>
-    <p class="ex-intro reveal reveal-d2 buyer-only" data-en="At your table: international hotels 4–5★, DMCs, airlines and national tourism offices — all presenting their best MICE product exclusively to qualified Russian buyers like you." data-ru="За вашим столом: международные отели 4–5★, DMC, авиакомпании и национальные туристические офисы — все представляют свой лучший MICE-продукт исключительно квалифицированным российским байерам.">At your table: international hotels 4–5★, DMCs, airlines and national tourism offices — all presenting their best MICE product exclusively to qualified Russian buyers like you.</p>
+    <p class="ex-intro reveal reveal-d2 ex-only" data-en="Your audience is the decision-makers of Russian outbound MICE: MICE agencies, event agencies and corporate buyers who move groups internationally every year. Every buyer is personally curated by Match Point — no automated lists, no random participants." data-ru="Перед вами — те, кто принимает решения о выездном MICE в России: агентства, ивент-компании и корпоративные байеры, которые ежегодно отправляют группы за рубеж. Каждого Match Point пригласил лично.">Your audience is the decision-makers of Russian outbound MICE: MICE agencies, event agencies and corporate buyers who move groups internationally every year. Every buyer is personally curated by Match Point — no automated lists, no random participants.</p>
+    <p class="ex-intro reveal reveal-d2 buyer-only" data-en="Every company here is international — no Russian vendors, no resellers. Hotels 4–5★, DMCs, congress centres, airlines and national tourism offices, all brought here specifically for the Russian outbound market. The only event in Russia where the entire floor is foreign." data-ru="Все участники — иностранные компании. Ни одного российского поставщика. Отели 4–5★, DMC, конгресс-залы, авиакомпании и национальные туристические офисы — приехали специально для встречи с российским рынком. Такого мероприятия в России раньше не было.">Every company here is international — no Russian vendors, no resellers. Hotels 4–5★, DMCs, congress centres, airlines and national tourism offices, all brought here specifically for the Russian outbound market. The only event in Russia where the entire floor is foreign.</p>
     <div class="ex-list">
-      <div class="ex-item reveal">
+      <div class="ex-item buyer-only reveal">
         <span class="ex-item-name" data-en="Hotels." data-ru="Отели.">Hotels.</span>
-        <span class="ex-item-desc" data-en="4★ and 5★ properties with MICE infrastructure and group capacity." data-ru="Объекты 4★ и 5★ с MICE-инфраструктурой и возможностями для групп.">4★ and 5★ properties with MICE infrastructure and group capacity.</span>
+        <span class="ex-item-desc" data-en="4★ and 5★ properties with MICE infrastructure and group capacity." data-ru="Отели 4★ и 5★ с залами для мероприятий и опытом работы с группами.">4★ and 5★ properties with MICE infrastructure and group capacity.</span>
       </div>
-      <div class="ex-item reveal reveal-d1">
+      <div class="ex-item buyer-only reveal reveal-d1">
         <span class="ex-item-name" data-en="DMCs." data-ru="DMC.">DMCs.</span>
-        <span class="ex-item-desc" data-en="Destination Management Companies specialising in incentive travel and corporate groups." data-ru="Компании по управлению дестинациями для инсентив-программ и корпоративных групп.">Destination Management Companies specialising in incentive travel and corporate groups.</span>
+        <span class="ex-item-desc" data-en="Destination Management Companies specialising in incentive travel and corporate groups." data-ru="Компании, которые организуют инсентив-программы и корпоративные поездки на месте.">Destination Management Companies specialising in incentive travel and corporate groups.</span>
       </div>
-      <div class="ex-item reveal reveal-d2">
+      <div class="ex-item buyer-only reveal reveal-d2">
         <span class="ex-item-name" data-en="Destinations." data-ru="Дестинации.">Destinations.</span>
-        <span class="ex-item-desc" data-en="National tourism offices promoting their MICE potential to Russian planners." data-ru="Национальные туристические офисы, продвигающие MICE-потенциал своих направлений.">National tourism offices promoting their MICE potential to Russian planners.</span>
+        <span class="ex-item-desc" data-en="National tourism offices promoting their MICE potential to Russian planners." data-ru="Национальные туристические офисы, представляющие возможности своих стран для деловых поездок.">National tourism offices promoting their MICE potential to Russian planners.</span>
       </div>
-      <div class="ex-item reveal reveal-d1">
+      <div class="ex-item buyer-only reveal reveal-d1">
         <span class="ex-item-name" data-en="Airlines." data-ru="Авиакомпании.">Airlines.</span>
-        <span class="ex-item-desc" data-en="International carriers with group fares, charter options and MICE priority service." data-ru="Международные перевозчики с групповыми тарифами и чартерными опциями для MICE.">International carriers with group fares, charter options and MICE priority service.</span>
+        <span class="ex-item-desc" data-en="International carriers with group fares, charter options and MICE priority service." data-ru="Международные авиакомпании с групповыми тарифами и опциями для корпоративных программ.">International carriers with group fares, charter options and MICE priority service.</span>
       </div>
-      <div class="ex-item reveal reveal-d2">
+      <div class="ex-item buyer-only reveal reveal-d2">
         <span class="ex-item-name" data-en="Venues." data-ru="Площадки.">Venues.</span>
-        <span class="ex-item-desc" data-en="Congress centres and unique venues equipped for professional MICE events." data-ru="Конгресс-центры и уникальные площадки для профессиональных MICE-мероприятий.">Congress centres and unique venues equipped for professional MICE events.</span>
+        <span class="ex-item-desc" data-en="Congress centres and unique venues equipped for professional MICE events." data-ru="Конгресс-центры и нестандартные площадки для профессиональных мероприятий.">Congress centres and unique venues equipped for professional MICE events.</span>
       </div>
-      <div class="ex-item reveal reveal-d3">
+      <div class="ex-item buyer-only reveal reveal-d3">
         <span class="ex-item-name" data-en="Services." data-ru="Сервисы.">Services.</span>
-        <span class="ex-item-desc" data-en="Entertainment, team building, gala and specialist MICE providers." data-ru="Развлечения, тимбилдинг, гала-услуги и другие MICE-сервисные компании.">Entertainment, team building, gala and specialist MICE providers.</span>
+        <span class="ex-item-desc" data-en="Entertainment, team building, gala and specialist MICE providers." data-ru="Тимбилдинг, гала-программы, развлечения и другие сервисы для корпоративных мероприятий.">Entertainment, team building, gala and specialist MICE providers.</span>
+      </div>
+
+      <div class="ex-item ex-only reveal">
+        <span class="ex-item-name" data-en="MICE Agencies." data-ru="MICE-агентства.">MICE Agencies.</span>
+        <span class="ex-item-desc" data-en="Incentive specialists and business travel agencies managing international group programmes for Russian companies." data-ru="Агентства, специализирующиеся на инсентиве и деловом туризме, — организуют выездные программы для российских компаний.">Incentive specialists and business travel agencies managing international group programmes for Russian companies.</span>
+      </div>
+      <div class="ex-item ex-only reveal reveal-d1">
+        <span class="ex-item-name" data-en="Event Agencies." data-ru="Ивент-агентства.">Event Agencies.</span>
+        <span class="ex-item-desc" data-en="Corporate event planners who source international venues and destinations for their clients' programmes." data-ru="Организаторы корпоративных мероприятий, подбирающие зарубежные площадки и дестинации для клиентских программ.">Corporate event planners who source international venues and destinations for their clients' programmes.</span>
+      </div>
+      <div class="ex-item ex-only reveal reveal-d2">
+        <span class="ex-item-name" data-en="Corporate Buyers." data-ru="Корпоративные клиенты.">Corporate Buyers.</span>
+        <span class="ex-item-desc" data-en="In-house MICE managers and procurement teams from Russian companies with direct international travel budgets." data-ru="Менеджеры и закупщики российских компаний, которые самостоятельно управляют бюджетами на выездные мероприятия.">In-house MICE managers and procurement teams from Russian companies with direct international travel budgets.</span>
+      </div>
+      <div class="ex-item ex-only reveal reveal-d3">
+        <span class="ex-item-name" data-en="PCOs &amp; Travel Agencies." data-ru="PCO и турагентства.">PCOs &amp; Travel Agencies.</span>
+        <span class="ex-item-desc" data-en="Professional conference organisers and outbound travel agencies with active MICE client portfolios." data-ru="Профессиональные организаторы конференций и выездные турагентства с активными MICE-клиентами.">Professional conference organisers and outbound travel agencies with active MICE client portfolios.</span>
       </div>
     </div>
   </div>
@@ -1763,8 +1835,8 @@
       <span data-en="Open Meeting Planner" data-ru="Открыть планировщик встреч">Open Meeting Planner</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <p class="reg-note reveal reveal-d4 ex-only" data-en="Places are limited. We will confirm your category and schedule within 3 business days." data-ru="Количество мест ограничено. Подтверждение категории и расписания — в течение 3 рабочих дней.">Places are limited. We will confirm your category and schedule within 3 business days.</p>
-    <p class="reg-note reveal reveal-d4 buyer-only" data-en="The meeting planner will open once registration is confirmed." data-ru="Планировщик встреч будет доступен после подтверждения регистрации.">The meeting planner will open once registration is confirmed.</p>
+    <p class="reg-note reveal reveal-d4 ex-only" data-en="Places are limited. We will confirm your category and schedule within 3 business days." data-ru="Категорию участия и расписание встреч подтверждаем в течение 3 рабочих дней.">Places are limited. We will confirm your category and schedule within 3 business days.</p>
+    <p class="reg-note reveal reveal-d4 buyer-only" data-en="The meeting planner will open once registration is confirmed." data-ru="Планировщик встреч откроется после подтверждения вашей регистрации.">The meeting planner will open once registration is confirmed.</p>
   </div>
 </section>
 
@@ -1820,12 +1892,12 @@
     </div>
     <div class="mp-card reveal reveal-d2">
       <div class="mp-name">MATCH POINT</div>
-      <div class="mp-tag" data-en="Securing new opportunities<br>in the Russian outbound MICE market" data-ru="Открываем новые возможности<br>на российском выездном MICE-рынке">Securing new opportunities<br>in the Russian outbound MICE market</div>
+      <div class="mp-tag" data-en="Securing new opportunities<br>in the Russian outbound MICE market" data-ru="Двадцать лет<br>на российском рынке выездного MICE.">Securing new opportunities<br>in the Russian outbound MICE market</div>
       <div class="mp-stats">
         <div class="mp-stat"><div class="mp-dot"></div><span data-en="20 years in Russian MICE" data-ru="20 лет в российском MICE">20 years in Russian MICE</span></div>
         <div class="mp-stat"><div class="mp-dot"></div><span data-en="1,500+ qualified buyers in our database" data-ru="1500+ квалифицированных байеров в базе">1,500+ qualified buyers in our database</span></div>
-        <div class="mp-stat"><div class="mp-dot"></div><span data-en="Partners across 9 countries" data-ru="Партнёры в 9 странах">Partners across 9 countries</span></div>
-        <div class="mp-stat"><div class="mp-dot"></div><span data-en="90% success rate in tenders" data-ru="90% успеха в тендерах">90% success rate in tenders</span></div>
+        <div class="mp-stat"><div class="mp-dot"></div><span data-en="Destinations across Europe, Asia &amp; the Middle East" data-ru="Дестинации в Европе, Азии и на Ближнем Востоке">Destinations across Europe, Asia &amp; the Middle East</span></div>
+        <div class="mp-stat"><div class="mp-dot"></div><span data-en="Russia's leading corporations and agencies among clients" data-ru="Ведущие корпорации и агентства России среди клиентов">Russia's leading corporations and agencies among clients</span></div>
       </div>
     </div>
   </div>
