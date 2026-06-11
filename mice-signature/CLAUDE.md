@@ -81,6 +81,16 @@ Full-screen dark (`--ink`) screen, two phases:
 - Language switcher (EN/RU) works normally within each view
 - "← Switch role" button in nav resets `sessionStorage` and returns to gate
 
+**Role-specific Exhibitors section (`.ex-items` list):**
+- Buyers see: Hotels & Resorts 5★, DMCs & Ground Operators, Destinations & Tourism Boards, Airlines & Charter, MICE Venues & Congress Centres, Services & Technology
+- Exhibitors see: MICE Agencies, Event Agencies & Producers, Corporate Buyers, PCOs & Travel Agencies
+- CSS cascade fix required: `.ex-item.ex-only { display: none }` and `.ex-item.buyer-only { display: none }` must be declared **after** `.ex-item { display: flex }` to win specificity
+
+**Role-specific About pillars (`.pillars` grid):**
+- Exhibitors (`.ex-only` pillars): "Только нужные встречи" / "Те, кто вывозит группы" / "Два дебюта, одна платформа"
+- Buyers (`.buyer-only` pillars): "Они приехали к вам" / "Азия. Ближний Восток. СНГ." / "Встречи и немного магии."
+- Same CSS cascade fix applies: `.pillar.ex-only` / `.pillar.buyer-only` declared after `.pillar { display: grid }`
+
 ## Key content facts
 
 - **Date:** 20 August 2026
@@ -96,13 +106,15 @@ Full-screen dark (`--ink`) screen, two phases:
 ## Audience split
 
 - **Buyers** — Russian: MICE agencies, incentive agencies, corporate buyers, PCOs, travel agencies. Invited by Match Point, do not pay.
+  - Buyers are split into two groups for the programme: morning (special breakfast — not publicly highlighted) and evening (cocktail). Do not draw attention to this split in copy; mention only "pre-scheduled meetings, networking, and surprises from the organizers."
 - **Exhibitors** — International only: hotels 4–5★, DMCs, airlines, congress centres, national tourism offices. Pay to participate.
+- **Scale:** up to ~30 exhibitors total. Never write copy implying global or mass scale ("world MICE in one hall", "весь мировой MICE" etc.).
 
 ## Hero structure
 
 - Small `MICE` label (Cormorant, faded gold, spaced caps)
 - Main headline: tagline in large italic Cormorant Garamond (`clamp(3.2rem, 6vw, 7.2rem)`, bold, chalk)
-- Sub: "No noise. No random visitors. Real business." (caps, faded)
+- Sub: "No noise. No random visitors. Real business. And good company." (caps, faded)
 - Meta line: Date · Venue · Format — inline, gold dots as separators; on mobile stacks vertically with hairline dividers
 - Single CTA button on desktop; **floating gold bar** fixed to bottom on mobile (appears after hero scroll)
 - Background watermark: `20.08` in huge faded gold (`clamp(8rem, 18vw, 22rem)`), bottom-right
@@ -119,9 +131,14 @@ Full-screen dark (`--ink`) screen, two phases:
 - **Manifesto section** — standalone dark section between About and Stats with the key quote. Quote at `clamp(2.4rem, 4.8vw, 5.2rem)` desktop / `clamp(2rem, 9.5vw, 3.6rem)` mobile — big, commanding, line-height 1.1. Do not shrink.
 - **Exhibitors = typographic list** — full-width rows, large italic category name (Cormorant), hover → name turns gold + description fades in right. No icons, no rectangles.
 - **Register = dark** — `--ink` background, large italic h2, one meta line, full-width gold button on mobile.
-- **About grid = 60/40** — left column (text) dominates editorially. Pillar titles evocative: *"No floor wandering." / "Everyone here books." / "Two debuts, one platform."*
+- **About grid = 60/40** — left column (text) dominates editorially. Pillars are role-specific (see Role-specific views above).
 - **Personal names in About** — exhibitor copy reads "Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations." Names humanise B2B trust for a first-edition event. Do not revert to generic "Match Point" phrasing.
 - **Parallax on 20.08** — `.hero-date-bg` has `will-change: transform`; JS moves it at `scrollY * 0.22` on scroll. Hero has `overflow: hidden` to clip. Do not remove.
+- **Gold stat numbers** — `.stat-num { color: var(--gold) }`. Numbers (80%, 20, 1500+) render in gold on cream background.
+- **Paper grain on light sections** — `.about::after`, `.program::after`, `.contact::after` have a fractal SVG noise texture at opacity 0.028, `mix-blend-mode: multiply`. Subtle paper warmth, do not remove.
+- **Manifesto gold treatment** — `border-top/bottom: 1px solid rgba(200,164,74,.35)` + `::after` radial gradient (gold fog from bottom, opacity ~0.07) + SVG grain at `mix-blend-mode: screen`. Adds warmth without lightening dark bg.
+- **Marquee opacity boost** — border opacity 0.1→0.25, item opacity 0.55→0.85. More visible, feels airier.
+- **Programme headings in gold** — `.prog-part-label { color: var(--gold) }` — "Morning / Evening" labels are gold.
 - **Photos planned** — joint portrait of Olga + Dasha → About/Contact; ENZO hotel photos → Hero/Register. Placeholder until ready.
 
 ## Mobile (≤620px) — premium patterns
@@ -136,19 +153,23 @@ Full-screen dark (`--ink`) screen, two phases:
 ## What not to change without asking
 
 - The gate animation (Phase 1 pen + Phase 2 role panels) — considered final
-- The "two debuts" angle in pillar 03 (MICE Signature inaugural + ENZO Hotel new opening)
-- The quote: "We do not waste your time. We do not waste theirs."
-- The tagline: "No noise. No random visitors. Real business."
+- The "two debuts" angle in exhibitor pillar 03 (MICE Signature inaugural + ENZO Hotel new opening)
+- The manifesto quote (RU): "Здесь не ищут нужного человека. Здесь с ним встречаются."
+- The manifesto quote (EN): "No one is searching for the right person here. They are meeting them."
+- The tagline (EN): "No noise. No random visitors. Real business. And good company."
+- The tagline sub (RU): "Без шума. Без случайных лиц. Только работа. И приятное общение."
 - The Ночной янтарь colour scheme (`--ink: #1A1610`) — финальный выбор
+- Scale rule: the event has **up to ~30 exhibitors** — no copy that implies mass or global scale
 
 ## Deploy
 
 - GitHub Pages: https://o6594340-sys.github.io/mice-signature/
+- Custom domain: **micesignature.ru** (DNS pending — reg.ru A records → 185.199.108-111.153; GitHub repo Settings → Custom domain)
 - Working folder: `c:\Users\usrr\OneDrive\Документы\Projects\mice-signature` (внутри монорепо `Projects`)
 - Remotes: `origin` → Russia-landing-version1, `github` → mice-signature (GitHub Pages)
 - После каждого изменения — из корня монорепо (`Projects`):
   ```
-  git add mice-signature/index.html mice-signature/CLAUDE.md
+  git add mice-signature/index.html mice-signature/CLAUDE.md mice-signature/CNAME
   git commit -m "..."
   git push origin main
   git subtree split --prefix=mice-signature -b deploy-mice

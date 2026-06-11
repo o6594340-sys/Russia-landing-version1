@@ -909,6 +909,7 @@
       background-size: 220px; pointer-events: none;
       mix-blend-mode: screen;
     }
+    .stats-dots { display: none; }
     .stats-inner {
       position: relative; z-index: 1;
       max-width: 1160px; margin: 0 auto;
@@ -1305,13 +1306,14 @@
       /* ── Nav ── */
       nav, nav.scrolled { padding: 14px 24px; }
       .nav-cta { display: none; }
-      .role-sw { display: none; }
+      .role-sw { display: flex; }
+      .role-sw-sep { display: none; }
 
       /* ── Hero ── */
       .hero-content { padding: 108px 24px 100px; }
       .hero::after, .about::before, .exhibitors::before { display: none; }
       .hero-tagline { font-size: clamp(2.8rem, 14vw, 5rem); line-height: .97; }
-      .hero-sub { font-size: .65rem; letter-spacing: .16em; margin-bottom: 36px; }
+      .hero-sub { font-size: .72rem; letter-spacing: .14em; margin-bottom: 36px; }
       .hero-meta { flex-direction: column; gap: 0; margin-bottom: 40px; }
       .meta-item + .meta-item::before { display: none; }
       .meta-item {
@@ -1358,6 +1360,15 @@
       .stat:last-child { border-right: none; min-width: 80vw; }
       .stat-num { font-size: clamp(5rem, 22vw, 8rem); }
       .stat-label { text-align: left; max-width: 100%; font-size: .82rem; }
+      .stats-dots {
+        display: flex; justify-content: center; gap: 7px;
+        padding: 18px 0 0;
+      }
+      .stats-dot {
+        width: 5px; height: 5px; border-radius: 50%;
+        background: var(--line); transition: background .3s;
+      }
+      .stats-dot.stats-dot-active { background: var(--gold); }
 
       /* ── Programme ── */
       .prog-grid { grid-template-columns: 1fr; gap: 44px; }
@@ -1389,7 +1400,8 @@
       #gate-ex { border-right: none; border-bottom: 1px solid rgba(200,164,74,.15); }
       .gate-divider { display: none; }
       .gate-role-en { font-size: clamp(2.6rem, 11vw, 4rem); }
-      .gate-desc { display: none; }
+      .gate-role-ru { font-size: .9rem; margin-bottom: 20px; }
+      .gate-desc { display: block; font-size: .62rem; margin-bottom: 28px; }
       .gm { font-size: clamp(3.2rem, 18vw, 7rem); }
       .gate-sig-svg { width: min(78vw, 340px); }
       #gate { overflow-x: hidden; }
@@ -1723,6 +1735,11 @@
       <div class="stat-num"><span class="count-num" data-count="80">80</span><sup>%</sup></div>
       <div class="stat-label" data-en="of Russian corporate MICE trips<br>are international" data-ru="международных деловых поездок<br>российских компаний">of Russian corporate MICE trips<br>are international</div>
     </div>
+  </div>
+  <div class="stats-dots" aria-hidden="true">
+    <span class="stats-dot stats-dot-active"></span>
+    <span class="stats-dot"></span>
+    <span class="stats-dot"></span>
   </div>
 </div>
 
@@ -2215,6 +2232,21 @@
         });
       }
       _ctaWasHidden = shouldHide;
+    }, { passive: true });
+  }
+
+  /* ─── Stats swipe dots ─── */
+  const statsInner = document.querySelector('.stats-inner');
+  const statsDots = document.querySelectorAll('.stats-dot');
+  if (statsInner && statsDots.length) {
+    const statItems = statsInner.querySelectorAll('.stat');
+    statsInner.addEventListener('scroll', () => {
+      let closest = 0, minDist = Infinity;
+      statItems.forEach((s, i) => {
+        const dist = Math.abs(s.offsetLeft - statsInner.scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      statsDots.forEach((d, i) => d.classList.toggle('stats-dot-active', i === closest));
     }, { passive: true });
   }
 
