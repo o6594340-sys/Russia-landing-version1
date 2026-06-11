@@ -144,6 +144,21 @@
       fill: rgba(200,164,74,.92);
     }
 
+    /* ── Gate skip button ── */
+    #gate-skip {
+      position: absolute;
+      top: 22px; right: 28px;
+      background: none; border: none;
+      color: rgba(248,244,238,.28);
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+      cursor: pointer; z-index: 20;
+      opacity: 0; transition: opacity .7s ease, color .2s;
+      pointer-events: none; padding: 8px 0;
+    }
+    #gate-skip.visible { opacity: 1; pointer-events: all; }
+    #gate-skip:hover { color: rgba(200,164,74,.65); }
+
     /* ── Gate panels (Phase 2) ── */
     .gate-panels {
       position: absolute;
@@ -1503,7 +1518,9 @@
 <body>
 
 <!-- ════════ GATE ════════ -->
-<div id="gate" role="main" aria-label="Choose your role">
+<div id="gate" aria-label="Choose your role">
+
+  <button id="gate-skip" onclick="skipGate()" aria-label="Skip animation">Skip →</button>
 
   <!-- Phase 1: brand animation -->
   <div class="gate-brand" id="gate-brand">
@@ -1946,6 +1963,10 @@
     const penTip   = document.getElementById('gate-pen-tip');
     const mLetters = [...document.querySelectorAll('.gm')];
 
+    /* show skip after 2s */
+    const skipBtn = document.getElementById('gate-skip');
+    if (skipBtn) setTimeout(() => skipBtn.classList.add('visible'), 2000);
+
     /* reset */
     brand.style.opacity = '1';
     brand.style.display = 'flex';
@@ -2129,6 +2150,17 @@
       });
       window._heroSigObserver.observe(el.closest('.hero-content'));
     }
+  }
+
+  /* ─── Skip gate animation ─── */
+  function skipGate() {
+    if (typeof gsap !== 'undefined') gsap.killTweensOf('*');
+    const brand  = document.getElementById('gate-brand');
+    const panels = document.getElementById('gate-panels');
+    const skip   = document.getElementById('gate-skip');
+    if (brand)  { brand.style.transition = 'none'; brand.style.opacity = '0'; brand.style.display = 'none'; }
+    if (panels) panels.classList.add('gate-revealed');
+    if (skip)   skip.style.display = 'none';
   }
 
   /* ─── Choose role ─── */
