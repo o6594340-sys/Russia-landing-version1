@@ -426,6 +426,16 @@
       text-decoration: none;
     }
     .nav-logo em { color: var(--gold); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-link {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .65rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(250,250,248,.32);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-link:hover { color: rgba(200,164,74,.7); }
     .nav-right { display: flex; align-items: center; gap: 28px; }
     .lang-sw { display: flex; align-items: center; gap: 2px; }
     .lang-btn {
@@ -805,17 +815,16 @@
       margin-bottom: 18px;
     }
     .about-quote {
-      margin-top: 36px;
-      padding: 28px 32px;
-      border-left: 3px solid var(--gold);
-      background: rgba(200,164,74,.05);
+      margin-top: 40px;
+      padding-left: 0;
     }
     .about-quote p {
       font-family: 'Cormorant Garamond', sans-serif;
-      font-size: 1.05rem; font-weight: 700;
-      letter-spacing: .02em;
+      font-size: clamp(1.25rem, 2vw, 1.6rem);
+      font-weight: 600; font-style: italic;
+      letter-spacing: -.01em;
       color: var(--ink);
-      line-height: 1.5;
+      line-height: 1.4;
     }
     .pillars { border-top: 1px solid var(--line); }
     .pillar {
@@ -1321,6 +1330,7 @@
       /* ── Nav ── */
       nav, nav.scrolled { padding: 14px 24px; }
       .nav-cta { display: none; }
+      .nav-links { display: none; }
       .role-sw { display: flex; }
       .role-sw-sep { display: none; }
 
@@ -1573,7 +1583,7 @@
     <div class="gate-half" id="gate-buyer" onclick="chooseRole('buyer')" role="button" tabindex="0" aria-label="Enter as Buyer">
       <div class="gate-content">
         <div class="gate-role-en">Buyer</div>
-        <div class="gate-role-ru">Посетитель</div>
+        <div class="gate-role-ru">Байер</div>
         <div class="gate-desc">MICE agencies, incentive planners<br>&amp; corporate buyers</div>
         <div class="gate-enter">
           <span class="gate-enter-text">Enter</span>
@@ -1592,6 +1602,11 @@
 <!-- ════════ NAV ════════ -->
 <nav id="navbar">
   <a href="#" class="nav-logo">MICE <em>Signature</em></a>
+  <nav class="nav-links" aria-label="Page sections">
+    <a href="#program" class="nav-link" data-en="Programme" data-ru="Программа">Programme</a>
+    <a href="#exhibitors" class="nav-link" data-en="Exhibitors" data-ru="Экспоненты">Exhibitors</a>
+    <a href="#contact" class="nav-link" data-en="Contact" data-ru="Контакты">Contact</a>
+  </nav>
   <div class="nav-right">
     <div class="role-sw">
       <button class="role-sw-btn" onclick="resetRole()" data-en="← Switch role" data-ru="← Сменить роль">← Switch role</button>
@@ -1805,7 +1820,8 @@
 <section class="section exhibitors" id="exhibitors">
   <div class="ex-grain"></div>
   <div class="inner">
-    <h2 class="reveal reveal-d1" data-en="International partners.<br>Russian market." data-ru="Международные партнёры.<br>Российский рынок.">International partners.<br>Russian market.</h2>
+    <h2 class="reveal reveal-d1 buyer-only" data-en="International partners.<br>Russian market." data-ru="Международные партнёры.<br>Российский рынок.">International partners.<br>Russian market.</h2>
+    <h2 class="reveal reveal-d1 ex-only" data-en="Meet your<br>audience." data-ru="Ваша<br>аудитория.">Meet your<br>audience.</h2>
     <p class="ex-intro reveal reveal-d2 ex-only" data-en="Your audience is the decision-makers of Russian outbound MICE: MICE agencies, event agencies and corporate buyers who move groups internationally every year. Every buyer is personally curated by Match Point — no automated lists, no random participants." data-ru="Перед вами — те, кто принимает решения о выездном MICE в России: агентства, ивент-компании и корпоративные байеры, которые ежегодно отправляют группы за рубеж. Каждого Match Point пригласил лично.">Your audience is the decision-makers of Russian outbound MICE: MICE agencies, event agencies and corporate buyers who move groups internationally every year. Every buyer is personally curated by Match Point — no automated lists, no random participants.</p>
     <p class="ex-intro reveal reveal-d2 buyer-only" data-en="Every company here is international — no Russian vendors, no resellers. Hotels 4–5★, DMCs, congress centres, airlines and national tourism offices, all brought here specifically for the Russian outbound market. The only event in Russia where the entire floor is foreign." data-ru="Все участники — иностранные компании. Ни одного российского поставщика. Отели 4–5★, DMC, конгресс-залы, авиакомпании и национальные туристические офисы — приехали специально для встречи с российским рынком. Такого мероприятия в России раньше не было.">Every company here is international — no Russian vendors, no resellers. Hotels 4–5★, DMCs, congress centres, airlines and national tourism offices, all brought here specifically for the Russian outbound market. The only event in Russia where the entire floor is foreign.</p>
     <div class="ex-list">
