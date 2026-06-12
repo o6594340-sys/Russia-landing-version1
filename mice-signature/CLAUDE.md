@@ -65,11 +65,12 @@ Full-screen dark (`--ink`) screen, two phases:
 
 **Phase 2 — role panels:**
 - After 1.1s pause: brand fades (0.8s), two panels materialise from blur
-- Left: **Exhibitor / Экспонент**, Right: **Buyer / Посетитель** — both languages shown simultaneously
+- Left: **Exhibitor / Экспонент**, Right: **Buyer / Байер** — both languages shown simultaneously
 - Gold vertical divider with centre dot
 - Hover: radial gold glow + bottom gold border + "Enter →" arrow fades in
 - Click → `chooseRole(role)` → stores role in `sessionStorage`, shows `#main`
 - If role already in `sessionStorage` on load: gate skipped, go straight to content
+- **Skip button** — `#gate-skip` appears top-right after 2s (`setTimeout 2000`), calls `skipGate()` which kills all GSAP tweens and immediately shows panels. Hidden on desktop at rest (opacity 0), fades in. Do not remove.
 
 **CSS naming note:** gate panels use `.gate-panels.gate-revealed` (not `.reveal`) to avoid conflict with scroll-reveal base class.
 
@@ -80,6 +81,12 @@ Full-screen dark (`--ink`) screen, two phases:
 - Role-specific copy: hero headline, register section heading/body/CTA, nav CTA, exhibitors section tag
 - Language switcher (EN/RU) works normally within each view
 - "← Switch role" button in nav resets `sessionStorage` and returns to gate
+- **Nav section links** — `.nav-links` div between logo and nav-right: Programme / Exhibitors / Contact anchors. Hidden on mobile (≤620px). Styled as `.nav-link` (Instrument Sans, .65rem, uppercase, opacity .32, gold on hover).
+
+**Role-specific Exhibitors section heading:**
+- Buyers see: "International partners. Russian market." / "Международные партнёры. Российский рынок."
+- Exhibitors see: "Meet your audience." / "Ваша аудитория."
+- Both h2 tags carry `.buyer-only` / `.ex-only` respectively
 
 **Role-specific Exhibitors section (`.ex-items` list):**
 - Buyers see: Hotels & Resorts 5★, DMCs & Ground Operators, Destinations & Tourism Boards, Airlines & Charter, MICE Venues & Congress Centres, Services & Technology
