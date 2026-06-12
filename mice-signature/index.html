@@ -2232,12 +2232,12 @@
     panels.classList.add('gate-revealed');
     if (penTip) gsap.set(penTip, { opacity: 0 });
     gate.style.display = '';
-    gate.style.pointerEvents = '';
     gate.style.opacity = '0';
+    gate.style.transition = '';
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         gate.style.transition = 'opacity .5s ease';
-        gate.style.opacity = '1';
+        gate.classList.add('visible');
       });
     });
   }
