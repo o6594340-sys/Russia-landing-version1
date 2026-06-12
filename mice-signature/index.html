@@ -2221,6 +2221,7 @@
   /* ─── Reset to gate (skip animation, show panels directly) ─── */
   function resetRole() {
     sessionStorage.removeItem('ms-role');
+    document.body.classList.remove('body-role-exhibitor', 'body-role-buyer');
     const main   = document.getElementById('main');
     const gate   = document.getElementById('gate');
     const brand  = document.getElementById('gate-brand');
@@ -2231,12 +2232,12 @@
     panels.classList.add('gate-revealed');
     if (penTip) gsap.set(penTip, { opacity: 0 });
     gate.style.display = '';
+    gate.style.pointerEvents = '';
     gate.style.opacity = '0';
-    gate.style.pointerEvents = 'none';
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         gate.style.transition = 'opacity .5s ease';
-        gate.classList.add('visible');
+        gate.style.opacity = '1';
       });
     });
   }
