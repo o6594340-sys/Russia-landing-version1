@@ -1001,7 +1001,7 @@
       top: 0; bottom: 0;
       width: 1px;
       background: linear-gradient(to bottom, transparent, var(--line) 15%, var(--line) 85%, transparent);
-      transform: translateX(-50px);
+      transform: translateX(-50%);
       pointer-events: none;
     }
     .prog-part {
@@ -1179,10 +1179,9 @@
     .btn-register:hover svg { transform: translateX(4px); }
     .reg-note {
       margin-top: 24px;
-      font-size: .65rem; font-weight: 400;
-      color: rgba(248,244,238,.45);
-      letter-spacing: .1em;
-      text-transform: uppercase;
+      font-size: .78rem; font-weight: 400;
+      color: rgba(248,244,238,.55);
+      letter-spacing: .03em;
     }
 
     /* ══════════════════════════════════════
@@ -1246,7 +1245,7 @@
     .mp-tag {
       font-size: .78rem; font-weight: 400;
       font-style: italic;
-      color: rgba(248,244,238,.4);
+      color: rgba(248,244,238,.6);
       margin-bottom: 40px;
       line-height: 1.6;
     }
@@ -1414,7 +1413,7 @@
       .mp-card { padding: 40px 24px; }
 
       /* ── Footer ── */
-      footer { flex-direction: column; text-align: center; padding: 18px 24px 88px; gap: 6px; }
+      footer { flex-direction: column; text-align: center; padding: 18px 24px 60px; gap: 6px; }
 
       /* ── Floating CTA ── */
       .mob-cta { display: block; }
@@ -1426,7 +1425,8 @@
       .gate-divider { display: none; }
       .gate-role-en { font-size: clamp(2.6rem, 11vw, 4rem); }
       .gate-role-ru { font-size: .9rem; margin-bottom: 20px; }
-      .gate-desc { display: block; font-size: .62rem; margin-bottom: 28px; }
+      .gate-desc { display: block; font-size: .75rem; margin-bottom: 28px; color: rgba(248,244,238,.45); }
+      .gate-enter { opacity: 1; transform: translateY(0); }
       .gm { font-size: clamp(3.2rem, 18vw, 7rem); }
       .gate-sig-svg { width: min(78vw, 340px); }
       #gate { overflow-x: hidden; }
@@ -1461,7 +1461,7 @@
         padding-top: 0;
       }
       .ex-item.ex-open .ex-item-desc {
-        max-height: 100px; opacity: .42; padding-top: 8px;
+        max-height: 160px; opacity: .42; padding-top: 8px;
       }
       .ex-item.ex-open .ex-item-name {
         color: var(--gold); transition: color .3s;
@@ -1609,7 +1609,7 @@
   </nav>
   <div class="nav-right">
     <div class="role-sw">
-      <button class="role-sw-btn" onclick="resetRole()" data-en="← Switch role" data-ru="← Сменить роль">← Switch role</button>
+      <button class="role-sw-btn" onclick="resetRole()" data-en="← Role" data-ru="← Роль">← Role</button>
       <div class="role-sw-sep"></div>
     </div>
     <div class="lang-sw">
@@ -1698,7 +1698,7 @@
 <section class="section about" id="about">
   <div class="inner about-grid">
     <div>
-      <h2 class="reveal reveal-d1" data-en="Not just<br>presence.<br>Real matches." data-ru="Не выставка.<br>Не конференция.<br>Переговоры.">Not just<br>presence.<br>Real matches.</h2>
+      <h2 class="reveal reveal-d1" data-en="Not just<br>presence.<br>Real business." data-ru="Не выставка.<br>Не конференция.<br>Переговоры.">Not just<br>presence.<br>Real matches.</h2>
       <span class="gold-line"></span>
       <p class="about-body reveal reveal-d2 ex-only" data-en="A closed-format B2B workshop — your direct entry into the Russian outbound MICE market. Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations." data-ru="Закрытый B2B-воркшоп — прямой выход на российский рынок выездного MICE. Ольга и Дарья приглашают каждого байера лично. Не база контактов — конкретные люди, которые принимают решения о выездном MICE.">A closed-format B2B workshop — your direct entry into the Russian outbound MICE market. Every buyer is personally invited by Olga or Daria. No automated lists, no random registrations.</p>
       <p class="about-body reveal reveal-d2 buyer-only" data-en="International hotels, DMCs and tourism offices flew to Moscow specifically to meet you. Asia, the Middle East, Europe, the Caucasus — every destination your clients ask about, pre-scheduled, in one day. No flights required." data-ru="Международные отели, DMC и туристические офисы приехали в Москву специально, чтобы встретиться с вами. Азия, Ближний Восток, Европа, Кавказ — все направления, о которых спрашивают ваши клиенты. В одном зале. За один день. Без перелётов.">International hotels, DMCs and tourism offices flew to Moscow specifically to meet you. Asia, the Middle East, Europe, the Caucasus — every destination your clients ask about, pre-scheduled, in one day. No flights required.</p>
@@ -1722,6 +1722,9 @@
             <div class="pillar-title" data-en="Two debuts, one platform" data-ru="Два дебюта, одна платформа">Two debuts, one platform</div>
             <div class="pillar-desc" data-en="MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026." data-ru="Первое издание MICE Signature — в ENZO Hotel, новом пятизвёздочном отеле Москвы, который открылся весной 2026 года.">MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026.</div>
           </div>
+        </div>
+        <div class="ex-only reveal reveal-d4" style="grid-column:1/-1;margin-top:8px;">
+          <a href="#register" style="font-family:'Instrument Sans',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:.8;transition:opacity .2s;" data-en="Ready to apply? →" data-ru="Подать заявку? →">Ready to apply? →</a>
         </div>
         <div class="pillar buyer-only reveal reveal-d1">
           <div>
@@ -1768,7 +1771,6 @@
   <div class="stats-dots" aria-hidden="true">
     <span class="stats-dot stats-dot-active"></span>
     <span class="stats-dot"></span>
-    <span class="stats-dot"></span>
   </div>
 </div>
 
@@ -1787,6 +1789,7 @@
         <div class="prog-row">
           <span class="prog-time">11:00–14:00</span>
           <span class="prog-act" data-en="B2B Pre-scheduled Workshop" data-ru="B2B-воркшоп по предварительной записи">B2B Pre-scheduled Workshop</span>
+          <span class="prog-act ex-only" style="font-size:.75em;opacity:.55;display:block;margin-top:4px;" data-en="Minimum 8 guaranteed meetings · 20 min each" data-ru="Минимум 8 гарантированных встреч · по 20 минут">
         </div>
         <div class="prog-row">
           <span class="prog-time">14:00–15:00</span>
@@ -1803,6 +1806,7 @@
         <div class="prog-row">
           <span class="prog-time">15:30–18:00</span>
           <span class="prog-act" data-en="B2B Pre-scheduled Workshop" data-ru="B2B-воркшоп по предварительной записи">B2B Pre-scheduled Workshop</span>
+          <span class="prog-act ex-only" style="font-size:.75em;opacity:.55;display:block;margin-top:4px;" data-en="Minimum 8 guaranteed meetings · 20 min each" data-ru="Минимум 8 гарантированных встреч · по 20 минут">
         </div>
         <div class="prog-row">
           <span class="prog-time">18:00–22:00</span>
@@ -1819,7 +1823,7 @@
   <div class="inner">
     <h2 class="reveal reveal-d1 buyer-only" data-en="International partners.<br>Russian market." data-ru="Международные партнёры.<br>Российский рынок.">International partners.<br>Russian market.</h2>
     <h2 class="reveal reveal-d1 ex-only" data-en="Meet your<br>audience." data-ru="Ваша<br>аудитория.">Meet your<br>audience.</h2>
-    <p class="ex-intro reveal reveal-d2 ex-only" data-en="Your audience is the decision-makers of Russian outbound MICE: MICE agencies, event agencies and corporate buyers who move groups internationally every year. Every buyer is personally curated by Match Point — no automated lists, no random participants." data-ru="Перед вами — те, кто принимает решения о выездном MICE в России: агентства, ивент-компании и корпоративные байеры, которые ежегодно отправляют группы за рубеж. Каждого Match Point пригласил лично.">Your audience is the decision-makers of Russian outbound MICE: MICE agencies, event agencies and corporate buyers who move groups internationally every year. Every buyer is personally curated by Match Point — no automated lists, no random participants.</p>
+    <p class="ex-intro reveal reveal-d2 ex-only" data-en="Your audience is the decision-makers of Russian outbound MICE: MICE agencies, event agencies and corporate buyers who move groups internationally every year. Every buyer is personally curated by Match Point — no automated lists, no random participants. Up to 130 qualified buyers across two sessions." data-ru="Перед вами — те, кто принимает решения о выездном MICE в России: агентства, ивент-компании и корпоративные байеры, которые ежегодно отправляют группы за рубеж. Каждого Match Point пригласил лично. До 130 квалифицированных байеров в двух сессиях.">Your audience is the decision-makers of Russian outbound MICE: MICE agencies, event agencies and corporate buyers who move groups internationally every year. Every buyer is personally curated by Match Point — no automated lists, no random participants.</p>
     <p class="ex-intro reveal reveal-d2 buyer-only" data-en="Every company here is international — no Russian vendors, no resellers. Hotels 4–5★, DMCs, congress centres, airlines and national tourism offices, all brought here specifically for the Russian outbound market." data-ru="Все участники — иностранные компании. Ни одного российского поставщика. Отели 4–5★, DMC, конгресс-залы, авиакомпании и национальные туристические офисы — все приехали специально для встречи с российским рынком.">Every company here is international — no Russian vendors, no resellers. Hotels 4–5★, DMCs, congress centres, airlines and national tourism offices, all brought here specifically for the Russian outbound market.</p>
     <div class="ex-list">
       <div class="ex-item buyer-only reveal">
@@ -1878,11 +1882,12 @@
       <span data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <a href="mailto:daria@matchpoints.ru" class="btn-register reveal reveal-d3 buyer-only" data-en="Get in Touch" data-ru="Связаться с нами">
+    <a href="https://wa.me/79164250150" target="_blank" rel="noopener" class="btn-register reveal reveal-d3 buyer-only" data-en="Get in Touch" data-ru="Связаться с нами">
       <span data-en="Get in Touch" data-ru="Связаться с нами">Get in Touch</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <p class="reg-note reveal reveal-d4 ex-only" data-en="Places are limited. We will confirm your category and schedule within 3 business days." data-ru="Категорию участия и расписание встреч подтвердим в течение 3 рабочих дней.">Places are limited. We will confirm your category and schedule within 3 business days.</p>
+    <p class="reg-note reveal reveal-d4 ex-only" data-en="Buyers attend by personal invitation from the organizers — not open registration." data-ru="Байеры участвуют только по личному приглашению организаторов — без открытой регистрации.">Buyers attend by personal invitation from the organizers — not open registration.</p>
     <p class="reg-note reveal reveal-d4 buyer-only" data-en="Buyers participate by personal invitation from Match Point." data-ru="Байеры участвуют по личному приглашению от Match Point.">Buyers participate by personal invitation from Match Point.</p>
   </div>
 </section>
