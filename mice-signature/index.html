@@ -178,18 +178,20 @@
 
     .gate-logo {
       position: absolute;
-      top: 28px;
+      top: 36px;
       left: 50%;
       transform: translateX(-50%);
+      font-family: 'Cormorant Garamond', sans-serif;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(200,164,74,.4);
+      white-space: nowrap;
       z-index: 2;
       pointer-events: none;
     }
-    .gate-logo img {
-      width: min(180px, 38vw);
-      height: auto;
-      display: block;
-      opacity: .85;
-    }
+    .gate-logo em { color: rgba(200,164,74,.7); font-style: normal; }
 
     .gate-half {
       flex: 1;
@@ -1564,7 +1566,7 @@
 
   <!-- Phase 2: role panels -->
   <div class="gate-panels" id="gate-panels">
-    <div class="gate-logo"><img src="mice signature logo 2.png" alt="MICE Signature"></div>
+    <div class="gate-logo">MICE <em>Signature</em></div>
 
     <div class="gate-half" id="gate-ex" onclick="chooseRole('exhibitor')" role="button" tabindex="0" aria-label="Enter as Exhibitor">
       <div class="gate-content">
@@ -1944,6 +1946,7 @@
       </div>
     </div>
     <div class="mp-card reveal reveal-d2">
+      <img src="mice signature logo 2.png" alt="MICE Signature" style="width:120px;height:auto;display:block;margin-bottom:20px;opacity:.9;">
       <div class="mp-name">MATCH POINT</div>
       <div class="mp-tag" data-en="Securing new opportunities<br>in the Russian outbound MICE market" data-ru="Двадцать лет<br>в российском выездном MICE.">Securing new opportunities<br>in the Russian outbound MICE market</div>
       <div class="mp-stats">
