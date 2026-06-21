@@ -9,7 +9,7 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 - **One file only.** All CSS and JS stay inline in `index.html`. Do not create separate `.css` or `.js` files.
 - **No prices on the site.** Package prices ($1,600–$3,800) are internal only — never add them to any public-facing section.
 - **Exhibitors = international companies only.** Russian companies do not exhibit. Do not imply otherwise in copy.
-- **EventRocks button** — the "Open Meeting Planner" button uses `href="#"` as placeholder. Replace with real URL when provided. Do not invent or guess the URL.
+- **CTA label** — all primary CTA buttons (nav, hero, mobile floating bar) are labelled "Schedule My Meetings" / "Назначить встречи" for both roles. Uses `href="#"` as placeholder for EventRocks URL. Replace all 8 occurrences (`.ex-only` and `.buyer-only` pairs in nav, mobile menu, hero, mobile CTA) when real URL is provided. Exhibitor and buyer may need separate EventRocks URLs — confirm with client.
 - **Language switcher** — all user-facing text must have both `data-en` and `data-ru` attributes. Never add EN-only text without a RU translation.
 
 ## Design tokens
@@ -68,11 +68,22 @@ Full-screen dark (`--ink`) screen, two phases:
 - Left: **Exhibitor / Экспонент**, Right: **Buyer / Байер** — both languages shown simultaneously
 - Gold vertical divider with centre dot
 - Hover: radial gold glow + bottom gold border + "Enter →" arrow fades in
-- Click → `chooseRole(role)` → stores role in `sessionStorage`, shows `#main`
-- If role already in `sessionStorage` on load: gate skipped, go straight to content
+- Click → `chooseRole(role)` → fades out gate, shows **consent screen** (`#consent-screen`)
+- If role already in `sessionStorage` on load: gate skipped, go straight to content (no consent re-shown)
 - **Skip button** — `#gate-skip` appears top-right after 2s (`setTimeout 2000`), calls `skipGate()` which kills all GSAP tweens and immediately shows panels. Hidden on desktop at rest (opacity 0), fades in. Do not remove.
 
 **CSS naming note:** gate panels use `.gate-panels.gate-revealed` (not `.reveal`) to avoid conflict with scroll-reveal base class.
+
+### 1.5. Consent screen (`#consent-screen`)
+Separate full-screen dark step between role panels and main content:
+- Has `hidden` attribute in HTML (not just CSS `display:none`) — removed via JS when shown
+- Shows MICE Signature gold logo + role label + bilingual heading "Before you enter / Прежде чем войти"
+- 3 checkboxes: `cs-pd` (personal data consent, **required**), `cs-marketing`, `cs-distribution`
+- Each checkbox has RU text + `.gc-en-line` EN line (italic, opacity .5)
+- "Enter →" button calls `enterSite()` — validates `cs-pd` checked, then fades to `#main`
+- "← Change role / Сменить роль" calls `resetRole()` — returns to gate panels (no animation replay)
+- `_pendingRole` variable holds selected role until `enterSite()` finalises it
+- `enterSite()` calls `applyRole()`, `setLang()`, `animateHeroTagline()`, scroll-reveal inits
 
 ### 2. Content — role-specific views
 - `#main` is `hidden` until role is chosen
@@ -97,6 +108,17 @@ Full-screen dark (`--ink`) screen, two phases:
 - Exhibitors (`.ex-only` pillars): "Только нужные встречи" / "Те, кто вывозит группы" / "Два дебюта, одна платформа"
 - Buyers (`.buyer-only` pillars): "Они приехали к вам" / "Азия. Ближний Восток. СНГ." / "Встречи и немного магии."
 - Same CSS cascade fix applies: `.pillar.ex-only` / `.pillar.buyer-only` declared after `.pillar { display: grid }`
+
+**Buyer pillar 01 ("Они приехали к вам") description:**
+- RU: "Каждый зарубежный партнёр приехал в Москву специально ради этой встречи. Не выставка с тысячами случайных контактов, а переговоры, которые действительно стоят вашего времени."
+- EN: "Every international partner flew in to Moscow specifically for this meeting. Not a trade show with thousands of random contacts — but negotiations that are truly worth your time."
+
+**CSS role visibility fix (specificity 0,2,0 — overrides .btn-fill and .flex):**
+```css
+.body-role-buyer .ex-only { display: none; }
+.body-role-exhibitor .buyer-only { display: none; }
+```
+These must be declared after all component display rules.
 
 ## Key content facts
 
@@ -147,6 +169,8 @@ Full-screen dark (`--ink`) screen, two phases:
 - **Marquee opacity boost** — border opacity 0.1→0.25, item opacity 0.55→0.85. More visible, feels airier.
 - **Programme headings in gold** — `.prog-part-label { color: var(--gold) }` — "Morning / Evening" labels are gold.
 - **Photos planned** — joint portrait of Olga + Dasha → About/Contact; ENZO hotel photos → Hero/Register. Placeholder until ready.
+- **Hero buyer tagline — line break structure** — "For you." / "Специально для вас." lives in a separate inner `<span class="hero-tagline-break">` (CSS `display:block`). Do not collapse into a single span with inline style — inline `display:block` inside data attributes is unreliable. Structure: `<span class="buyer-only"><span data-en="..." data-ru="...">main text</span><span class="hero-tagline-break" data-en="For you." data-ru="Специально для вас.">For you.</span></span>`
+- **MP card (Contact section)** — tag line: "Securing new opportunities" (same EN/RU). Stat line: "Надёжные поставщики в Европе, Азии и на Ближнем Востоке" / "Trusted suppliers across Europe, Asia & the Middle East". Do not revert to "Двадцать лет в российском выездном MICE."
 
 ## Mobile (≤620px) — premium patterns
 
