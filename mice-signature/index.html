@@ -2234,10 +2234,11 @@
     if (penTip) gsap.set(penTip, { opacity: 0 });
     gate.style.display = '';
     gate.style.opacity = '0';
-    gate.style.transition = '';
+    gate.style.transition = 'none';
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         gate.style.transition = 'opacity .5s ease';
+        gate.style.opacity = '';
         gate.classList.add('visible');
       });
     });
