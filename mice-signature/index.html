@@ -159,6 +159,59 @@
     #gate-skip.visible { opacity: 1; pointer-events: all; }
     #gate-skip:hover { color: rgba(200,164,74,.65); }
 
+    /* ── Gate consent bar ── */
+    .gate-consent {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 20;
+      padding: 14px 48px 18px;
+      background: rgba(10,7,4,.9);
+      border-top: 1px solid rgba(200,164,74,.1);
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      opacity: 0;
+      transition: opacity .5s ease .3s;
+      pointer-events: none;
+    }
+    .gate-consent.visible { opacity: 1; pointer-events: all; }
+    .gc-row { display: flex; align-items: flex-start; gap: 9px; }
+    .gc-row input[type=checkbox] {
+      width: 13px; height: 13px;
+      accent-color: var(--gold);
+      margin-top: 2px; flex-shrink: 0; cursor: pointer;
+    }
+    .gc-label {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .6rem; color: rgba(250,250,248,.42); line-height: 1.5; cursor: pointer;
+    }
+    .gc-expand {
+      margin-left: 4px; font-size: .55rem; color: rgba(200,164,74,.45);
+      text-decoration: underline; text-underline-offset: 2px; cursor: pointer; white-space: nowrap;
+    }
+    .gc-full {
+      display: none; margin-top: 6px; padding: 8px 10px;
+      background: rgba(255,255,255,.03); border: 1px solid rgba(200,164,74,.08);
+      max-height: 90px; overflow-y: auto;
+      font-family: 'Instrument Sans', sans-serif; font-size: .55rem;
+      color: rgba(250,250,248,.28); line-height: 1.6;
+    }
+    .gc-full.open { display: block; }
+    .gc-required-note {
+      font-family: 'Instrument Sans', sans-serif; font-size: .55rem;
+      color: rgba(200,164,74,.28); margin-top: 2px;
+    }
+    .gc-shake { animation: gcShake .3s ease; }
+    @keyframes gcShake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    @media (max-width: 620px) {
+      .gate-consent { padding: 10px 20px 14px; }
+      .gc-label { font-size: .58rem; }
+    }
+
     /* ── Gate panels (Phase 2) ── */
     .gate-panels {
       position: absolute;
@@ -1639,6 +1692,31 @@
     </div>
   </div>
 
+  <!-- Gate consent -->
+  <div class="gate-consent" id="gate-consent">
+    <div class="gc-row" id="gc-row-pd">
+      <input type="checkbox" id="gc-pd" onchange="updateGateConsent()">
+      <div>
+        <label class="gc-label" for="gc-pd">Я даю согласие на обработку моих персональных данных ООО «Ивентишес» (ОГРН: 1146311003090, ИНН: 6311151902) в соответствии с ФЗ №152-ФЗ. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-pd')">Подробнее ↓</span></label>
+        <div class="gc-full" id="gc-full-pd">Я, действуя свободно, своей волей и в своем интересе, подтверждаю свою дееспособность и предоставляю согласие на обработку персональных данных Обществу с ограниченной ответственностью «Ивентишес» (ОГРН: 1146311003090 ИНН: 6311151902, адрес: 443069, Самарская область, город Самара, улица Авроры, 110-1, офис 218, support@eventicious.ru). Согласие дается на обработку следующих персональных данных: фамилия, имя, отчество; адрес электронной почты; номер телефона; должность; фото-видео изображение лица. Цель: предоставление сервисов и услуг Оператора. Согласие может быть отозвано путем направления Оператору заявления по адресу, указанному выше.</div>
+      </div>
+    </div>
+    <div class="gc-row">
+      <input type="checkbox" id="gc-marketing">
+      <div>
+        <label class="gc-label" for="gc-marketing">Согласен(а) на получение рекламных и информационных сообщений от ИП Игнатьевой Дарьи Александровны (info@matchpoints.ru). <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-mkt')">Подробнее ↓</span></label>
+        <div class="gc-full" id="gc-full-mkt">Я даю согласие ИП Игнатьевой Дарье Александровне на получение информационных и рекламных сообщений в соответствии с ФЗ №38-ФЗ «О рекламе». Сообщения могут направляться на адрес электронной почты, посредством SMS, телефонных звонков, сообщений в мессенджерах (WhatsApp, Telegram и др.). Настоящее согласие действует до момента его отзыва. Отказаться от получения сообщений можно по ссылке «Отписаться» или направив письмо на info@matchpoints.ru.</div>
+      </div>
+    </div>
+    <div class="gc-row">
+      <input type="checkbox" id="gc-distribution">
+      <div>
+        <label class="gc-label" for="gc-distribution">Согласен(а) на распространение моих данных (фото, видео, имя, должность, компания) ИП Игнатьевой Дарьей Александровной на сайте, в соцсетях и материалах мероприятия. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-dist')">Подробнее ↓</span></label>
+        <div class="gc-full" id="gc-full-dist">Я даю согласие ИП Игнатьевой Дарье Александровне на распространение моих персональных данных путем их передачи неопределенному кругу лиц посредством размещения на сайте https://www.micesignature.ru, а также на официальных страницах Оператора в социальных сетях. Перечень данных: фамилия, имя, наименование организации, должность, город, фотографическое и видеоизображение. Согласие может быть отозвано путем направления уведомления на info@matchpoints.ru.</div>
+      </div>
+    </div>
+    <p class="gc-required-note">* Первое согласие обязательно для входа на мероприятие.</p>
+  </div>
 
 </div>
 
@@ -2144,7 +2222,11 @@
         gsap.to(brand, { opacity: 0, duration: .8, ease: 'power1.in',
           onComplete: () => { brand.style.display = 'none'; }
         });
-        setTimeout(() => { panels.classList.add('gate-revealed'); }, 350);
+        setTimeout(() => {
+          panels.classList.add('gate-revealed');
+          const consent = document.getElementById('gate-consent');
+          if (consent) consent.classList.add('visible');
+        }, 350);
       }, 1100);
     }
   }
@@ -2235,10 +2317,26 @@
     if (brand)  { brand.style.transition = 'none'; brand.style.opacity = '0'; brand.style.display = 'none'; }
     if (panels) panels.classList.add('gate-revealed');
     if (skip)   skip.style.display = 'none';
+    const consent = document.getElementById('gate-consent');
+    if (consent) consent.classList.add('visible');
   }
+
+  /* ─── Consent helpers ─── */
+  function toggleGcFull(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('open');
+  }
+  function updateGateConsent() { /* reserved for future validation feedback */ }
 
   /* ─── Choose role ─── */
   function chooseRole(role) {
+    const pdBox = document.getElementById('gc-pd');
+    if (pdBox && !pdBox.checked) {
+      const row = document.getElementById('gc-row-pd');
+      if (row) { row.classList.remove('gc-shake'); void row.offsetWidth; row.classList.add('gc-shake'); }
+      pdBox.focus();
+      return;
+    }
     const gate = document.getElementById('gate');
     const main = document.getElementById('main');
 
@@ -2300,6 +2398,8 @@
     brand.style.display = 'none';
     panels.classList.add('gate-revealed');
     if (penTip) gsap.set(penTip, { opacity: 0 });
+    const consentEl = document.getElementById('gate-consent');
+    if (consentEl) { consentEl.classList.add('visible'); }
     gate.style.display = '';
     gate.style.opacity = '0';
     gate.style.transition = 'none';
