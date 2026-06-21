@@ -178,20 +178,18 @@
 
     .gate-logo {
       position: absolute;
-      top: 36px;
+      top: 28px;
       left: 50%;
       transform: translateX(-50%);
-      font-family: 'Cormorant Garamond', sans-serif;
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .24em;
-      text-transform: uppercase;
-      color: rgba(200,164,74,.4);
-      white-space: nowrap;
       z-index: 2;
       pointer-events: none;
     }
-    .gate-logo em { color: rgba(200,164,74,.7); font-style: normal; }
+    .gate-logo img {
+      width: min(180px, 38vw);
+      height: auto;
+      display: block;
+      opacity: .85;
+    }
 
     .gate-half {
       flex: 1;
@@ -1566,7 +1564,7 @@
 
   <!-- Phase 2: role panels -->
   <div class="gate-panels" id="gate-panels">
-    <div class="gate-logo">MICE <em>Signature</em></div>
+    <div class="gate-logo"><img src="mice signature logo.png" alt="MICE Signature"></div>
 
     <div class="gate-half" id="gate-ex" onclick="chooseRole('exhibitor')" role="button" tabindex="0" aria-label="Enter as Exhibitor">
       <div class="gate-content">
