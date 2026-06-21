@@ -159,22 +159,49 @@
     #gate-skip.visible { opacity: 1; pointer-events: all; }
     #gate-skip:hover { color: rgba(200,164,74,.65); }
 
-    /* ── Gate consent bar ── */
-    .gate-consent {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      z-index: 20;
-      padding: 14px 48px 18px;
-      background: rgba(10,7,4,.9);
-      border-top: 1px solid rgba(200,164,74,.1);
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      opacity: 0;
-      transition: opacity .5s ease .3s;
-      pointer-events: none;
+    /* ── Consent screen (step 2, after role chosen) ── */
+    #consent-screen {
+      position: fixed; inset: 0; z-index: 998;
+      background: var(--ink);
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 48px 24px; overflow-y: auto;
+      opacity: 0; transition: opacity .45s ease;
     }
-    .gate-consent.visible { opacity: 1; pointer-events: all; }
+    #consent-screen.cs-visible { opacity: 1; }
+    .cs-inner { max-width: 480px; width: 100%; }
+    .cs-label {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .6rem; font-weight: 600;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(200,164,74,.5); margin-bottom: 28px;
+    }
+    .cs-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 600;
+      color: rgba(250,250,248,.9); margin-bottom: 32px; line-height: 1.2;
+    }
+    .cs-checks { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+    .cs-enter {
+      display: block; width: 100%;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .72rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+      background: var(--gold); color: var(--ink);
+      border: none; padding: 17px 24px;
+      cursor: pointer; margin-bottom: 16px;
+      transition: background .2s;
+    }
+    .cs-enter:hover { background: #D9B55E; }
+    .cs-back {
+      display: block; width: 100%; text-align: center;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: .62rem; letter-spacing: .1em;
+      color: rgba(250,250,248,.28); background: none; border: none;
+      cursor: pointer; padding: 8px;
+      transition: color .2s;
+    }
+    .cs-back:hover { color: rgba(250,250,248,.55); }
     .gc-row { display: flex; align-items: flex-start; gap: 9px; }
     .gc-row input[type=checkbox] {
       width: 13px; height: 13px;
@@ -1527,12 +1554,8 @@
       .mob-cta { display: block; }
 
       /* ── Gate mobile ── */
-      /* Make #gate a scrollable flex column so panels + consent flow naturally */
-      #gate { overflow-x: clip; overflow-y: auto; display: flex; flex-direction: column; }
-      /* Pull panels out of absolute so they flow in the column */
-      .gate-panels { position: relative; flex: 1; flex-direction: column; min-height: 0; }
-      /* Shorter panels — two fit without pushing consent offscreen */
-      .gate-half { min-height: 44vh; }
+      .gate-panels { flex-direction: column; }
+      .gate-half { min-height: 50vh; }
       #gate-ex { border-right: none; border-bottom: 1px solid rgba(200,164,74,.15); }
       .gate-divider { display: none; }
       .gate-role-en { font-size: clamp(2.6rem, 11vw, 4rem); }
@@ -1541,8 +1564,6 @@
       .gate-enter { opacity: 1; transform: translateY(0); }
       .gm { font-size: clamp(3.2rem, 18vw, 7rem); }
       .gate-sig-svg { width: min(78vw, 340px); }
-      /* Pull consent out of absolute so it sits below the panels in flow */
-      .gate-consent { position: relative; bottom: auto; left: auto; right: auto; flex-shrink: 0; }
     }
 
     /* ══════════════════════════════════════
@@ -1706,32 +1727,40 @@
     </div>
   </div>
 
-  <!-- Gate consent -->
-  <div class="gate-consent" id="gate-consent">
-    <div class="gc-row" id="gc-row-pd">
-      <input type="checkbox" id="gc-pd" onchange="updateGateConsent()">
-      <div>
-        <label class="gc-label" for="gc-pd">Я даю согласие на обработку моих персональных данных ООО «Ивентишес» (ОГРН: 1146311003090, ИНН: 6311151902) в соответствии с ФЗ №152-ФЗ. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-pd')">Подробнее ↓</span><span class="gc-en-line">I consent to the processing of my personal data by Eventicious LLC under Federal Law No. 152-FZ. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-pd')">Details ↓</span></span></label>
-        <div class="gc-full" id="gc-full-pd">Я, действуя свободно, своей волей и в своем интересе, подтверждаю свою дееспособность и предоставляю согласие на обработку персональных данных Обществу с ограниченной ответственностью «Ивентишес» (ОГРН: 1146311003090 ИНН: 6311151902, адрес: 443069, Самарская область, город Самара, улица Авроры, 110-1, офис 218, support@eventicious.ru). Согласие дается на обработку следующих персональных данных: фамилия, имя, отчество; адрес электронной почты; номер телефона; должность; фото-видео изображение лица. Цель: предоставление сервисов и услуг Оператора. Согласие может быть отозвано путем направления Оператору заявления по адресу, указанному выше.</div>
-      </div>
-    </div>
-    <div class="gc-row">
-      <input type="checkbox" id="gc-marketing">
-      <div>
-        <label class="gc-label" for="gc-marketing">Согласен(а) на получение рекламных и информационных сообщений от ИП Игнатьевой Дарьи Александровны (info@matchpoints.ru). <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-mkt')">Подробнее ↓</span><span class="gc-en-line">I agree to receive promotional and informational messages from IE Ignatieva D.A. (info@matchpoints.ru). <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-mkt')">Details ↓</span></span></label>
-        <div class="gc-full" id="gc-full-mkt">Я даю согласие ИП Игнатьевой Дарье Александровне на получение информационных и рекламных сообщений в соответствии с ФЗ №38-ФЗ «О рекламе». Сообщения могут направляться на адрес электронной почты, посредством SMS, телефонных звонков, сообщений в мессенджерах (WhatsApp, Telegram и др.). Настоящее согласие действует до момента его отзыва. Отказаться от получения сообщений можно по ссылке «Отписаться» или направив письмо на info@matchpoints.ru.</div>
-      </div>
-    </div>
-    <div class="gc-row">
-      <input type="checkbox" id="gc-distribution">
-      <div>
-        <label class="gc-label" for="gc-distribution">Согласен(а) на распространение моих данных (фото, видео, имя, должность, компания) ИП Игнатьевой Дарьей Александровной на сайте, в соцсетях и материалах мероприятия. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-dist')">Подробнее ↓</span><span class="gc-en-line">I consent to the distribution of my data (photo, video, name, title, company) by IE Ignatieva D.A. on the event website, social media and event materials. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('gc-full-dist')">Details ↓</span></span></label>
-        <div class="gc-full" id="gc-full-dist">Я даю согласие ИП Игнатьевой Дарье Александровне на распространение моих персональных данных путем их передачи неопределенному кругу лиц посредством размещения на сайте https://www.micesignature.ru, а также на официальных страницах Оператора в социальных сетях. Перечень данных: фамилия, имя, наименование организации, должность, город, фотографическое и видеоизображение. Согласие может быть отозвано путем направления уведомления на info@matchpoints.ru.</div>
-      </div>
-    </div>
-    <p class="gc-required-note">* Первое согласие обязательно для входа на мероприятие. / First consent is required to attend the event.</p>
-  </div>
+</div>
 
+<!-- ════════ CONSENT SCREEN ════════ -->
+<div id="consent-screen">
+  <div class="cs-inner">
+    <p class="cs-label" id="cs-role-label">Exhibitor</p>
+    <h2 class="cs-heading">Before you enter /<br><em style="font-style:italic;color:rgba(250,250,248,.55);">Прежде чем войти</em></h2>
+    <div class="cs-checks">
+      <div class="gc-row" id="cs-row-pd">
+        <input type="checkbox" id="cs-pd">
+        <div>
+          <label class="gc-label" for="cs-pd">Я даю согласие на обработку моих персональных данных ООО «Ивентишес» (ОГРН: 1146311003090, ИНН: 6311151902) в соответствии с ФЗ №152-ФЗ. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('cs-full-pd')">Подробнее ↓</span><span class="gc-en-line">I consent to the processing of my personal data by Eventicious LLC under Federal Law No. 152-FZ. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('cs-full-pd')">Details ↓</span></span></label>
+          <div class="gc-full" id="cs-full-pd">Я, действуя свободно, своей волей и в своем интересе, подтверждаю свою дееспособность и предоставляю согласие на обработку персональных данных Обществу с ограниченной ответственностью «Ивентишес» (ОГРН: 1146311003090 ИНН: 6311151902, адрес: 443069, Самарская область, город Самара, улица Авроры, 110-1, офис 218, support@eventicious.ru). Согласие дается на обработку следующих персональных данных: фамилия, имя, отчество; адрес электронной почты; номер телефона; должность; фото-видео изображение лица. Цель: предоставление сервисов и услуг Оператора. Согласие может быть отозвано путем направления Оператору заявления по адресу, указанному выше.</div>
+        </div>
+      </div>
+      <div class="gc-row">
+        <input type="checkbox" id="cs-marketing">
+        <div>
+          <label class="gc-label" for="cs-marketing">Согласен(а) на получение рекламных и информационных сообщений от ИП Игнатьевой Дарьи Александровны (info@matchpoints.ru). <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('cs-full-mkt')">Подробнее ↓</span><span class="gc-en-line">I agree to receive promotional and informational messages from IE Ignatieva D.A. (info@matchpoints.ru). <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('cs-full-mkt')">Details ↓</span></span></label>
+          <div class="gc-full" id="cs-full-mkt">Я даю согласие ИП Игнатьевой Дарье Александровне на получение информационных и рекламных сообщений в соответствии с ФЗ №38-ФЗ «О рекламе». Сообщения могут направляться на адрес электронной почты, посредством SMS, телефонных звонков, сообщений в мессенджерах (WhatsApp, Telegram и др.). Настоящее согласие действует до момента его отзыва. Отказаться от получения сообщений можно по ссылке «Отписаться» или направив письмо на info@matchpoints.ru.</div>
+        </div>
+      </div>
+      <div class="gc-row">
+        <input type="checkbox" id="cs-distribution">
+        <div>
+          <label class="gc-label" for="cs-distribution">Согласен(а) на распространение моих данных (фото, видео, имя, должность, компания) ИП Игнатьевой Дарьей Александровной на сайте, в соцсетях и материалах мероприятия. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('cs-full-dist')">Подробнее ↓</span><span class="gc-en-line">I consent to the distribution of my data (photo, video, name, title, company) by IE Ignatieva D.A. on the event website, social media and event materials. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('cs-full-dist')">Details ↓</span></span></label>
+          <div class="gc-full" id="cs-full-dist">Я даю согласие ИП Игнатьевой Дарье Александровне на распространение моих персональных данных путем их передачи неопределенному кругу лиц посредством размещения на сайте https://www.micesignature.ru, а также на официальных страницах Оператора в социальных сетях. Перечень данных: фамилия, имя, наименование организации, должность, город, фотографическое и видеоизображение. Согласие может быть отозвано путем направления уведомления на info@matchpoints.ru.</div>
+        </div>
+      </div>
+    </div>
+    <p class="gc-required-note" style="margin-bottom:20px;">* Первое согласие обязательно / First consent is required</p>
+    <button class="cs-enter" onclick="enterSite()">Enter → / Войти →</button>
+    <button class="cs-back" onclick="resetRole()">← Change role / Сменить роль</button>
+  </div>
 </div>
 
 <!-- ════════ MAIN ════════ -->
@@ -2330,8 +2359,6 @@
     if (brand)  { brand.style.transition = 'none'; brand.style.opacity = '0'; brand.style.display = 'none'; }
     if (panels) panels.classList.add('gate-revealed');
     if (skip)   skip.style.display = 'none';
-    const consent = document.getElementById('gate-consent');
-    if (consent) consent.classList.add('visible');
   }
 
   /* ─── Consent helpers ─── */
@@ -2339,33 +2366,50 @@
     const el = document.getElementById(id);
     if (el) el.classList.toggle('open');
   }
-  function updateGateConsent() { /* reserved for future validation feedback */ }
 
-  /* ─── Choose role ─── */
+  let _pendingRole = null;
+
+  /* ─── Choose role → show consent screen ─── */
   function chooseRole(role) {
-    const pdBox = document.getElementById('gc-pd');
-    if (pdBox && !pdBox.checked) {
-      const row = document.getElementById('gc-row-pd');
-      if (row) { row.classList.remove('gc-shake'); void row.offsetWidth; row.classList.add('gc-shake'); }
-      pdBox.focus();
-      return;
-    }
+    _pendingRole = role;
     const gate = document.getElementById('gate');
-    const main = document.getElementById('main');
+    const cs   = document.getElementById('consent-screen');
 
-    gate.style.transition = 'opacity .5s ease';
+    /* Update role label */
+    const lbl = document.getElementById('cs-role-label');
+    if (lbl) lbl.textContent = role === 'exhibitor' ? 'Exhibitor / Экспонент' : 'Buyer / Байер';
+
+    gate.style.transition = 'opacity .45s ease';
     gate.style.opacity = '0';
     gate.style.pointerEvents = 'none';
 
     setTimeout(() => {
       gate.style.display = 'none';
+      cs.style.display = 'flex';
+      requestAnimationFrame(() => cs.classList.add('cs-visible'));
+    }, 450);
+  }
+
+  /* ─── Enter site after consent ─── */
+  function enterSite() {
+    const pdBox = document.getElementById('cs-pd');
+    if (pdBox && !pdBox.checked) {
+      const row = document.getElementById('cs-row-pd');
+      if (row) { row.classList.remove('gc-shake'); void row.offsetWidth; row.classList.add('gc-shake'); }
+      pdBox.focus();
+      return;
+    }
+    const cs   = document.getElementById('consent-screen');
+    const main = document.getElementById('main');
+    const role = _pendingRole || 'buyer';
+
+    cs.classList.remove('cs-visible');
+    setTimeout(() => {
+      cs.style.display = 'none';
       main.removeAttribute('hidden');
       applyRole(role);
       sessionStorage.setItem('ms-role', role);
-
-      /* Set language by role: exhibitor → EN, buyer → RU */
       setLang(role === 'buyer' ? 'ru' : 'en');
-
       document.querySelector('.hero').classList.add('loaded');
       animateHeroTagline(role);
       initReveal();
@@ -2373,7 +2417,7 @@
       initCountUp();
       initExhibitorAccordion();
       initProgStagger();
-    }, 500);
+    }, 450);
   }
 
   /* ─── Apply role classes + show/hide role text ─── */
@@ -2401,21 +2445,23 @@
   /* ─── Reset to gate (skip animation, show panels directly) ─── */
   function resetRole() {
     sessionStorage.removeItem('ms-role');
+    _pendingRole = null;
     document.body.classList.remove('body-role-exhibitor', 'body-role-buyer');
     const main   = document.getElementById('main');
     const gate   = document.getElementById('gate');
+    const cs     = document.getElementById('consent-screen');
     const brand  = document.getElementById('gate-brand');
     const panels = document.getElementById('gate-panels');
     const penTip = document.getElementById('gate-pen-tip');
     main.setAttribute('hidden', '');
+    if (cs) { cs.classList.remove('cs-visible'); cs.style.display = 'none'; }
     brand.style.display = 'none';
     panels.classList.add('gate-revealed');
     if (penTip) gsap.set(penTip, { opacity: 0 });
-    const consentEl = document.getElementById('gate-consent');
-    if (consentEl) { consentEl.classList.add('visible'); }
     gate.style.display = '';
     gate.style.opacity = '0';
     gate.style.transition = 'none';
+    gate.style.pointerEvents = '';
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         gate.style.transition = 'opacity .5s ease';
