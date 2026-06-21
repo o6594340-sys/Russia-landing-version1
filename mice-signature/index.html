@@ -1332,6 +1332,43 @@
       footer { padding: 18px 32px; }
     }
 
+    /* Hamburger button — hidden on desktop */
+    .mob-menu-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 22px; height: 15px;
+      background: none; border: none; cursor: pointer; padding: 0; margin-left: 16px;
+    }
+    .mob-menu-btn span { display: block; height: 1px; background: rgba(250,250,248,.65); transition: transform .3s, opacity .3s; }
+    .mob-menu-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .mob-menu-btn.open span:nth-child(2) { opacity: 0; }
+    .mob-menu-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile full-screen menu — hidden on desktop */
+    .mob-menu {
+      display: none;
+      position: fixed; inset: 0; background: var(--ink); z-index: 295;
+      flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+      opacity: 0; pointer-events: none; transition: opacity .3s ease;
+    }
+    .mob-menu.open { opacity: 1; pointer-events: all; }
+    .mob-menu-link {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 9vw, 3rem);
+      font-weight: 600; font-style: italic; color: rgba(250,250,248,.75);
+      text-decoration: none; letter-spacing: .04em;
+    }
+    .mob-menu-cta {
+      margin-top: 8px; padding: 14px 40px; background: var(--gold); color: var(--ink);
+      font-family: 'Instrument Sans', sans-serif; font-size: .78rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+    }
+    .mob-menu-role {
+      font-family: 'Instrument Sans', sans-serif; font-size: .65rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase; color: rgba(200,164,74,.5);
+      background: none; border: none; cursor: pointer; padding: 8px 0; margin-top: 8px;
+    }
+
     @media (max-width: 620px) {
       /* ── Nav ── */
       nav, nav.scrolled { padding: 14px 24px; }
@@ -1339,6 +1376,8 @@
       .nav-links { display: none; }
       .role-sw { display: flex; }
       .role-sw-sep { display: none; }
+      .mob-menu-btn { display: flex; }
+      .mob-menu { display: flex; }
 
       /* ── Hero ── */
       .hero-content { padding: 108px 24px 100px; }
@@ -1626,8 +1665,21 @@
     </div>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="nav-cta ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
     <a href="#register" class="nav-cta buyer-only" data-en="Schedule Meetings" data-ru="Записаться">Schedule Meetings</a>
+    <button class="mob-menu-btn" id="mob-menu-btn" onclick="toggleMobMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- Mobile full-screen menu -->
+<div class="mob-menu" id="mob-menu">
+  <a href="#program" class="mob-menu-link" onclick="closeMobMenu()" data-en="Programme" data-ru="Программа">Programme</a>
+  <a href="#exhibitors" class="mob-menu-link" onclick="closeMobMenu()" data-en="Exhibitors" data-ru="Экспоненты">Exhibitors</a>
+  <a href="#contact" class="mob-menu-link" onclick="closeMobMenu()" data-en="Contact" data-ru="Контакты">Contact</a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="mob-menu-cta ex-only" onclick="closeMobMenu()" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+  <a href="#register" class="mob-menu-cta buyer-only" onclick="closeMobMenu()" data-en="Schedule Meetings" data-ru="Записаться">Schedule Meetings</a>
+  <button class="mob-menu-role" onclick="closeMobMenu(); resetRole();" data-en="← Change role" data-ru="← Сменить роль">← Change role</button>
+</div>
 
 <!-- ════════ HERO ════════ -->
 <section class="hero" id="top">
@@ -2217,6 +2269,22 @@
   function applyRole(role) {
     document.body.classList.remove('body-role-exhibitor', 'body-role-buyer');
     document.body.classList.add('body-role-' + role);
+  }
+
+  /* ─── Mobile menu ─── */
+  function toggleMobMenu() {
+    const menu = document.getElementById('mob-menu');
+    const btn  = document.getElementById('mob-menu-btn');
+    if (!menu) return;
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+  function closeMobMenu() {
+    const menu = document.getElementById('mob-menu');
+    const btn  = document.getElementById('mob-menu-btn');
+    if (!menu) return;
+    menu.classList.remove('open');
+    btn.classList.remove('open');
   }
 
   /* ─── Reset to gate (skip animation, show panels directly) ─── */
