@@ -518,14 +518,14 @@
       transition: background .2s, color .2s, border-color .2s;
     }
     .nav-cta:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
-    .nav-cta.buyer-only {
+    .nav-cta.buyer-only, .nav-cta.ex-only {
       background: var(--gold);
       color: var(--ink);
       border-color: var(--gold);
       font-weight: 700;
       letter-spacing: .1em;
     }
-    .nav-cta.buyer-only:hover { background: #b8922e; border-color: #b8922e; }
+    .nav-cta.buyer-only:hover, .nav-cta.ex-only:hover { background: #b8922e; border-color: #b8922e; }
 
     /* ══════════════════════════════════════
        HERO
@@ -1749,7 +1749,7 @@
       <div class="lang-sep"></div>
       <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
     </div>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="nav-cta ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+    <a href="#" class="nav-cta ex-only" data-en="Schedule My Meetings" data-ru="Назначить встречи">Schedule My Meetings</a>
     <a href="#register" class="nav-cta buyer-only" data-en="Schedule Meetings" data-ru="Назначить встречи">Schedule Meetings</a>
     <button class="mob-menu-btn" id="mob-menu-btn" onclick="toggleMobMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1762,7 +1762,7 @@
   <a href="#program" class="mob-menu-link" onclick="closeMobMenu()" data-en="Programme" data-ru="Программа">Programme</a>
   <a href="#exhibitors" class="mob-menu-link" onclick="closeMobMenu()" data-en="Exhibitors" data-ru="Экспоненты">Exhibitors</a>
   <a href="#contact" class="mob-menu-link" onclick="closeMobMenu()" data-en="Contact" data-ru="Контакты">Contact</a>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="mob-menu-cta ex-only" onclick="closeMobMenu()" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+  <a href="#" class="mob-menu-cta ex-only" onclick="closeMobMenu()" data-en="Schedule My Meetings" data-ru="Назначить встречи">Schedule My Meetings</a>
   <a href="#register" class="mob-menu-cta buyer-only" onclick="closeMobMenu()" data-en="Schedule Meetings" data-ru="Назначить встречи">Schedule Meetings</a>
   <button class="mob-menu-role" onclick="closeMobMenu(); resetRole();" data-en="← Change role" data-ru="← Сменить роль">← Change role</button>
 </div>
@@ -1802,7 +1802,7 @@
       </div>
     </div>
     <div class="hero-btns">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="btn-fill ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+      <a href="#" class="btn-fill ex-only" data-en="Schedule My Meetings" data-ru="Назначить встречи">Schedule My Meetings</a>
       <a href="#register" class="btn-fill buyer-only" data-en="Schedule My Meetings" data-ru="Назначить встречи">Schedule My Meetings</a>
     </div>
   </div>
