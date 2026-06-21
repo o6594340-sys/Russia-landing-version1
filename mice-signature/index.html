@@ -1527,8 +1527,12 @@
       .mob-cta { display: block; }
 
       /* ── Gate mobile ── */
-      .gate-panels { flex-direction: column; }
-      .gate-half { min-height: 50vh; }
+      /* Make #gate a scrollable flex column so panels + consent flow naturally */
+      #gate { overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; }
+      /* Pull panels out of absolute so they flow in the column */
+      .gate-panels { position: relative; flex: 1; flex-direction: column; min-height: 0; }
+      /* Shorter panels — two fit without pushing consent offscreen */
+      .gate-half { min-height: 44vh; }
       #gate-ex { border-right: none; border-bottom: 1px solid rgba(200,164,74,.15); }
       .gate-divider { display: none; }
       .gate-role-en { font-size: clamp(2.6rem, 11vw, 4rem); }
@@ -1537,7 +1541,8 @@
       .gate-enter { opacity: 1; transform: translateY(0); }
       .gm { font-size: clamp(3.2rem, 18vw, 7rem); }
       .gate-sig-svg { width: min(78vw, 340px); }
-      #gate { overflow-x: hidden; }
+      /* Pull consent out of absolute so it sits below the panels in flow */
+      .gate-consent { position: relative; bottom: auto; left: auto; right: auto; flex-shrink: 0; }
     }
 
     /* ══════════════════════════════════════
