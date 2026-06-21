@@ -457,6 +457,9 @@
     /* for inline / flex contexts */
     .body-role-exhibitor .ex-only-inline { display: inline; }
     .body-role-buyer .buyer-only-inline { display: inline; }
+    /* higher-specificity overrides so btn-fill/flex elements hide correctly */
+    .body-role-buyer .ex-only { display: none; }
+    .body-role-exhibitor .buyer-only { display: none; }
 
     /* role switcher in nav */
     .role-sw {
@@ -1820,7 +1823,7 @@
     </h1>
     <p class="hero-tagline">
       <span class="ex-only" data-en="Your market. Direct access." data-ru="Ваша аудитория. Без посредников.">Your market. Direct access.</span>
-      <span class="buyer-only" data-en="International partners. In Moscow.<br>For you." data-ru="Зарубежные партнёры в Москве.<br>Специально для вас.">International partners. In Moscow.<br>For you.</span>
+      <span class="buyer-only" data-en="International partners. In Moscow.<span style='display:block'>For you.</span>" data-ru="Зарубежные партнёры в Москве.<span style='display:block'>Специально для вас.</span>">International partners. In Moscow.<span style="display:block">For you.</span></span>
     </p>
     <p class="hero-sub" data-en="No noise. No random visitors. Real business. And good company." data-ru="Только нужные люди. Только работа. И приятное общение.">No noise. No random visitors. Real business.</p>
     <div class="hero-meta">
