@@ -429,7 +429,8 @@
       text-decoration: none;
     }
     .nav-logo em { color: var(--gold); font-style: normal; }
-    .nav-links { display: flex; align-items: center; gap: 28px; position: absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 480px); }
+    .nav-links { display: flex; align-items: center; gap: 28px; position: absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 480px); pointer-events: none; }
+    .nav-link { pointer-events: auto; }
     .nav-link {
       font-family: 'Instrument Sans', sans-serif;
       font-size: .65rem; font-weight: 500;
