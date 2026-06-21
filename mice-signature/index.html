@@ -282,17 +282,20 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity .3s, transform .3s;
+      opacity: .55;
+      transform: translateY(0);
+      transition: opacity .3s;
+      border: 1px solid rgba(200,164,74,.35);
+      padding: 10px 24px;
+      border-radius: 2px;
     }
     .gate-half:hover .gate-enter {
       opacity: 1;
-      transform: translateY(0);
+      border-color: var(--gold);
     }
     .gate-enter-text {
       font-family: 'Instrument Sans', sans-serif;
-      font-size: .6rem;
+      font-size: .72rem;
       font-weight: 600;
       letter-spacing: .2em;
       text-transform: uppercase;
@@ -426,7 +429,7 @@
       text-decoration: none;
     }
     .nav-logo em { color: var(--gold); font-style: normal; }
-    .nav-links { display: flex; align-items: center; gap: 28px; position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-links { display: flex; align-items: center; gap: 28px; position: absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 480px); }
     .nav-link {
       font-family: 'Instrument Sans', sans-serif;
       font-size: .65rem; font-weight: 500;
@@ -1619,10 +1622,8 @@
       <div class="lang-sep"></div>
       <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
     </div>
-    <a href="#register" class="nav-cta">
-      <span class="ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</span>
-      <span class="buyer-only" data-en="Schedule Meetings" data-ru="Записаться">Schedule Meetings</span>
-    </a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="nav-cta ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+    <a href="#register" class="nav-cta buyer-only" data-en="Schedule Meetings" data-ru="Записаться">Schedule Meetings</a>
   </div>
 </nav>
 
@@ -1661,7 +1662,7 @@
       </div>
     </div>
     <div class="hero-btns">
-      <a href="#register" class="btn-fill ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="btn-fill ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
       <a href="#register" class="btn-fill buyer-only" data-en="Schedule My Meetings" data-ru="Записаться на встречи">Schedule My Meetings</a>
     </div>
   </div>
@@ -1884,7 +1885,7 @@
       <span data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <a href="https://wa.me/79164250150" target="_blank" rel="noopener" class="btn-register reveal reveal-d3 buyer-only" data-en="Get in Touch" data-ru="Связаться с нами">
+    <a href="https://api.whatsapp.com/send?phone=79164250150" target="_blank" rel="noopener" class="btn-register reveal reveal-d3 buyer-only" data-en="Get in Touch" data-ru="Связаться с нами">
       <span data-en="Get in Touch" data-ru="Связаться с нами">Get in Touch</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
@@ -1958,7 +1959,7 @@
 
 <!-- ════════ FLOATING MOBILE CTA ════════ -->
 <div class="mob-cta hidden" id="mob-cta">
-  <a href="#register" class="ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</a>
   <a href="#register" class="buyer-only" data-en="Schedule My Meetings" data-ru="Записаться на встречи">Schedule My Meetings</a>
 </div>
 
