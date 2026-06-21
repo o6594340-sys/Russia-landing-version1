@@ -1528,7 +1528,7 @@
 
       /* ── Gate mobile ── */
       /* Make #gate a scrollable flex column so panels + consent flow naturally */
-      #gate { overflow-x: hidden; overflow-y: auto; display: flex; flex-direction: column; }
+      #gate { overflow-x: clip; overflow-y: auto; display: flex; flex-direction: column; }
       /* Pull panels out of absolute so they flow in the column */
       .gate-panels { position: relative; flex: 1; flex-direction: column; min-height: 0; }
       /* Shorter panels — two fit without pushing consent offscreen */
@@ -1654,9 +1654,9 @@
       <span class="gm">E</span>
     </div>
     <div class="gate-sig-block" id="gate-sig-block">
-      <svg class="gate-sig-svg" viewBox="-10 0 920 200" overflow="visible" aria-hidden="true">
+      <svg class="gate-sig-svg" viewBox="-10 0 980 200" overflow="visible" aria-hidden="true">
         <defs>
-          <mask id="gsig-mask" maskUnits="userSpaceOnUse" x="-10" y="-130" width="900" height="420">
+          <mask id="gsig-mask" maskUnits="userSpaceOnUse" x="-10" y="-130" width="970" height="420">
             <rect id="gsig-wipe" fill="white" x="-10" y="-130" width="0" height="420"/>
           </mask>
         </defs>
@@ -2207,7 +2207,7 @@
         attr: { cx: penX0, cy: penY }, duration: 0.32, ease: 'power2.inOut',
         onComplete() {
           /* wipe rect grows left→right: pen tracks leading edge exactly */
-          const totalW = 890;
+          const totalW = 950;
           const wipe = { x: -8 };
           gsap.to(wipe, {
             x: totalW,
