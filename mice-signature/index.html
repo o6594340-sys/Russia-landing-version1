@@ -2200,9 +2200,8 @@
       applyRole(role);
       sessionStorage.setItem('ms-role', role);
 
-      /* Restore saved language preference */
-      const savedLang = localStorage.getItem('ms-lang');
-      if (savedLang && savedLang !== 'en') setLang(savedLang);
+      /* Set language by role: exhibitor → EN, buyer → RU */
+      setLang(role === 'buyer' ? 'ru' : 'en');
 
       document.querySelector('.hero').classList.add('loaded');
       animateHeroTagline(role);
