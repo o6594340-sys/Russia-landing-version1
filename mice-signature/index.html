@@ -1755,7 +1755,7 @@
           <div class="gc-full" id="cs-full-mkt">Я даю согласие ИП Игнатьевой Дарье Александровне на получение информационных и рекламных сообщений в соответствии с ФЗ №38-ФЗ «О рекламе». Сообщения могут направляться на адрес электронной почты, посредством SMS, телефонных звонков, сообщений в мессенджерах (WhatsApp, Telegram и др.). Настоящее согласие действует до момента его отзыва. Отказаться от получения сообщений можно по ссылке «Отписаться» или направив письмо на info@matchpoints.ru.</div>
         </div>
       </div>
-      <div class="gc-row">
+      <div class="gc-row" id="cs-row-dist">
         <input type="checkbox" id="cs-distribution">
         <div>
           <label class="gc-label" for="cs-distribution">Согласен(а) на распространение моих данных (фото, видео, имя, должность, компания) ИП Игнатьевой Дарьей Александровной на сайте, в соцсетях и материалах мероприятия. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('cs-full-dist')">Подробнее ↓</span><span class="gc-en-line">I consent to the distribution of my data (photo, video, name, title, company) by IE Ignatieva D.A. on the event website, social media and event materials. <span class="gc-expand" onclick="event.stopPropagation();toggleGcFull('cs-full-dist')">Details ↓</span></span></label>
@@ -1763,7 +1763,7 @@
         </div>
       </div>
     </div>
-    <p class="gc-required-note" style="margin-bottom:20px;">* Первое согласие обязательно / First consent is required</p>
+    <p class="gc-required-note" style="margin-bottom:20px;">* Первое и третье согласие обязательны / First and third consents are required</p>
     <button class="cs-enter" onclick="enterSite()">Enter → / Войти →</button>
     <button class="cs-back" onclick="resetRole()">← Change role / Сменить роль</button>
   </div>
@@ -2404,6 +2404,13 @@
       const row = document.getElementById('cs-row-pd');
       if (row) { row.classList.remove('gc-shake'); void row.offsetWidth; row.classList.add('gc-shake'); }
       pdBox.focus();
+      return;
+    }
+    const distBox = document.getElementById('cs-distribution');
+    if (distBox && !distBox.checked) {
+      const row = document.getElementById('cs-row-dist');
+      if (row) { row.classList.remove('gc-shake'); void row.offsetWidth; row.classList.add('gc-shake'); }
+      distBox.focus();
       return;
     }
     const cs   = document.getElementById('consent-screen');
