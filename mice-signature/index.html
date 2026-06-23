@@ -1766,7 +1766,7 @@
         </div>
       </div>
     </div>
-    <p class="gc-required-note" style="margin-bottom:20px;">* Все согласия обязательны / All consents are required</p>
+    <p class="gc-required-note" style="margin-bottom:20px;">* Первое, третье и четвёртое согласие обязательны / Consents 1, 3 and 4 are required</p>
     <button class="cs-enter" onclick="enterSite()">Enter → / Войти →</button>
     <button class="cs-back" onclick="resetRole()">← Change role / Сменить роль</button>
   </div>
@@ -2404,7 +2404,6 @@
   function enterSite() {
     const required = [
       { id: 'cs-pd',           rowId: 'cs-row-pd' },
-      { id: 'cs-marketing',    rowId: 'cs-row-mkt' },
       { id: 'cs-distribution', rowId: 'cs-row-dist' },
       { id: 'cs-photo',        rowId: 'cs-row-photo' }
     ];
