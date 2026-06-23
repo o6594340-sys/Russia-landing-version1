@@ -160,85 +160,6 @@
     #gate-skip:hover { color: rgba(200,164,74,.65); }
 
     /* ── Consent screen (step 2, after role chosen) ── */
-    #consent-screen {
-      position: fixed; inset: 0; z-index: 998;
-      background: var(--ink);
-      display: none; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 48px 24px; overflow-y: auto;
-      opacity: 0; transition: opacity .45s ease;
-    }
-    #consent-screen.cs-visible { opacity: 1; }
-    .cs-inner { max-width: 480px; width: 100%; }
-    .cs-label {
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: .6rem; font-weight: 600;
-      letter-spacing: .2em; text-transform: uppercase;
-      color: rgba(200,164,74,.5); margin-bottom: 28px;
-    }
-    .cs-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 600;
-      color: rgba(250,250,248,.9); margin-bottom: 32px; line-height: 1.2;
-    }
-    .cs-checks { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
-    .cs-enter {
-      display: block; width: 100%;
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: .72rem; font-weight: 700;
-      letter-spacing: .18em; text-transform: uppercase;
-      background: var(--gold); color: var(--ink);
-      border: none; padding: 17px 24px;
-      cursor: pointer; margin-bottom: 16px;
-      transition: background .2s;
-    }
-    .cs-enter:hover { background: #D9B55E; }
-    .cs-back {
-      display: block; width: 100%; text-align: center;
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: .62rem; letter-spacing: .1em;
-      color: rgba(250,250,248,.28); background: none; border: none;
-      cursor: pointer; padding: 8px;
-      transition: color .2s;
-    }
-    .cs-back:hover { color: rgba(250,250,248,.55); }
-    .gc-row { display: flex; align-items: flex-start; gap: 9px; }
-    .gc-row input[type=checkbox] {
-      width: 13px; height: 13px;
-      accent-color: var(--gold);
-      margin-top: 2px; flex-shrink: 0; cursor: pointer;
-    }
-    .gc-label {
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: .6rem; color: rgba(250,250,248,.42); line-height: 1.5; cursor: pointer;
-    }
-    .gc-expand {
-      margin-left: 4px; font-size: .55rem; color: rgba(200,164,74,.45);
-      text-decoration: underline; text-underline-offset: 2px; cursor: pointer; white-space: nowrap;
-    }
-    .gc-full {
-      display: none; margin-top: 6px; padding: 8px 10px;
-      background: rgba(255,255,255,.03); border: 1px solid rgba(200,164,74,.08);
-      max-height: 90px; overflow-y: auto;
-      font-family: 'Instrument Sans', sans-serif; font-size: .55rem;
-      color: rgba(250,250,248,.28); line-height: 1.6;
-    }
-    .gc-full.open { display: block; }
-    .gc-en-line { display: block; margin-top: 2px; opacity: .5; font-style: italic; }
-    .gc-required-note {
-      font-family: 'Instrument Sans', sans-serif; font-size: .55rem;
-      color: rgba(200,164,74,.28); margin-top: 2px;
-    }
-    .gc-shake { animation: gcShake .3s ease; }
-    @keyframes gcShake {
-      0%,100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
-    }
-    @media (max-width: 620px) {
-      .gate-consent { padding: 10px 20px 14px; }
-      .gc-label { font-size: .58rem; }
-    }
 
     /* ── Gate panels (Phase 2) ── */
     .gate-panels {
@@ -1734,43 +1655,6 @@
 
 </div>
 
-<!-- ════════ CONSENT SCREEN ════════ -->
-<div id="consent-screen" hidden>
-  <div class="cs-inner">
-    <img src="mice signature gold.png" alt="MICE Signature" style="width:90px;height:auto;display:block;margin-bottom:28px;opacity:.85;">
-    <p class="cs-label" id="cs-role-label">Exhibitor</p>
-    <h2 class="cs-heading">Before you enter /<br><em style="font-style:italic;color:rgba(250,250,248,.55);">Прежде чем войти</em></h2>
-    <div class="cs-checks">
-      <div class="gc-row" id="cs-row-pd">
-        <input type="checkbox" id="cs-pd">
-        <div>
-          <label class="gc-label" for="cs-pd">Я даю своё согласие на обработку моих персональных данных ИП Игнатьевой Дарьей Александровной, в том числе с привлечением обработчика ООО «Ивентишес», в соответствии с политикой конфиденциальности персональных данных Оператора.<span class="gc-en-line">I give my consent to the processing of my personal data by IE Ignatieva D.A., including by engaging the processor LLC Eventicious, in accordance with the Operator's personal data privacy policy.</span></label>
-        </div>
-      </div>
-      <div class="gc-row" id="cs-row-mkt">
-        <input type="checkbox" id="cs-marketing">
-        <div>
-          <label class="gc-label" for="cs-marketing">Я даю своё согласие на получение рекламных и информационных рассылок от организатора с использованием SMS, email, WhatsApp, Telegram и других каналов.<span class="gc-en-line">I give my consent to receive advertising and informational newsletters from the organizer via SMS, email, WhatsApp, Telegram and other channels.</span></label>
-        </div>
-      </div>
-      <div class="gc-row" id="cs-row-dist">
-        <input type="checkbox" id="cs-distribution">
-        <div>
-          <label class="gc-label" for="cs-distribution">Ознакомился(ась) и согласен(а) с распространением своих персональных данных.<span class="gc-en-line">I have read and agree to the distribution of my personal data.</span></label>
-        </div>
-      </div>
-      <div class="gc-row" id="cs-row-photo">
-        <input type="checkbox" id="cs-photo">
-        <div>
-          <label class="gc-label" for="cs-photo">Я согласен(а) с тем, что во время посещения MICE Signature воркшоп возможна фото и видео съёмка, аудио запись. Организатор оставляет за собой право использовать полученные фото и видео материалы, аудио записи, сделанные во время мероприятия, без моего письменного согласия на использование фото и видео съёмки, аудио записей с моим участием.<span class="gc-en-line">I agree that during my visit to the MICE Signature workshop, photo and video recording as well as audio recording may take place. The organizer reserves the right to use the resulting photo/video materials and audio recordings made during the event without my written consent.</span></label>
-        </div>
-      </div>
-    </div>
-    <p class="gc-required-note" style="margin-bottom:20px;">* Первое, третье и четвёртое согласие обязательны / Consents 1, 3 and 4 are required</p>
-    <button class="cs-enter" onclick="enterSite()">Enter → / Войти →</button>
-    <button class="cs-back" onclick="resetRole()">← Change role / Сменить роль</button>
-  </div>
-</div>
 
 <!-- ════════ MAIN ════════ -->
 <div id="main" hidden>
@@ -2380,13 +2264,8 @@
 
   /* ─── Choose role → show consent screen ─── */
   function chooseRole(role) {
-    _pendingRole = role;
     const gate = document.getElementById('gate');
-    const cs   = document.getElementById('consent-screen');
-
-    /* Update role label */
-    const lbl = document.getElementById('cs-role-label');
-    if (lbl) lbl.textContent = role === 'exhibitor' ? 'Exhibitor / Экспонент' : 'Buyer / Байер';
+    const main = document.getElementById('main');
 
     gate.style.transition = 'opacity .45s ease';
     gate.style.opacity = '0';
@@ -2394,36 +2273,6 @@
 
     setTimeout(() => {
       gate.style.display = 'none';
-      cs.removeAttribute('hidden');
-      cs.style.display = 'flex';
-      requestAnimationFrame(() => cs.classList.add('cs-visible'));
-    }, 450);
-  }
-
-  /* ─── Enter site after consent ─── */
-  function enterSite() {
-    const required = [
-      { id: 'cs-pd',           rowId: 'cs-row-pd' },
-      { id: 'cs-distribution', rowId: 'cs-row-dist' },
-      { id: 'cs-photo',        rowId: 'cs-row-photo' }
-    ];
-    for (const { id, rowId } of required) {
-      const box = document.getElementById(id);
-      if (box && !box.checked) {
-        const row = document.getElementById(rowId);
-        if (row) { row.classList.remove('gc-shake'); void row.offsetWidth; row.classList.add('gc-shake'); }
-        box.focus();
-        return;
-      }
-    }
-    const cs   = document.getElementById('consent-screen');
-    const main = document.getElementById('main');
-    const role = _pendingRole || 'buyer';
-
-    cs.classList.remove('cs-visible');
-    setTimeout(() => {
-      cs.style.display = 'none';
-      cs.setAttribute('hidden', '');
       main.removeAttribute('hidden');
       applyRole(role);
       sessionStorage.setItem('ms-role', role);
@@ -2467,12 +2316,10 @@
     document.body.classList.remove('body-role-exhibitor', 'body-role-buyer');
     const main   = document.getElementById('main');
     const gate   = document.getElementById('gate');
-    const cs     = document.getElementById('consent-screen');
     const brand  = document.getElementById('gate-brand');
     const panels = document.getElementById('gate-panels');
     const penTip = document.getElementById('gate-pen-tip');
     main.setAttribute('hidden', '');
-    if (cs) { cs.classList.remove('cs-visible'); cs.style.display = 'none'; cs.setAttribute('hidden', ''); }
     brand.style.display = 'none';
     panels.classList.add('gate-revealed');
     if (penTip) gsap.set(penTip, { opacity: 0 });
