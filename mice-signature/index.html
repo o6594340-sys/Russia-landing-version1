@@ -469,6 +469,7 @@
       transition: background .2s, color .2s, border-color .2s;
     }
     .nav-cta:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+    .reg-closed { cursor: default; opacity: 0.45; pointer-events: none; }
     .nav-cta.buyer-only, .nav-cta.ex-only {
       background: var(--gold);
       color: var(--ink);
@@ -1676,8 +1677,8 @@
       <div class="lang-sep"></div>
       <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">RU</button>
     </div>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdkpyctyTZT7ci3QiC3l90p1cfsuez-HebC80yzEFmxMYF--Q/viewform" target="_blank" rel="noopener" class="nav-cta ex-only" data-en="Registration" data-ru="Регистрация">Registration</a>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLScOYPYDVCcHexhOtw9ylpuVHWRaGOZH12OToe26vmEKbV_gKw/viewform" target="_blank" rel="noopener" class="nav-cta buyer-only" data-en="Registration" data-ru="Регистрация">Registration</a>
+    <span class="nav-cta ex-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
+    <span class="nav-cta buyer-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
     <button class="mob-menu-btn" id="mob-menu-btn" onclick="toggleMobMenu()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -1689,8 +1690,8 @@
   <a href="#program" class="mob-menu-link" onclick="closeMobMenu()" data-en="Programme" data-ru="Программа">Programme</a>
   <a href="#exhibitors" class="mob-menu-link" onclick="closeMobMenu()" data-en="Exhibitors" data-ru="Экспоненты">Exhibitors</a>
   <a href="#contact" class="mob-menu-link" onclick="closeMobMenu()" data-en="Contact" data-ru="Контакты">Contact</a>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdkpyctyTZT7ci3QiC3l90p1cfsuez-HebC80yzEFmxMYF--Q/viewform" target="_blank" rel="noopener" class="mob-menu-cta ex-only" onclick="closeMobMenu()" data-en="Registration" data-ru="Регистрация">Registration</a>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLScOYPYDVCcHexhOtw9ylpuVHWRaGOZH12OToe26vmEKbV_gKw/viewform" target="_blank" rel="noopener" class="mob-menu-cta buyer-only" onclick="closeMobMenu()" data-en="Registration" data-ru="Регистрация">Registration</a>
+  <span class="mob-menu-cta ex-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
+  <span class="mob-menu-cta buyer-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
   <button class="mob-menu-role" onclick="closeMobMenu(); resetRole();" data-en="← Change role" data-ru="← Сменить роль">← Change role</button>
 </div>
 
@@ -1729,8 +1730,8 @@
       </div>
     </div>
     <div class="hero-btns">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdkpyctyTZT7ci3QiC3l90p1cfsuez-HebC80yzEFmxMYF--Q/viewform" target="_blank" rel="noopener" class="btn-fill ex-only" data-en="Registration" data-ru="Регистрация">Registration</a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLScOYPYDVCcHexhOtw9ylpuVHWRaGOZH12OToe26vmEKbV_gKw/viewform" target="_blank" rel="noopener" class="btn-fill buyer-only" data-en="Registration" data-ru="Регистрация">Registration</a>
+      <span class="btn-fill ex-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
+      <span class="btn-fill buyer-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
     </div>
   </div>
   <div class="hero-side">
@@ -1792,9 +1793,6 @@
             <div class="pillar-title" data-en="Two debuts, one platform" data-ru="Два дебюта, одна платформа">Two debuts, one platform</div>
             <div class="pillar-desc" data-en="MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026." data-ru="Первое издание MICE Signature — в ENZO Hotel, новом пятизвёздочном отеле Москвы, который открылся весной 2026 года.">MICE Signature launches its inaugural edition at ENZO Hotel — Moscow's newest 5★ property, opened spring 2026.</div>
           </div>
-        </div>
-        <div class="ex-only reveal reveal-d4" style="grid-column:1/-1;margin-top:8px;">
-          <a href="#register" style="font-family:'Instrument Sans',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:.8;transition:opacity .2s;" data-en="Ready to apply? →" data-ru="Подать заявку? →">Ready to apply? →</a>
         </div>
         <div class="pillar buyer-only reveal reveal-d1">
           <div>
@@ -1947,10 +1945,9 @@
     <h2 class="reveal reveal-d1 buyer-only" data-en="Only partners<br>who need you." data-ru="Только те,<br>кому нужны вы.">Only partners<br>who need you.</h2>
     <p class="reg-body reveal reveal-d2 ex-only" data-en="Closed format · Limited places · 20 August 2026 · Moscow" data-ru="Закрытый формат · Ограниченное число мест · 20 августа 2026 · Москва">Closed format · Limited places · 20 August 2026 · Moscow</p>
     <p class="reg-body reveal reveal-d2 buyer-only" data-en="Pre-scheduled meetings · No queuing · 20 August 2026 · Moscow" data-ru="Встречи по предзаписи · Без очередей · 20 августа 2026 · Москва">Pre-scheduled meetings · No queuing · 20 August 2026 · Moscow</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSej9I_DAvO8abNYeJwa-lM369L0dDHdaDrhx0fHNu3JwIaG8w/viewform" target="_blank" rel="noopener" class="btn-register reveal reveal-d3 ex-only" data-en="Apply to Exhibit" data-ru="Подать заявку">
-      <span data-en="Apply to Exhibit" data-ru="Подать заявку">Apply to Exhibit</span>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
+    <span class="btn-register reveal reveal-d3 ex-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">
+      <span data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
+    </span>
     <a href="https://api.whatsapp.com/send?phone=79164250150" target="_blank" rel="noopener" class="btn-register reveal reveal-d3 buyer-only" data-en="Get in Touch" data-ru="Связаться с нами">
       <span data-en="Get in Touch" data-ru="Связаться с нами">Get in Touch</span>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#0D1A16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2026,8 +2023,8 @@
 
 <!-- ════════ FLOATING MOBILE CTA ════════ -->
 <div class="mob-cta hidden" id="mob-cta">
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdkpyctyTZT7ci3QiC3l90p1cfsuez-HebC80yzEFmxMYF--Q/viewform" target="_blank" rel="noopener" class="ex-only" data-en="Registration" data-ru="Регистрация">Registration</a>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLScOYPYDVCcHexhOtw9ylpuVHWRaGOZH12OToe26vmEKbV_gKw/viewform" target="_blank" rel="noopener" class="buyer-only" data-en="Registration" data-ru="Регистрация">Registration</a>
+  <span class="ex-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
+  <span class="buyer-only reg-closed" data-en="Registration closed" data-ru="Регистрация закрыта">Registration closed</span>
 </div>
 
 <!-- ════════ FOOTER ════════ -->
