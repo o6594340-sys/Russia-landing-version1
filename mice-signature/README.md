@@ -1,12 +1,12 @@
 # MICE Signature — Event Website
 
-Bilingual single-page website for **MICE Signature** — a debut B2B MICE workshop + evening cocktail, Moscow, 20 May 2026.
+Bilingual single-page website for **MICE Signature** — a debut B2B MICE workshop + evening cocktail, Moscow, 20 August 2026.
 
-Organised by [Match Point](https://matchpoints.ru) (Olga Kharlenok).
+Organised by [Match Point](https://matchpoints.ru) (Olga Kharlenok, Daria Ignatieva).
 
 ## What this site is
 
-A portal for registered participants — international exhibitors and invited Russian MICE buyers — to view event info and schedule pre-scheduled B2B meetings via EventRocks platform.
+An info site for international exhibitors and invited Russian MICE buyers. **Registration is closed** (event is fully booked) — all CTA buttons show "Registration closed" instead of a sign-up link. Buyers can still reach the organisers via a "Get in Touch" WhatsApp link.
 
 **Prices are not shown on the site.**
 
@@ -36,18 +36,16 @@ A portal for registered participants — international exhibitors and invited Ru
 4. **Stats** — 1,500+ buyers / 20 years / 80% international
 5. **Programme** — two business sessions schedule
 6. **Exhibitors** — six exhibitor categories (international only)
-7. **Register** — CTA to EventRocks meeting planner
+7. **Register** — registration closed; buyers see a "Get in Touch" WhatsApp link instead
 8. **Contact** — Olga Kharlenok, Match Point card
 9. **Footer**
 
 ## To deploy
 
-Static file — drag `index.html` to any hosting: GitHub Pages, Netlify, or organiser's server.
-
-## Pending
-
-- Replace `href="#"` on the "Open Meeting Planner" button with the actual EventRocks URL once the platform is set up.
+GitHub Pages, custom domain **micesignature.ru** (DNS pending). See `CLAUDE.md` for the exact deploy commands (subtree split from the monorepo).
 
 ## Contact
 
-Olga Kharlenok · olga@matchpoints.ru · +7 (910) 400-34-60 · matchpoints.ru
+Olga Kharlenok · olga@matchpoints.ru · +7 (910) 400-34-60
+Daria Ignatieva · daria@matchpoints.ru · +7 (916) 425-01-50
+matchpoints.ru

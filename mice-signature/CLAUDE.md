@@ -9,7 +9,7 @@ Single static HTML file for a B2B MICE event site. No framework, no build step �
 - **One file only.** All CSS and JS stay inline in `index.html`. Do not create separate `.css` or `.js` files.
 - **No prices on the site.** Package prices ($1,600–$3,800) are internal only — never add them to any public-facing section.
 - **Exhibitors = international companies only.** Russian companies do not exhibit. Do not imply otherwise in copy.
-- **CTA label** — all primary CTA buttons (nav, hero, mobile floating bar) are labelled "Schedule My Meetings" / "Назначить встречи" for both roles. Uses `href="#"` as placeholder for EventRocks URL. Replace all 8 occurrences (`.ex-only` and `.buyer-only` pairs in nav, mobile menu, hero, mobile CTA) when real URL is provided. Exhibitor and buyer may need separate EventRocks URLs — confirm with client.
+- **Registration is closed.** All former "Registration" / "Apply to Exhibit" CTA buttons (nav, mobile menu, hero, mobile floating bar, Register section) are now inert `<span class="reg-closed">` elements reading "Registration closed" / "Регистрация закрыта" for both roles — `.reg-closed` sets `pointer-events: none; opacity: .45`. The old Google Forms links were removed. Exception: the buyer-only button in the Register section stays a live link — "Get in Touch" / "Связаться с нами" via WhatsApp (`https://api.whatsapp.com/send?phone=79164250150`), since buyers were never open-registration (personal invitation only). Don't add new links that imply applications are still open (e.g. an "apply" link pointing at `#register`).
 - **Language switcher** — all user-facing text must have both `data-en` and `data-ru` attributes. Never add EN-only text without a RU translation.
 
 ## Design tokens
