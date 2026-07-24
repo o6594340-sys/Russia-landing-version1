@@ -1257,6 +1257,9 @@
       line-height: 1;
       pointer-events: none;
     }
+    .mp-card.partner-card { padding: 36px 32px; }
+    .mp-card.partner-card::before { content: none; }
+    .mp-card.partner-card .mp-tag { margin-bottom: 18px; }
     .mp-name {
       font-family: 'Cormorant Garamond', sans-serif;
       font-size: 1.6rem; font-weight: 700;
@@ -2007,15 +2010,27 @@
         </div>
       </div>
     </div>
-    <div class="mp-card reveal reveal-d2">
-      <img src="mice signature gold.png" alt="MICE Signature" style="width:120px;height:auto;display:block;margin-bottom:20px;opacity:.9;">
-      <div class="mp-name">MATCH POINT</div>
-      <div class="mp-tag" data-en="Securing new opportunities" data-ru="Securing new opportunities">Securing new opportunities</div>
-      <div class="mp-stats">
-        <div class="mp-stat"><div class="mp-dot"></div><span data-en="20 years in Russian MICE" data-ru="20 лет в российском MICE">20 years in Russian MICE</span></div>
-        <div class="mp-stat"><div class="mp-dot"></div><span data-en="1,500+ qualified buyers in our database" data-ru="1 500+ квалифицированных байеров в базе">1,500+ qualified buyers in our database</span></div>
-        <div class="mp-stat"><div class="mp-dot"></div><span data-en="Trusted suppliers across Europe, Asia &amp; the Middle East" data-ru="Надёжные поставщики в Европе, Азии и на Ближнем Востоке">Trusted suppliers across Europe, Asia &amp; the Middle East</span></div>
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div class="mp-card reveal reveal-d2">
+        <img src="mice signature gold.png" alt="MICE Signature" style="width:120px;height:auto;display:block;margin-bottom:20px;opacity:.9;">
+        <div class="mp-name">MATCH POINT</div>
+        <div class="mp-tag" data-en="Securing new opportunities" data-ru="Securing new opportunities">Securing new opportunities</div>
+        <div class="mp-stats">
+          <div class="mp-stat"><div class="mp-dot"></div><span data-en="20 years in Russian MICE" data-ru="20 лет в российском MICE">20 years in Russian MICE</span></div>
+          <div class="mp-stat"><div class="mp-dot"></div><span data-en="1,500+ qualified buyers in our database" data-ru="1 500+ квалифицированных байеров в базе">1,500+ qualified buyers in our database</span></div>
+          <div class="mp-stat"><div class="mp-dot"></div><span data-en="Trusted suppliers across Europe, Asia &amp; the Middle East" data-ru="Надёжные поставщики в Европе, Азии и на Ближнем Востоке">Trusted suppliers across Europe, Asia &amp; the Middle East</span></div>
 
+        </div>
+      </div>
+      <div class="mp-card partner-card reveal reveal-d3">
+        <div style="background:#fff;border-radius:10px;padding:14px 20px;display:inline-block;margin-bottom:16px;">
+          <img src="Event Rocks logo.png" alt="EventRocks" style="width:140px;height:auto;display:block;">
+        </div>
+        <div class="mp-tag" data-en="Event Partner" data-ru="Партнёр мероприятия" style="margin-bottom:8px;">Event Partner</div>
+        <div class="mp-name"><a href="https://eventrocks.ru/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">EVENTROCKS</a></div>
+        <div class="mp-stats" style="margin-top:14px;">
+          <div class="mp-stat"><div class="mp-dot"></div><span data-en="App &amp; web platform builder for events of any format" data-ru="Конструктор приложений и веб-платформа для мероприятий разного формата">App &amp; web platform builder for events of any format</span></div>
+        </div>
       </div>
     </div>
   </div>
