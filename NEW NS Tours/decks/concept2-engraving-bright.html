@@ -126,6 +126,19 @@
   .price-tag .sep{opacity:.6;font-weight:500;}
   .slide.active .price-tag{animation:fadeUp .4s ease forwards .27s;}
 
+  .beats{display:flex;flex-direction:column;gap:clamp(5px,.9cqh,9px);margin:.15em 0 .5em;list-style:none;padding:0;max-width:46ch;}
+  .beat{display:flex;align-items:baseline;gap:.65em;font-family:'Manrope',sans-serif;font-weight:400;
+    font-size:clamp(11.5px,1.05cqw,15.5px);line-height:1.42;color:color-mix(in srgb, var(--ink) 88%, transparent);
+    opacity:0;transform:translateX(-6px);}
+  .beat::before{content:"";width:.5em;height:.5em;background:var(--accent);flex:0 0 auto;transform:translateY(.42em) rotate(45deg);}
+  .beat b{font-weight:700;color:var(--ink);}
+  .slide.active .beat{animation:beatIn .38s ease forwards;}
+  .slide.active .beat:nth-child(1){animation-delay:.34s;}
+  .slide.active .beat:nth-child(2){animation-delay:.42s;}
+  .slide.active .beat:nth-child(3){animation-delay:.5s;}
+  .slide.active .beat:nth-child(4){animation-delay:.58s;}
+  @keyframes beatIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:translateX(0);}}
+
   .menu-card{max-width:min(78cqw,760px);}
   .menu-row{
     display:flex;align-items:baseline;gap:clamp(8px,1.4cqw,16px);
@@ -181,7 +194,7 @@
   .slide.active h1{animation:fadeUp .45s ease forwards .22s;}
   .slide.active .subhead{animation:fadeUp .4s ease forwards .32s;}
   .slide.active .body-text{animation:fadeUp .4s ease forwards .4s;}
-  .slide.active .humor{animation:fadeUp .4s ease forwards .48s;}
+  .slide.active .humor{animation:fadeUp .4s ease forwards .68s;}
   .slide.active .doodle{animation:drawIn .9s ease forwards .3s;}
   .slide.active .note{animation:fadeUp .4s ease forwards .6s;}
 
@@ -284,7 +297,12 @@
               <span class="eyebrow">Программа 01</span>
               <h1>От лозы до бокала</h1>
               <span class="price-tag"><span class="num">$160</span><span> / чел</span><span class="sep">·</span><span>1 день</span><span class="sep">·</span><span>от 10 чел</span></span>
-              <p class="body-text">Участники проходят путь создания вина: от сбора и давки винограда до авторского купажа и презентации собственной идеи эксперту. Вечер завершается гастроужином с игровой дегустацией — угадать сорт вина в каждом блюде. По желанию — цифровой сертификат на своё вино.</p>
+              <ul class="beats">
+                <li class="beat"><b>Сбор и давка винограда</b> — своими руками, по традиции</li>
+                <li class="beat"><b>Авторский купаж</b> — и презентация идеи эксперту</li>
+                <li class="beat"><b>Гастроужин</b> — игровая дегустация, угадать сорт в каждом блюде</li>
+                <li class="beat">По желанию — <b>цифровой сертификат</b> на своё вино</li>
+              </ul>
               <p class="humor">— здесь спорят не о дедлайнах, а о нотах в аромате.</p>
             </div>
           </div>
@@ -309,7 +327,12 @@
               <span class="eyebrow">Программа 02</span>
               <h1>Грузия через 5 чувств</h1>
               <span class="price-tag"><span class="num">$140</span><span> / чел</span><span class="sep">·</span><span>1 день</span><span class="sep">·</span><span>от 10 чел</span></span>
-              <p class="body-text">Каждый этап дня задействует новый сенсорный канал: грузинская полифония, мастер-класс по специям — набор с собой, а вечером ужин с живым многоголосием и авторский артефакт на память.</p>
+              <ul class="beats">
+                <li class="beat"><b>Слух</b> — грузинская полифония вживую</li>
+                <li class="beat"><b>Запах и осязание</b> — мастер-класс по специям, набор с собой</li>
+                <li class="beat"><b>Вкус и зрение</b> — ужин с живым многоголосием</li>
+                <li class="beat">Каждый уходит с <b>авторским артефактом</b> на память</li>
+              </ul>
               <p class="humor">— план простой: вдохнули, попробовали, влюбились.</p>
             </div>
           </div>
@@ -333,7 +356,12 @@
               <span class="eyebrow">Программа 03</span>
               <h1>Супра-баттл: Корпоратив против Тамады</h1>
               <span class="price-tag"><span class="num">$310</span><span> / чел</span><span class="sep">·</span><span>1 день</span><span class="sep">·</span><span>от 10 чел</span></span>
-              <p class="body-text">Команды создают свою версию идеальной супры — роли, тосты, атрибутика — и параллельно соревнуются на кухне под руководством четырёх шефов, со слепой дегустацией и награждением. Каждый участник уносит папаху, рог и крафтовую сумку с трофеями.</p>
+              <ul class="beats">
+                <li class="beat"><b>Своя супра</b> — роли, тосты, атрибутика, сценарий вечера</li>
+                <li class="beat"><b>Kitchen Battle</b> — параллельно, под руководством четырёх шефов</li>
+                <li class="beat"><b>Слепая дегустация</b> — и награждение лучших</li>
+                <li class="beat">С собой — <b>папаха, рог и крафтовая сумка</b> с трофеями</li>
+              </ul>
               <p class="humor">— единственный баттл, где красиво перебивать — часть жанра.</p>
             </div>
           </div>
@@ -355,7 +383,11 @@
               <span class="eyebrow">Программа 04</span>
               <h1>Ретрит силы</h1>
               <span class="price-tag"><span class="num">$175</span><span> / чел</span><span class="sep">·</span><span>1 день</span><span class="sep">·</span><span>от 10 чел</span></span>
-              <p class="body-text">Дыхательные и телесные практики, тишина, природа и арт-элементы в Шато Агарани (Телави), среди виноградников Кахетии — для восстановления командного ресурса.</p>
+              <ul class="beats">
+                <li class="beat"><b>Дыхательные и телесные практики</b> — в полной тишине</li>
+                <li class="beat"><b>Место</b> — Шато Агарани, Телави, среди виноградников Кахетии</li>
+                <li class="beat"><b>Арт-элементы</b> — и полное отключение от рабочего чата</li>
+              </ul>
               <p class="humor">— созвоны отменяются, глубокий вдох подтверждается.</p>
             </div>
           </div>
@@ -379,7 +411,11 @@
               <span class="eyebrow">Программа 05</span>
               <h1>В поисках утраченного рецепта</h1>
               <span class="price-tag"><span class="num">$210</span><span> / чел</span><span class="sep">·</span><span>1 день</span><span class="sep">·</span><span>от 10 чел</span></span>
-              <p class="body-text">Иммерсивный квест по рынку Орбелиани и улицам Тбилиси: команды исследуют маршрут, решают задания, находят ингредиенты и на финальном кулинарном баттле собирают легенду в единое блюдо.</p>
+              <ul class="beats">
+                <li class="beat"><b>Старт</b> — рынок Орбелиани</li>
+                <li class="beat"><b>Маршрут и задания</b> — по улицам Тбилиси, в поисках ингредиентов</li>
+                <li class="beat"><b>Финал</b> — кулинарный баттл, общее блюдо из находок</li>
+              </ul>
               <p class="humor">— командировка, в которой все рады потеряться на рынке.</p>
             </div>
           </div>
